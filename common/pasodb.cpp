@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QSqlRecord>
 #include <QSqlError>
+#include <QUuid>
 
 namespace paso {
 namespace db {
@@ -101,11 +102,82 @@ bool DBManager::saveSystemUser(const SystemUser &user, QSqlError &error) {
     query.bindValue(":role", roleToString(user.role()));
     query.exec();
     error = query.lastError();
-    if (error.type() == QSqlError::NoError) {
-        return true;
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::deleteSystemUser(const QString &username, QSqlError &error) {
+    if (username == "root") {
+        return false;
     }
 
-    return false;
+    QSqlQuery query(QSqlDatabase::database(mDbName));
+    query.prepare("DELETE FROM SYSTEM_USER WHERE USERNAME = :username");
+    query.bindValue(":username", username);
+    query.exec();
+    error = query.lastError();
+    return error.type() == QSqlError::NoError;
+}
+
+shared_ptr<vector<Room>> DBManager::getAllRooms(QSqlError &error) {
+    auto db = QSqlDatabase::database(mDbName);
+    auto query = db.exec("SELECT * FROM ROOM ORDER BY NAME");
+    error = query.lastError();
+    auto retVal = make_shared<vector<Room>>();
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal->emplace_back(recordToVariantMap(query.record()));
+        }
+    }
+    return retVal;
+}
+
+shared_ptr<Room> DBManager::getRoom(const QUuid &roomUUID, QSqlError &error) {
+    auto db = QSqlDatabase::database(mDbName);
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM ROOM WHERE ROOM_UUID = :room_uuid");
+    query.bindValue(":room_uuid", roomUUID);
+    query.exec();
+    error = query.lastError();
+    if (error.type() == QSqlError::NoError) {
+        if (query.next()) {
+            return make_shared<Room>(recordToVariantMap(query.record()));
+        }
+    }
+    return nullptr;
+}
+
+bool DBManager::saveRoom(const Room &room, QSqlError &error) {
+    QUuid roomUUID(room.roomUUID());
+    QString strQuery = getRoom(roomUUID, error)
+                           ? "UPDATE ROOM SET"
+                             " NAME = :name,"
+                             " NUMBER = :number "
+                             "WHERE ROOM_UUID = :room_uuid"
+                           : "INSERT INTO"
+                             " ROOM(ROOM_UUID, NAME, NUMBER)"
+                             " VALUES(:room_uuid, :name, :number)";
+
+    if (error.type() != QSqlError::NoError) {
+        return false;
+    }
+
+    QSqlQuery query(QSqlDatabase::database(mDbName));
+    query.prepare(strQuery);
+    query.bindValue(":room_uuid", roomUUID.toString());
+    query.bindValue(":name", room.name());
+    query.bindValue(":number", room.number());
+    query.exec();
+    error = query.lastError();
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) {
+    QSqlQuery query(QSqlDatabase::database(mDbName));
+    query.prepare("DELETE FROM ROOM WHERE ROOM_UUID = :room_uuid");
+    query.bindValue(":room_uuid", roomUUID.toString());
+    query.exec();
+    error = query.lastError();
+    return error.type() == QSqlError::NoError;
 }
 }
 }

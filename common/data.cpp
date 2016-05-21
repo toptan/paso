@@ -3,6 +3,8 @@
 namespace paso {
 namespace data {
 
+// SystemUser methods
+
 SystemUser::SystemUser(const QVariantMap &map)
     : mUsername(map["USERNAME"].toString()),
       mPassword(map["PASSWORD"].toString()),
@@ -66,5 +68,36 @@ void SystemUser::setEmail(const QString &email) { mEmail = email; }
 SystemRole SystemUser::role() const { return mRole; }
 
 void SystemUser::setRole(const SystemRole &role) { mRole = role; }
+
+// Room methods
+
+Room::Room(const QString &roomUUID, const QString &name, const QString &number)
+    : mRoomUUID(roomUUID), mName(name), mNumber(number) {}
+
+Room::Room(const QVariantMap &map)
+    : mRoomUUID(map["ROOM_UUID"].toString()), mName(map["NAME"].toString()),
+      mNumber(map["NUMBER"].toString()) {}
+
+Room::Room(const Room &other)
+    : mRoomUUID(other.mRoomUUID), mName(other.mName), mNumber(other.number()) {}
+
+bool Room::operator==(const Room &other) const {
+    if (this == &other) {
+        return true;
+    }
+
+    return mRoomUUID == other.mRoomUUID && mName == other.mName &&
+           mNumber == other.mNumber;
+}
+
+QString Room::roomUUID() const { return mRoomUUID; }
+
+QString Room::name() const { return mName; }
+
+void Room::setName(const QString &name) { mName = name; }
+
+QString Room::number() const { return mNumber; }
+
+void Room::setNumber(const QString &number) { mNumber = number; }
 }
 }
