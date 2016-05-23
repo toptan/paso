@@ -1,6 +1,7 @@
 #ifndef PASO_DATA_H
 #define PASO_DATA_H
 
+#include <QJsonObject>
 #include <QString>
 #include <QVariantMap>
 
@@ -19,9 +20,49 @@ enum class SystemRole {
 };
 
 ///
+/// \brief The JsonSerializable class is a common interface for all objects that
+/// need to be serialized to JSON or deserialized from JSON.
+///
+class JsonSerializable {
+public:
+    ///
+    /// \brief ~JsonSerializable The destructor.
+    ///
+    virtual ~JsonSerializable() {}
+
+    ///
+    /// \brief read This method reads given JSON string and populates this
+    /// object's properties
+    /// \param jsonString A JSON string to read from.
+    ///
+    virtual void read(const QString &jsonString) = 0;
+
+    ///
+    /// \brief read This method reads data from given JSON object and populates
+    /// this object's properties.
+    /// \param jsonObject A JSON object to read data from.
+    ///
+    virtual void read(const QJsonObject &jsonObject) = 0;
+
+    ///
+    /// \brief write This method returns JSON string representation of this
+    /// object.
+    /// \return A JSON string representation of this object.
+    ///
+    virtual QString write() const = 0;
+
+    ///
+    /// \brief write This method writes data from this object to the given JSON
+    /// object.
+    /// \param jsonObject A JSON object to write data to.
+    ///
+    virtual void write(QJsonObject &jsonObject) const = 0;
+};
+
+///
 /// \brief The SystemUser class encapsulates data about system user.
 ///
-class SystemUser {
+class SystemUser : public JsonSerializable {
 public:
     ///
     /// \brief SystemUser constructs new system user with given data.
@@ -124,6 +165,25 @@ public:
     ///
     void setRole(const SystemRole &role);
 
+    ///
+    /// \ref JsonSerializable::read(const QString&);
+    ///
+    virtual void read(const QString &jsonString);
+
+    ///
+    /// \ref JsonSerializable::read(const QJsonObject&);
+    ///
+    virtual void read(const QJsonObject &jsonObject);
+
+    ///
+    /// \ref JsonSerializable::write();
+    virtual QString write() const;
+
+    ///
+    /// \ref JsonSerializable::write(QJsonObject&);
+    ///
+    virtual void write(QJsonObject &jsonObject) const;
+
 private:
     QString mUsername;  //!< Username
     QString mPassword;  //!< Password
@@ -136,7 +196,7 @@ private:
 ///
 /// \brief The Room class encapsulates data about rooms/laboratories.
 ///
-class Room {
+class Room : public JsonSerializable {
 public:
     ///
     /// \brief Room constructs new room with given data.
@@ -195,6 +255,25 @@ public:
     /// \param number a new room number.
     ///
     void setNumber(const QString &number);
+
+    ///
+    /// \ref JsonSerializable::read(const QString&);
+    ///
+    virtual void read(const QString &jsonString);
+
+    ///
+    /// \ref JsonSerializable::read(const QJsonObject&);
+    ///
+    virtual void read(const QJsonObject &jsonObject);
+
+    ///
+    /// \ref JsonSerializable::write();
+    virtual QString write() const;
+
+    ///
+    /// \ref JsonSerializable::write(QJsonObject&);
+    ///
+    virtual void write(QJsonObject &jsonObject) const;
 
 private:
     QString mRoomUUID; //!< The room UUID
