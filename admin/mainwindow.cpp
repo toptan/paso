@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     mLoginDialog = new LoginDialog(this);
+    connect(mLoginDialog, &LoginDialog::rejected, this, &MainWindow::close);
 }
 
 MainWindow::~MainWindow() { delete ui; }

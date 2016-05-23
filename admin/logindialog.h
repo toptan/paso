@@ -14,10 +14,15 @@ class LoginDialog : public QDialog {
 
 public:
     explicit LoginDialog(QWidget *parent = 0);
-    ~LoginDialog();
+    virtual ~LoginDialog();
+
+public slots:
+    virtual void accept() override;
 
 private:
     Ui::LoginDialog *ui;
+
+    void performLogin();
 };
 }
 }
