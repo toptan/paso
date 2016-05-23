@@ -6,6 +6,7 @@
 namespace paso {
 namespace admin {
 
+using namespace paso::data;
 using namespace Ui;
 
 LoginDialog::LoginDialog(QWidget *parent)
@@ -17,17 +18,17 @@ LoginDialog::~LoginDialog() { delete ui; }
 
 void LoginDialog::accept() {
     ui->messageLabel->clear();
-    if(ui->usernameLineEdit->text().isEmpty()) {
+    if (ui->usernameLineEdit->text().isEmpty()) {
         ui->messageLabel->setText(tr("You need to provide username."));
         ui->usernameLineEdit->setFocus();
         return;
     }
-    if(ui->passwordLineEdit->text().isEmpty()) {
+    if (ui->passwordLineEdit->text().isEmpty()) {
         ui->messageLabel->setText(tr("You need to provide password."));
         ui->passwordLineEdit->setFocus();
         return;
     }
-    if(ui->serverLineEdit->text().isEmpty()) {
+    if (ui->serverLineEdit->text().isEmpty()) {
         ui->messageLabel->setText(tr("You need to provide server name."));
         ui->serverLineEdit->setFocus();
         return;
@@ -36,7 +37,9 @@ void LoginDialog::accept() {
 }
 
 void LoginDialog::performLogin() {
-
+    emit loginSuccessfull("db_user", "db_pass", "db_server", "username",
+                          SystemRole::SUPER_USER);
+    QDialog::accept();
 }
 }
 }

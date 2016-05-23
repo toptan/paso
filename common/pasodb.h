@@ -15,6 +15,13 @@ namespace paso {
 namespace db {
 
 ///
+/// \brief roleToString Returns string representation of the system role.
+/// \param role The role.
+/// \return String representation of the role.
+///
+const QString roleToString(paso::data::SystemRole role);
+
+///
 /// \brief The DBManager class is responsible for all database operations.
 ///
 class DBManager {

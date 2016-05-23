@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+#include "data.h"
+
 namespace Ui {
 class LoginDialog;
 }
@@ -18,6 +20,11 @@ public:
 
 public slots:
     virtual void accept() override;
+
+signals:
+    void loginSuccessfull(const QString &dbUsername, const QString &dbPassword,
+                          const QString &dbServer, const QString &username,
+                          paso::data::SystemRole systemRole);
 
 private:
     Ui::LoginDialog *ui;
