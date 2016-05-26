@@ -73,7 +73,7 @@ void SystemUser::setRole(const SystemRole &role) { mRole = role; }
 
 void SystemUser::read(const QString &jsonString) {
     QJsonObject jsonObject =
-        QJsonDocument::fromBinaryData(jsonString.toUtf8()).object();
+        QJsonDocument::fromJson(jsonString.toUtf8()).object();
     read(jsonObject);
 }
 

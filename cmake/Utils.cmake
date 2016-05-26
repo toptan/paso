@@ -139,13 +139,14 @@ function(enable_coverage TARGET)
 
   # Add libraries
   if (TARGET_LINK_LIBRARIES)
-    target_link_libraries(${COVERAGE_TARGET} ${TARGET_LINK_LIBRARIES})
+   target_link_libraries(${COVERAGE_TARGET} ${TARGET_LINK_LIBRARIES})
   endif ()
   if (USING_CLANG)
     get_target_property(LINK_FLAGS ${TARGET} TARGET_LINK_FLAGS)
     set(COVERAGE_LINK_FLAGS "${TARGET_LINK_FLAGS} ${COVERAGE_FLAGS_STR}")
     set_target_properties(${COVERAGE_TARGET} PROPERTIES LINK_FLAGS "${COVERAGE_LINK_FLAGS}")
   endif ()
+  message(STATUS "${COVERAGE_TARGET} link libraries: ${TARGET_LINK_LIBRARIES}")
 
   if (TARGET_TYPE STREQUAL EXECUTABLE)
     # Adding coverage target
@@ -155,34 +156,34 @@ function(enable_coverage TARGET)
       COMMAND ${LCOV} --capture
       --no-external
       --rc lcov_branch_coverage=1
-      --base-directory ${PROJECT_SOURCE_DIR}
-      --directory=${PROJECT_BINARY_DIR}
-      --output-file=${PROJECT_BINARY_DIR}/coverage/coverage.all.info
+      --base-directory ${CMAKE_SOURCE_DIR}
+      --directory=${CMAKE_BINARY_DIR}
+      --output-file=${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.all.info
       COMMAND ${LCOV}
       --rc lcov_branch_coverage=1
-      --remove ${PROJECT_BINARY_DIR}/coverage/coverage.all.info
+      --remove ${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.all.info
       'test*'
-      --output-file=${PROJECT_BINARY_DIR}/coverage/coverage.without-tests.info
+      --output-file=${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.without-tests.info
       COMMAND ${LCOV}
       --rc lcov_branch_coverage=1
-      --remove ${PROJECT_BINARY_DIR}/coverage/coverage.without-tests.info
+      --remove ${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.without-tests.info
       'build*'
-      --output-file=${PROJECT_BINARY_DIR}/coverage/coverage.info
+      --output-file=${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.info
       COMMAND ${LCOV}
       --rc lcov_branch_coverage=1
-      --summary=${PROJECT_BINARY_DIR}/coverage/coverage.info 2> ${PROJECT_BINARY_DIR}/coverage/coverage.summary
-      COMMAND ${GENHTML} ${PROJECT_BINARY_DIR}/coverage/coverage.info
+      --summary=${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.info 2> ${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.summary
+      COMMAND ${GENHTML} ${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.info
       --title ${PROJECT_NAME}
       --legend
       --show-details
       --function-coverage
       --branch-coverage
       --demangle-cpp
-      --output-directory ${PROJECT_BINARY_DIR}/coverage
+      --output-directory ${PROJECT_BINARY_DIR}/coverage/${TARGET}
       COMMAND cd ${PROJECT_BINARY_DIR} && ${GCOVR}
       --filter=.*/src/.*
       --exclude=.*/build/.*
-      --xml-pretty > ${PROJECT_BINARY_DIR}/coverage.xml
+      --xml-pretty > ${PROJECT_BINARY_DIR}/coverage-${TARGET}.xml
       DEPENDS ${TARGET}-coverage)
     if(NOT TARGET coverage)
       add_custom_target(coverage)

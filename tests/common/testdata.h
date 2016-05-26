@@ -10,6 +10,7 @@ private slots:
     void testComparingObjectWithItselfIsAlwaysTrue();
     void testSystemUserSerialization();
     void testRoomSerialization();
+    void testSystemRoleSerialization();
 };
 
 #endif // TESTDATA_H

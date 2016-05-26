@@ -228,3 +228,5 @@ void TestPasoDB::testDeleteRoom() {
     auto room = manager.getRoom(roomUUID, error);
     QVERIFY(!room);
 }
+
+//QTEST_MAIN(TestPasoDB)
