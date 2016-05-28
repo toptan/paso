@@ -229,4 +229,4 @@ void TestPasoDB::testDeleteRoom() {
     QVERIFY(!room);
 }
 
-//QTEST_MAIN(TestPasoDB)
+QTEST_MAIN(TestPasoDB)

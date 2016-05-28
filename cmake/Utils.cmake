@@ -168,11 +168,11 @@ function(enable_coverage TARGET)
       --rc lcov_branch_coverage=1
       --remove ${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.without-tests.info
       'build*'
-      --output-file=${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.info
+      --output-file=${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.final.info
       COMMAND ${LCOV}
       --rc lcov_branch_coverage=1
-      --summary=${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.info 2> ${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.summary
-      COMMAND ${GENHTML} ${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.info
+      --summary=${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.final.info 2> ${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.final.summary
+      COMMAND ${GENHTML} ${PROJECT_BINARY_DIR}/coverage/coverage-${TARGET}.final.info
       --title ${PROJECT_NAME}
       --legend
       --show-details
@@ -183,13 +183,30 @@ function(enable_coverage TARGET)
       COMMAND cd ${PROJECT_BINARY_DIR} && ${GCOVR}
       --filter=.*/src/.*
       --exclude=.*/build/.*
-      --xml-pretty > ${PROJECT_BINARY_DIR}/coverage-${TARGET}.xml
+      --xml-pretty > ${PROJECT_BINARY_DIR}/coverage-${TARGET}.final.xml
       DEPENDS ${TARGET}-coverage)
     if(NOT TARGET coverage)
-      add_custom_target(coverage)
+      add_custom_target(coverage
+          COMMAND mkdir -p ${CMAKE_BINARY_DIR}/coverage
+          COMMAND find . -name *final.info -exec echo -a {} \\; \| xargs lcov -o ${CMAKE_BINARY_DIR}/combined-coverage.info
+          COMMAND ${GENHTML} ${CMAKE_BINARY_DIR}/combined-coverage.info
+          --title "Combined coverage report for ${CMAKE_PROJECT_NAME}"
+          --legend
+          --show-details
+          --function-coverage
+          --demangle-cpp
+          --output-directory ${CMAKE_BINARY_DIR}/coverage
+          COMMAND cd ${CMAKE_BINARY_DIR} && ${GCOVR}
+          --filter=.*/src/.*
+          --exclude=.*/build/.*
+          --xml-pretty > ${CMAKE_BINARY_DIR}/coverage.xml
+          VERBATIM)
     endif()
     add_dependencies(coverage coverage-${TARGET})
   endif ()
+  if (NOT TARGET clean-coverage)
+      add_custom_target(clean-coverage COMMAND lcov --directory ${CMAKE_BINARY_DIR} --zerocounters)
+  endif()
 endfunction()
 
 # This function creates new target that performs static code analysis. It is enough to

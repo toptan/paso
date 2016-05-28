@@ -5,6 +5,24 @@
 namespace paso {
 namespace data {
 
+// JsonSerializable methods
+
+JsonSerializable::~JsonSerializable() {}
+
+void JsonSerializable::fromJsonString(const QString &jsonString) {
+    QJsonObject jsonObject =
+        QJsonDocument::fromJson(jsonString.toUtf8()).object();
+    read(jsonObject);
+}
+
+QString JsonSerializable::toJsonString() const {
+    QJsonObject jsonObject;
+    write(jsonObject);
+    QJsonDocument doc;
+    doc.setObject(jsonObject);
+    return doc.toJson();
+}
+
 // SystemUser methods
 
 SystemUser::SystemUser(const QVariantMap &map)
@@ -71,12 +89,6 @@ SystemRole SystemUser::role() const { return mRole; }
 
 void SystemUser::setRole(const SystemRole &role) { mRole = role; }
 
-void SystemUser::read(const QString &jsonString) {
-    QJsonObject jsonObject =
-        QJsonDocument::fromJson(jsonString.toUtf8()).object();
-    read(jsonObject);
-}
-
 void SystemUser::read(const QJsonObject &jsonObject) {
     mUsername = jsonObject["USERNAME"].toString();
     mPassword = jsonObject["PASSWORD"].toString();
@@ -96,14 +108,6 @@ void SystemUser::read(const QJsonObject &jsonObject) {
     } else if (strRole == "SUPER_USER") {
         mRole = SystemRole::SUPER_USER;
     }
-}
-
-QString SystemUser::write() const {
-    QJsonObject jsonObject;
-    write(jsonObject);
-    QJsonDocument doc;
-    doc.setObject(jsonObject);
-    return doc.toJson();
 }
 
 void SystemUser::write(QJsonObject &jsonObject) const {
@@ -162,24 +166,10 @@ QString Room::number() const { return mNumber; }
 
 void Room::setNumber(const QString &number) { mNumber = number; }
 
-void Room::read(const QString &jsonString) {
-    QJsonObject jsonObject =
-        QJsonDocument::fromJson(jsonString.toUtf8()).object();
-    read(jsonObject);
-}
-
 void Room::read(const QJsonObject &jsonObject) {
     mRoomUUID = jsonObject["ROOM_UUID"].toString();
     mName = jsonObject["NAME"].toString();
     mNumber = jsonObject["NUMBER"].toString();
-}
-
-QString Room::write() const {
-    QJsonObject jsonObject;
-    write(jsonObject);
-    QJsonDocument doc;
-    doc.setObject(jsonObject);
-    return doc.toJson();
 }
 
 void Room::write(QJsonObject &jsonObject) const {

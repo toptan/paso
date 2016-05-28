@@ -14,6 +14,11 @@ namespace comm {
 class LoginResponse : public data::JsonSerializable {
 public:
     ///
+    /// \brief LoginResponse constructs empty login response.
+    ///
+    LoginResponse();
+
+    ///
     /// \brief LoginResponse constructs new login response.
     /// \param systemUser data about system user that logged in.
     /// \param dbName database name.
@@ -62,13 +67,23 @@ public:
     ///
     uint16_t dbPort() const;
 
+    ///
+    /// \ref JsonSerializable::read(const QJsonObject&);
+    ///
+    virtual void read(const QJsonObject &jsonObject);
+
+    ///
+    /// \ref JsonSerializable::write(QJsonObject&);
+    ///
+    virtual void write(QJsonObject &jsonObject) const;
+
 private:
-    const data::SystemUser mSystemUser; //!< The system user.
-    const QString mDbName;              //!< The database name.
-    const QString mDbServer;            //!< The database server.
-    const QString mDbUsername;          //!< The database username.
-    const QString mDbPassword;          //!< The database password.
-    const uint16_t mDbPort;             //!< The database port.
+    data::SystemUser mSystemUser; //!< The system user.
+    QString mDbName;              //!< The database name.
+    QString mDbServer;            //!< The database server.
+    QString mDbUsername;          //!< The database username.
+    QString mDbPassword;          //!< The database password.
+    uint16_t mDbPort;             //!< The database port.
 };
 }
 }

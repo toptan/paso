@@ -1,6 +1,7 @@
 #ifndef PASO_DATA_H
 #define PASO_DATA_H
 
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QString>
 #include <QVariantMap>
@@ -28,14 +29,14 @@ public:
     ///
     /// \brief ~JsonSerializable The destructor.
     ///
-    virtual ~JsonSerializable() {}
+    virtual ~JsonSerializable();
 
     ///
     /// \brief read This method reads given JSON string and populates this
     /// object's properties
     /// \param jsonString A JSON string to read from.
     ///
-    virtual void read(const QString &jsonString) = 0;
+    virtual void fromJsonString(const QString &jsonString) final;
 
     ///
     /// \brief read This method reads data from given JSON object and populates
@@ -49,7 +50,7 @@ public:
     /// object.
     /// \return A JSON string representation of this object.
     ///
-    virtual QString write() const = 0;
+    virtual QString toJsonString() const final;
 
     ///
     /// \brief write This method writes data from this object to the given JSON
@@ -166,18 +167,9 @@ public:
     void setRole(const SystemRole &role);
 
     ///
-    /// \ref JsonSerializable::read(const QString&);
-    ///
-    virtual void read(const QString &jsonString);
-
-    ///
     /// \ref JsonSerializable::read(const QJsonObject&);
     ///
     virtual void read(const QJsonObject &jsonObject);
-
-    ///
-    /// \ref JsonSerializable::write();
-    virtual QString write() const;
 
     ///
     /// \ref JsonSerializable::write(QJsonObject&);
@@ -257,18 +249,9 @@ public:
     void setNumber(const QString &number);
 
     ///
-    /// \ref JsonSerializable::read(const QString&);
-    ///
-    virtual void read(const QString &jsonString);
-
-    ///
     /// \ref JsonSerializable::read(const QJsonObject&);
     ///
     virtual void read(const QJsonObject &jsonObject);
-
-    ///
-    /// \ref JsonSerializable::write();
-    virtual QString write() const;
 
     ///
     /// \ref JsonSerializable::write(QJsonObject&);

@@ -19,44 +19,45 @@ void TestData::testComparingObjectWithItselfIsAlwaysTrue() {
 
 void TestData::testRoomSerialization() {
     Room expected(QUuid::createUuid().toString(), "Room 42", "42");
-    QString jsonString = expected.write();
+    QString jsonString = expected.toJsonString();
     Room deserialized("", "", "");
-    deserialized.read(jsonString);
+    deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized, expected);
 }
 
 void TestData::testSystemUserSerialization() {
     SystemUser expected("user", "user_pass", "John", "Doe",
                         "john.doe@internet.com", SystemRole::MANAGER);
-    QString jsonString = expected.write();
-    SystemUser deserialized("");
-    deserialized.read(jsonString);
-    QCOMPARE(deserialized, expected);
+    QString jsonString = expected.toJsonString();
+    SystemUser *deserialized = new SystemUser("");
+    deserialized->fromJsonString(jsonString);
+    QCOMPARE(*deserialized, expected);
+    delete deserialized;
 }
 
 void TestData::testSystemRoleSerialization() {
     SystemUser expected("user", "user_pass", "John", "Doe",
                         "john.doe@internet.com", SystemRole::ADMINISTRATOR);
-    auto jsonString = expected.write();
+    auto jsonString = expected.toJsonString();
     SystemUser deserialized("");
-    deserialized.read(jsonString);
+    deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized.role(), SystemRole::ADMINISTRATOR);
     expected.setRole(SystemRole::ROOM_MANAGER);
-    jsonString = expected.write();
-    deserialized.read(jsonString);
+    jsonString = expected.toJsonString();
+    deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized.role(), SystemRole::ROOM_MANAGER);
     expected.setRole(SystemRole::MANAGER);
-    jsonString = expected.write();
-    deserialized.read(jsonString);
+    jsonString = expected.toJsonString();
+    deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized.role(), SystemRole::MANAGER);
     expected.setRole(SystemRole::SCHEDULER);
-    jsonString = expected.write();
-    deserialized.read(jsonString);
+    jsonString = expected.toJsonString();
+    deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized.role(), SystemRole::SCHEDULER);
     expected.setRole(SystemRole::SUPER_USER);
-    jsonString = expected.write();
-    deserialized.read(jsonString);
+    jsonString = expected.toJsonString();
+    deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized.role(), SystemRole::SUPER_USER);
 }
 
-// QTEST_MAIN(TestData)
+ QTEST_MAIN(TestData)

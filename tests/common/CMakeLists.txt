@@ -7,14 +7,17 @@ link_libraries(Qt5::Core)
 link_libraries(Qt5::Sql)
 link_libraries(Qt5::Test)
 
-# Data test
-add_executable(${PROJECT_NAME} main.cpp testdata.cpp testpasodb.cpp)
-target_link_libraries(${PROJECT_NAME} pasocommon)
-
-# Enabling code coverage
-enable_coverage(${PROJECT_NAME} pasocommon)
-
 # Adding tests
 enable_testing()
-add_test(common-tests ${PROJECT_NAME})
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} -V DEPENDS ${PROJECT_NAME})
+
+add_executable(testdata testdata.cpp)
+target_link_libraries(testdata pasocommon)
+enable_coverage(testdata pasocommon)
+
+add_executable(testpasodb testpasodb.cpp)
+target_link_libraries(testpasodb pasocommon)
+enable_coverage(testpasodb pasocommon)
+
+add_executable(testcommdata testcommdata.cpp)
+target_link_libraries(testcommdata pasocommon)
+enable_coverage(testcommdata pasocommon)
