@@ -7,6 +7,8 @@ namespace paso {
 namespace admin {
 
 using namespace paso::data;
+using namespace paso::comm;
+
 using namespace Ui;
 
 LoginDialog::LoginDialog(QWidget *parent)
@@ -37,9 +39,37 @@ void LoginDialog::accept() {
 }
 
 void LoginDialog::performLogin() {
-    emit loginSuccessfull("db_user", "db_pass", "db_server", "username",
-                          SystemRole::SUPER_USER);
+    commManager = std::make_shared<CommManager>(ui->serverLineEdit->text());
+    connect(commManager.get(), &CommManager::loginSuccessfull, this,
+            &LoginDialog::loginSuccessfull);
+    connect(commManager.get(), &CommManager::loginFailed, this,
+            &LoginDialog::loginFailed);
+    connect(commManager.get(), &CommManager::communicationError, this,
+            &LoginDialog::communicationError);
+    commManager->login(ui->usernameLineEdit->text(),
+                       ui->passwordLineEdit->text());
+    ui->usernameLineEdit->setEnabled(false);
+    ui->passwordLineEdit->setEnabled(false);
+    ui->serverLineEdit->setEnabled(false);
+}
+
+void LoginDialog::loginSuccessfull(const LoginResponse &loginResponse) {
     QDialog::accept();
+    emit loginFinished(loginResponse);
+}
+
+void LoginDialog::loginFailed() {
+    ui->messageLabel->setText(tr("Login failed."));
+    ui->usernameLineEdit->setEnabled(true);
+    ui->passwordLineEdit->setEnabled(true);
+    ui->serverLineEdit->setEnabled(true);
+}
+
+void LoginDialog::communicationError(const QString &reason) {
+    ui->messageLabel->setText(reason);
+    ui->usernameLineEdit->setEnabled(true);
+    ui->passwordLineEdit->setEnabled(true);
+    ui->serverLineEdit->setEnabled(true);
 }
 }
 }

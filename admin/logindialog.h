@@ -4,6 +4,10 @@
 #include <QDialog>
 
 #include "data.h"
+#include "commdata.h"
+#include "commmanager.h"
+
+#include <memory>
 
 namespace Ui {
 class LoginDialog;
@@ -11,6 +15,7 @@ class LoginDialog;
 
 namespace paso {
 namespace admin {
+
 class LoginDialog : public QDialog {
     Q_OBJECT
 
@@ -22,14 +27,18 @@ public slots:
     virtual void accept() override;
 
 signals:
-    void loginSuccessfull(const QString &dbUsername, const QString &dbPassword,
-                          const QString &dbServer, const QString &username,
-                          paso::data::SystemRole systemRole);
+    void loginFinished(const comm::LoginResponse &loginResponse);
 
 private:
     Ui::LoginDialog *ui;
+    std::shared_ptr<paso::comm::CommManager> commManager;
 
     void performLogin();
+
+private slots:
+    void loginSuccessfull(const comm::LoginResponse &loginResponse);
+    void loginFailed();
+    void communicationError(const QString &reason);
 };
 }
 }

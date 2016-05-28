@@ -25,4 +25,5 @@ find_package(Qt5Widgets 5.6 REQUIRED)
 # Add subdirectories
 add_subdirectory(admin)
 add_subdirectory(common)
+add_subdirectory(server)
 add_subdirectory(tests)

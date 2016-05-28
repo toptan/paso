@@ -14,7 +14,7 @@ using namespace paso::data;
 const QVariantMap recordToVariantMap(const QSqlRecord &record) {
     QVariantMap retVal;
     for (auto i = 0; i < record.count(); i++) {
-        retVal.insert(record.fieldName(i), record.value(i));
+        retVal.insert(record.fieldName(i).toUpper(), record.value(i));
     }
     return retVal;
 }

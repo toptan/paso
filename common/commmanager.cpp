@@ -29,11 +29,11 @@ void CommManager::login(const QString &username, const QString &password) {
         out << (quint16)(block.size() - sizeof(quint16));
         socket.write(block);
         if (!socket.waitForBytesWritten(mTimeout)) {
-            emit communicationError();
+            emit communicationError(socket.errorString());
             return;
         }
         if (!socket.waitForReadyRead(mTimeout)) {
-            emit communicationError();
+            emit communicationError(socket.errorString());
             return;
         }
         quint16 blockSize;
@@ -43,7 +43,7 @@ void CommManager::login(const QString &username, const QString &password) {
 
         while (socket.bytesAvailable() < blockSize) {
             if (!socket.waitForReadyRead(mTimeout)) {
-                emit communicationError();
+                emit communicationError(socket.errorString());
                 return;
             }
         }

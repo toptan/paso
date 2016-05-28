@@ -17,7 +17,7 @@ public:
     void login(const QString &username, const QString &password);
 
 signals:
-    void communicationError();
+    void communicationError(const QString &reason);
     void loginSuccessfull(const LoginResponse &response);
     void loginFailed();
 

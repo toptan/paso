@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "data.h"
+#include "commdata.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,9 +24,7 @@ public:
 
 public slots:
     void show();
-    void loginSuccessfull(const QString &dbUsername, const QString &dbPassword,
-                          const QString &dbServer, const QString &username,
-                          paso::data::SystemRole systemRole);
+    void loginFinished(const comm::LoginResponse& response);
 
 private:
     Ui::MainWindow *ui;
