@@ -8,10 +8,38 @@
 using namespace paso::comm;
 using namespace paso::data;
 
+void TestCommData::testBaseSerialization() {
+    Base expected(QUuid::createUuid(), Operation::UNKNOWN_OPERATION);
+    Base deserialized("{00000000-0000-0000-0000-000000000000}", Operation::UNKNOWN_OPERATION);
+    auto jsonString = expected.toJsonString();
+    deserialized.fromJsonString(jsonString);
+    QVERIFY(deserialized.roomId() == expected.roomId());
+    QVERIFY(deserialized.operation() == expected.operation());
+}
+
+void TestCommData::testLoginRequestCreation() {
+    auto request = new LoginRequest("foo", "bar");
+    QVERIFY(request->roomId().isNull());
+    QVERIFY(request->operation() == Operation::LOGIN);
+    QVERIFY(request->username() == "foo");
+    QVERIFY(request->password() == "bar");
+    delete request;
+}
+
+void TestCommData::testLoginRequestSerialization() {
+    LoginRequest expected("john.doe", "jdpass");
+    LoginRequest deserialized;
+    auto jsonString = expected.toJsonString();
+    deserialized.fromJsonString(jsonString);
+    QCOMPARE(deserialized.username(), expected.username());
+    QCOMPARE(deserialized.password(), expected.password());
+}
+
 void TestCommData::testLoginResponseCreation() {
     SystemUser sysUser("user", "user_pass", "John", "Doe",
                        "john.doe@internet.com", SystemRole::ADMINISTRATOR);
     LoginResponse *response = new LoginResponse(sysUser, "A", "B", "C", "D", 1);
+    QVERIFY(response->operation() == Operation::LOGIN);
     QCOMPARE(response->systemUser(), sysUser);
     QVERIFY(response->dbName() == "A");
     QVERIFY(response->dbServer() == "B");

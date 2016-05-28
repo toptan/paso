@@ -8,6 +8,9 @@ class TestCommData : public QObject {
 
 private slots:
 
+    void testBaseSerialization();
+    void testLoginRequestCreation();
+    void testLoginRequestSerialization();
     void testLoginResponseCreation();
     void testLoginResponseSerialization();
 };
