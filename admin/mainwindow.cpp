@@ -3,13 +3,20 @@
 
 #include "logindialog.h"
 #include "pasodb.h"
+#include "administratorform.h"
 
 #include <QDebug>
+#include <QMessageBox>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QToolBar>
 
 namespace paso {
 namespace admin {
 
 using namespace paso::comm;
+using namespace paso::db;
+
 using namespace Ui;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -29,9 +36,34 @@ void MainWindow::show() {
 }
 
 void MainWindow::loginFinished(const LoginResponse &response) {
-    createMenus(response.systemUser().role());
+    mRole = response.systemUser().role();
+    auto db = QSqlDatabase::addDatabase("QPSQL", DEFAULT_DB_NAME);
+    db.setDatabaseName(response.dbName());
+    db.setHostName(response.dbServer());
+    db.setUserName(response.dbUsername());
+    db.setPassword(response.dbPassword());
+    db.setPort(response.dbPort());
+    if (!db.open()) {
+        QMessageBox::critical(
+            this, tr("Critical error"),
+            tr("Could not establish database connection.\nReason: ") +
+                db.lastError().text());
+        QApplication::instance()->quit();
+    }
+    createMenus();
+    createWidgets();
 }
 
-void MainWindow::createMenus(data::SystemRole systemRole) {}
+void MainWindow::createMenus() {}
+
+void MainWindow::createWidgets() {
+    AdministratorForm *form = new AdministratorForm(this);
+    setCentralWidget(form);
+    auto toolBar = addToolBar("Main toolbar");
+    toolBar->addActions(form->toolBarActions());
+
+}
+
+void MainWindow::showWidgets() {}
 }
 }

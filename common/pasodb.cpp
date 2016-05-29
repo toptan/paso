@@ -19,21 +19,6 @@ const QVariantMap recordToVariantMap(const QSqlRecord &record) {
     return retVal;
 }
 
-const QString roleToString(data::SystemRole role) {
-    switch (role) {
-    case SystemRole::ADMINISTRATOR:
-        return "ADMINISTRATOR";
-    case SystemRole::MANAGER:
-        return "MANAGER";
-    case SystemRole::ROOM_MANAGER:
-        return "ROOM_MANAGER";
-    case SystemRole::SCHEDULER:
-        return "SCHEDULER";
-    case SystemRole::SUPER_USER:
-        return "SUPER_USER";
-    }
-}
-
 DBManager::DBManager(const QString &dbName) : mDbName(dbName) {
     QSqlError error;
     auto root = getSystemUser("root", error);

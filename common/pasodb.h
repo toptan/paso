@@ -15,11 +15,9 @@ namespace paso {
 namespace db {
 
 ///
-/// \brief roleToString Returns string representation of the system role.
-/// \param role The role.
-/// \return String representation of the role.
+/// \brief DB_NAME The database name
 ///
-const QString roleToString(paso::data::SystemRole role);
+const static QString DEFAULT_DB_NAME = "paso";
 
 ///
 /// \brief The DBManager class is responsible for all database operations.
@@ -31,7 +29,7 @@ public:
     /// given name.
     /// \param dbName the name of database to use.
     ///
-    explicit DBManager(const QString &dbName);
+    explicit DBManager(const QString &dbName = DEFAULT_DB_NAME);
 
     ///
     /// \brief getAllSystemUsers Returns a vector of all system users.

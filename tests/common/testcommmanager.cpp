@@ -14,7 +14,7 @@ using namespace paso::comm;
 using namespace paso::data;
 
 DemoServer::DemoServer(QObject *parent)
-    : QObject(parent), mPort(6789), mTimeout(5000), mDbName("paso") {
+    : QObject(parent), mPort(6789), mTimeout(5000), mDbName(DEFAULT_DB_NAME) {
     tcpServer = new QTcpServer(this);
     connect(tcpServer, &QTcpServer::newConnection, this,
             &DemoServer::handleRequest);

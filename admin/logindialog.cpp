@@ -14,6 +14,9 @@ using namespace Ui;
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::LoginDialog) {
     ui->setupUi(this);
+    ui->usernameLineEdit->setText("root");
+    ui->passwordLineEdit->setText("root");
+    ui->serverLineEdit->setText("localhost");
 }
 
 LoginDialog::~LoginDialog() { delete ui; }

@@ -5,6 +5,39 @@
 namespace paso {
 namespace data {
 
+const QString roleToString(data::SystemRole role) {
+    switch (role) {
+    case SystemRole::ADMINISTRATOR:
+        return "ADMINISTRATOR";
+    case SystemRole::MANAGER:
+        return "MANAGER";
+    case SystemRole::ROOM_MANAGER:
+        return "ROOM_MANAGER";
+    case SystemRole::SCHEDULER:
+        return "SCHEDULER";
+    case SystemRole::SUPER_USER:
+        return "SUPER_USER";
+    default:
+        return "INVALID_ROLE";
+    }
+}
+
+SystemRole stringToRole(const QString &role) {
+    if (role == "ADMINISTRATOR") {
+        return SystemRole::ADMINISTRATOR;
+    } else if (role == "ROOM_MANAGER") {
+        return SystemRole::ROOM_MANAGER;
+    } else if (role == "MANAGER") {
+        return SystemRole::MANAGER;
+    } else if (role == "SCHEDULER") {
+        return SystemRole::SCHEDULER;
+    } else if (role == "SUPER_USER") {
+        return SystemRole::SUPER_USER;
+    } else {
+        return SystemRole::INVALID_ROLE;
+    }
+}
+
 // JsonSerializable methods
 
 JsonSerializable::~JsonSerializable() {}
@@ -29,21 +62,8 @@ SystemUser::SystemUser(const QVariantMap &map)
     : mUsername(map["USERNAME"].toString()),
       mPassword(map["PASSWORD"].toString()),
       mFirstName(map["FIRST_NAME"].toString()),
-      mLastName(map["LAST_NAME"].toString()), mEmail(map["EMAIL"].toString()) {
-    mRole = SystemRole::ADMINISTRATOR;
-    QString strRole = map["ROLE"].toString();
-    if (strRole == "ADMINISTRATOR") {
-        mRole = SystemRole::ADMINISTRATOR;
-    } else if (strRole == "ROOM_MANAGER") {
-        mRole = SystemRole::ROOM_MANAGER;
-    } else if (strRole == "MANAGER") {
-        mRole = SystemRole::MANAGER;
-    } else if (strRole == "SCHEDULER") {
-        mRole = SystemRole::SCHEDULER;
-    } else if (strRole == "SUPER_USER") {
-        mRole = SystemRole::SUPER_USER;
-    }
-}
+      mLastName(map["LAST_NAME"].toString()), mEmail(map["EMAIL"].toString()),
+      mRole(stringToRole(map["ROLE"].toString())) {}
 
 SystemUser::SystemUser(const QString &username, const QString &password,
                        const QString &firstName, const QString &lastName,
@@ -96,18 +116,7 @@ void SystemUser::read(const QJsonObject &jsonObject) {
     mLastName = jsonObject["LAST_NAME"].toString();
     mEmail = jsonObject["EMAIL"].toString();
     auto strRole = jsonObject["ROLE"].toString();
-    mRole = SystemRole::ADMINISTRATOR;
-    if (strRole == "ADMINISTRATOR") {
-        mRole = SystemRole::ADMINISTRATOR;
-    } else if (strRole == "ROOM_MANAGER") {
-        mRole = SystemRole::ROOM_MANAGER;
-    } else if (strRole == "MANAGER") {
-        mRole = SystemRole::MANAGER;
-    } else if (strRole == "SCHEDULER") {
-        mRole = SystemRole::SCHEDULER;
-    } else if (strRole == "SUPER_USER") {
-        mRole = SystemRole::SUPER_USER;
-    }
+    mRole = stringToRole(strRole);
 }
 
 void SystemUser::write(QJsonObject &jsonObject) const {
@@ -116,23 +125,7 @@ void SystemUser::write(QJsonObject &jsonObject) const {
     jsonObject["FIRST_NAME"] = mFirstName;
     jsonObject["LAST_NAME"] = mLastName;
     jsonObject["EMAIL"] = mEmail;
-    switch (mRole) {
-    case SystemRole::ADMINISTRATOR:
-        jsonObject["ROLE"] = "ADMINISTRATOR";
-        break;
-    case SystemRole::ROOM_MANAGER:
-        jsonObject["ROLE"] = "ROOM_MANAGER";
-        break;
-    case SystemRole::MANAGER:
-        jsonObject["ROLE"] = "MANAGER";
-        break;
-    case SystemRole::SCHEDULER:
-        jsonObject["ROLE"] = "SCHEDULER";
-        break;
-    case SystemRole::SUPER_USER:
-        jsonObject["ROLE"] = "SUPER_USER";
-        break;
-    }
+    jsonObject["ROLE"] = roleToString(mRole);
 }
 
 // Room methods

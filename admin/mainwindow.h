@@ -29,8 +29,11 @@ public slots:
 private:
     Ui::MainWindow *ui;
     LoginDialog *mLoginDialog;
+    paso::data::SystemRole mRole;
 
-    void createMenus(paso::data::SystemRole systemRole);
+    void createMenus();
+    void createWidgets();
+    void showWidgets();
 };
 }
 }
