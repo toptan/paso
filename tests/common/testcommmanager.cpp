@@ -46,7 +46,7 @@ void DemoServer::handleRequest() {
 
     quint16 blockSize;
     QDataStream in(clientSocket);
-    in.setVersion(QDataStream::Qt_5_6);
+    in.setVersion(QDataStream::Qt_5_5);
     in >> blockSize;
 
     while (clientSocket->bytesAvailable() < blockSize) {
@@ -84,7 +84,7 @@ void DemoServer::handleLoginRequest(QTcpSocket *clientSocket,
 
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_6);
+    out.setVersion(QDataStream::Qt_5_5);
     out << (quint16)0;
     out << responseData;
     out.device()->seek(0);

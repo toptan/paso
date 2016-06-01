@@ -22,7 +22,7 @@ void CommManager::login(const QString &username, const QString &password) {
         }
         QByteArray block;
         QDataStream out(&block, QIODevice::WriteOnly);
-        out.setVersion(QDataStream::Qt_5_6);
+        out.setVersion(QDataStream::Qt_5_5);
         out << (quint16)0;
         out << request.toJsonString();
         out.device()->seek(0);
@@ -38,7 +38,7 @@ void CommManager::login(const QString &username, const QString &password) {
         }
         quint16 blockSize;
         QDataStream in(&socket);
-        in.setVersion(QDataStream::Qt_5_6);
+        in.setVersion(QDataStream::Qt_5_5);
         in >> blockSize;
 
         while (socket.bytesAvailable() < blockSize) {

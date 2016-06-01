@@ -16,12 +16,12 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # Check for the dependencies
-find_package(Qt5Core       5.6 REQUIRED)
-find_package(Qt5Concurrent 5.6 REQUIRED)
-find_package(Qt5Network    5.6 REQUIRED)
-find_package(Qt5Sql        5.6 REQUIRED)
-find_package(Qt5Test       5.6 REQUIRED)
-find_package(Qt5Widgets    5.6 REQUIRED)
+find_package(Qt5Core       5.5 REQUIRED)
+find_package(Qt5Concurrent 5.5 REQUIRED)
+find_package(Qt5Network    5.5 REQUIRED)
+find_package(Qt5Sql        5.5 REQUIRED)
+find_package(Qt5Test       5.5 REQUIRED)
+find_package(Qt5Widgets    5.5 REQUIRED)
 
 # Common PaSo library
 file(GLOB COMMON_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
