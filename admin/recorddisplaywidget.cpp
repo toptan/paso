@@ -37,6 +37,8 @@ void RecordDisplayWidget::setupForRecord(const QSqlRecord &record) {
         QDialogButtonBox::Save | QDialogButtonBox::Cancel, this);
     l->addWidget(mButtonBox);
     mButtonBox->setVisible(false);
+    connect(mButtonBox, &QDialogButtonBox::accepted, this, &RecordDisplayWidget::accepted);
+    connect(mButtonBox, &QDialogButtonBox::rejected, this, &RecordDisplayWidget::rejected);
 }
 
 QWidget *RecordDisplayWidget::createWidgetForField(const QSqlRecord &record,
@@ -82,6 +84,23 @@ void RecordDisplayWidget::onDisplayRecord(const QSqlRecord &record) {
     }
 }
 
+void RecordDisplayWidget::onEditRecord(QSqlRecord record) {
+    onDisplayRecord(record);
+    mRecord = record;
+    for(auto key: mEditFields.keys()) {
+        auto field = mEditFields[key];
+        if (key == "role") {
+            field->setEnabled(true);
+        } else if (key == "password") {
+            dynamic_cast<QLineEdit *>(field)->setEchoMode(QLineEdit::Normal);
+            dynamic_cast<QLineEdit *>(field)->setReadOnly(false);
+        } else if (dynamic_cast<QLineEdit *>(field) != nullptr) {
+            dynamic_cast<QLineEdit *>(field)->setReadOnly(false);
+        }
+    }
+    mButtonBox->setVisible(true);
+}
+
 void RecordDisplayWidget::clearData() {
     for (auto &field: mEditFields.values()) {
         if (dynamic_cast<QLineEdit *>(field) != nullptr) {
@@ -90,6 +109,26 @@ void RecordDisplayWidget::clearData() {
             dynamic_cast<QComboBox *>(field)->setCurrentIndex(-1);
         }
     }
+}
+
+void RecordDisplayWidget::accepted() {
+
+}
+
+void RecordDisplayWidget::rejected() {
+    for(auto key: mEditFields.keys()) {
+        auto field = mEditFields[key];
+        if (key == "role") {
+            field->setEnabled(false);
+        } else if (key == "password") {
+            dynamic_cast<QLineEdit *>(field)->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+            dynamic_cast<QLineEdit *>(field)->setReadOnly(true);
+        } else if (dynamic_cast<QLineEdit *>(field) != nullptr) {
+            dynamic_cast<QLineEdit *>(field)->setReadOnly(true);
+        }
+    }
+    mButtonBox->setVisible(false);
+    emit editCanceled();
 }
 
 }

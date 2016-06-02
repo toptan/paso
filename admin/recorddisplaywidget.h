@@ -19,9 +19,11 @@ public:
 
     void setupForRecord(const QSqlRecord &record);
 signals:
+    void editCanceled();
 
 public slots:
     void onDisplayRecord(const QSqlRecord &record);
+    void onEditRecord(QSqlRecord record);
     void clearData();
 
 private:
@@ -29,7 +31,11 @@ private:
     QMap<QString, QWidget *> mEditFields;
     QDialogButtonBox *mButtonBox;
 
-    QWidget *createWidgetForField(const QSqlRecord& record, int index);
+    QWidget *createWidgetForField(const QSqlRecord &record, int index);
+
+private slots:
+    void rejected();
+    void accepted();
 };
 }
 }

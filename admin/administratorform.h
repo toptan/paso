@@ -20,7 +20,11 @@ public:
     explicit AdministratorForm(QWidget *parent = 0);
     virtual ~AdministratorForm();
 
-    const QList<QAction *>& toolBarActions() const;
+    const QList<QAction *> &toolBarActions() const;
+
+private slots:
+    void editSelected();
+    void editCanceled();
 
 private:
     Ui::AdministratorForm *ui;
