@@ -1,11 +1,11 @@
 #include "recorddisplaywidget.h"
 
-#include <QVariantMap>
-#include <QLabel>
-#include <QFormLayout>
-#include <QGroupBox>
 #include <QComboBox>
 #include <QDebug>
+#include <QFormLayout>
+#include <QGroupBox>
+#include <QLabel>
+#include <QVariantMap>
 
 #include "data.h"
 
@@ -20,7 +20,9 @@ RecordDisplayWidget::RecordDisplayWidget(QWidget *parent) : QWidget(parent) {
     setMinimumWidth(320);
 }
 
-void RecordDisplayWidget::setupForRecord(const QSqlRecord &record) {
+void RecordDisplayWidget::setupForRecord(
+    const QSqlRecord &record, const QMap<QString, FieldType> &fieldEntryTypes) {
+    mFieldEntryTypes = fieldEntryTypes;
     auto l = dynamic_cast<QFormLayout *>(layout());
     l->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for (int i = 0; i < record.count(); i++) {
@@ -28,8 +30,6 @@ void RecordDisplayWidget::setupForRecord(const QSqlRecord &record) {
             new QLabel(columnLabels[record.fieldName(i)].toString(), this);
         QWidget *edit = createWidgetForField(record, i);
         label->setBuddy(edit);
-        edit->setSizePolicy(QSizePolicy::Policy::Expanding,
-                            QSizePolicy::Policy::Fixed);
         mEditFields[record.fieldName(i)] = edit;
         l->addRow(label, edit);
     }
@@ -37,99 +37,151 @@ void RecordDisplayWidget::setupForRecord(const QSqlRecord &record) {
         QDialogButtonBox::Save | QDialogButtonBox::Cancel, this);
     l->addWidget(mButtonBox);
     mButtonBox->setVisible(false);
-    connect(mButtonBox, &QDialogButtonBox::accepted, this, &RecordDisplayWidget::accepted);
-    connect(mButtonBox, &QDialogButtonBox::rejected, this, &RecordDisplayWidget::rejected);
+    connect(mButtonBox, &QDialogButtonBox::accepted, this,
+            &RecordDisplayWidget::accepted);
+    connect(mButtonBox, &QDialogButtonBox::rejected, this,
+            &RecordDisplayWidget::rejected);
 }
 
 QWidget *RecordDisplayWidget::createWidgetForField(const QSqlRecord &record,
                                                    int index) {
-    QString field = record.fieldName(index);
-    if (field == "role") {
+    auto fieldType = mFieldEntryTypes[record.fieldName(index)];
+    QWidget *fieldEditor;
+    switch (fieldType) {
+    case FieldType::ComboBox: {
         auto combo = new QComboBox(this);
         for (const auto &role : enumeratedRoles.keys()) {
             combo->addItem(enumeratedRoles[role], roleToString(role));
         }
         combo->setEnabled(false);
         combo->setCurrentIndex(-1);
-        return combo;
+        fieldEditor = combo;
+    } break;
+    case FieldType::LineEdit: {
+        auto edit = new QLineEdit(this);
+        edit->setReadOnly(true);
+        fieldEditor = edit;
+    } break;
+    case FieldType::PasswordEdit: {
+        auto pwdEdit = new QLineEdit(this);
+        pwdEdit->setReadOnly(true);
+        pwdEdit->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+        fieldEditor = pwdEdit;
+    } break;
+    default:
+        fieldEditor = new QWidget(this);
     }
-
-    QLineEdit *edit = new QLineEdit(this);
-    if (field == "password") {
-        edit->setEchoMode(QLineEdit::PasswordEchoOnEdit);
-    }
-    edit->setReadOnly(true);
-    return edit;
+    fieldEditor->setSizePolicy(QSizePolicy::Policy::Expanding,
+                               QSizePolicy::Policy::Fixed);
+    return fieldEditor;
 }
 
 void RecordDisplayWidget::onDisplayRecord(const QSqlRecord &record) {
     for (int i = 0; i < record.count(); i++) {
-        {
-            auto field =
-                dynamic_cast<QLineEdit *>(mEditFields[record.fieldName(i)]);
-            if (field != nullptr) {
-                field->setText(record.value(i).toString());
-            }
-        }
-        {
+        switch (mFieldEntryTypes[record.fieldName(i)]) {
+        case FieldType::ComboBox: {
             auto field =
                 dynamic_cast<QComboBox *>(mEditFields[record.fieldName(i)]);
-            if (field != nullptr) {
-                auto index = field->findData(record.value(i));
-                if (index != -1) {
-                    field->setCurrentIndex(index);
-                }
-            }
+            field->setCurrentIndex(field->findData(record.value(i)));
+        } break;
+        case FieldType::LineEdit:
+        case FieldType::PasswordEdit:
+            dynamic_cast<QLineEdit *>(mEditFields[record.fieldName(i)])
+                ->setText(record.value(i).toString());
         }
     }
 }
 
 void RecordDisplayWidget::onEditRecord(QSqlRecord record) {
-    onDisplayRecord(record);
     mRecord = record;
-    for(auto key: mEditFields.keys()) {
+    onDisplayRecord(record);
+    setFieldsEditable();
+}
+
+void RecordDisplayWidget::clearData() {
+    for (const auto &key : mFieldEntryTypes.keys()) {
+        switch (mFieldEntryTypes[key]) {
+        case FieldType::ComboBox:
+            dynamic_cast<QComboBox *>(mEditFields[key])->setCurrentIndex(-1);
+            break;
+        case FieldType::LineEdit:
+        case FieldType::PasswordEdit:
+            dynamic_cast<QLineEdit *>(mEditFields[key])->clear();
+            break;
+        }
+    }
+}
+
+void RecordDisplayWidget::saveSuccessfull() { setFieldsReadOnly(); }
+
+void RecordDisplayWidget::saveError() {}
+
+// TODO: This should be rafactored to be like other methods via field type.
+void RecordDisplayWidget::accepted() {
+    for (const auto &key : mEditFields.keys()) {
         auto field = mEditFields[key];
+        QString value;
         if (key == "role") {
+            value = dynamic_cast<QComboBox *>(field)->currentData().toString();
+        } else {
+            value = dynamic_cast<QLineEdit *>(field)->text();
+        }
+        mRecord.setValue(key, value);
+    }
+    emit requestSave(mRecord);
+}
+
+void RecordDisplayWidget::rejected() {
+    setFieldsReadOnly();
+    emit editFinished();
+}
+
+void RecordDisplayWidget::setFieldsEditable() {
+    for (const auto &key : mEditFields.keys()) {
+        auto field = mEditFields[key];
+        auto fieldType = mFieldEntryTypes[key];
+        switch (fieldType) {
+        case FieldType::ComboBox:
             field->setEnabled(true);
-        } else if (key == "password") {
-            dynamic_cast<QLineEdit *>(field)->setEchoMode(QLineEdit::Normal);
-            dynamic_cast<QLineEdit *>(field)->setReadOnly(false);
-        } else if (dynamic_cast<QLineEdit *>(field) != nullptr) {
-            dynamic_cast<QLineEdit *>(field)->setReadOnly(false);
+            break;
+        case FieldType::LineEdit: {
+            auto edit = dynamic_cast<QLineEdit *>(field);
+            edit->setReadOnly(false);
+        } break;
+        case FieldType::PasswordEdit: {
+            auto pwdEdit = dynamic_cast<QLineEdit *>(field);
+            pwdEdit->setReadOnly(false);
+            pwdEdit->setEchoMode(QLineEdit::Normal);
+        } break;
+        default:
+            break;
         }
     }
     mButtonBox->setVisible(true);
 }
 
-void RecordDisplayWidget::clearData() {
-    for (auto &field: mEditFields.values()) {
-        if (dynamic_cast<QLineEdit *>(field) != nullptr) {
-            dynamic_cast<QLineEdit *>(field)->clear();
-        } else if (dynamic_cast<QComboBox *>(field) != nullptr) {
-            dynamic_cast<QComboBox *>(field)->setCurrentIndex(-1);
-        }
-    }
-}
-
-void RecordDisplayWidget::accepted() {
-
-}
-
-void RecordDisplayWidget::rejected() {
-    for(auto key: mEditFields.keys()) {
+void RecordDisplayWidget::setFieldsReadOnly() {
+    for (const auto &key : mEditFields.keys()) {
         auto field = mEditFields[key];
-        if (key == "role") {
+        auto fieldType = mFieldEntryTypes[key];
+        switch (fieldType) {
+        case FieldType::ComboBox:
             field->setEnabled(false);
-        } else if (key == "password") {
-            dynamic_cast<QLineEdit *>(field)->setEchoMode(QLineEdit::PasswordEchoOnEdit);
-            dynamic_cast<QLineEdit *>(field)->setReadOnly(true);
-        } else if (dynamic_cast<QLineEdit *>(field) != nullptr) {
-            dynamic_cast<QLineEdit *>(field)->setReadOnly(true);
+            break;
+        case FieldType::LineEdit: {
+            auto edit = dynamic_cast<QLineEdit *>(field);
+            edit->setReadOnly(true);
+        } break;
+        case FieldType::PasswordEdit: {
+            auto pwdEdit = dynamic_cast<QLineEdit *>(field);
+            pwdEdit->setReadOnly(true);
+            pwdEdit->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+        } break;
+        default:
+            break;
         }
     }
     mButtonBox->setVisible(false);
-    emit editCanceled();
 }
-
 }
 }

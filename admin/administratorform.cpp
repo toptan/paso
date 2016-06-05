@@ -1,13 +1,16 @@
 #include "administratorform.h"
 #include "ui_administratorform.h"
 
+#include "data.h"
 #include "pasodb.h"
 
+#include <QDebug>
+#include <QMessageBox>
+#include <QSqlError>
 #include <QSqlTableModel>
 
-#include <QDebug>
-
 using namespace paso::db;
+using namespace paso::data;
 
 namespace paso {
 namespace admin {
@@ -21,8 +24,16 @@ AdministratorForm::AdministratorForm(QWidget *parent)
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->horizontalHeader()->setSectionResizeMode(
         QHeaderView::Stretch);
-    ui->recordDetails->setupForRecord(mModel->record());
+    QMap<QString, RecordDisplayWidget::FieldType> fieldTypes;
+    fieldTypes["username"] = RecordDisplayWidget::FieldType::LineEdit;
+    fieldTypes["password"] = RecordDisplayWidget::FieldType::PasswordEdit;
+    fieldTypes["first_name"] = RecordDisplayWidget::FieldType::LineEdit;
+    fieldTypes["last_name"] = RecordDisplayWidget::FieldType::LineEdit;
+    fieldTypes["email"] = RecordDisplayWidget::FieldType::LineEdit;
+    fieldTypes["role"] = RecordDisplayWidget::FieldType::ComboBox;
 
+    ui->recordDetails->setupForRecord(mModel->record(), fieldTypes);
+    ui->recordDetails->clearData();
     connect(ui->tableView->selectionModel(),
             &QItemSelectionModel::currentRowChanged,
             [this](const QModelIndex &selected, const QModelIndex &) {
@@ -30,9 +41,10 @@ AdministratorForm::AdministratorForm(QWidget *parent)
                     mModel->record(selected.row()));
             });
 
-    connect(ui->recordDetails, &RecordDisplayWidget::editCanceled, this,
-            &AdministratorForm::editCanceled);
-
+    connect(ui->recordDetails, &RecordDisplayWidget::editFinished, this,
+            &AdministratorForm::editFinished);
+    connect(ui->recordDetails, &RecordDisplayWidget::requestSave, this,
+            &AdministratorForm::onRequestSave);
     QAction *action = new QAction(tr("New system user"), this);
     mActions.push_back(action);
     action = new QAction(tr("Edit system user"), this);
@@ -66,9 +78,35 @@ void AdministratorForm::editSelected() {
         mModel->record(ui->tableView->selectionModel()->currentIndex().row()));
 }
 
-void AdministratorForm::editCanceled() {
+void AdministratorForm::editFinished() {
     ui->tableView->setDisabled(false);
     ui->tableView->setFocus();
+}
+
+void AdministratorForm::onRequestSave(QSqlRecord record) {
+    // Ensure that root is always in role SUPER_USER
+    if (record.value("username").toString() == "root") {
+        record.setValue("role", roleToString(SystemRole::SUPER_USER));
+    }
+    mModel->setRecord(ui->tableView->selectionModel()->currentIndex().row(),
+                      record);
+    if (!mModel->submitAll()) {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(tr("There was an error while saving system user data."));
+        msgBox.setDetailedText(mModel->lastError().text());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        ui->recordDetails->saveError();
+        return;
+    }
+
+    ui->recordDetails->saveSuccessfull();
+    ui->tableView->clearSelection();
+//    auto index = ui->tableView->selectionModel()->currentIndex();
+//    mModel->selectRow(index.row());
+    editFinished();
 }
 }
 }

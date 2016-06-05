@@ -44,10 +44,12 @@ void MainWindow::loginFinished(const LoginResponse &response) {
     db.setPassword(response.dbPassword());
     db.setPort(response.dbPort());
     if (!db.open()) {
-        QMessageBox::critical(
-            this, tr("Critical error"),
-            tr("Could not establish database connection.\nReason: ") +
-                db.lastError().text());
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle(tr("Critical error"));;
+        msgBox.setText(tr("Could not establish database connection."));
+        msgBox.setDetailedText(db.lastError().text());
+        msgBox.exec();
         QApplication::instance()->quit();
     }
     createMenus();

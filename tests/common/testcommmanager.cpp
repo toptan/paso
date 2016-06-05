@@ -3,11 +3,11 @@
 #include "commmanager.h"
 #include "pasodb.h"
 
-#include <functional>
-#include <QtConcurrent>
-#include <QTcpSocket>
 #include <QSqlDatabase>
 #include <QSqlError>
+#include <QTcpSocket>
+#include <QtConcurrent>
+#include <functional>
 
 using namespace paso::db;
 using namespace paso::comm;

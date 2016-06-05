@@ -1,8 +1,9 @@
 #ifndef ADMINISTRATORFORM_H
 #define ADMINISTRATORFORM_H
 
-#include <QWidget>
 #include <QAction>
+#include <QSqlRecord>
+#include <QWidget>
 
 #include "systemusertablemodel.h"
 
@@ -24,7 +25,9 @@ public:
 
 private slots:
     void editSelected();
-    void editCanceled();
+    void editFinished();
+
+    void onRequestSave(QSqlRecord record);
 
 private:
     Ui::AdministratorForm *ui;
