@@ -10,6 +10,7 @@ using namespace paso::data;
 SystemUserTableModel::SystemUserTableModel(QObject *parent, QSqlDatabase db)
     : QSqlTableModel(parent, db) {
     setTable("SYSTEM_USER");
+    setEditStrategy(QSqlTableModel::OnManualSubmit);
     select();
     setHeaderData(0, Qt::Horizontal, tr("Username"));
     setHeaderData(1, Qt::Horizontal, tr("Password"));
@@ -24,7 +25,8 @@ QVariant SystemUserTableModel::data(const QModelIndex &idx, int role) const {
         if (idx.column() == 1) {
             return tr("<hidden>");
         } else if (idx.column() == 5) {
-            return stringEnumeratedRoles[QSqlTableModel::data(idx, role).toString()];
+            return stringEnumeratedRoles[QSqlTableModel::data(idx, role)
+                                             .toString()];
         }
     }
     return QSqlTableModel::data(idx, role);

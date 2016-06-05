@@ -88,8 +88,8 @@ void AdministratorForm::onRequestSave(QSqlRecord record) {
     if (record.value("username").toString() == "root") {
         record.setValue("role", roleToString(SystemRole::SUPER_USER));
     }
-    mModel->setRecord(ui->tableView->selectionModel()->currentIndex().row(),
-                      record);
+    auto index = ui->tableView->selectionModel()->currentIndex();
+    mModel->setRecord(index.row(), record);
     if (!mModel->submitAll()) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
@@ -104,8 +104,7 @@ void AdministratorForm::onRequestSave(QSqlRecord record) {
 
     ui->recordDetails->saveSuccessfull();
     ui->tableView->clearSelection();
-//    auto index = ui->tableView->selectionModel()->currentIndex();
-//    mModel->selectRow(index.row());
+    ui->tableView->selectRow(index.row());
     editFinished();
 }
 }

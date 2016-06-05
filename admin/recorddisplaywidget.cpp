@@ -112,26 +112,35 @@ void RecordDisplayWidget::clearData() {
     }
 }
 
-void RecordDisplayWidget::saveSuccessfull() { setFieldsReadOnly(); }
+void RecordDisplayWidget::saveSuccessfull() {
+    setFieldsReadOnly();
+    mRecord.clear();
+}
 
 void RecordDisplayWidget::saveError() {}
 
-// TODO: This should be rafactored to be like other methods via field type.
 void RecordDisplayWidget::accepted() {
     for (const auto &key : mEditFields.keys()) {
         auto field = mEditFields[key];
+        auto fieldType = mFieldEntryTypes[key];
         QString value;
-        if (key == "role") {
+        switch (fieldType) {
+        case FieldType::ComboBox:
             value = dynamic_cast<QComboBox *>(field)->currentData().toString();
-        } else {
+            break;
+        case FieldType::LineEdit:
+        case FieldType::PasswordEdit:
             value = dynamic_cast<QLineEdit *>(field)->text();
+            break;
         }
+
         mRecord.setValue(key, value);
     }
     emit requestSave(mRecord);
 }
 
 void RecordDisplayWidget::rejected() {
+    onDisplayRecord(mRecord);
     setFieldsReadOnly();
     emit editFinished();
 }
