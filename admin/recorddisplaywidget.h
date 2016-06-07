@@ -48,6 +48,8 @@ private:
     RecordValidator *mValidator;
     bool mNewRecord;
     bool mEditingRootSystemUser;
+    QWidget *mFirstResponder;
+
     QWidget *createWidgetForField(const QSqlRecord &record, int index);
     void setFieldsEditable();
     void setFieldsReadOnly();

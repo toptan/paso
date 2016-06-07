@@ -97,6 +97,14 @@ public:
     ///
     bool deleteRoom(const QUuid &roomUUID, QSqlError &error);
 
+    ///
+    /// \brief usernameUnique checks if given username is unique.
+    /// \param [in] username The username to check.
+    /// \param [out] error The sql error if any.
+    /// \return \code true if username is unique in the database.
+    ///
+    bool usernameUnique(const QString &username, QSqlError &error) const;
+
 private:
     const QString mDbName;
 };

@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QString>
 #include <QStringList>
+#include <QSqlRecord>
 #include <QWidget>
 
 namespace paso {
@@ -32,10 +33,12 @@ public:
     virtual ~RecordValidator() {}
 
     ///
-    /// \brief validate Validates edit fields.
-    /// \return \code false if any field fails validation.
+    /// \brief validate Validates entered data.
+    /// \param original The original record, before modifications, to use for
+    /// additional checking.
+    /// \return \code true if all entered values are valid.
     ///
-    virtual bool validate() const = 0;
+    virtual bool validate(const QSqlRecord &original) const = 0;
 
 protected:
     const FieldTypes &mFieldTypes;

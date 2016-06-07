@@ -164,5 +164,20 @@ bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) {
     error = query.lastError();
     return error.type() == QSqlError::NoError;
 }
+
+bool DBManager::usernameUnique(const QString &username, QSqlError &error) const {
+    QSqlQuery query(QSqlDatabase::database(mDbName));
+    query.prepare(
+        "SELECT COUNT(1) FROM SYSTEM_USER WHERE USERNAME = :username");
+    query.bindValue(":username", username);
+    query.exec();
+    error = query.lastError();
+    if (error.type() == QSqlError::NoError) {
+        if (query.next()) {
+            return query.record().value(0) == 0;
+        }
+    }
+    return false;
+}
 }
 }

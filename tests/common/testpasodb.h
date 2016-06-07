@@ -24,6 +24,8 @@ private slots:
     void testGetRoom();
     void testDeleteRoom();
 
+    void testUsernameUnique();
+
 private:
     QString dbName;
     QStringList usernames;

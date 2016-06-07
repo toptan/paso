@@ -17,7 +17,7 @@ using namespace paso::data;
 
 RecordDisplayWidget::RecordDisplayWidget(QWidget *parent)
     : QWidget(parent), mValidator(nullptr), mNewRecord(false),
-      mEditingRootSystemUser(false) {
+      mEditingRootSystemUser(false), mFirstResponder(nullptr) {
     setLayout(new QFormLayout(this));
     layout()->setMargin(0);
     setMinimumWidth(320);
@@ -76,6 +76,9 @@ QWidget *RecordDisplayWidget::createWidgetForField(const QSqlRecord &record,
     }
     fieldEditor->setSizePolicy(QSizePolicy::Policy::Expanding,
                                QSizePolicy::Policy::Fixed);
+    if (index == 0) {
+        mFirstResponder = fieldEditor;
+    }
     return fieldEditor;
 }
 
@@ -149,7 +152,7 @@ const FieldTypes &RecordDisplayWidget::fieldTypes() const {
 void RecordDisplayWidget::accepted() {
     bool valid = true;
     if (mValidator != nullptr) {
-        valid = mValidator->validate();
+        valid = mValidator->validate(mRecord);
     }
     if (valid) {
         for (const auto &key : mFieldEditors.keys()) {
@@ -163,7 +166,7 @@ void RecordDisplayWidget::accepted() {
                 break;
             case FieldType::LineEdit:
             case FieldType::PasswordEdit:
-                value = dynamic_cast<QLineEdit *>(field)->text();
+                value = dynamic_cast<QLineEdit *>(field)->text().trimmed();
                 break;
             }
 
@@ -210,6 +213,8 @@ void RecordDisplayWidget::setFieldsEditable() {
         }
     }
     mButtonBox->setVisible(true);
+    this->setFocus();
+    mFirstResponder->setFocus();
 }
 
 void RecordDisplayWidget::setFieldsReadOnly() {

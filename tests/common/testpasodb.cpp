@@ -187,4 +187,11 @@ void TestPasoDB::testDeleteRoom() {
     QVERIFY(!room);
 }
 
+void TestPasoDB::testUsernameUnique() {
+    DBManager manager(dbName);
+    QSqlError error;
+    QVERIFY(manager.usernameUnique("ChiChaGlisha", error));
+    QVERIFY(!manager.usernameUnique("root", error));
+}
+
 QTEST_MAIN(TestPasoDB)

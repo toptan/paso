@@ -46,7 +46,6 @@ AdministratorForm::AdministratorForm(QWidget *parent)
             [this](const QModelIndex &selected, const QModelIndex &) {
                 auto record = mModel->record(selected.row());
                 this->onSelectionChanged(record);
-                ui->recordDetails->onDisplayRecord(record);
             });
 
     connect(ui->recordDetails, &RecordDisplayWidget::editFinished, this,
@@ -115,6 +114,10 @@ void AdministratorForm::editFinished() {
     }
     ui->tableView->setDisabled(false);
     ui->tableView->setFocus();
+    auto index = ui->tableView->selectionModel()->currentIndex();
+    if (index.isValid()) {
+        onSelectionChanged(mModel->record(index.row()));
+    }
 }
 
 void AdministratorForm::onRequestUpdate(QSqlRecord record) {
@@ -178,6 +181,7 @@ void AdministratorForm::onSelectionChanged(const QSqlRecord &record) {
     } else {
         mEditUserAction->setEnabled(true);
     }
+    ui->recordDetails->onDisplayRecord(record);
 }
 
 void AdministratorForm::deleteUser() {
