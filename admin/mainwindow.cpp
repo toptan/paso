@@ -46,7 +46,8 @@ void MainWindow::loginFinished(const LoginResponse &response) {
     if (!db.open()) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle(tr("Critical error"));;
+        msgBox.setWindowTitle(tr("Critical error"));
+        ;
         msgBox.setText(tr("Could not establish database connection."));
         msgBox.setDetailedText(db.lastError().text());
         msgBox.exec();
@@ -54,18 +55,34 @@ void MainWindow::loginFinished(const LoginResponse &response) {
     }
     createMenus();
     createWidgets();
+    showWidgets();
 }
 
 void MainWindow::createMenus() {}
 
 void MainWindow::createWidgets() {
-    AdministratorForm *form = new AdministratorForm(this);
-    setCentralWidget(form);
-    auto toolBar = addToolBar("Main toolbar");
-    toolBar->addActions(form->toolBarActions());
+    AdministratorForm *administratorForm = new AdministratorForm(this);
+    mMainWidgets.insert(paso::data::SystemRole::ADMINISTRATOR,
+                        administratorForm);
 
+    auto toolBar = new QToolBar(tr("Main Toolbar"), this);
+    toolBar->setObjectName("MainToolBar");
+    addToolBar(toolBar);
 }
 
-void MainWindow::showWidgets() {}
+void MainWindow::showWidgets() {
+    QToolBar *toolBar = findChild<QToolBar *>("MainToolBar");
+    switch (mRole) {
+    case paso::data::SystemRole::SUPER_USER:
+    case paso::data::SystemRole::ADMINISTRATOR:
+        setCentralWidget(mMainWidgets[paso::data::SystemRole::ADMINISTRATOR]);
+        toolBar->insertActions(
+            nullptr, mMainWidgets[paso::data::SystemRole::ADMINISTRATOR]
+                         ->toolBarActions());
+        break;
+    default:
+        break;
+    }
+}
 }
 }

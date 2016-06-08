@@ -1,11 +1,12 @@
 #ifndef ADMINISTRATORFORM_H
 #define ADMINISTRATORFORM_H
 
+#include "abstractform.h"
+#include "systemusertablemodel.h"
+
 #include <QAction>
 #include <QSqlRecord>
 #include <QWidget>
-
-#include "systemusertablemodel.h"
 
 namespace Ui {
 class AdministratorForm;
@@ -14,14 +15,14 @@ class AdministratorForm;
 namespace paso {
 namespace admin {
 
-class AdministratorForm : public QWidget {
+class AdministratorForm : public AbstractForm {
     Q_OBJECT
 
 public:
     explicit AdministratorForm(QWidget *parent = 0);
     virtual ~AdministratorForm();
 
-    const QList<QAction *> &toolBarActions() const;
+    virtual const QList<QAction *> &toolBarActions() const override;
 
 private slots:
     void editNew();

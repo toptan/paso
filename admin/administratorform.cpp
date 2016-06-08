@@ -19,7 +19,7 @@ namespace paso {
 namespace admin {
 
 AdministratorForm::AdministratorForm(QWidget *parent)
-    : QWidget(parent), ui(new Ui::AdministratorForm) {
+    : AbstractForm(parent), ui(new Ui::AdministratorForm) {
     ui->setupUi(this);
     mModel =
         new SystemUserTableModel(this, QSqlDatabase::database(DEFAULT_DB_NAME));
