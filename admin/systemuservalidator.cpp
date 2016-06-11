@@ -67,9 +67,10 @@ bool SystemUserValidator::validate(const QSqlRecord &original) const {
 bool SystemUserValidator::validateUsername(const QString &original) const {
     auto editor = dynamic_cast<QLineEdit *>(mFieldEditors["username"]);
     auto text = editor->text().trimmed();
-    if (text.isEmpty()) {
+    if (text.isEmpty() || text.size() < 4 || text.size() > 16) {
         showMessageBox(editor, tr("Invalid data entered"),
-                       tr("Username cannot be empty."));
+                       tr("The username has to be at least four characters "
+                          "long and cannot be longer than sixteen."));
 
         return false;
     }
@@ -95,10 +96,10 @@ bool SystemUserValidator::validateUsername(const QString &original) const {
 bool SystemUserValidator::validatePassword() const {
     auto editor = dynamic_cast<QLineEdit *>(mFieldEditors["password"]);
     auto text = editor->text().trimmed();
-    if (text.isEmpty() || text.size() < 8) {
-        showMessageBox(
-            editor, tr("Invalid data entered"),
-            tr("The password has to be at leaset eight characters long."));
+    if (text.isEmpty() || text.size() < 8 || text.size() > 16) {
+        showMessageBox(editor, tr("Invalid data entered"),
+                       tr("The password has to be at least eight characters "
+                          "long and cannot be longer than sixteen."));
         return false;
     }
     return true;
@@ -112,6 +113,12 @@ bool SystemUserValidator::validateFirstName() const {
                        tr("You need to specify user's first name."));
         return false;
     }
+    if (text.size() > 32) {
+        showMessageBox(
+            editor, tr("Invalid data entered"),
+            tr("The first name cannot be longer than 32 characters."));
+        return false;
+    }
     return true;
 }
 
@@ -121,6 +128,12 @@ bool SystemUserValidator::validateLastName() const {
     if (text.isEmpty()) {
         showMessageBox(editor, tr("Invalid data entered"),
                        tr("You need to specify user's last name."));
+        return false;
+    }
+    if (text.size() > 32) {
+        showMessageBox(
+            editor, tr("Invalid data entered"),
+            tr("The first name cannot be longer than 32 characters."));
         return false;
     }
     return true;

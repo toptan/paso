@@ -61,9 +61,8 @@ void MainWindow::loginFinished(const LoginResponse &response) {
 void MainWindow::createMenus() {}
 
 void MainWindow::createWidgets() {
-    AdministratorForm *administratorForm = new AdministratorForm(this);
-    mMainWidgets.insert(paso::data::SystemRole::ADMINISTRATOR,
-                        administratorForm);
+    AbstractForm *form = new AdministratorForm(this);
+    mMainWidgets.insert(paso::data::SystemRole::ADMINISTRATOR, form);
 
     auto toolBar = new QToolBar(tr("Main Toolbar"), this);
     toolBar->setObjectName("MainToolBar");
