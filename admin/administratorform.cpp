@@ -3,7 +3,6 @@
 
 #include "data.h"
 #include "pasodb.h"
-#include "recordvalidator.h"
 #include "systemuservalidator.h"
 
 #include <QDebug>
@@ -27,20 +26,23 @@ AdministratorForm::AdministratorForm(QWidget *parent)
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->horizontalHeader()->setSectionResizeMode(
         QHeaderView::Stretch);
-    QMap<QString, FieldType> fieldTypes;
-    fieldTypes["username"] = FieldType::LineEdit;
-    fieldTypes["password"] = FieldType::PasswordEdit;
-    fieldTypes["first_name"] = FieldType::LineEdit;
-    fieldTypes["last_name"] = FieldType::LineEdit;
-    fieldTypes["email"] = FieldType::LineEdit;
-    fieldTypes["role"] = FieldType::ComboBox;
 
-    ui->recordDetails->setupForRecord(mModel->record(), fieldTypes);
-    ui->recordDetails->setValidator(
-        new SystemUserValidator(ui->recordDetails->fieldTypes(),
-                                ui->recordDetails->fieldEditors(), this));
+    FieldTypes fieldTypes = {{"username", FieldType::LineEdit},
+                             {"password", FieldType::PasswordEdit},
+                             {"first_name", FieldType::LineEdit},
+                             {"last_name", FieldType::LineEdit},
+                             {"email", FieldType::LineEdit},
+                             {"role", FieldType::ComboBox}};
 
-    ui->recordDetails->clearData();
+    mRecordEditor =
+        new SystemUserEditorWidget(mModel->record(), fieldTypes, this);
+    mRecordEditor->setValidator(new SystemUserValidator(
+        mRecordEditor->fieldTypes(), mRecordEditor->fieldEditors(), this));
+    mRecordEditor->clearData();
+
+    ui->horizontalLayout->addWidget(mRecordEditor);
+    ui->horizontalLayout->setStretch(0, 3);
+
     connect(ui->tableView->selectionModel(),
             &QItemSelectionModel::currentRowChanged,
             [this](const QModelIndex &selected, const QModelIndex &) {
@@ -48,11 +50,11 @@ AdministratorForm::AdministratorForm(QWidget *parent)
                 this->onSelectionChanged(record);
             });
 
-    connect(ui->recordDetails, &RecordDisplayWidget::editFinished, this,
+    connect(mRecordEditor, &RecordEditorWidget::editFinished, this,
             &AdministratorForm::editFinished);
-    connect(ui->recordDetails, &RecordDisplayWidget::requestUpdate, this,
+    connect(mRecordEditor, &RecordEditorWidget::requestUpdate, this,
             &AdministratorForm::onRequestUpdate);
-    connect(ui->recordDetails, &RecordDisplayWidget::requestSave, this,
+    connect(mRecordEditor, &RecordEditorWidget::requestSave, this,
             &AdministratorForm::onRequestSave);
     mNewUserAction = new QAction(tr("New system user"), this);
     connect(mNewUserAction, &QAction::triggered, this,
@@ -78,8 +80,8 @@ AdministratorForm::AdministratorForm(QWidget *parent)
         ui->tableView->clearSelection();
         mEditUserAction->setEnabled(false);
     });
-    connect(mRefreshAction, &QAction::triggered, ui->recordDetails,
-            &RecordDisplayWidget::clearData);
+    connect(mRefreshAction, &QAction::triggered, mRecordEditor,
+            &RecordEditorWidget::clearData);
     mActions.push_back(mRefreshAction);
 }
 
@@ -97,7 +99,7 @@ void AdministratorForm::editSelected() {
     for (auto &action : mActions) {
         action->setEnabled(false);
     }
-    ui->recordDetails->onEditExistingRecord(
+    mRecordEditor->onEditExistingRecord(
         mModel->record(ui->tableView->selectionModel()->currentIndex().row()));
 }
 void AdministratorForm::editNew() {
@@ -105,7 +107,7 @@ void AdministratorForm::editNew() {
     for (auto &action : mActions) {
         action->setEnabled(false);
     }
-    ui->recordDetails->onEditNewRecord(mModel->record());
+    mRecordEditor->onEditNewRecord(mModel->record());
 }
 
 void AdministratorForm::editFinished() {
@@ -137,11 +139,11 @@ void AdministratorForm::onRequestUpdate(QSqlRecord record) {
         msgBox.exec();
         mModel->select();
         ui->tableView->selectRow(index.row());
-        ui->recordDetails->saveError();
+        mRecordEditor->saveError();
         return;
     }
 
-    ui->recordDetails->saveSuccessfull();
+    mRecordEditor->saveSuccessfull();
     ui->tableView->clearSelection();
     ui->tableView->selectRow(index.row());
     editFinished();
@@ -160,13 +162,13 @@ void AdministratorForm::onRequestSave(QSqlRecord record) {
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
         mModel->select();
-        ui->recordDetails->saveError();
+        mRecordEditor->saveError();
         return;
     }
 
-    ui->recordDetails->saveSuccessfull();
+    mRecordEditor->saveSuccessfull();
     ui->tableView->clearSelection();
-    ui->recordDetails->clearData();
+    mRecordEditor->clearData();
     editFinished();
 }
 
@@ -181,7 +183,7 @@ void AdministratorForm::onSelectionChanged(const QSqlRecord &record) {
     } else {
         mEditUserAction->setEnabled(true);
     }
-    ui->recordDetails->onDisplayRecord(record);
+    mRecordEditor->onDisplayRecord(record);
 }
 
 void AdministratorForm::deleteUser() {
@@ -218,7 +220,7 @@ void AdministratorForm::deleteUser() {
         return;
     }
     mModel->select();
-    ui->recordDetails->clearData();
+    mRecordEditor->clearData();
     mEditUserAction->setEnabled(false);
 }
 }

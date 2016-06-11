@@ -14,14 +14,14 @@
 namespace paso {
 namespace admin {
 
-class RecordDisplayWidget : public QWidget {
+class RecordEditorWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit RecordDisplayWidget(QWidget *parent = 0);
-    virtual ~RecordDisplayWidget() {}
+    explicit RecordEditorWidget(const QSqlRecord &record,
+                                const FieldTypes &fieldTypes,
+                                QWidget *parent = 0);
+    virtual ~RecordEditorWidget() {}
 
-    void setupForRecord(const QSqlRecord &record,
-                        const QMap<QString, FieldType> &fieldEntryTypes);
     const FieldTypes &fieldTypes() const;
     const FieldEditors &fieldEditors() const;
 
@@ -40,14 +40,17 @@ public slots:
     void saveSuccessfull();
     void saveError();
 
+protected:
+    virtual void prepareEdit(const QSqlRecord &record) = 0;
+    virtual bool fieldReadOnly(const QString &key) = 0;
+
 private:
-    FieldTypes mFieldTypes;
+    const FieldTypes mFieldTypes;
     FieldEditors mFieldEditors;
     QSqlRecord mRecord;
     QDialogButtonBox *mButtonBox;
     RecordValidator *mValidator;
     bool mNewRecord;
-    bool mEditingRootSystemUser;
     QWidget *mFirstResponder;
 
     QWidget *createWidgetForField(const QSqlRecord &record, int index);

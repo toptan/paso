@@ -1,4 +1,4 @@
-#include "recorddisplaywidget.h"
+#include "recordeditorwidget.h"
 
 #include <QComboBox>
 #include <QDebug>
@@ -16,17 +16,14 @@ namespace admin {
 using namespace paso::data;
 using namespace std;
 
-RecordDisplayWidget::RecordDisplayWidget(QWidget *parent)
-    : QWidget(parent), mValidator(nullptr), mNewRecord(false),
-      mEditingRootSystemUser(false), mFirstResponder(nullptr) {
+RecordEditorWidget::RecordEditorWidget(const QSqlRecord &record,
+                                       const FieldTypes &fieldTypes,
+                                       QWidget *parent)
+    : QWidget(parent), mFieldTypes(fieldTypes), mValidator(nullptr),
+      mNewRecord(false), mFirstResponder(nullptr) {
     setLayout(new QFormLayout(this));
     layout()->setMargin(0);
     setMinimumWidth(320);
-}
-
-void RecordDisplayWidget::setupForRecord(
-    const QSqlRecord &record, const QMap<QString, FieldType> &fieldEntryTypes) {
-    mFieldTypes = fieldEntryTypes;
     auto l = dynamic_cast<QFormLayout *>(layout());
     l->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for (int i = 0; i < record.count(); i++) {
@@ -42,13 +39,13 @@ void RecordDisplayWidget::setupForRecord(
     l->addWidget(mButtonBox);
     mButtonBox->setVisible(false);
     connect(mButtonBox, &QDialogButtonBox::accepted, this,
-            &RecordDisplayWidget::accepted);
+            &RecordEditorWidget::accepted);
     connect(mButtonBox, &QDialogButtonBox::rejected, this,
-            &RecordDisplayWidget::rejected);
+            &RecordEditorWidget::rejected);
 }
 
-QWidget *RecordDisplayWidget::createWidgetForField(const QSqlRecord &record,
-                                                   int index) {
+QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
+                                                  int index) {
     auto fieldType = mFieldTypes[record.fieldName(index)];
     QWidget *fieldEditor;
     switch (fieldType) {
@@ -83,7 +80,7 @@ QWidget *RecordDisplayWidget::createWidgetForField(const QSqlRecord &record,
     return fieldEditor;
 }
 
-void RecordDisplayWidget::onDisplayRecord(const QSqlRecord &record) {
+void RecordEditorWidget::onDisplayRecord(const QSqlRecord &record) {
     for (int i = 0; i < record.count(); i++) {
         switch (mFieldTypes[record.fieldName(i)]) {
         case FieldType::ComboBox: {
@@ -100,24 +97,23 @@ void RecordDisplayWidget::onDisplayRecord(const QSqlRecord &record) {
     }
 }
 
-void RecordDisplayWidget::onEditExistingRecord(QSqlRecord record) {
+void RecordEditorWidget::onEditExistingRecord(QSqlRecord record) {
     mRecord = record;
     mNewRecord = false;
-    mEditingRootSystemUser =
-        mRecord.contains("username") && mRecord.value("username") == "root";
+    prepareEdit(record);
     onDisplayRecord(record);
     setFieldsEditable();
 }
 
-void RecordDisplayWidget::onEditNewRecord(QSqlRecord record) {
+void RecordEditorWidget::onEditNewRecord(QSqlRecord record) {
     mRecord = record;
     mNewRecord = true;
-    mEditingRootSystemUser = false;
+    prepareEdit(record);
     onDisplayRecord(record);
     setFieldsEditable();
 }
 
-void RecordDisplayWidget::clearData() {
+void RecordEditorWidget::clearData() {
     for (const auto &key : mFieldTypes.keys()) {
         switch (mFieldTypes[key]) {
         case FieldType::ComboBox:
@@ -131,26 +127,24 @@ void RecordDisplayWidget::clearData() {
     }
 }
 
-void RecordDisplayWidget::saveSuccessfull() {
+void RecordEditorWidget::saveSuccessfull() {
     setFieldsReadOnly();
     mRecord.clear();
 }
 
-void RecordDisplayWidget::saveError() {}
+void RecordEditorWidget::saveError() {}
 
-void RecordDisplayWidget::setValidator(RecordValidator *validator) {
+void RecordEditorWidget::setValidator(RecordValidator *validator) {
     mValidator = validator;
 }
 
-const FieldEditors &RecordDisplayWidget::fieldEditors() const {
+const FieldEditors &RecordEditorWidget::fieldEditors() const {
     return mFieldEditors;
 }
 
-const FieldTypes &RecordDisplayWidget::fieldTypes() const {
-    return mFieldTypes;
-}
+const FieldTypes &RecordEditorWidget::fieldTypes() const { return mFieldTypes; }
 
-void RecordDisplayWidget::accepted() {
+void RecordEditorWidget::accepted() {
     shared_ptr<ValidationError> error;
     if (mValidator != nullptr) {
         error = mValidator->validate(mRecord);
@@ -185,7 +179,7 @@ void RecordDisplayWidget::accepted() {
     }
 }
 
-void RecordDisplayWidget::rejected() {
+void RecordEditorWidget::rejected() {
     if (mNewRecord) {
         clearData();
     } else {
@@ -195,22 +189,23 @@ void RecordDisplayWidget::rejected() {
     emit editFinished();
 }
 
-void RecordDisplayWidget::setFieldsEditable() {
+void RecordEditorWidget::setFieldsEditable() {
     for (const auto &key : mFieldEditors.keys()) {
         auto field = mFieldEditors[key];
         auto fieldType = mFieldTypes[key];
+        auto readOnly = fieldReadOnly(key);
         switch (fieldType) {
         case FieldType::ComboBox:
-            field->setEnabled(true);
+            field->setEnabled(!readOnly);
             break;
         case FieldType::LineEdit: {
             auto edit = dynamic_cast<QLineEdit *>(field);
             // Handle special case where root username cannot be changed.
-            edit->setReadOnly(key == "username" && mEditingRootSystemUser);
+            edit->setReadOnly(readOnly);
         } break;
         case FieldType::PasswordEdit: {
             auto pwdEdit = dynamic_cast<QLineEdit *>(field);
-            pwdEdit->setReadOnly(false);
+            pwdEdit->setReadOnly(readOnly);
             pwdEdit->setEchoMode(QLineEdit::Normal);
         } break;
         default:
@@ -222,7 +217,7 @@ void RecordDisplayWidget::setFieldsEditable() {
     mFirstResponder->setFocus();
 }
 
-void RecordDisplayWidget::setFieldsReadOnly() {
+void RecordEditorWidget::setFieldsReadOnly() {
     for (const auto &key : mFieldEditors.keys()) {
         auto field = mFieldEditors[key];
         auto fieldType = mFieldTypes[key];

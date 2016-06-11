@@ -31,7 +31,12 @@ static const QVariantMap columnLabels = {
     {"first_name", QObject::tr("First Name")},
     {"last_name", QObject::tr("Last Name")},
     {"email", QObject::tr("Email")},
-    {"role", QObject::tr("Role")}};
+    {"role", QObject::tr("Role")},
+    // Room record labels
+    {"room_uuid", QObject::tr("Room UUID")},
+    {"name", QObject::tr("Name")},
+    {"room_number", QObject::tr("Number")}
+};
 
 ///
 /// \brief The enumeratedRoles provides translatable system roles for displaying

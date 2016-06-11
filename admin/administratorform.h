@@ -3,6 +3,7 @@
 
 #include "abstractform.h"
 #include "systemusertablemodel.h"
+#include "systemusereditorwidget.h"
 
 #include <QAction>
 #include <QSqlRecord>
@@ -19,7 +20,7 @@ class AdministratorForm : public AbstractForm {
     Q_OBJECT
 
 public:
-    explicit AdministratorForm(QWidget *parent = 0);
+    explicit AdministratorForm(QWidget *parent = nullptr);
     virtual ~AdministratorForm();
 
     virtual const QList<QAction *> &toolBarActions() const override;
@@ -42,6 +43,7 @@ private:
     QAction *mDeleteUserAction;
     QAction *mRefreshAction;
     QList<QAction *> mActions;
+    SystemUserEditorWidget *mRecordEditor;
 };
 }
 }

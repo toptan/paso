@@ -4,6 +4,7 @@
 #include "logindialog.h"
 #include "pasodb.h"
 #include "administratorform.h"
+#include "roomform.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -64,6 +65,9 @@ void MainWindow::createWidgets() {
     AbstractForm *form = new AdministratorForm(this);
     mMainWidgets.insert(paso::data::SystemRole::ADMINISTRATOR, form);
 
+    form = new RoomForm(this);
+    mMainWidgets.insert(paso::data::SystemRole::ROOM_MANAGER, form);
+
     auto toolBar = new QToolBar(tr("Main Toolbar"), this);
     toolBar->setObjectName("MainToolBar");
     addToolBar(toolBar);
@@ -77,6 +81,12 @@ void MainWindow::showWidgets() {
         setCentralWidget(mMainWidgets[paso::data::SystemRole::ADMINISTRATOR]);
         toolBar->insertActions(
             nullptr, mMainWidgets[paso::data::SystemRole::ADMINISTRATOR]
+                         ->toolBarActions());
+        break;
+    case paso::data::SystemRole::ROOM_MANAGER:
+        setCentralWidget(mMainWidgets[paso::data::SystemRole::ROOM_MANAGER]);
+        toolBar->insertActions(
+            nullptr, mMainWidgets[paso::data::SystemRole::ROOM_MANAGER]
                          ->toolBarActions());
         break;
     default:

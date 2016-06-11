@@ -2,6 +2,8 @@
 
 #include "data.h"
 
+#include <QSqlRecord>
+
 namespace paso {
 namespace admin {
 
@@ -12,12 +14,10 @@ SystemUserTableModel::SystemUserTableModel(QObject *parent, QSqlDatabase db)
     setTable("SYSTEM_USER");
     setEditStrategy(QSqlTableModel::OnManualSubmit);
     select();
-    setHeaderData(0, Qt::Horizontal, tr("Username"));
-    setHeaderData(1, Qt::Horizontal, tr("Password"));
-    setHeaderData(2, Qt::Horizontal, tr("First Name"));
-    setHeaderData(3, Qt::Horizontal, tr("Last Name"));
-    setHeaderData(4, Qt::Horizontal, tr("Email"));
-    setHeaderData(5, Qt::Horizontal, tr("Role"));
+    const auto &rec = record();
+    for (auto i = 0; i < rec.count(); i++) {
+        setHeaderData(i, Qt::Horizontal, columnLabels[rec.fieldName(i)]);
+    }
 }
 
 QVariant SystemUserTableModel::data(const QModelIndex &idx, int role) const {
