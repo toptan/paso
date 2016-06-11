@@ -9,8 +9,6 @@
 namespace paso {
 namespace admin {
 
-using namespace paso::db;
-
 class SystemUserValidator : public RecordValidator {
     Q_OBJECT
 public:
@@ -19,15 +17,17 @@ public:
                         QObject *parent = nullptr);
     virtual ~SystemUserValidator() {}
 
-    virtual bool validate(const QSqlRecord& original) const override;
+    virtual std::shared_ptr<ValidationError>
+    validate(const QSqlRecord &original) const override;
 
 private:
-    DBManager dbManager;
-    bool validateUsername(const QString& original) const;
-    bool validatePassword() const;
-    bool validateFirstName() const;
-    bool validateLastName() const;
-    bool validateEmail() const;
+    db::DBManager dbManager;
+    std::shared_ptr<ValidationError>
+    validateUsername(const QString &original) const;
+    std::shared_ptr<ValidationError> validatePassword() const;
+    std::shared_ptr<ValidationError> validateFirstName() const;
+    std::shared_ptr<ValidationError> validateLastName() const;
+    std::shared_ptr<ValidationError> validateEmail() const;
 };
 }
 }

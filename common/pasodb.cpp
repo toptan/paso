@@ -165,13 +165,43 @@ bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) {
     return error.type() == QSqlError::NoError;
 }
 
-bool DBManager::usernameUnique(const QString &username, QSqlError &error) const {
+bool DBManager::usernameUnique(const QString &username,
+                               QSqlError &error) const {
     QSqlQuery query(QSqlDatabase::database(mDbName));
     query.prepare(
         "SELECT COUNT(1) FROM SYSTEM_USER WHERE USERNAME = :username");
     query.bindValue(":username", username);
     query.exec();
     error = query.lastError();
+    if (error.type() == QSqlError::NoError) {
+        if (query.next()) {
+            return query.record().value(0) == 0;
+        }
+    }
+    return false;
+}
+
+bool DBManager::roomUuidUnique(const QString &roomUUID,
+                               QSqlError &error) const {
+    QUuid uuid(roomUUID);
+    QSqlQuery query(QSqlDatabase::database(mDbName));
+    query.prepare("SELECT COUNT(1) FROM ROOM WHERE ROOM_UUID = :uuid");
+    query.bindValue(":uuid", uuid);
+    query.exec();
+    if (error.type() == QSqlError::NoError) {
+        if (query.next()) {
+            return query.record().value(0) == 0;
+        }
+    }
+    return false;
+}
+
+bool DBManager::roomNumberUnique(const QString &roomNumber,
+                                 QSqlError &error) const {
+    QSqlQuery query(QSqlDatabase::database(mDbName));
+    query.prepare("SELECT COUNT(1) FROM ROOM WHERE ROOM_NUMBER = :room_number");
+    query.bindValue(":room_number", roomNumber);
+    query.exec();
     if (error.type() == QSqlError::NoError) {
         if (query.next()) {
             return query.record().value(0) == 0;

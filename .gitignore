@@ -32,3 +32,4 @@
 build
 *.txt.user
 .DS_Store
+*.autosave

@@ -14,6 +14,7 @@ namespace paso {
 namespace admin {
 
 using namespace paso::data;
+using namespace std;
 
 RecordDisplayWidget::RecordDisplayWidget(QWidget *parent)
     : QWidget(parent), mValidator(nullptr), mNewRecord(false),
@@ -150,33 +151,37 @@ const FieldTypes &RecordDisplayWidget::fieldTypes() const {
 }
 
 void RecordDisplayWidget::accepted() {
-    bool valid = true;
+    shared_ptr<ValidationError> error;
     if (mValidator != nullptr) {
-        valid = mValidator->validate(mRecord);
+        error = mValidator->validate(mRecord);
     }
-    if (valid) {
-        for (const auto &key : mFieldEditors.keys()) {
-            auto field = mFieldEditors[key];
-            auto fieldType = mFieldTypes[key];
-            QString value;
-            switch (fieldType) {
-            case FieldType::ComboBox:
-                value =
-                    dynamic_cast<QComboBox *>(field)->currentData().toString();
-                break;
-            case FieldType::LineEdit:
-            case FieldType::PasswordEdit:
-                value = dynamic_cast<QLineEdit *>(field)->text().trimmed();
-                break;
-            }
 
-            mRecord.setValue(key, value);
+    if (error) {
+        showEntryError(error->editor, error->title, error->text,
+                       error->detailedText, error->icon);
+        return;
+    }
+
+    for (const auto &key : mFieldEditors.keys()) {
+        auto field = mFieldEditors[key];
+        auto fieldType = mFieldTypes[key];
+        QString value;
+        switch (fieldType) {
+        case FieldType::ComboBox:
+            value = dynamic_cast<QComboBox *>(field)->currentData().toString();
+            break;
+        case FieldType::LineEdit:
+        case FieldType::PasswordEdit:
+            value = dynamic_cast<QLineEdit *>(field)->text().trimmed();
+            break;
         }
-        if (mNewRecord) {
-            emit requestSave(mRecord);
-        } else {
-            emit requestUpdate(mRecord);
-        }
+
+        mRecord.setValue(key, value);
+    }
+    if (mNewRecord) {
+        emit requestSave(mRecord);
+    } else {
+        emit requestUpdate(mRecord);
     }
 }
 

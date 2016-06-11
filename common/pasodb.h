@@ -101,9 +101,25 @@ public:
     /// \brief usernameUnique checks if given username is unique.
     /// \param [in] username The username to check.
     /// \param [out] error The sql error if any.
-    /// \return \code true if username is unique in the database.
+    /// \return \code true if username does not exist in the database.
     ///
     bool usernameUnique(const QString &username, QSqlError &error) const;
+
+    ///
+    /// \brief roomUuidUnique checks if given room UUID is unique.
+    /// \param [in] roomUUID The room UUID to check.
+    /// \param [out] error The sql error if any.
+    /// \return \code true if the room UUID does not exit in the database.
+    ///
+    bool roomUuidUnique(const QString &roomUUID, QSqlError &error) const;
+
+    ///
+    /// \brief roomNumberUnique checks if given room number is unique.
+    /// \param [in] roomNumber The room number to check.
+    /// \param [out] error The sql error if any.
+    /// \return \code true if the room number does not exist in the database.
+    ///
+    bool roomNumberUnique(const QString &roomNumber, QSqlError &error) const;
 
 private:
     const QString mDbName;
