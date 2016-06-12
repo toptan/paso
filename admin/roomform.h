@@ -20,20 +20,23 @@ class RoomForm : public AbstractForm {
 
 public:
     explicit RoomForm(QWidget *parent = nullptr);
-    ~RoomForm();
+    virtual ~RoomForm();
 
-    virtual const QList<QAction *> &toolBarActions() const override;
+protected:
+    virtual void prepareRecordForSaving(QSqlRecord &record) override;
 
 private slots:
-
-    void onSelectionChanged(const QSqlRecord &record);
+    virtual void onSelectionChanged(const QSqlRecord &record) override;
 
 private:
     Ui::RoomForm *ui;
-    RoomTableModel *mModel;
+    QAction *mNewRoomAction;
+    QAction *mEditRoomAction;
+    QAction *mDeleteRoomAction;
+    QAction *mRefreshAction;
 
-    QList<QAction *> mActions;
-    RoomEditorWidget *mRecordEditor;
+    static std::pair<QSqlTableModel *, RecordEditorWidget *>
+    createModelAndEditor();
 };
 }
 }

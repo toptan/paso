@@ -214,7 +214,7 @@ void RecordEditorWidget::setFieldsEditable() {
     }
     mButtonBox->setVisible(true);
     this->setFocus();
-    mFirstResponder->setFocus();
+    focusFirstEditable();
 }
 
 void RecordEditorWidget::setFieldsReadOnly() {
@@ -239,6 +239,23 @@ void RecordEditorWidget::setFieldsReadOnly() {
         }
     }
     mButtonBox->setVisible(false);
+}
+
+void RecordEditorWidget::focusFirstEditable() {
+    for (auto child : children()) {
+        auto lineEdit = dynamic_cast<QLineEdit *>(child);
+        if (lineEdit != nullptr && !lineEdit->isReadOnly()) {
+            lineEdit->setFocus();
+            return;
+        }
+        auto combo = dynamic_cast<QComboBox *>(child);
+        if (combo != nullptr && combo->isEnabled()) {
+            combo->setFocus();
+            return;
+        }
+    }
+
+    mFirstResponder->setFocus();
 }
 }
 }

@@ -1,5 +1,8 @@
 #include "roomeditorwidget.h"
 
+#include <QSqlField>
+#include <QUuid>
+
 namespace paso {
 namespace admin {
 RoomEditorWidget::RoomEditorWidget(const QSqlRecord &record,
@@ -7,7 +10,11 @@ RoomEditorWidget::RoomEditorWidget(const QSqlRecord &record,
                                    QWidget *parent)
     : RecordEditorWidget(record, fieldTypes, parent) {}
 
-void RoomEditorWidget::prepareEdit(const QSqlRecord &) {}
+void RoomEditorWidget::prepareEdit(QSqlRecord &record) {
+    if (record.field("room_uuid").isNull()) {
+        record.setValue("room_uuid", QUuid::createUuid());
+    }
+}
 
 bool RoomEditorWidget::fieldReadOnly(const QString &key) {
     return key == "room_uuid";

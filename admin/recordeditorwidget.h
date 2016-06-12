@@ -41,7 +41,7 @@ public slots:
     void saveError();
 
 protected:
-    virtual void prepareEdit(const QSqlRecord &record) = 0;
+    virtual void prepareEdit(QSqlRecord &record) = 0;
     virtual bool fieldReadOnly(const QString &key) = 0;
 
 private:
@@ -56,6 +56,7 @@ private:
     QWidget *createWidgetForField(const QSqlRecord &record, int index);
     void setFieldsEditable();
     void setFieldsReadOnly();
+    void focusFirstEditable();
 
 private slots:
     void rejected();

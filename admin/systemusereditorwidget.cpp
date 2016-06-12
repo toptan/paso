@@ -9,7 +9,7 @@ SystemUserEditorWidget::SystemUserEditorWidget(const QSqlRecord &record,
     : RecordEditorWidget(record, fieldTypes, parent),
       mEditingRootSystemUser(false) {}
 
-void SystemUserEditorWidget::prepareEdit(const QSqlRecord &record) {
+void SystemUserEditorWidget::prepareEdit(QSqlRecord &record) {
     mEditingRootSystemUser = record.value("username") == "root";
 }
 

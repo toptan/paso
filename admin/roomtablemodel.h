@@ -11,7 +11,7 @@ namespace admin {
 class RoomTableModel : public QSqlTableModel {
     Q_OBJECT
 public:
-    RoomTableModel(QObject *parent = nullptr, QSqlDatabase db = QSqlDatabase());
+    RoomTableModel(QSqlDatabase db = QSqlDatabase(), QObject *parent = nullptr);
 };
 }
 }

@@ -9,7 +9,8 @@ namespace admin {
 
 using namespace paso::data;
 
-RoomTableModel::RoomTableModel(QObject *parent, QSqlDatabase db) : QSqlTableModel(parent, db) {
+RoomTableModel::RoomTableModel(QSqlDatabase db, QObject *parent)
+    : QSqlTableModel(parent, db) {
     setTable("ROOM");
     setEditStrategy(QSqlTableModel::OnManualSubmit);
     select();

@@ -9,7 +9,7 @@ namespace admin {
 
 using namespace paso::data;
 
-SystemUserTableModel::SystemUserTableModel(QObject *parent, QSqlDatabase db)
+SystemUserTableModel::SystemUserTableModel(QSqlDatabase db, QObject *parent)
     : QSqlTableModel(parent, db) {
     setTable("SYSTEM_USER");
     setEditStrategy(QSqlTableModel::OnManualSubmit);

@@ -10,8 +10,8 @@ namespace admin {
 class SystemUserTableModel : public QSqlTableModel {
     Q_OBJECT
 public:
-    explicit SystemUserTableModel(QObject *parent = nullptr,
-                                  QSqlDatabase db = QSqlDatabase());
+    explicit SystemUserTableModel(QSqlDatabase db = QSqlDatabase(),
+                                  QObject *parent = nullptr);
 
     virtual QVariant data(const QModelIndex &idx,
                           int role = Qt::DisplayRole) const override;

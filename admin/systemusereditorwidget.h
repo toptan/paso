@@ -13,7 +13,7 @@ public:
                            QWidget *parent = nullptr);
 
 protected:
-    virtual void prepareEdit(const QSqlRecord &record) override;
+    virtual void prepareEdit(QSqlRecord &record) override;
     virtual bool fieldReadOnly(const QString &key) override;
 
 private:

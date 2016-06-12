@@ -2,12 +2,12 @@
 #define ADMINISTRATORFORM_H
 
 #include "abstractform.h"
-#include "systemusertablemodel.h"
-#include "systemusereditorwidget.h"
 
 #include <QAction>
 #include <QSqlRecord>
 #include <QWidget>
+
+class QSqlModel;
 
 namespace Ui {
 class AdministratorForm;
@@ -23,27 +23,23 @@ public:
     explicit AdministratorForm(QWidget *parent = nullptr);
     virtual ~AdministratorForm();
 
-    virtual const QList<QAction *> &toolBarActions() const override;
+protected:
+    virtual void prepareRecordForSaving(QSqlRecord &record) override;
 
 private slots:
-    void editNew();
     void editSelected();
-    void editFinished();
     void deleteUser();
 
-    void onRequestUpdate(QSqlRecord record);
-    void onRequestSave(QSqlRecord record);
-    void onSelectionChanged(const QSqlRecord &record);
+    virtual void onSelectionChanged(const QSqlRecord &record) override;
 
 private:
     Ui::AdministratorForm *ui;
-    SystemUserTableModel *mModel;
-    QAction *mNewUserAction;
     QAction *mEditUserAction;
     QAction *mDeleteUserAction;
     QAction *mRefreshAction;
-    QList<QAction *> mActions;
-    SystemUserEditorWidget *mRecordEditor;
+
+    static std::pair<QSqlTableModel *, RecordEditorWidget *>
+    createModelAndEditor();
 };
 }
 }
