@@ -37,12 +37,14 @@ public:
 
 protected slots:
     virtual void onNewRecord();
+    virtual void onEditRecord();
+    virtual void onDeleteRecord();
 
     virtual void onEditFinished();
 
     virtual void onRequestSave(QSqlRecord record);
     virtual void onRequestUpdate(QSqlRecord record);
-    virtual void onSelectionChanged(const QSqlRecord &record) = 0;
+    virtual void onSelectionChanged(const QSqlRecord &record);
 
 protected:
     ///
@@ -60,9 +62,37 @@ protected:
     ///
     virtual void prepareRecordForSaving(QSqlRecord &record) = 0;
 
+    ///
+    /// \brief shouldEnableEditAction Is called when selection is changed to
+    /// determine whether edit record action should be enabled or not.
+    /// \param record The newly selected record.
+    /// \return Whether to enable edit action.
+    ///
+    virtual bool shouldEnableEditAction(const QSqlRecord &record) const = 0;
+
+    ///
+    /// \brief shouldEnableDeleteAction is called when selection is changed to
+    /// determine whether delete record action should be enabled or not.
+    /// \param record The newly selected record.
+    /// \return Whether to enable delete action.
+    ///
+    virtual bool shouldEnableDeleteAction(const QSqlRecord &record) const = 0;
+
+    ///
+    /// \brief shouldDeleteRecord determines whether given record should be
+    /// deleted. Derived classes would usually present a user with message box.
+    /// \param record The record in question.
+    /// \return Whether the record should be deleted.
+    ///
+    virtual bool shouldDeleteRecord(const QSqlRecord &record) const = 0;
+
 private:
     QList<QAction *> mActions;
     QAction *mNewRecordAction;
+    QAction *mEditRecordAction;
+    QAction *mDeleteRecordAction;
+    QAction *mRefreshAction;
+
     QSqlTableModel *mModel;
     RecordEditorWidget *mRecordEditor;
     QTableView *mTableView;

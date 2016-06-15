@@ -21,26 +21,6 @@ RoomForm::RoomForm(QWidget *parent)
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 2);
     ui->horizontalLayout->setStretch(1, 1);
-
-    connect(ui->tableView->selectionModel(),
-            &QItemSelectionModel::currentRowChanged,
-            [this](const QModelIndex &selected, const QModelIndex &) {
-                auto record = model()->record(selected.row());
-                this->onSelectionChanged(record);
-            });
-
-    mEditRoomAction = new QAction(tr("Edit room"), this);
-    // connect(mEditRoomAction)
-    toolBarActions().push_back(mEditRoomAction);
-    mDeleteRoomAction = new QAction(tr("Delete room"), this);
-    // connect(mDeleteRoomAction);
-    toolBarActions().push_back(mDeleteRoomAction);
-    auto separator = new QAction(this);
-    separator->setSeparator(true);
-    toolBarActions().push_back(separator);
-    mRefreshAction = new QAction(tr("Refresh data"), this);
-    // connect(mRefreshAction)
-    toolBarActions().push_back(mRefreshAction);
 }
 
 RoomForm::~RoomForm() { delete ui; }
@@ -65,6 +45,22 @@ void RoomForm::prepareRecordForSaving(QSqlRecord &record) {
     // Nothing to do
 }
 
-void RoomForm::onSelectionChanged(const QSqlRecord &record) {}
+bool RoomForm::shouldEnableEditAction(const QSqlRecord &record) const {
+    return !record.isEmpty();
+}
+
+bool RoomForm::shouldEnableDeleteAction(const QSqlRecord &record) const {
+    return !record.isEmpty();
+}
+
+bool RoomForm::shouldDeleteRecord(const QSqlRecord &record) const {
+    // TODO: Check if something is connected with the room first!
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setText(tr("Do you want to delete selected room from the system?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    return msgBox.exec() == QMessageBox::Yes;
+}
 }
 }

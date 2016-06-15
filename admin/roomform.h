@@ -25,15 +25,16 @@ public:
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;
 
-private slots:
-    virtual void onSelectionChanged(const QSqlRecord &record) override;
+    virtual bool
+    shouldEnableEditAction(const QSqlRecord &record) const override;
+
+    virtual bool
+    shouldEnableDeleteAction(const QSqlRecord &record) const override;
+
+    virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
 private:
     Ui::RoomForm *ui;
-    QAction *mNewRoomAction;
-    QAction *mEditRoomAction;
-    QAction *mDeleteRoomAction;
-    QAction *mRefreshAction;
 
     static std::pair<QSqlTableModel *, RecordEditorWidget *>
     createModelAndEditor();

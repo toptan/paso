@@ -27,37 +27,6 @@ AdministratorForm::AdministratorForm(QWidget *parent)
 
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 3);
-
-    connect(ui->tableView->selectionModel(),
-            &QItemSelectionModel::currentRowChanged,
-            [this](const QModelIndex &selected, const QModelIndex &) {
-                auto record = model()->record(selected.row());
-                this->onSelectionChanged(record);
-            });
-
-    mEditUserAction = new QAction(tr("Edit system user"), this);
-    mEditUserAction->setEnabled(false);
-    connect(mEditUserAction, &QAction::triggered, this,
-            &AdministratorForm::editSelected);
-    toolBarActions().push_back(mEditUserAction);
-    mDeleteUserAction = new QAction(tr("Delete system user"), this);
-    mDeleteUserAction->setEnabled(false);
-    connect(mDeleteUserAction, &QAction::triggered, this,
-            &AdministratorForm::deleteUser);
-    toolBarActions().push_back(mDeleteUserAction);
-    QAction *separator = new QAction(this);
-    separator->setSeparator(true);
-    toolBarActions().push_back(separator);
-    mRefreshAction = new QAction(tr("Refresh data"), this);
-    connect(mRefreshAction, &QAction::triggered, model(),
-            &SystemUserTableModel::select);
-    connect(mRefreshAction, &QAction::triggered, [this]() {
-        ui->tableView->clearSelection();
-        mEditUserAction->setEnabled(false);
-    });
-    connect(mRefreshAction, &QAction::triggered, recordEditor(),
-            &RecordEditorWidget::clearData);
-    toolBarActions().push_back(mRefreshAction);
 }
 
 AdministratorForm::~AdministratorForm() { delete ui; }
@@ -82,75 +51,29 @@ AdministratorForm::createModelAndEditor() {
                                                                   editor);
 }
 
-void AdministratorForm::editSelected() {
-    if (!ui->tableView->selectionModel()->currentIndex().isValid()) {
-        return;
-    }
-    ui->tableView->setDisabled(true);
-    for (auto &action : toolBarActions()) {
-        action->setEnabled(false);
-    }
-    recordEditor()->onEditExistingRecord(
-        model()->record(ui->tableView->selectionModel()->currentIndex().row()));
-}
-
 void AdministratorForm::prepareRecordForSaving(QSqlRecord &record) {
-    // Ensure that root is always has SUPER_USER role
+    // Ensure that root always has SUPER_USER role
     if (record.value("username").toString() == "root") {
         record.setValue("role", roleToString(SystemRole::SUPER_USER));
     }
 }
 
-void AdministratorForm::onSelectionChanged(const QSqlRecord &record) {
-    if (record.value("username").toString() == "root") {
-        mDeleteUserAction->setEnabled(false);
-    } else {
-        mDeleteUserAction->setEnabled(true);
-    }
-    if (record.isEmpty()) {
-        mEditUserAction->setEnabled(false);
-    } else {
-        mEditUserAction->setEnabled(true);
-    }
-    recordEditor()->onDisplayRecord(record);
+bool AdministratorForm::shouldEnableEditAction(const QSqlRecord &record) const {
+    return !record.isEmpty();
 }
 
-void AdministratorForm::deleteUser() {
-    if (!ui->tableView->selectionModel()->currentIndex().isValid()) {
-        return;
-    }
+bool AdministratorForm::shouldEnableDeleteAction(
+    const QSqlRecord &record) const {
+    return record.value("username").toString() != "root";
+}
+
+bool AdministratorForm::shouldDeleteRecord(const QSqlRecord &record) const {
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setText(tr("Do you want to delete selected system user?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
-    if (msgBox.exec() == QMessageBox::Rejected) {
-        return;
-    }
-    if (!model()->removeRow(
-            ui->tableView->selectionModel()->currentIndex().row())) {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText(tr("There was an error while deleting system user."));
-        msgBox.setDetailedText(model()->lastError().text());
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setDefaultButton(QMessageBox::Ok);
-        msgBox.exec();
-        return;
-    }
-    if (!model()->submitAll()) {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText(tr("There was an error while deleting system user."));
-        msgBox.setDetailedText(model()->lastError().text());
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setDefaultButton(QMessageBox::Ok);
-        msgBox.exec();
-        return;
-    }
-    model()->select();
-    recordEditor()->clearData();
-    mEditUserAction->setEnabled(false);
+    return msgBox.exec() == QMessageBox::Yes;
 }
 }
 }
