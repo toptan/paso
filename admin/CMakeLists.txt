@@ -9,3 +9,4 @@ target_link_libraries(pasoadmin Qt5::Core)
 target_link_libraries(pasoadmin Qt5::Widgets)
 target_link_libraries(pasoadmin pasocommon)
 add_dependencies(pasoadmin pasocommon)
+

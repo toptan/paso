@@ -21,6 +21,7 @@ find_package(Qt5Network 5.5 REQUIRED)
 find_package(Qt5Sql     5.5 REQUIRED)
 find_package(Qt5Test    5.5 REQUIRED)
 find_package(Qt5Widgets 5.5 REQUIRED)
+find_package(Qt5LinguistTools)
 
 # Add subdirectories
 add_subdirectory(admin)

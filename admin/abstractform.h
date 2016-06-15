@@ -19,6 +19,7 @@ namespace admin {
 /// have toolbar actions.
 ///
 class AbstractForm : public QWidget {
+    Q_OBJECT
 public:
     explicit AbstractForm(
         std::pair<QSqlTableModel *, RecordEditorWidget *> modelAndEditor,

@@ -144,6 +144,9 @@ void AbstractForm::onEditFinished() {
     auto index = mTableView->selectionModel()->currentIndex();
     if (index.isValid()) {
         onSelectionChanged(mModel->record(index.row()));
+    } else {
+        mDeleteRecordAction->setEnabled(false);
+        mEditRecordAction->setEnabled(false);
     }
 }
 
