@@ -1,7 +1,14 @@
 #include "systemusereditorwidget.h"
 
+#include "data.h"
+
+#include <QComboBox>
+#include <QWidget>
+
 namespace paso {
 namespace admin {
+
+using namespace paso::data;
 
 SystemUserEditorWidget::SystemUserEditorWidget(const QSqlRecord &record,
                                                const FieldTypes &fieldTypes,
@@ -15,6 +22,21 @@ void SystemUserEditorWidget::prepareEdit(QSqlRecord &record) {
 
 bool SystemUserEditorWidget::fieldReadOnly(const QString &key) {
     return key == "username" && mEditingRootSystemUser;
+}
+
+QWidget *
+SystemUserEditorWidget::createComboBoxForRecordField(const QString &field) {
+    if (field != "role") {
+        return nullptr;
+    }
+
+    auto combo = new QComboBox(this);
+    for (const auto &role : enumeratedRoles.keys()) {
+        combo->addItem(enumeratedRoles[role], roleToString(role));
+    }
+    combo->setEnabled(false);
+    combo->setCurrentIndex(-1);
+    return combo;
 }
 }
 }

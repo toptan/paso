@@ -19,5 +19,9 @@ void RoomEditorWidget::prepareEdit(QSqlRecord &record) {
 bool RoomEditorWidget::fieldReadOnly(const QString &key) {
     return key == "room_uuid";
 }
+
+QWidget *RoomEditorWidget::createComboBoxForRecordField(const QString &) {
+    return nullptr;
+}
 }
 }

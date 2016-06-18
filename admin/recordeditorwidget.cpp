@@ -20,7 +20,9 @@ RecordEditorWidget::RecordEditorWidget(const QSqlRecord &record,
                                        const FieldTypes &fieldTypes,
                                        QWidget *parent)
     : QWidget(parent), mFieldTypes(fieldTypes), mValidator(nullptr),
-      mNewRecord(false), mFirstResponder(nullptr) {
+      mNewRecord(false), mFirstResponder(nullptr) {}
+
+void RecordEditorWidget::setupUi(const QSqlRecord &record) {
     setLayout(new QFormLayout(this));
     layout()->setMargin(0);
     setMinimumWidth(320);
@@ -49,15 +51,9 @@ QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
     auto fieldType = mFieldTypes[record.fieldName(index)];
     QWidget *fieldEditor;
     switch (fieldType) {
-    case FieldType::ComboBox: {
-        auto combo = new QComboBox(this);
-        for (const auto &role : enumeratedRoles.keys()) {
-            combo->addItem(enumeratedRoles[role], roleToString(role));
-        }
-        combo->setEnabled(false);
-        combo->setCurrentIndex(-1);
-        fieldEditor = combo;
-    } break;
+    case FieldType::ComboBox:
+        fieldEditor = createComboBoxForRecordField(record.fieldName(index));
+        break;
     case FieldType::LineEdit: {
         auto edit = new QLineEdit(this);
         edit->setReadOnly(true);

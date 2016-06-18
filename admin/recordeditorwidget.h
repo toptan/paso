@@ -22,6 +22,8 @@ public:
                                 QWidget *parent = 0);
     virtual ~RecordEditorWidget() {}
 
+    void setupUi(const QSqlRecord& record);
+
     const FieldTypes &fieldTypes() const;
     const FieldEditors &fieldEditors() const;
 
@@ -43,6 +45,8 @@ public slots:
 protected:
     virtual void prepareEdit(QSqlRecord &record) = 0;
     virtual bool fieldReadOnly(const QString &key) = 0;
+
+    virtual QWidget *createComboBoxForRecordField(const QString &field) = 0;
 
 private:
     const FieldTypes mFieldTypes;

@@ -33,6 +33,7 @@ RoomForm::createModelAndEditor() {
                              {"room_number", FieldType::LineEdit}};
 
     auto editor = new RoomEditorWidget(model->record(), fieldTypes);
+    editor->setupUi(model->record());
     editor->setValidator(new RoomValidator(editor->fieldTypes(),
                                            editor->fieldEditors(), editor));
     editor->clearData();

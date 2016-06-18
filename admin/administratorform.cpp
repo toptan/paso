@@ -43,6 +43,7 @@ AdministratorForm::createModelAndEditor() {
                              {"role", FieldType::ComboBox}};
 
     auto editor = new SystemUserEditorWidget(model->record(), fieldTypes);
+    editor->setupUi(model->record());
     editor->setValidator(new SystemUserValidator(
         editor->fieldTypes(), editor->fieldEditors(), editor));
     editor->clearData();

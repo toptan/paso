@@ -8,6 +8,9 @@
 #include <QMainWindow>
 #include <QMap>
 
+class QAction;
+class QComboBox;
+
 namespace Ui {
 class MainWindow;
 }
@@ -16,7 +19,6 @@ namespace paso {
 namespace admin {
 
 class LoginDialog;
-
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -28,14 +30,19 @@ public slots:
     void show();
     void loginFinished(const comm::LoginResponse &response);
 
+private slots:
+    void onWidgetChooserCurrentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     LoginDialog *mLoginDialog;
     paso::data::SystemRole mRole;
     QMap<paso::data::SystemRole, AbstractForm *> mMainWidgets;
+    QComboBox *mWidgetChooserComboBox;
+    QAction *mWidgetChooserSeparator;
     void createMenus();
     void createWidgets();
-    void showWidgets();
+    void showWidgets(paso::data::SystemRole role);
 };
 }
 }

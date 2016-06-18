@@ -5,17 +5,20 @@
 #include "pasodb.h"
 #include "administratorform.h"
 #include "roomform.h"
+#include "data.h"
 
 #include <QDebug>
 #include <QMessageBox>
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QToolBar>
+#include <QComboBox>
 
 namespace paso {
 namespace admin {
 
 using namespace paso::comm;
+using namespace paso::data;
 using namespace paso::db;
 
 using namespace Ui;
@@ -56,42 +59,71 @@ void MainWindow::loginFinished(const LoginResponse &response) {
     }
     createMenus();
     createWidgets();
-    showWidgets();
+    showWidgets(mRole);
 }
 
 void MainWindow::createMenus() {}
 
 void MainWindow::createWidgets() {
+    mWidgetChooserComboBox = new QComboBox(this);
+
     AbstractForm *form = new AdministratorForm(this);
-    mMainWidgets.insert(paso::data::SystemRole::ADMINISTRATOR, form);
+    mMainWidgets.insert(SystemRole::ADMINISTRATOR, form);
+    mWidgetChooserComboBox->addItem(tr("System users administration"),
+                                    roleToString(SystemRole::ADMINISTRATOR));
+    mWidgetChooserComboBox->addItem(tr("Room administration"),
+                                    roleToString(SystemRole::ROOM_MANAGER));
+
+    connect(mWidgetChooserComboBox, static_cast<void (QComboBox::*)(int)>(
+                                        &QComboBox::currentIndexChanged),
+            this, &MainWindow::onWidgetChooserCurrentIndexChanged);
 
     form = new RoomForm(this);
-    mMainWidgets.insert(paso::data::SystemRole::ROOM_MANAGER, form);
-
+    mMainWidgets.insert(SystemRole::ROOM_MANAGER, form);
     auto toolBar = new QToolBar(tr("Main Toolbar"), this);
     toolBar->setObjectName("MainToolBar");
+    mWidgetChooserSeparator = new QAction(this);
+    mWidgetChooserSeparator->setSeparator(true);
+    auto spacer = new QWidget(this);
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    toolBar->addAction(mWidgetChooserSeparator);
+    toolBar->addWidget(spacer);
+    toolBar->addWidget(mWidgetChooserComboBox);
     addToolBar(toolBar);
 }
 
-void MainWindow::showWidgets() {
+void MainWindow::showWidgets(SystemRole role) {
     QToolBar *toolBar = findChild<QToolBar *>("MainToolBar");
-    switch (mRole) {
-    case paso::data::SystemRole::SUPER_USER:
-    case paso::data::SystemRole::ADMINISTRATOR:
-        setCentralWidget(mMainWidgets[paso::data::SystemRole::ADMINISTRATOR]);
-        toolBar->insertActions(
-            nullptr, mMainWidgets[paso::data::SystemRole::ADMINISTRATOR]
-                         ->toolBarActions());
+    AbstractForm *form = nullptr;
+    switch (role) {
+    case SystemRole::SUPER_USER:
+    case SystemRole::ADMINISTRATOR:
+        form = mMainWidgets[SystemRole::ADMINISTRATOR];
         break;
-    case paso::data::SystemRole::ROOM_MANAGER:
-        setCentralWidget(mMainWidgets[paso::data::SystemRole::ROOM_MANAGER]);
-        toolBar->insertActions(
-            nullptr, mMainWidgets[paso::data::SystemRole::ROOM_MANAGER]
-                         ->toolBarActions());
+    case SystemRole::ROOM_MANAGER:
+        form = mMainWidgets[SystemRole::ROOM_MANAGER];
         break;
     default:
         break;
     }
+    if (form != nullptr) {
+        setCentralWidget(nullptr);
+        setCentralWidget(form);
+        toolBar->insertActions(mWidgetChooserSeparator, form->toolBarActions());
+    } else {
+        qDebug() << "FORM IS NULL!";
+    }
+}
+
+void MainWindow::onWidgetChooserCurrentIndexChanged(int index) {
+    QToolBar *toolBar = findChild<QToolBar *>("MainToolBar");
+    auto currentActions =
+        dynamic_cast<AbstractForm *>(centralWidget())->toolBarActions();
+    for (const auto &action : currentActions) {
+        toolBar->removeAction(action);
+    }
+    showWidgets(
+        stringToRole(mWidgetChooserComboBox->itemData(index).toString()));
 }
 }
 }
