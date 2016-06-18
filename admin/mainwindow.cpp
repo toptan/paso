@@ -13,6 +13,7 @@
 #include <QSqlError>
 #include <QToolBar>
 #include <QComboBox>
+#include <QStackedWidget>
 
 namespace paso {
 namespace admin {
@@ -30,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mLoginDialog, &LoginDialog::rejected, this, &MainWindow::close);
     connect(mLoginDialog, &LoginDialog::loginFinished, this,
             &MainWindow::loginFinished);
+    mMainWidget = new QStackedWidget(this);
+    setCentralWidget(mMainWidget);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -51,7 +54,6 @@ void MainWindow::loginFinished(const LoginResponse &response) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setWindowTitle(tr("Critical error"));
-        ;
         msgBox.setText(tr("Could not establish database connection."));
         msgBox.setDetailedText(db.lastError().text());
         msgBox.exec();
@@ -69,6 +71,7 @@ void MainWindow::createWidgets() {
 
     AbstractForm *form = new AdministratorForm(this);
     mMainWidgets.insert(SystemRole::ADMINISTRATOR, form);
+    mMainWidget->addWidget(form);
     mWidgetChooserComboBox->addItem(tr("System users administration"),
                                     roleToString(SystemRole::ADMINISTRATOR));
     mWidgetChooserComboBox->addItem(tr("Room administration"),
@@ -80,6 +83,7 @@ void MainWindow::createWidgets() {
 
     form = new RoomForm(this);
     mMainWidgets.insert(SystemRole::ROOM_MANAGER, form);
+    mMainWidget->addWidget(form);
     auto toolBar = new QToolBar(tr("Main Toolbar"), this);
     toolBar->setObjectName("MainToolBar");
     mWidgetChooserSeparator = new QAction(this);
@@ -95,30 +99,31 @@ void MainWindow::createWidgets() {
 void MainWindow::showWidgets(SystemRole role) {
     QToolBar *toolBar = findChild<QToolBar *>("MainToolBar");
     AbstractForm *form = nullptr;
+    int index = 0;
     switch (role) {
     case SystemRole::SUPER_USER:
     case SystemRole::ADMINISTRATOR:
         form = mMainWidgets[SystemRole::ADMINISTRATOR];
+        index = 0;
         break;
     case SystemRole::ROOM_MANAGER:
         form = mMainWidgets[SystemRole::ROOM_MANAGER];
+        index = 1;
         break;
     default:
         break;
     }
     if (form != nullptr) {
-        setCentralWidget(nullptr);
-        setCentralWidget(form);
+        mMainWidget->setCurrentIndex(index);
         toolBar->insertActions(mWidgetChooserSeparator, form->toolBarActions());
-    } else {
-        qDebug() << "FORM IS NULL!";
     }
 }
 
 void MainWindow::onWidgetChooserCurrentIndexChanged(int index) {
     QToolBar *toolBar = findChild<QToolBar *>("MainToolBar");
-    auto currentActions =
-        dynamic_cast<AbstractForm *>(centralWidget())->toolBarActions();
+    auto currentActions = dynamic_cast<AbstractForm *>(
+                              mMainWidget->widget(mMainWidget->currentIndex()))
+                              ->toolBarActions();
     for (const auto &action : currentActions) {
         toolBar->removeAction(action);
     }

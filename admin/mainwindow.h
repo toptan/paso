@@ -10,6 +10,7 @@
 
 class QAction;
 class QComboBox;
+class QStackedWidget;
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +37,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     LoginDialog *mLoginDialog;
+    QStackedWidget *mMainWidget;
     paso::data::SystemRole mRole;
     QMap<paso::data::SystemRole, AbstractForm *> mMainWidgets;
     QComboBox *mWidgetChooserComboBox;
