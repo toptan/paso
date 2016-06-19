@@ -9,6 +9,7 @@
 #include <QSqlRecord>
 #include <QString>
 #include <QStringList>
+#include <QVariantMap>
 #include <QWidget>
 
 namespace paso {
@@ -22,7 +23,7 @@ public:
                                 QWidget *parent = 0);
     virtual ~RecordEditorWidget() {}
 
-    void setupUi(const QSqlRecord& record);
+    void setupUi(const QVariantMap &columnLabels, const QSqlRecord &record);
 
     const FieldTypes &fieldTypes() const;
     const FieldEditors &fieldEditors() const;

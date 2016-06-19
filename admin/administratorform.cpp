@@ -35,8 +35,14 @@ AdministratorForm::~AdministratorForm() { delete ui; }
 
 pair<QSqlTableModel *, RecordEditorWidget *>
 AdministratorForm::createModelAndEditor() {
-    auto model =
-        new SystemUserTableModel(QSqlDatabase::database(DEFAULT_DB_NAME));
+    QVariantMap columnLabels = {{"username", QObject::tr("Username")},
+                                {"password", QObject::tr("Password")},
+                                {"first_name", QObject::tr("First Name")},
+                                {"last_name", QObject::tr("Last Name")},
+                                {"email", QObject::tr("Email")},
+                                {"role", QObject::tr("Role")}};
+    auto model = new SystemUserTableModel(
+        columnLabels, QSqlDatabase::database(DEFAULT_DB_NAME));
     FieldTypes fieldTypes = {{"username", FieldType::LineEdit},
                              {"password", FieldType::PasswordEdit},
                              {"first_name", FieldType::LineEdit},
@@ -45,7 +51,7 @@ AdministratorForm::createModelAndEditor() {
                              {"role", FieldType::ComboBox}};
 
     auto editor = new SystemUserEditorWidget(model->record(), fieldTypes);
-    editor->setupUi(model->record());
+    editor->setupUi(columnLabels, model->record());
     editor->setValidator(new SystemUserValidator(
         editor->fieldTypes(), editor->fieldEditors(), editor));
     editor->clearData();

@@ -121,6 +121,14 @@ public:
     ///
     bool roomNumberUnique(const QString &roomNumber, QSqlError &error) const;
 
+    ///
+    /// \brief courseCodeUnique checks if given course code is unique.
+    /// \param [in] courseCode The course code to check.
+    /// \param [out] error The sql error if any.
+    /// \return \code true if the course code does not exist in the database.
+    ///
+    bool courseCodeUnique(const QString &courseCode, QSqlError &error) const;
+
 private:
     const QString mDbName;
 };

@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QSqlTableModel>
-#include <QVariant>
+#include <QVariantMap>
 
 namespace paso {
 namespace admin {
@@ -11,7 +11,9 @@ namespace admin {
 class RoomTableModel : public QSqlTableModel {
     Q_OBJECT
 public:
-    RoomTableModel(QSqlDatabase db = QSqlDatabase(), QObject *parent = nullptr);
+    explicit RoomTableModel(const QVariantMap &columnLabels,
+                            QSqlDatabase db = QSqlDatabase(),
+                            QObject *parent = nullptr);
 };
 }
 }

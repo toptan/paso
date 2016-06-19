@@ -1,4 +1,4 @@
-#include "roomtablemodel.h"
+#include "coursetablemodel.h"
 
 #include "data.h"
 
@@ -9,10 +9,10 @@ namespace admin {
 
 using namespace paso::data;
 
-RoomTableModel::RoomTableModel(const QVariantMap &columnLabels, QSqlDatabase db,
-                               QObject *parent)
+CourseTableModel::CourseTableModel(const QVariantMap &columnLabels,
+                                   QSqlDatabase db, QObject *parent)
     : QSqlTableModel(parent, db) {
-    setTable("ROOM");
+    setTable("COURSE");
     setEditStrategy(QSqlTableModel::OnManualSubmit);
     select();
     const auto &rec = record();

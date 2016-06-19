@@ -209,5 +209,19 @@ bool DBManager::roomNumberUnique(const QString &roomNumber,
     }
     return false;
 }
+
+bool DBManager::courseCodeUnique(const QString &courseCode,
+                                 QSqlError &error) const {
+    QSqlQuery query(QSqlDatabase::database(mDbName));
+    query.prepare("SELECT COUNT(1) FROM COURSE WHERE CODE = :code");
+    query.bindValue(":code", courseCode);
+    query.exec();
+    if (error.type() == QSqlError::NoError) {
+        if (query.next()) {
+            return query.record().value(0) == 0;
+        }
+    }
+    return false;
+}
 }
 }

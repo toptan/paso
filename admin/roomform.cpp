@@ -30,13 +30,18 @@ RoomForm::RoomForm(QWidget *parent)
 RoomForm::~RoomForm() { delete ui; }
 
 pair<QSqlTableModel *, RecordEditorWidget *> RoomForm::createModelAndEditor() {
-    auto model = new RoomTableModel(QSqlDatabase::database(DEFAULT_DB_NAME));
+    QVariantMap columnLabels = {{"room_uuid", QObject::tr("Room UUID")},
+                                {"name", QObject::tr("Name")},
+                                {"room_number", QObject::tr("Number")}};
+
+    auto model = new RoomTableModel(columnLabels,
+                                    QSqlDatabase::database(DEFAULT_DB_NAME));
     FieldTypes fieldTypes = {{"room_uuid", FieldType::LineEdit},
                              {"name", FieldType::LineEdit},
                              {"room_number", FieldType::LineEdit}};
 
     auto editor = new RoomEditorWidget(model->record(), fieldTypes);
-    editor->setupUi(model->record());
+    editor->setupUi(columnLabels, model->record());
     editor->setValidator(new RoomValidator(editor->fieldTypes(),
                                            editor->fieldEditors(), editor));
     editor->clearData();

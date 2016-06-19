@@ -1,27 +1,27 @@
-#ifndef ROOMFORM_H
-#define ROOMFORM_H
+#ifndef COURSEFORM_H
+#define COURSEFORM_H
 
 #include "abstractform.h"
-#include "roomeditorwidget.h"
-#include "roomtablemodel.h"
+#include "courseeditorwidget.h"
+#include "coursetablemodel.h"
 
 #include <QAction>
 #include <QSqlRecord>
 #include <QWidget>
 
 namespace Ui {
-class RoomForm;
+class CourseForm;
 }
 
 namespace paso {
 namespace admin {
 
-class RoomForm : public AbstractForm {
+class CourseForm : public AbstractForm {
     Q_OBJECT
 
 public:
-    explicit RoomForm(QWidget *parent = nullptr);
-    virtual ~RoomForm();
+    explicit CourseForm(QWidget *parent = nullptr);
+    virtual ~CourseForm();
 
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;
@@ -35,11 +35,11 @@ protected:
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
 private:
-    Ui::RoomForm *ui;
+    Ui::CourseForm *ui;
 
     static std::pair<QSqlTableModel *, RecordEditorWidget *>
     createModelAndEditor();
 };
 }
 }
-#endif // ROOMFORM_H
+#endif // COURSEFORM_H

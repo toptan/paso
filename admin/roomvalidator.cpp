@@ -2,11 +2,8 @@
 
 #include <QLineEdit>
 #include <QVariant>
-#include <QStyle>
 #include <QSqlError>
 #include <QMessageBox>
-#include <QRegExp>
-#include <QRegExpValidator>
 
 namespace paso {
 namespace admin {

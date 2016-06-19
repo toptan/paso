@@ -22,7 +22,8 @@ RecordEditorWidget::RecordEditorWidget(const QSqlRecord &record,
     : QWidget(parent), mFieldTypes(fieldTypes), mValidator(nullptr),
       mNewRecord(false), mFirstResponder(nullptr) {}
 
-void RecordEditorWidget::setupUi(const QSqlRecord &record) {
+void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
+                                 const QSqlRecord &record) {
     setLayout(new QFormLayout(this));
     layout()->setMargin(0);
     setMinimumWidth(320);

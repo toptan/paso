@@ -21,6 +21,7 @@ bool RoomEditorWidget::fieldReadOnly(const QString &key) {
 }
 
 QWidget *RoomEditorWidget::createComboBoxForRecordField(const QString &) {
+    // No field requires combo box for editing.
     return nullptr;
 }
 }

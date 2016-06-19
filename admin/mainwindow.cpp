@@ -5,6 +5,7 @@
 #include "pasodb.h"
 #include "administratorform.h"
 #include "roomform.h"
+#include "courseform.h"
 #include "data.h"
 
 #include <QDebug>
@@ -90,12 +91,16 @@ void MainWindow::createWidgets() {
     case SystemRole::SUPER_USER:
         setupAdministratorUI();
         setupRoomManagerUI();
+        setupManagerUI();
         break;
     case SystemRole::ADMINISTRATOR:
         setupAdministratorUI();
         break;
     case SystemRole::ROOM_MANAGER:
         setupRoomManagerUI();
+        break;
+    case SystemRole::MANAGER:
+        setupManagerUI();
         break;
     default:
         break;
@@ -112,6 +117,12 @@ void MainWindow::setupRoomManagerUI() {
     auto form = new RoomForm(this);
     mMainWidget->addWidget(form);
     mWidgetChooserComboBox->addItem(tr("Room administration"));
+}
+
+void MainWindow::setupManagerUI() {
+    auto form = new CourseForm(this);
+    mMainWidget->addWidget(form);
+    mWidgetChooserComboBox->addItem(tr("Course administration"));
 }
 
 void MainWindow::onWidgetChooserCurrentIndexChanged(int index) {
