@@ -61,62 +61,57 @@ void MainWindow::loginFinished(const LoginResponse &response) {
     }
     createMenus();
     createWidgets();
-    showWidgets(mRole);
+    onWidgetChooserCurrentIndexChanged(0);
 }
 
 void MainWindow::createMenus() {}
 
 void MainWindow::createWidgets() {
+    auto toolBar = new QToolBar(tr("Main Toolbar"), this);
+    toolBar->setObjectName("MainToolBar");
+
+    mWidgetChooserSeparator = new QAction(this);
+    mWidgetChooserSeparator->setSeparator(true);
+    toolBar->addAction(mWidgetChooserSeparator);
+
+    auto spacer = new QWidget(this);
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    toolBar->addWidget(spacer);
+
     mWidgetChooserComboBox = new QComboBox(this);
-
-    AbstractForm *form = new AdministratorForm(this);
-    mMainWidgets.insert(SystemRole::ADMINISTRATOR, form);
-    mMainWidget->addWidget(form);
-    mWidgetChooserComboBox->addItem(tr("System users administration"),
-                                    roleToString(SystemRole::ADMINISTRATOR));
-    mWidgetChooserComboBox->addItem(tr("Room administration"),
-                                    roleToString(SystemRole::ROOM_MANAGER));
-
+    toolBar->addWidget(mWidgetChooserComboBox);
+    mWidgetChooserComboBox->setCurrentIndex(0);
     connect(mWidgetChooserComboBox, static_cast<void (QComboBox::*)(int)>(
                                         &QComboBox::currentIndexChanged),
             this, &MainWindow::onWidgetChooserCurrentIndexChanged);
-
-    form = new RoomForm(this);
-    mMainWidgets.insert(SystemRole::ROOM_MANAGER, form);
-    mMainWidget->addWidget(form);
-    auto toolBar = new QToolBar(tr("Main Toolbar"), this);
-    toolBar->setObjectName("MainToolBar");
-    mWidgetChooserSeparator = new QAction(this);
-    mWidgetChooserSeparator->setSeparator(true);
-    auto spacer = new QWidget(this);
-    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    toolBar->addAction(mWidgetChooserSeparator);
-    toolBar->addWidget(spacer);
-    toolBar->addWidget(mWidgetChooserComboBox);
     addToolBar(toolBar);
-}
 
-void MainWindow::showWidgets(SystemRole role) {
-    QToolBar *toolBar = findChild<QToolBar *>("MainToolBar");
-    AbstractForm *form = nullptr;
-    int index = 0;
-    switch (role) {
+    switch (mRole) {
     case SystemRole::SUPER_USER:
+        setupAdministratorUI();
+        setupRoomManagerUI();
+        break;
     case SystemRole::ADMINISTRATOR:
-        form = mMainWidgets[SystemRole::ADMINISTRATOR];
-        index = 0;
+        setupAdministratorUI();
         break;
     case SystemRole::ROOM_MANAGER:
-        form = mMainWidgets[SystemRole::ROOM_MANAGER];
-        index = 1;
+        setupRoomManagerUI();
         break;
     default:
         break;
     }
-    if (form != nullptr) {
-        mMainWidget->setCurrentIndex(index);
-        toolBar->insertActions(mWidgetChooserSeparator, form->toolBarActions());
-    }
+}
+
+void MainWindow::setupAdministratorUI() {
+    auto form = new AdministratorForm(this);
+    mMainWidget->addWidget(form);
+    mWidgetChooserComboBox->addItem(tr("System users administration"));
+}
+
+void MainWindow::setupRoomManagerUI() {
+    auto form = new RoomForm(this);
+    mMainWidget->addWidget(form);
+    mWidgetChooserComboBox->addItem(tr("Room administration"));
 }
 
 void MainWindow::onWidgetChooserCurrentIndexChanged(int index) {
@@ -127,8 +122,11 @@ void MainWindow::onWidgetChooserCurrentIndexChanged(int index) {
     for (const auto &action : currentActions) {
         toolBar->removeAction(action);
     }
-    showWidgets(
-        stringToRole(mWidgetChooserComboBox->itemData(index).toString()));
+    toolBar->insertActions(
+        mWidgetChooserSeparator,
+        dynamic_cast<AbstractForm *>(mMainWidget->widget(index))
+            ->toolBarActions());
+    mMainWidget->setCurrentIndex(index);
 }
 }
 }

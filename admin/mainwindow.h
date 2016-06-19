@@ -39,12 +39,13 @@ private:
     LoginDialog *mLoginDialog;
     QStackedWidget *mMainWidget;
     paso::data::SystemRole mRole;
-    QMap<paso::data::SystemRole, AbstractForm *> mMainWidgets;
     QComboBox *mWidgetChooserComboBox;
     QAction *mWidgetChooserSeparator;
     void createMenus();
     void createWidgets();
-    void showWidgets(paso::data::SystemRole role);
+
+    void setupAdministratorUI();
+    void setupRoomManagerUI();
 };
 }
 }
