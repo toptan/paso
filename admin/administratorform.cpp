@@ -16,6 +16,8 @@
 using namespace paso::db;
 using namespace paso::data;
 
+using namespace std;
+
 namespace paso {
 namespace admin {
 
@@ -31,7 +33,7 @@ AdministratorForm::AdministratorForm(QWidget *parent)
 
 AdministratorForm::~AdministratorForm() { delete ui; }
 
-std::pair<QSqlTableModel *, RecordEditorWidget *>
+pair<QSqlTableModel *, RecordEditorWidget *>
 AdministratorForm::createModelAndEditor() {
     auto model =
         new SystemUserTableModel(QSqlDatabase::database(DEFAULT_DB_NAME));
@@ -48,8 +50,7 @@ AdministratorForm::createModelAndEditor() {
         editor->fieldTypes(), editor->fieldEditors(), editor));
     editor->clearData();
 
-    return std::make_pair<QSqlTableModel *, RecordEditorWidget *>(model,
-                                                                  editor);
+    return make_pair<QSqlTableModel *, RecordEditorWidget *>(model, editor);
 }
 
 void AdministratorForm::prepareRecordForSaving(QSqlRecord &record) {

@@ -5,6 +5,7 @@
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QSqlError>
+#include <QSqlField>
 #include <QSqlTableModel>
 #include <QTableView>
 

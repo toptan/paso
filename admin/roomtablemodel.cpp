@@ -18,6 +18,7 @@ RoomTableModel::RoomTableModel(QSqlDatabase db, QObject *parent)
     for (auto i = 0; i < rec.count(); i++) {
         setHeaderData(i, Qt::Horizontal, columnLabels[rec.fieldName(i)]);
     }
+
 }
 }
 }

@@ -7,8 +7,12 @@
 #include "roomvalidator.h"
 #include "roomeditorwidget.h"
 
+#include <QSqlField>
+
 using namespace paso::db;
 using namespace paso::data;
+
+using namespace std;
 
 namespace paso {
 namespace admin {
@@ -17,7 +21,7 @@ RoomForm::RoomForm(QWidget *parent)
     : AbstractForm(createModelAndEditor(), parent), ui(new Ui::RoomForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
-
+    ui->tableView->hideColumn(0);
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 2);
     ui->horizontalLayout->setStretch(1, 1);
@@ -25,8 +29,7 @@ RoomForm::RoomForm(QWidget *parent)
 
 RoomForm::~RoomForm() { delete ui; }
 
-std::pair<QSqlTableModel *, RecordEditorWidget *>
-RoomForm::createModelAndEditor() {
+pair<QSqlTableModel *, RecordEditorWidget *> RoomForm::createModelAndEditor() {
     auto model = new RoomTableModel(QSqlDatabase::database(DEFAULT_DB_NAME));
     FieldTypes fieldTypes = {{"room_uuid", FieldType::LineEdit},
                              {"name", FieldType::LineEdit},
@@ -38,12 +41,19 @@ RoomForm::createModelAndEditor() {
                                            editor->fieldEditors(), editor));
     editor->clearData();
 
-    return std::make_pair<QSqlTableModel *, RecordEditorWidget *>(model,
-                                                                  editor);
+    return make_pair<QSqlTableModel *, RecordEditorWidget *>(model, editor);
 }
 
 void RoomForm::prepareRecordForSaving(QSqlRecord &record) {
-    // Nothing to do
+    // If value of the ID field is null, we need to remove it to let database
+    // assign a value.
+    auto index = record.indexOf("ID");
+    if (index == -1) {
+        return;
+    }
+    if (record.field(index).isNull()) {
+        record.remove(index);
+    }
 }
 
 bool RoomForm::shouldEnableEditAction(const QSqlRecord &record) const {

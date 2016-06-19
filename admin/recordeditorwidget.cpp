@@ -29,6 +29,9 @@ void RecordEditorWidget::setupUi(const QSqlRecord &record) {
     auto l = dynamic_cast<QFormLayout *>(layout());
     l->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for (int i = 0; i < record.count(); i++) {
+        if (record.fieldName(i).toUpper() == "ID") {
+            continue;
+        }
         QLabel *label =
             new QLabel(columnLabels[record.fieldName(i)].toString(), this);
         QWidget *edit = createWidgetForField(record, i);
@@ -78,6 +81,9 @@ QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
 
 void RecordEditorWidget::onDisplayRecord(const QSqlRecord &record) {
     for (int i = 0; i < record.count(); i++) {
+        if (record.fieldName(i).toUpper() == "ID") {
+            continue;
+        }
         switch (mFieldTypes[record.fieldName(i)]) {
         case FieldType::ComboBox: {
             auto field =
