@@ -36,6 +36,7 @@ protected:
 
 private:
     Ui::CourseForm *ui;
+    QAction *mImportAction;
 
     static std::pair<QSqlTableModel *, RecordEditorWidget *>
     createModelAndEditor();

@@ -25,6 +25,9 @@ CourseForm::CourseForm(QWidget *parent)
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 2);
     ui->horizontalLayout->setStretch(1, 1);
+
+    mImportAction = new QAction(tr("Import"), this);
+    toolBarActions().append(mImportAction);
 }
 
 CourseForm::~CourseForm() { delete ui; }

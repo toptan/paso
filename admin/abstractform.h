@@ -49,9 +49,8 @@ protected slots:
 
 protected:
     ///
-    /// \brief setupWidgets Sets up all necessary widgets for operation and
-    /// connects signals and slots. Needs
-    /// to be called from derived class.
+    /// \brief setupWidgets Sets up all necessary widgets and standard actions
+    /// for operation and connects signals and slots.
     /// \param tableView The table view that displays data.
     ///
     void setupWidgets(QTableView *tableView);
