@@ -2,6 +2,8 @@
 #define PASODB_H
 
 #include "data.h"
+#include "systemuser.h"
+#include "room.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>

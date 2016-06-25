@@ -4,6 +4,8 @@
 #include <cstdint>
 
 #include "data.h"
+#include "systemuser.h"
+
 #include <QUuid>
 
 namespace paso {

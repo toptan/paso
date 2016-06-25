@@ -12,7 +12,7 @@ using namespace paso::data;
 SystemUserTableModel::SystemUserTableModel(const QVariantMap &columnLabels,
                                            QSqlDatabase db, QObject *parent)
     : QSqlTableModel(parent, db) {
-    setTable("SYSTEM_USER");
+    setTable("system_user");
     setEditStrategy(QSqlTableModel::OnManualSubmit);
     select();
     const auto &rec = record();

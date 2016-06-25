@@ -12,7 +12,7 @@ using namespace paso::data;
 RoomTableModel::RoomTableModel(const QVariantMap &columnLabels, QSqlDatabase db,
                                QObject *parent)
     : QSqlTableModel(parent, db) {
-    setTable("ROOM");
+    setTable("room");
     setEditStrategy(QSqlTableModel::OnManualSubmit);
     select();
     const auto &rec = record();

@@ -1,6 +1,8 @@
 #include "testdata.h"
 
 #include "data.h"
+#include "systemuser.h"
+#include "room.h"
 
 #include <QDebug>
 #include <QJsonDocument>

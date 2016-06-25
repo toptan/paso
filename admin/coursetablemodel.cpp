@@ -12,7 +12,7 @@ using namespace paso::data;
 CourseTableModel::CourseTableModel(const QVariantMap &columnLabels,
                                    QSqlDatabase db, QObject *parent)
     : QSqlTableModel(parent, db) {
-    setTable("COURSE");
+    setTable("course");
     setEditStrategy(QSqlTableModel::OnManualSubmit);
     select();
     const auto &rec = record();

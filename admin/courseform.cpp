@@ -25,9 +25,13 @@ CourseForm::CourseForm(QWidget *parent)
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 2);
     ui->horizontalLayout->setStretch(1, 1);
-
+    auto separator = new QAction(this);
+    separator->setSeparator(true);
     mImportAction = new QAction(tr("Import"), this);
+    toolBarActions().append(separator);
     toolBarActions().append(mImportAction);
+
+    connect(mImportAction, &QAction::triggered, this, &CourseForm::onImport);
 }
 
 CourseForm::~CourseForm() { delete ui; }
@@ -82,5 +86,10 @@ bool CourseForm::shouldDeleteRecord(const QSqlRecord &record) const {
     msgBox.setDefaultButton(QMessageBox::No);
     return msgBox.exec() == QMessageBox::Yes;
 }
+
+void CourseForm::onImport() {
+    QMessageBox::information(this, "Info", "Importing...");
+}
+
 }
 }

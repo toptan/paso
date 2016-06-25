@@ -136,10 +136,10 @@ bool DBManager::saveRoom(const Room &room, QSqlError &error) {
     QString strQuery = getRoom(roomUUID, error)
                            ? "UPDATE ROOM SET"
                              " NAME = :name,"
-                             " NUMBER = :number "
+                             " ROOM_NUMBER = :number "
                              "WHERE ROOM_UUID = :room_uuid"
                            : "INSERT INTO"
-                             " ROOM(ROOM_UUID, NAME, NUMBER)"
+                             " ROOM (ROOM_UUID, NAME, ROOM_NUMBER)"
                              " VALUES(:room_uuid, :name, :number)";
 
     if (error.type() != QSqlError::NoError) {

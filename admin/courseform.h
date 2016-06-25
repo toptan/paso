@@ -34,6 +34,9 @@ protected:
 
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
+private slots:
+    void onImport();
+
 private:
     Ui::CourseForm *ui;
     QAction *mImportAction;

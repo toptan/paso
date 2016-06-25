@@ -12,7 +12,7 @@ namespace comm {
 class CommManager : public QObject {
     Q_OBJECT
 public:
-    explicit CommManager(const QString &server, QObject *parent = 0);
+    explicit CommManager(const QString &server, unsigned short port = 6789, QObject *parent = 0);
 
     void login(const QString &username, const QString &password);
 

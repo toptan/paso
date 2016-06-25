@@ -14,7 +14,7 @@ using namespace paso::comm;
 using namespace paso::data;
 
 DemoServer::DemoServer(QObject *parent)
-    : QObject(parent), mPort(6789), mTimeout(5000), mDbName(DEFAULT_DB_NAME) {
+    : QObject(parent), mPort(16789), mTimeout(5000), mDbName(DEFAULT_DB_NAME) {
     tcpServer = new QTcpServer(this);
     connect(tcpServer, &QTcpServer::newConnection, this,
             &DemoServer::handleRequest);
@@ -107,7 +107,7 @@ void TestCommManager::loginFailed() {
 
 void TestCommManager::initTestCase() {
     qRegisterMetaType<LoginResponse>("LoginResponse");
-    manager = std::make_shared<CommManager>("localhost");
+    manager = std::make_shared<CommManager>("localhost", 16789);
     connect(manager.get(), &CommManager::loginSuccessfull, this,
             &TestCommManager::loginSuccessfull);
     connect(manager.get(), &CommManager::loginFailed, this,

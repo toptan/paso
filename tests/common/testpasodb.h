@@ -24,7 +24,12 @@ private slots:
     void testGetRoom();
     void testDeleteRoom();
 
+    void testSaveCourse();
+
     void testUsernameUnique();
+    void testRoomUuidUnique();
+    void testRoomNumberUnique();
+    void testCourseCodeUnique();
 
 private:
     QString dbName;

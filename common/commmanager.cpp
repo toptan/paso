@@ -8,8 +8,9 @@
 namespace paso {
 namespace comm {
 
-CommManager::CommManager(const QString &server, QObject *parent)
-    : QObject(parent), mServer(server), mPort(6789), mTimeout(5000) {}
+CommManager::CommManager(const QString &server, unsigned short port,
+                         QObject *parent)
+    : QObject(parent), mServer(server), mPort(port), mTimeout(5000) {}
 
 void CommManager::login(const QString &username, const QString &password) {
     QtConcurrent::run([this, username, password]() {

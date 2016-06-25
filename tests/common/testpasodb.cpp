@@ -42,6 +42,7 @@ void TestPasoDB::init() {
 void TestPasoDB::cleanup() {
     auto db = QSqlDatabase::database(dbName);
     db.exec("DROP TABLE SYSTEM_USER");
+    db.exec("DROP TABLE COURSE");
     db.exec("DROP TABLE ROOM");
 }
 
@@ -159,7 +160,7 @@ void TestPasoDB::testSaveRoom() {
     auto loadedRoom = manager.getRoom(roomUUID, error);
     QVERIFY(room == *loadedRoom);
     loadedRoom->setName("Demo Lab 1");
-    loadedRoom->setNumber("42");
+    loadedRoom->setNumber("DL1");
     QVERIFY(manager.saveRoom(*loadedRoom, error));
     auto updatedRoom = manager.getRoom(roomUUID, error);
     QVERIFY(*updatedRoom == *loadedRoom);
@@ -187,11 +188,41 @@ void TestPasoDB::testDeleteRoom() {
     QVERIFY(!room);
 }
 
+void TestPasoDB::testSaveCourse() {
+    DBManager manager(dbName);
+    QSqlError error;
+}
+
 void TestPasoDB::testUsernameUnique() {
     DBManager manager(dbName);
     QSqlError error;
     QVERIFY(manager.usernameUnique("ChiChaGlisha", error));
     QVERIFY(!manager.usernameUnique("root", error));
 }
+
+void TestPasoDB::testRoomUuidUnique() {
+    DBManager manager(dbName);
+    QSqlError error;
+    // This uuid is from in_memory.sql script so it should exist.
+    QVERIFY(!manager.roomUuidUnique("{d23a502b-a567-4929-ba99-9f93f36bf4e3}", error));
+    QVERIFY(manager.roomUuidUnique(QUuid::createUuid().toString(), error));
+}
+
+void TestPasoDB::testRoomNumberUnique() {
+    DBManager manager(dbName);
+    QSqlError error;
+    // This room number is from in_memory.sql script so it should exist.
+    QVERIFY(!manager.roomNumberUnique("P26", error));
+    QVERIFY(manager.roomNumberUnique("26", error));
+}
+
+void TestPasoDB::testCourseCodeUnique() {
+    DBManager manager(dbName);
+    QSqlError error;
+    // This course code is from in_memory.sql script so it should exist.
+    QVERIFY(!manager.courseCodeUnique("IR3SP", error));
+    QVERIFY(manager.courseCodeUnique("IR3BP", error));
+}
+
 
 QTEST_MAIN(TestPasoDB)
