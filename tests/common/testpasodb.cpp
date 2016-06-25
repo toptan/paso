@@ -191,6 +191,34 @@ void TestPasoDB::testDeleteRoom() {
 void TestPasoDB::testSaveCourse() {
     DBManager manager(dbName);
     QSqlError error;
+    Course course("IR3BP1", "Baze podataka");
+    QVERIFY(manager.saveCourse(course, error));
+    auto loadedCourse = manager.getCourse("IR3BP1", error);
+    QVERIFY(course == *loadedCourse);
+    loadedCourse->setName("Baze podataka 1");
+    QVERIFY(manager.saveCourse(*loadedCourse, error));
+    auto updatedCourse = manager.getCourse("IR3BP1", error);
+    QVERIFY(*updatedCourse == *loadedCourse);
+}
+
+void TestPasoDB::testGetCourse() {
+    DBManager manager(dbName);
+    QSqlError error;
+    auto course = manager.getCourse("IR3SP", error);
+    QVERIFY(error.type() == QSqlError::NoError);
+    QVERIFY((bool)course);
+    QVERIFY(course->code() == "IR3SP");
+    QVERIFY(course->name() == "Sistemsko programiranje");
+}
+
+void TestPasoDB::testDeleteCourse() {
+    DBManager manager(dbName);
+    QSqlError error;
+    auto course = manager.getCourse("IR3SP", error);
+    QVERIFY((bool)course);
+    QVERIFY(manager.deleteCourse("IR3SP", error));
+    course = manager.getCourse("IR3SP", error);
+    QVERIFY(!course);
 }
 
 void TestPasoDB::testUsernameUnique() {
@@ -204,7 +232,8 @@ void TestPasoDB::testRoomUuidUnique() {
     DBManager manager(dbName);
     QSqlError error;
     // This uuid is from in_memory.sql script so it should exist.
-    QVERIFY(!manager.roomUuidUnique("{d23a502b-a567-4929-ba99-9f93f36bf4e3}", error));
+    QVERIFY(!manager.roomUuidUnique("{d23a502b-a567-4929-ba99-9f93f36bf4e3}",
+                                    error));
     QVERIFY(manager.roomUuidUnique(QUuid::createUuid().toString(), error));
 }
 
@@ -223,6 +252,5 @@ void TestPasoDB::testCourseCodeUnique() {
     QVERIFY(!manager.courseCodeUnique("IR3SP", error));
     QVERIFY(manager.courseCodeUnique("IR3BP", error));
 }
-
 
 QTEST_MAIN(TestPasoDB)

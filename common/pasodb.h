@@ -4,6 +4,7 @@
 #include "data.h"
 #include "systemuser.h"
 #include "room.h"
+#include "course.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -45,7 +46,7 @@ public:
     /// \brief getSystemUser Returns a system user with username \code username.
     /// \param [in]  username The user name to look for.
     /// \param [out] error SQL error if any.
-    /// \return Found user or nullptr of none is found.
+    /// \return Found user or \code nullptr of none is found.
     ///
     std::shared_ptr<data::SystemUser> getSystemUser(const QString &username,
                                                     QSqlError &error);
@@ -78,7 +79,7 @@ public:
     /// \brief getRoom Returns room with given \code roomUUID
     /// \param [in]  roomUUID The room UUID to look for.
     /// \param [out] error SQL error if any.
-    /// \return Found
+    /// \return Found room or \code nullptr if none is found.
     ///
     std::shared_ptr<data::Room> getRoom(const QUuid &roomUUID,
                                         QSqlError &error);
@@ -98,6 +99,31 @@ public:
     /// \return \code true of room is succesfully deleted.
     ///
     bool deleteRoom(const QUuid &roomUUID, QSqlError &error);
+
+    ///
+    /// \brief getCourse Returns course with given \code courseCode.
+    /// \param [in]  courseCode The course code to look for.
+    /// \param [out] error The SQL error if any.
+    /// \return \code Found course or \code nullptr if none is found.
+    ///
+    std::shared_ptr<data::Course> getCourse(const QString &courseCode,
+                                            QSqlError &error);
+
+    ///
+    /// \brief saveCourse Adds a new or updates existing course.
+    /// \param [in]  course The course
+    /// \param [out] error The SQL error if any.
+    /// \return \code true if course is successfully safed.
+    ///
+    bool saveCourse(const data::Course &course, QSqlError &error);
+
+    ///
+    /// \brief deleteCourse Deletes course with given code.
+    /// \param [in]  courseCode The code of the course to delete.
+    /// \param [out] error The SQL error if any.
+    /// \return \code true if course is successfully deleted.
+    ///
+    bool deleteCourse(const QString &courseCode, QSqlError &error);
 
     ///
     /// \brief usernameUnique checks if given username is unique.

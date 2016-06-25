@@ -3,6 +3,7 @@
 #include "data.h"
 #include "systemuser.h"
 #include "room.h"
+#include "course.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -14,8 +15,11 @@ void TestData::testComparingObjectWithItselfIsAlwaysTrue() {
     SystemUser user("user", "user_pass", "John", "Doe", "john.doe@internet.com",
                     SystemRole::MANAGER);
     auto room = new Room(QUuid::createUuid().toString(), "Room 42", "42");
+    std::shared_ptr<Course> course =
+        std::make_shared<Course>("IR3SP", "Sistemsko programiranje");
     QVERIFY(user == user);
     QVERIFY(*room == *room);
+    QVERIFY(*course == *course);
     delete room;
 }
 
@@ -62,4 +66,13 @@ void TestData::testSystemRoleSerialization() {
     QCOMPARE(deserialized.role(), SystemRole::SUPER_USER);
 }
 
- QTEST_MAIN(TestData)
+void TestData::testCourseSerialization() {
+    Course expected("IR3SP", "Sistemsko programiranje");
+    QString jsonString = expected.toJsonString();
+    auto deserialized = new Course("", "");
+    deserialized->fromJsonString(jsonString);
+    QCOMPARE(*deserialized, expected);
+    delete deserialized;
+}
+
+QTEST_MAIN(TestData)

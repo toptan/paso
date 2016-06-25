@@ -165,6 +165,53 @@ bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) {
     return error.type() == QSqlError::NoError;
 }
 
+shared_ptr<Course> DBManager::getCourse(const QString &courseCode,
+                                        QSqlError &error) {
+    auto db = QSqlDatabase::database(mDbName);
+    QSqlQuery query(db);
+    query.prepare("SELECT * FROM COURSE WHERE CODE = :course_code");
+    query.bindValue(":course_code", courseCode);
+    query.exec();
+    error = query.lastError();
+    if (error.type() == QSqlError::NoError) {
+        if (query.next()) {
+            return make_shared<Course>(recordToVariantMap(query.record()));
+        }
+    }
+    return nullptr;
+}
+
+bool DBManager::saveCourse(const Course &course, QSqlError &error) {
+    QString strQuery = getCourse(course.code(), error)
+                           ? "UPDATE COURSE SET"
+                             " NAME = :name "
+                             "WHERE CODE = :course_code"
+                           : "INSERT INTO"
+                             " COURSE (CODE, NAME)"
+                             " VALUES (:course_code, :name)";
+
+    if (error.type() != QSqlError::NoError) {
+        return false;
+    }
+
+    QSqlQuery query(QSqlDatabase::database(mDbName));
+    query.prepare(strQuery);
+    query.bindValue(":course_code", course.code());
+    query.bindValue(":name", course.name());
+    query.exec();
+    error = query.lastError();
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::deleteCourse(const QString &courseCode, QSqlError &error) {
+    QSqlQuery query(QSqlDatabase::database(mDbName));
+    query.prepare("DELETE FROM COURSE WHERE CODE = :course_code");
+    query.bindValue(":course_code", courseCode);
+    query.exec();
+    error = query.lastError();
+    return error.type() == QSqlError::NoError;
+}
+
 bool DBManager::usernameUnique(const QString &username,
                                QSqlError &error) const {
     QSqlQuery query(QSqlDatabase::database(mDbName));

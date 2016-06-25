@@ -117,12 +117,12 @@ public:
     ///
     /// \ref JsonSerializable::read(const QJsonObject&);
     ///
-    virtual void read(const QJsonObject &jsonObject);
+    virtual void read(const QJsonObject &jsonObject) override;
 
     ///
     /// \ref JsonSerializable::write(QJsonObject&);
     ///
-    virtual void write(QJsonObject &jsonObject) const;
+    virtual void write(QJsonObject &jsonObject) const override;
 
 private:
     QString mUsername;  //!< Username

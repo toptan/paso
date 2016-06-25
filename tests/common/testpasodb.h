@@ -25,6 +25,8 @@ private slots:
     void testDeleteRoom();
 
     void testSaveCourse();
+    void testGetCourse();
+    void testDeleteCourse();
 
     void testUsernameUnique();
     void testRoomUuidUnique();
