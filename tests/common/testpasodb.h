@@ -33,6 +33,8 @@ private slots:
     void testRoomNumberUnique();
     void testCourseCodeUnique();
 
+    void testCourseImport();
+
 private:
     QString dbName;
     QStringList usernames;

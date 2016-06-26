@@ -23,6 +23,9 @@ public:
     explicit CourseForm(QWidget *parent = nullptr);
     virtual ~CourseForm();
 
+signals:
+    void newLogLine(const QString &line);
+
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;
 

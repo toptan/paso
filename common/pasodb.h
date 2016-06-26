@@ -6,6 +6,7 @@
 #include "room.h"
 #include "course.h"
 
+#include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QString>
@@ -22,10 +23,21 @@ namespace db {
 ///
 const static QString DEFAULT_DB_NAME = "paso";
 
+enum class CourseImportError {
+    NO_ERROR,      //!< All fine, no error.
+    INVALID_LINE,  //!< The CSV line is illformed.
+    NO_CODE,       //!< Missing course code.
+    CODE_TOO_LONG, //!< Course code too long.
+    NO_NAME,       //!< Missing course name.
+    NAME_TOO_LONG, //!< Course name too long.
+    DB_ERROR       //!< Generic database error.
+};
+
 ///
 /// \brief The DBManager class is responsible for all database operations.
 ///
-class DBManager {
+class DBManager : public QObject {
+    Q_OBJECT
 public:
     ///
     /// \brief DBManager Constructs database manager that will use database with
@@ -109,7 +121,7 @@ public:
     /// \return \code Found course or \code nullptr if none is found.
     ///
     std::shared_ptr<data::entity::Course> getCourse(const QString &courseCode,
-                                                    QSqlError &error);
+                                                    QSqlError &error) const;
 
     ///
     /// \brief saveCourse Adds a new or updates existing course. If adding new
@@ -159,6 +171,14 @@ public:
     /// \return \code true if the course code does not exist in the database.
     ///
     bool courseCodeUnique(const QString &courseCode, QSqlError &error) const;
+
+    ///
+    /// \brief importCourse imports course from given CSV line.
+    /// \param csvLine The CSV line with course data.
+    /// \param error The sql error if any.
+    /// \return The course import error.
+    ///
+    CourseImportError importCourse(const QString &csvLine, QSqlError &error);
 
 private:
     const QString mDbName;

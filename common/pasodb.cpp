@@ -21,7 +21,8 @@ const QVariantMap recordToVariantMap(const QSqlRecord &record) {
     return retVal;
 }
 
-DBManager::DBManager(const QString &dbName) : mDbName(dbName) {
+DBManager::DBManager(const QString &dbName)
+    : QObject(nullptr), mDbName(dbName) {
     QSqlError error;
     auto root = getSystemUser("root", error);
     if (!root) {
@@ -133,7 +134,7 @@ bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) {
 }
 
 shared_ptr<Course> DBManager::getCourse(const QString &courseCode,
-                                        QSqlError &error) {
+                                        QSqlError &error) const {
     auto query =
         Course::findByCodeQuery(QSqlDatabase::database(mDbName), courseCode);
     query.exec();
@@ -213,6 +214,41 @@ bool DBManager::courseCodeUnique(const QString &courseCode,
         return false;
     }
     return true;
+}
+
+CourseImportError DBManager::importCourse(const QString &csvLine,
+                                          QSqlError &error) {
+    auto segments = csvLine.split(",");
+    if (segments.length() < 2) {
+        return CourseImportError::INVALID_LINE;
+    }
+    auto code = segments[0].trimmed();
+    auto name = segments[1].trimmed();
+    if (code.isEmpty()) {
+        return CourseImportError::NO_CODE;
+    }
+    if (code.length() > 8) {
+        return CourseImportError::CODE_TOO_LONG;
+    }
+    if (name.isEmpty()) {
+        return CourseImportError::NO_NAME;
+    }
+    if (name.length() > 64) {
+        return CourseImportError::NAME_TOO_LONG;
+    }
+    auto course = getCourse(code, error);
+    if (error.type() != QSqlError::NoError) {
+        return CourseImportError::DB_ERROR;
+    }
+    if (course) {
+        course->setName(name);
+    } else {
+        course = make_shared<Course>(code, name);
+    }
+    if (!saveCourse(*course, error)) {
+        return CourseImportError::DB_ERROR;
+    }
+    return CourseImportError::NO_ERROR;
 }
 }
 }

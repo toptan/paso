@@ -72,13 +72,13 @@ QSqlQuery Course::deleteByCodeQuery(const QSqlDatabase &database,
     return query;
 }
 
-QSqlQuery Course::findByCodeQuery(const QSqlDatabase &database, const QString &code) {
+QSqlQuery Course::findByCodeQuery(const QSqlDatabase &database,
+                                  const QString &code) {
     QSqlQuery query(database);
     query.prepare("SELECT * FROM COURSE WHERE CODE = :code");
     query.bindValue(":code", code);
     return query;
 }
-
 }
 }
 }

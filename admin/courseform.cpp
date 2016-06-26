@@ -6,8 +6,16 @@
 #include "recordeditorwidget.h"
 #include "coursevalidator.h"
 #include "courseeditorwidget.h"
+#include "logdialog.h"
 
+#include <QDebug>
+#include <QFile>
+#include <QFileDialog>
+#include <QSqlError>
 #include <QSqlField>
+#include <QtConcurrent>
+#include <QTextStream>
+#include <QThread>
 
 using namespace paso::db;
 using namespace paso::data;
@@ -21,6 +29,7 @@ CourseForm::CourseForm(QWidget *parent)
     : AbstractForm(createModelAndEditor(), parent), ui(new Ui::CourseForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
+    ui->tableView->hideColumn(0);
 
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 2);
@@ -88,8 +97,81 @@ bool CourseForm::shouldDeleteRecord(const QSqlRecord &record) const {
 }
 
 void CourseForm::onImport() {
-    QMessageBox::information(this, "Info", "Importing...");
-}
+    auto fileName = QFileDialog::getOpenFileName(
+        this, tr("Open courses import file"), "", "*.csv");
+    auto file = new QFile(fileName);
+    if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox msgBox(this);
+        msgBox.setWindowModality(Qt::WindowModal);
+        msgBox.setIcon(QMessageBox::Critical);
+        QString text =
+            QString(tr("The file %1 cannot be opened.")).arg(fileName);
+        msgBox.setText(text);
+        msgBox.setDetailedText(file->errorString());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        delete file;
+        return;
+    }
 
+    auto logDialog = new LogDialog();
+    logDialog->setModal(true);
+    logDialog->show();
+    connect(logDialog, &LogDialog::accepted, logDialog,
+            &LogDialog::deleteLater);
+    connect(logDialog, &LogDialog::rejected, logDialog,
+            &LogDialog::deleteLater);
+    connect(this, &CourseForm::newLogLine, logDialog, &LogDialog::appendLine);
+
+    auto work = [this, file, logDialog]() {
+        QTextStream in(file);
+        int lineNo = 1;
+        db::DBManager manager;
+        QSqlError sqlError;
+        QString format("Importing line %1... %2");
+
+        while (!in.atEnd()) {
+            QString message;
+            QString line = in.readLine();
+            auto error = manager.importCourse(line, sqlError);
+
+            switch (error) {
+            case CourseImportError::NO_ERROR:
+                message = format.arg(lineNo).arg(tr("OK."));
+                break;
+            case CourseImportError::INVALID_LINE:
+                message = format.arg(lineNo).arg(
+                    tr("The course code and name must be comma separated."));
+                break;
+            case CourseImportError::NO_CODE:
+                message =
+                    format.arg(lineNo).arg(tr("The course code is missing."));
+                break;
+            case CourseImportError::CODE_TOO_LONG:
+                message = format.arg(lineNo)
+                              .arg(tr("The course code exceeds 8 characters."));
+                break;
+            case CourseImportError::NO_NAME:
+                message =
+                    format.arg(lineNo).arg(tr("The course name is missing."));
+                break;
+            case CourseImportError::NAME_TOO_LONG:
+                message = format.arg(lineNo).arg(
+                    tr("The course name exceeds 64 characters."));
+                break;
+            case CourseImportError::DB_ERROR:
+                message = format.arg(lineNo).arg(sqlError.text());
+                break;
+            }
+            emit newLogLine(message);
+            QThread::currentThread()->msleep(200);
+            lineNo++;
+        }
+        delete file;
+    };
+
+    QtConcurrent::run(work);
+}
 }
 }

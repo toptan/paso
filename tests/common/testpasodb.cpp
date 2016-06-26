@@ -258,4 +258,34 @@ void TestPasoDB::testCourseCodeUnique() {
     QVERIFY(manager.courseCodeUnique("IR3BP", error));
 }
 
+void TestPasoDB::testCourseImport() {
+    DBManager manager(dbName);
+    QSqlError error;
+    QString csvLine = "IR3XY Osnove X sa Y";
+    QCOMPARE(manager.importCourse(csvLine, error),
+             CourseImportError::INVALID_LINE);
+    csvLine = "  , Osnove X sa Y";
+    QCOMPARE(manager.importCourse(csvLine, error), CourseImportError::NO_CODE);
+    csvLine = "IR3XY_IR3XY, Osnove X sa Y";
+    QCOMPARE(manager.importCourse(csvLine, error),
+             CourseImportError::CODE_TOO_LONG);
+    csvLine = "IR3XY,";
+    QCOMPARE(manager.importCourse(csvLine, error), CourseImportError::NO_NAME);
+    csvLine = "IR3XY, "
+              "1234567890123456789012345678901234567890123456789012345678901234"
+              "567890";
+    QCOMPARE(manager.importCourse(csvLine, error),
+             CourseImportError::NAME_TOO_LONG);
+    csvLine = "IR3XY, Osnove X";
+    QCOMPARE(manager.importCourse(csvLine, error), CourseImportError::NO_ERROR);
+    auto course = manager.getCourse("IR3XY", error);
+    QCOMPARE(course->code(), QString("IR3XY"));
+    QCOMPARE(course->name(), QString("Osnove X"));
+    csvLine = "IR3XY,Osnove X sa Y";
+    QCOMPARE(manager.importCourse(csvLine, error), CourseImportError::NO_ERROR);
+    course = manager.getCourse("IR3XY", error);
+    QCOMPARE(course->code(), QString("IR3XY"));
+    QCOMPARE(course->name(), QString("Osnove X sa Y"));
+}
+
 QTEST_MAIN(TestPasoDB)
