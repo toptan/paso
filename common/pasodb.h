@@ -73,7 +73,8 @@ public:
     /// \param [out] error SQL error if any.
     /// \return A vector of all system users.
     ///
-    std::shared_ptr<std::vector<data::Room>> getAllRooms(QSqlError &error);
+    std::shared_ptr<std::vector<data::entity::Room>>
+    getAllRooms(QSqlError &error);
 
     ///
     /// \brief getRoom Returns room with given \code roomUUID
@@ -81,16 +82,17 @@ public:
     /// \param [out] error SQL error if any.
     /// \return Found room or \code nullptr if none is found.
     ///
-    std::shared_ptr<data::Room> getRoom(const QUuid &roomUUID,
-                                        QSqlError &error);
+    std::shared_ptr<data::entity::Room> getRoom(const QUuid &roomUUID,
+                                                QSqlError &error);
 
     ///
-    /// \brief saveRoom Adds a new or updates existing room.
-    /// \param [in]  room The room.
-    /// \param [out] error SQL error if any.
+    /// \brief saveRoom Adds a new or updates existing room. If adding new one
+    /// the id property of the room will be updated.
+    /// \param room The room.
+    /// \param error SQL error if any.
     /// \return \code true if room is successfully saved.
     ///
-    bool saveRoom(const data::Room &room, QSqlError &error);
+    bool saveRoom(data::entity::Room &room, QSqlError &error);
 
     ///
     /// \brief deleteRoom Deletes the room with given UUID.
@@ -106,16 +108,17 @@ public:
     /// \param [out] error The SQL error if any.
     /// \return \code Found course or \code nullptr if none is found.
     ///
-    std::shared_ptr<data::Course> getCourse(const QString &courseCode,
-                                            QSqlError &error);
+    std::shared_ptr<data::entity::Course> getCourse(const QString &courseCode,
+                                                    QSqlError &error);
 
     ///
-    /// \brief saveCourse Adds a new or updates existing course.
-    /// \param [in]  course The course
-    /// \param [out] error The SQL error if any.
+    /// \brief saveCourse Adds a new or updates existing course. If adding new
+    /// one the id property of the course will be updated.
+    /// \param course The course.
+    /// \param error The SQL error if any.
     /// \return \code true if course is successfully safed.
     ///
-    bool saveCourse(const data::Course &course, QSqlError &error);
+    bool saveCourse(data::entity::Course &course, QSqlError &error);
 
     ///
     /// \brief deleteCourse Deletes course with given code.

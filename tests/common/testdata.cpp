@@ -10,6 +10,7 @@
 #include <QUuid>
 
 using namespace paso::data;
+using namespace paso::data::entity;
 
 void TestData::testComparingObjectWithItselfIsAlwaysTrue() {
     SystemUser user("user", "user_pass", "John", "Doe", "john.doe@internet.com",

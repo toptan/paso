@@ -10,6 +10,7 @@
 
 using namespace paso::db;
 using namespace paso::data;
+using namespace paso::data::entity;
 
 void TestPasoDB::initTestCase() {
     dbName = "paso";
@@ -214,9 +215,11 @@ void TestPasoDB::testGetCourse() {
 void TestPasoDB::testDeleteCourse() {
     DBManager manager(dbName);
     QSqlError error;
+    // Make sure that course exists.
     auto course = manager.getCourse("IR3SP", error);
     QVERIFY((bool)course);
     QVERIFY(manager.deleteCourse("IR3SP", error));
+    // The course should not exist anymore.
     course = manager.getCourse("IR3SP", error);
     QVERIFY(!course);
 }

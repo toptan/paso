@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QSqlRecord>
+#include <QSqlResult>
 #include <QSqlError>
 #include <QUuid>
 
@@ -10,6 +11,7 @@ namespace db {
 
 using namespace std;
 using namespace paso::data;
+using namespace paso::data::entity;
 
 const QVariantMap recordToVariantMap(const QSqlRecord &record) {
     QVariantMap retVal;
@@ -117,10 +119,8 @@ shared_ptr<vector<Room>> DBManager::getAllRooms(QSqlError &error) {
 }
 
 shared_ptr<Room> DBManager::getRoom(const QUuid &roomUUID, QSqlError &error) {
-    auto db = QSqlDatabase::database(mDbName);
-    QSqlQuery query(db);
-    query.prepare("SELECT * FROM ROOM WHERE ROOM_UUID = :room_uuid");
-    query.bindValue(":room_uuid", roomUUID);
+    auto query =
+        Room::findByUuidQuery(QSqlDatabase::database(mDbName), roomUUID);
     query.exec();
     error = query.lastError();
     if (error.type() == QSqlError::NoError) {
@@ -131,28 +131,16 @@ shared_ptr<Room> DBManager::getRoom(const QUuid &roomUUID, QSqlError &error) {
     return nullptr;
 }
 
-bool DBManager::saveRoom(const Room &room, QSqlError &error) {
-    QUuid roomUUID(room.roomUUID());
-    QString strQuery = getRoom(roomUUID, error)
-                           ? "UPDATE ROOM SET"
-                             " NAME = :name,"
-                             " ROOM_NUMBER = :number "
-                             "WHERE ROOM_UUID = :room_uuid"
-                           : "INSERT INTO"
-                             " ROOM (ROOM_UUID, NAME, ROOM_NUMBER)"
-                             " VALUES(:room_uuid, :name, :number)";
-
-    if (error.type() != QSqlError::NoError) {
-        return false;
-    }
-
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare(strQuery);
-    query.bindValue(":room_uuid", roomUUID.toString());
-    query.bindValue(":name", room.name());
-    query.bindValue(":number", room.number());
+bool DBManager::saveRoom(Room &room, QSqlError &error) {
+    auto query = room.id() == 0
+            ? Room::insertQuery(QSqlDatabase::database(mDbName), room)
+            : Room::updateQuery(QSqlDatabase::database(mDbName), room);
     query.exec();
     error = query.lastError();
+    if (error.type() == QSqlError::NoError && room.id() == 0) {
+        room.setId(query.lastInsertId().toULongLong());
+    }
+
     return error.type() == QSqlError::NoError;
 }
 
@@ -167,10 +155,8 @@ bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) {
 
 shared_ptr<Course> DBManager::getCourse(const QString &courseCode,
                                         QSqlError &error) {
-    auto db = QSqlDatabase::database(mDbName);
-    QSqlQuery query(db);
-    query.prepare("SELECT * FROM COURSE WHERE CODE = :course_code");
-    query.bindValue(":course_code", courseCode);
+    auto query =
+        Course::findByCodeQuery(QSqlDatabase::database(mDbName), courseCode);
     query.exec();
     error = query.lastError();
     if (error.type() == QSqlError::NoError) {
@@ -181,32 +167,22 @@ shared_ptr<Course> DBManager::getCourse(const QString &courseCode,
     return nullptr;
 }
 
-bool DBManager::saveCourse(const Course &course, QSqlError &error) {
-    QString strQuery = getCourse(course.code(), error)
-                           ? "UPDATE COURSE SET"
-                             " NAME = :name "
-                             "WHERE CODE = :course_code"
-                           : "INSERT INTO"
-                             " COURSE (CODE, NAME)"
-                             " VALUES (:course_code, :name)";
-
-    if (error.type() != QSqlError::NoError) {
-        return false;
-    }
-
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare(strQuery);
-    query.bindValue(":course_code", course.code());
-    query.bindValue(":name", course.name());
+bool DBManager::saveCourse(Course &course, QSqlError &error) {
+    auto query =
+        course.id() == 0
+            ? Course::insertQuery(QSqlDatabase::database(mDbName), course)
+            : Course::updateQuery(QSqlDatabase::database(mDbName), course);
     query.exec();
     error = query.lastError();
+    if (error.type() == QSqlError::NoError && course.id() == 0) {
+        course.setId(query.lastInsertId().toULongLong());
+    }
     return error.type() == QSqlError::NoError;
 }
 
 bool DBManager::deleteCourse(const QString &courseCode, QSqlError &error) {
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare("DELETE FROM COURSE WHERE CODE = :course_code");
-    query.bindValue(":course_code", courseCode);
+    auto query =
+        Course::deleteByCodeQuery(QSqlDatabase::database(mDbName), courseCode);
     query.exec();
     error = query.lastError();
     return error.type() == QSqlError::NoError;

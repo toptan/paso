@@ -1,5 +1,6 @@
 CREATE TABLE SYSTEM_USER (
-        USERNAME   TEXT PRIMARY KEY,
+        ID         INTEGER PRIMARY KEY AUTOINCREMENT,
+        USERNAME   TEXT UNIQUE NOT NULL,
         PASSWORD   TEXT NOT NULL,
         FIRST_NAME TEXT NOT NULL,
         LAST_NAME  TEXT NOT NULL,
@@ -17,7 +18,8 @@ CREATE TABLE ROOM (
         NAME        TEXT NOT NULL,
         ROOM_NUMBER TEXT UNIQUE NOT NULL);
 
-INSERT INTO SYSTEM_USER VALUES (
+INSERT INTO SYSTEM_USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE)
+       VALUES (
         'admin',
         'admin_password',
         'Admin',
@@ -25,7 +27,8 @@ INSERT INTO SYSTEM_USER VALUES (
         'admin@paso.system',
         'ADMINISTRATOR');
 
-INSERT INTO SYSTEM_USER VALUES (
+INSERT INTO SYSTEM_USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE)
+       VALUES (
         'room_manager',
         'room_manager_password',
         'Room',
@@ -33,7 +36,8 @@ INSERT INTO SYSTEM_USER VALUES (
         'room.manager@paso.system',
         'ROOM_MANAGER');
 
-INSERT INTO SYSTEM_USER VALUES (
+INSERT INTO SYSTEM_USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE)
+       VALUES (
         'manager',
         'manager_password',
         'Manager',
@@ -41,7 +45,8 @@ INSERT INTO SYSTEM_USER VALUES (
         'manager@paso.system',
         'MANAGER');
 
-INSERT INTO SYSTEM_USER VALUES (
+INSERT INTO SYSTEM_USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE)
+       VALUES (
         'scheduler',
         'scheduler_password',
         'Scheduler',

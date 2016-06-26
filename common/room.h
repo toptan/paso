@@ -1,38 +1,37 @@
 #ifndef ROOM_H
 #define ROOM_H
 
+#include "entity.h"
 #include "jsonserializable.h"
 
 #include <QJsonDocument>
+#include <QSqlDatabase>
 #include <QUuid>
 
 namespace paso {
 namespace data {
+namespace entity {
 
 ///
 /// \brief The Room class encapsulates data about rooms/laboratories.
 ///
-class Room : public JsonSerializable {
+class Room : public Entity, public JsonSerializable {
 public:
     ///
     /// \brief Room constructs new room with given data.
     /// \param roomUUID room UUID.
     /// \param name room name.
     /// \param number room number.
+    /// \param id The room id.
     ///
-    Room(const QString &roomUUID, const QString &name, const QString &number);
+    Room(const QString &roomUUID, const QString &name, const QString &number,
+         uint64_t id = 0);
 
     ///
     /// \brief Room constructs room from the data given in the map.
     /// \param map a map that contains data for the room.
     ///
     explicit Room(const QVariantMap &map);
-
-    ///
-    /// \brief Room The copy constructor.
-    /// \param other an object to copy from.
-    ///
-    explicit Room(const Room &other);
 
     ///
     /// \brief operator == The equality operator. Two rooms are equal if all
@@ -82,11 +81,41 @@ public:
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 
+    ///
+    /// \brief insertQuery Returns insert query for given room with values
+    /// bould.
+    /// \param database The database to use.
+    /// \param room The room to insert.
+    /// \return The query
+    ///
+    static QSqlQuery insertQuery(const QSqlDatabase &database,
+                                 const Room &room);
+
+    ///
+    /// \brief updateQuery Returns update query for given course with values
+    /// bound.
+    /// \param database The database to use.
+    /// \param room The room to update.
+    /// \return The query.
+    ///
+    static QSqlQuery updateQuery(const QSqlDatabase &database,
+                                 const Room &room);
+
+    ///
+    /// \brief findByUuidQuery Returns find by UUID query with bound UUID value.
+    /// \param database The database to use.
+    /// \param uuid The room UUID.
+    /// \return The query.
+    ///
+    static QSqlQuery findByUuidQuery(const QSqlDatabase &database,
+                                     const QUuid &uuid);
+
 private:
     QString mRoomUUID; //!< The room UUID
     QString mName;     //!< The room name
     QString mNumber;   //!< The room number, i.e. 56, P25
 };
+}
 }
 }
 
