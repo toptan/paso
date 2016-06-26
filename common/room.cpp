@@ -75,6 +75,28 @@ QSqlQuery Room::findByUuidQuery(const QSqlDatabase &database,
     query.bindValue(":uuid", uuid);
     return query;
 }
+
+QSqlQuery Room::findByNumberQuery(const QSqlDatabase &database,
+                                  const QString &number) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM ROOM WHERE ROOM_NUMBER = :number");
+    query.bindValue(":number", number);
+    return query;
+}
+
+QSqlQuery Room::findAllQuery(const QSqlDatabase &database) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM ROOM");
+    return query;
+}
+
+QSqlQuery Room::deleteByUuidQuery(const QSqlDatabase &database,
+                                  const QUuid &uuid) {
+    QSqlQuery query(database);
+    query.prepare("DELETE FROM ROOM WHERE ROOM_UUID = :uuid");
+    query.bindValue(":uuid", uuid);
+    return query;
+}
 }
 }
 }

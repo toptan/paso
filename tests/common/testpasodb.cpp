@@ -192,7 +192,9 @@ void TestPasoDB::testDeleteRoom() {
 void TestPasoDB::testSaveCourse() {
     DBManager manager(dbName);
     QSqlError error;
-    Course course("IR3BP1", "Baze podataka");
+    Course course;
+    course.setCode("IR3BP1");
+    course.setName("Baze podataka");
     QVERIFY(manager.saveCourse(course, error));
     auto loadedCourse = manager.getCourse("IR3BP1", error);
     QVERIFY(course == *loadedCourse);

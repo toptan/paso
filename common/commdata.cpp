@@ -4,6 +4,7 @@ namespace paso {
 namespace comm {
 
 using namespace data;
+using namespace data::entity;
 
 const QString operationToString(Operation operation) {
     switch (operation) {
@@ -85,7 +86,7 @@ LoginResponse::LoginResponse(const SystemUser &systemUser,
       mSystemUser(systemUser), mDbName(dbName), mDbServer(dbServer),
       mDbUsername(dbUsername), mDbPassword(dbPassword), mDbPort(dbPort) {}
 
-const data::SystemUser &LoginResponse::systemUser() const {
+const SystemUser &LoginResponse::systemUser() const {
     return mSystemUser;
 }
 

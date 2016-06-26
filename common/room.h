@@ -83,7 +83,7 @@ public:
 
     ///
     /// \brief insertQuery Returns insert query for given room with values
-    /// bould.
+    /// bound.
     /// \param database The database to use.
     /// \param room The room to insert.
     /// \return The query
@@ -109,6 +109,33 @@ public:
     ///
     static QSqlQuery findByUuidQuery(const QSqlDatabase &database,
                                      const QUuid &uuid);
+
+    ///
+    /// \brief findByNumberQuery Returns find by room number query with bound
+    /// number value.
+    /// \param database The database to use.
+    /// \param number The room number.
+    /// \return The query.
+    ///
+    static QSqlQuery findByNumberQuery(const QSqlDatabase &database,
+                                       const QString &number);
+
+    ///
+    /// \brief findAllQuery Returns find all rooms query.
+    /// \param database The database to use.
+    /// \return The query.
+    ///
+    static QSqlQuery findAllQuery(const QSqlDatabase &database);
+
+    ///
+    /// \brief deleteByUuidQuery Returns delete by UUID query with bound UUID
+    /// value.
+    /// \param database The database to use.
+    /// \param uuid The room UUID.
+    /// \return The query.
+    ///
+    static QSqlQuery deleteByUuidQuery(const QSqlDatabase &database,
+                                       const QUuid &uuid);
 
 private:
     QString mRoomUUID; //!< The room UUID

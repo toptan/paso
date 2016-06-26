@@ -7,10 +7,12 @@
 
 using namespace paso::comm;
 using namespace paso::data;
+using namespace paso::data::entity;
 
 void TestCommData::testBaseSerialization() {
     Base expected(QUuid::createUuid(), Operation::UNKNOWN_OPERATION);
-    Base deserialized("{00000000-0000-0000-0000-000000000000}", Operation::UNKNOWN_OPERATION);
+    Base deserialized("{00000000-0000-0000-0000-000000000000}",
+                      Operation::UNKNOWN_OPERATION);
     auto jsonString = expected.toJsonString();
     deserialized.fromJsonString(jsonString);
     QVERIFY(deserialized.roomId() == expected.roomId());

@@ -39,7 +39,7 @@ public:
     /// \param [out] error SQL error if any.
     /// \return A vector of all system users.
     ///
-    std::shared_ptr<std::vector<data::SystemUser>>
+    std::shared_ptr<std::vector<data::entity::SystemUser>>
     getAllSystemUsers(QSqlError &error);
 
     ///
@@ -48,8 +48,8 @@ public:
     /// \param [out] error SQL error if any.
     /// \return Found user or \code nullptr of none is found.
     ///
-    std::shared_ptr<data::SystemUser> getSystemUser(const QString &username,
-                                                    QSqlError &error);
+    std::shared_ptr<data::entity::SystemUser>
+    getSystemUser(const QString &username, QSqlError &error);
 
     ///
     /// \brief saveSystemUser Adds a new or updates existing system user.
@@ -57,7 +57,7 @@ public:
     /// \param [out] error SQL error if any.
     /// \return \code true if user is successfully saved.
     ///
-    bool saveSystemUser(const data::SystemUser &user, QSqlError &error);
+    bool saveSystemUser(data::entity::SystemUser &user, QSqlError &error);
 
     ///
     /// \brief deleteSystemUser Deletes system user with given \code username.

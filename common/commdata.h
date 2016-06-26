@@ -145,15 +145,16 @@ public:
     /// \param dbPassword database password.
     /// \param dbPort database port.
     ///
-    LoginResponse(const data::SystemUser &systemUser, const QString &dbName,
-                  const QString &dbServer, const QString &dbUsername,
-                  const QString &dbPassword, uint16_t dbPort);
+    LoginResponse(const data::entity::SystemUser &systemUser,
+                  const QString &dbName, const QString &dbServer,
+                  const QString &dbUsername, const QString &dbPassword,
+                  uint16_t dbPort);
 
     ///
     /// \brief systemUser returns system user.
     /// \return system user.
     ///
-    const data::SystemUser &systemUser() const;
+    const data::entity::SystemUser &systemUser() const;
 
     ///
     /// \brief dbName returns database name to use.
@@ -196,12 +197,12 @@ public:
     virtual void write(QJsonObject &jsonObject) const;
 
 private:
-    data::SystemUser mSystemUser; //!< The system user.
-    QString mDbName;              //!< The database name.
-    QString mDbServer;            //!< The database server.
-    QString mDbUsername;          //!< The database username.
-    QString mDbPassword;          //!< The database password.
-    uint16_t mDbPort;             //!< The database port.
+    data::entity::SystemUser mSystemUser; //!< The system user.
+    QString mDbName;                      //!< The database name.
+    QString mDbServer;                    //!< The database server.
+    QString mDbUsername;                  //!< The database username.
+    QString mDbPassword;                  //!< The database password.
+    uint16_t mDbPort;                     //!< The database port.
 };
 }
 }

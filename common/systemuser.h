@@ -2,16 +2,20 @@
 #define SYSTEMUSER_H
 
 #include "data.h"
+#include "entity.h"
+#include "jsonserializable.h"
 
 #include <QJsonDocument>
+#include <QString>
 
 namespace paso {
 namespace data {
+namespace entity {
 
 ///
 /// \brief The SystemUser class encapsulates data about system user.
 ///
-class SystemUser : public JsonSerializable {
+class SystemUser : public Entity, public JsonSerializable {
 public:
     ///
     /// \brief SystemUser constructs new system user with given data.
@@ -21,11 +25,13 @@ public:
     /// \param lastName a last name.
     /// \param email an email.
     /// \param role a system role.
+    /// \param id a user id.
     ///
     explicit SystemUser(const QString &username, const QString &password = "",
                         const QString &firstName = "",
                         const QString &lastName = "", const QString &email = "",
-                        SystemRole role = SystemRole::INVALID_ROLE);
+                        SystemRole role = SystemRole::INVALID_ROLE,
+                        uint64_t id = 0);
 
     ///
     /// \brief SystemUser constructs system user instance from the map.
@@ -124,6 +130,53 @@ public:
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 
+    ///
+    /// \brief insertQuery Returns insert query for given system user with
+    /// values bound.
+    /// \param database The database to use.
+    /// \param user The system user to insert.
+    /// \return The query.
+    ///
+    static QSqlQuery insertQuery(const QSqlDatabase &database,
+                                 const SystemUser &user);
+
+    ///
+    /// \brief updateQuery Returns update query for given system user with
+    /// values bound.
+    /// \param database The database to use.
+    /// \param user The system user to insert.
+    /// \return The query.
+    ///
+    static QSqlQuery updateQuery(const QSqlDatabase &database,
+                                 const SystemUser &user);
+
+    ///
+    /// \brief findByUsernameQuery Returns find by username query with bound
+    /// username value.
+    /// \param database The database to use.
+    /// \param username The username.
+    /// \return The query.
+    ///
+    static QSqlQuery findByUsernameQuery(const QSqlDatabase &database,
+                                         const QString &username);
+
+    ///
+    /// \brief findAllQuery Returns find all system users query.
+    /// \param database The database to use.
+    /// \return The query.
+    ///
+    static QSqlQuery findAllQuery(const QSqlDatabase &database);
+
+    ///
+    /// \brief deleteByUsernameQuery Returns delete by username query with bound
+    /// username value.
+    /// \param database The database to use.
+    /// \param username The username.
+    /// \return The query.
+    ///
+    static QSqlQuery deleteByUsernameQuery(const QSqlDatabase &database,
+                                           const QString &username);
+
 private:
     QString mUsername;  //!< Username
     QString mPassword;  //!< Password
@@ -132,7 +185,7 @@ private:
     QString mEmail;     //!< Email
     SystemRole mRole;   //!< System role
 };
-
+}
 }
 }
 #endif // SYSTEMUSER_H

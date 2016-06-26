@@ -33,8 +33,8 @@ DBManager::DBManager(const QString &dbName) : mDbName(dbName) {
 }
 
 shared_ptr<vector<SystemUser>> DBManager::getAllSystemUsers(QSqlError &error) {
-    auto db = QSqlDatabase::database(mDbName);
-    auto query = db.exec("SELECT * FROM SYSTEM_USER ORDER BY USERNAME");
+    auto query = SystemUser::findAllQuery(QSqlDatabase::database(mDbName));
+    query.exec();
     error = query.lastError();
     auto retVal = make_shared<vector<SystemUser>>();
     if (error.type() == QSqlError::NoError) {
@@ -47,10 +47,8 @@ shared_ptr<vector<SystemUser>> DBManager::getAllSystemUsers(QSqlError &error) {
 
 shared_ptr<SystemUser> DBManager::getSystemUser(const QString &username,
                                                 QSqlError &error) {
-    auto db = QSqlDatabase::database(mDbName);
-    QSqlQuery query(db);
-    query.prepare("SELECT * FROM SYSTEM_USER WHERE USERNAME = :username");
-    query.bindValue(":username", username);
+    auto query = SystemUser::findByUsernameQuery(
+        QSqlDatabase::database(mDbName), username);
     query.exec();
     error = query.lastError();
     if (error.type() == QSqlError::NoError) {
@@ -61,34 +59,17 @@ shared_ptr<SystemUser> DBManager::getSystemUser(const QString &username,
     return nullptr;
 }
 
-bool DBManager::saveSystemUser(const SystemUser &user, QSqlError &error) {
-    QString strQuery = getSystemUser(user.username(), error)
-                           ? "UPDATE SYSTEM_USER SET"
-                             " PASSWORD = :password,"
-                             " FIRST_NAME = :firstName,"
-                             " LAST_NAME = :lastName,"
-                             " EMAIL = :email,"
-                             " ROLE = :role "
-                             "WHERE USERNAME = :username"
-                           : "INSERT INTO"
-                             " SYSTEM_USER(USERNAME, PASSWORD, FIRST_NAME, "
-                             "LAST_NAME, EMAIL, ROLE) VALUES(:username, "
-                             ":password, :firstName, :lastName, :email, :role)";
-
-    if (error.type() != QSqlError::NoError) {
-        return false;
-    }
-
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare(strQuery);
-    query.bindValue(":username", user.username());
-    query.bindValue(":password", user.password());
-    query.bindValue(":firstName", user.firstName());
-    query.bindValue(":lastName", user.lastName());
-    query.bindValue(":email", user.email());
-    query.bindValue(":role", roleToString(user.role()));
+bool DBManager::saveSystemUser(SystemUser &user, QSqlError &error) {
+    auto query =
+        user.id() == 0
+            ? SystemUser::insertQuery(QSqlDatabase::database(mDbName), user)
+            : SystemUser::updateQuery(QSqlDatabase::database(mDbName), user);
     query.exec();
     error = query.lastError();
+    if (error.type() == QSqlError::NoError && user.id() == 0) {
+        user.setId(query.lastInsertId().toULongLong());
+    }
+
     return error.type() == QSqlError::NoError;
 }
 
@@ -97,19 +78,18 @@ bool DBManager::deleteSystemUser(const QString &username, QSqlError &error) {
         return false;
     }
 
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare("DELETE FROM SYSTEM_USER WHERE USERNAME = :username");
-    query.bindValue(":username", username);
+    auto query = SystemUser::deleteByUsernameQuery(
+        QSqlDatabase::database(mDbName), username);
     query.exec();
     error = query.lastError();
     return error.type() == QSqlError::NoError;
 }
 
 shared_ptr<vector<Room>> DBManager::getAllRooms(QSqlError &error) {
-    auto db = QSqlDatabase::database(mDbName);
-    auto query = db.exec("SELECT * FROM ROOM ORDER BY NAME");
-    error = query.lastError();
+    auto query = Room::findAllQuery(QSqlDatabase::database(mDbName));
     auto retVal = make_shared<vector<Room>>();
+    query.exec();
+    error = query.lastError();
     if (error.type() == QSqlError::NoError) {
         while (query.next()) {
             retVal->emplace_back(recordToVariantMap(query.record()));
@@ -133,8 +113,8 @@ shared_ptr<Room> DBManager::getRoom(const QUuid &roomUUID, QSqlError &error) {
 
 bool DBManager::saveRoom(Room &room, QSqlError &error) {
     auto query = room.id() == 0
-            ? Room::insertQuery(QSqlDatabase::database(mDbName), room)
-            : Room::updateQuery(QSqlDatabase::database(mDbName), room);
+                     ? Room::insertQuery(QSqlDatabase::database(mDbName), room)
+                     : Room::updateQuery(QSqlDatabase::database(mDbName), room);
     query.exec();
     error = query.lastError();
     if (error.type() == QSqlError::NoError && room.id() == 0) {
@@ -145,9 +125,8 @@ bool DBManager::saveRoom(Room &room, QSqlError &error) {
 }
 
 bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) {
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare("DELETE FROM ROOM WHERE ROOM_UUID = :room_uuid");
-    query.bindValue(":room_uuid", roomUUID.toString());
+    auto query =
+        Room::deleteByUuidQuery(QSqlDatabase::database(mDbName), roomUUID);
     query.exec();
     error = query.lastError();
     return error.type() == QSqlError::NoError;
@@ -190,61 +169,50 @@ bool DBManager::deleteCourse(const QString &courseCode, QSqlError &error) {
 
 bool DBManager::usernameUnique(const QString &username,
                                QSqlError &error) const {
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare(
-        "SELECT COUNT(1) FROM SYSTEM_USER WHERE USERNAME = :username");
-    query.bindValue(":username", username);
+    auto query = SystemUser::findByUsernameQuery(
+        QSqlDatabase::database(mDbName), username);
     query.exec();
     error = query.lastError();
-    if (error.type() == QSqlError::NoError) {
-        if (query.next()) {
-            return query.record().value(0) == 0;
-        }
+    if (error.type() != QSqlError::NoError || query.next()) {
+        return false;
     }
-    return false;
+    return true;
 }
 
 bool DBManager::roomUuidUnique(const QString &roomUUID,
                                QSqlError &error) const {
-    QUuid uuid(roomUUID);
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare("SELECT COUNT(1) FROM ROOM WHERE ROOM_UUID = :uuid");
-    query.bindValue(":uuid", uuid);
+    auto query =
+        Room::findByUuidQuery(QSqlDatabase::database(mDbName), roomUUID);
     query.exec();
-    if (error.type() == QSqlError::NoError) {
-        if (query.next()) {
-            return query.record().value(0) == 0;
-        }
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError || query.next()) {
+        return false;
     }
-    return false;
+    return true;
 }
 
 bool DBManager::roomNumberUnique(const QString &roomNumber,
                                  QSqlError &error) const {
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare("SELECT COUNT(1) FROM ROOM WHERE ROOM_NUMBER = :room_number");
-    query.bindValue(":room_number", roomNumber);
+    auto query =
+        Room::findByNumberQuery(QSqlDatabase::database(mDbName), roomNumber);
     query.exec();
-    if (error.type() == QSqlError::NoError) {
-        if (query.next()) {
-            return query.record().value(0) == 0;
-        }
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError || query.next()) {
+        return false;
     }
-    return false;
+    return true;
 }
 
 bool DBManager::courseCodeUnique(const QString &courseCode,
                                  QSqlError &error) const {
-    QSqlQuery query(QSqlDatabase::database(mDbName));
-    query.prepare("SELECT COUNT(1) FROM COURSE WHERE CODE = :code");
-    query.bindValue(":code", courseCode);
+    auto query =
+        Course::findByCodeQuery(QSqlDatabase::database(mDbName), courseCode);
     query.exec();
-    if (error.type() == QSqlError::NoError) {
-        if (query.next()) {
-            return query.record().value(0) == 0;
-        }
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError || query.next()) {
+        return false;
     }
-    return false;
+    return true;
 }
 }
 }

@@ -22,7 +22,7 @@ public:
     /// \param name The course name.
     /// \param id The course id.
     ///
-    Course(const QString &code, const QString &name, uint64_t id = 0);
+    Course(const QString &code = "", const QString &name = "", uint64_t id = 0);
 
     ///
     /// \brief Course constructs course from the data given in the map.
