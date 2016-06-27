@@ -14,6 +14,8 @@ using namespace Ui;
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::LoginDialog) {
     ui->setupUi(this);
+    setWindowFlags((windowFlags() | Qt::CustomizeWindowHint) &
+                   ~Qt::WindowMinMaxButtonsHint);
     ui->usernameLineEdit->setText("root");
     ui->passwordLineEdit->setText("root");
     ui->serverLineEdit->setText("localhost");

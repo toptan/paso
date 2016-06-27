@@ -115,7 +115,7 @@ void CourseForm::onImport() {
         return;
     }
 
-    auto logDialog = new LogDialog();
+    auto logDialog = new LogDialog(tr("Importing course data..."));
     logDialog->setModal(true);
     logDialog->show();
     connect(logDialog, &LogDialog::accepted, logDialog,
@@ -123,14 +123,19 @@ void CourseForm::onImport() {
     connect(logDialog, &LogDialog::rejected, logDialog,
             &LogDialog::deleteLater);
     connect(this, &CourseForm::newLogLine, logDialog, &LogDialog::appendLine);
+    connect(this, &CourseForm::importDone, logDialog,
+            &LogDialog::processingDone);
 
     auto work = [this, file, logDialog]() {
         QTextStream in(file);
+        bool errorOccured = false;
         int lineNo = 1;
         db::DBManager manager;
         QSqlError sqlError;
         QString format("Importing line %1... %2");
-
+        emit newLogLine(
+            QString(tr("Importing course data from %1")).arg(file->fileName()));
+        emit newLogLine("");
         while (!in.atEnd()) {
             QString message;
             QString line = in.readLine();
@@ -143,25 +148,31 @@ void CourseForm::onImport() {
             case CourseImportError::INVALID_LINE:
                 message = format.arg(lineNo).arg(
                     tr("The course code and name must be comma separated."));
+                errorOccured = true;
                 break;
             case CourseImportError::NO_CODE:
                 message =
                     format.arg(lineNo).arg(tr("The course code is missing."));
+                errorOccured = true;
                 break;
             case CourseImportError::CODE_TOO_LONG:
                 message = format.arg(lineNo)
                               .arg(tr("The course code exceeds 8 characters."));
+                errorOccured = true;
                 break;
             case CourseImportError::NO_NAME:
                 message =
                     format.arg(lineNo).arg(tr("The course name is missing."));
+                errorOccured = true;
                 break;
             case CourseImportError::NAME_TOO_LONG:
                 message = format.arg(lineNo).arg(
                     tr("The course name exceeds 64 characters."));
+                errorOccured = true;
                 break;
             case CourseImportError::DB_ERROR:
                 message = format.arg(lineNo).arg(sqlError.text());
+                errorOccured = true;
                 break;
             }
             emit newLogLine(message);
@@ -169,6 +180,14 @@ void CourseForm::onImport() {
             lineNo++;
         }
         delete file;
+        if (!errorOccured) {
+            emit newLogLine("");
+            emit newLogLine(tr("Import finished without errors."));
+        } else {
+            emit newLogLine("");
+            emit newLogLine(tr("Not all lines could be imported. Please see messages above."));
+        }
+        emit importDone();
     };
 
     QtConcurrent::run(work);

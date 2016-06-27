@@ -25,6 +25,7 @@ public:
 
 signals:
     void newLogLine(const QString &line);
+    void importDone();
 
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;
