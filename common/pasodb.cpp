@@ -33,7 +33,8 @@ DBManager::DBManager(const QString &dbName)
     }
 }
 
-shared_ptr<vector<SystemUser>> DBManager::getAllSystemUsers(QSqlError &error) {
+shared_ptr<vector<SystemUser>>
+DBManager::getAllSystemUsers(QSqlError &error) const {
     auto query = SystemUser::findAllQuery(QSqlDatabase::database(mDbName));
     query.exec();
     error = query.lastError();
@@ -47,7 +48,7 @@ shared_ptr<vector<SystemUser>> DBManager::getAllSystemUsers(QSqlError &error) {
 }
 
 shared_ptr<SystemUser> DBManager::getSystemUser(const QString &username,
-                                                QSqlError &error) {
+                                                QSqlError &error) const {
     auto query = SystemUser::findByUsernameQuery(
         QSqlDatabase::database(mDbName), username);
     query.exec();
@@ -60,7 +61,7 @@ shared_ptr<SystemUser> DBManager::getSystemUser(const QString &username,
     return nullptr;
 }
 
-bool DBManager::saveSystemUser(SystemUser &user, QSqlError &error) {
+bool DBManager::saveSystemUser(SystemUser &user, QSqlError &error) const {
     auto query =
         user.id() == 0
             ? SystemUser::insertQuery(QSqlDatabase::database(mDbName), user)
@@ -74,7 +75,8 @@ bool DBManager::saveSystemUser(SystemUser &user, QSqlError &error) {
     return error.type() == QSqlError::NoError;
 }
 
-bool DBManager::deleteSystemUser(const QString &username, QSqlError &error) {
+bool DBManager::deleteSystemUser(const QString &username,
+                                 QSqlError &error) const {
     if (username == "root") {
         return false;
     }
@@ -86,7 +88,7 @@ bool DBManager::deleteSystemUser(const QString &username, QSqlError &error) {
     return error.type() == QSqlError::NoError;
 }
 
-shared_ptr<vector<Room>> DBManager::getAllRooms(QSqlError &error) {
+shared_ptr<vector<Room>> DBManager::getAllRooms(QSqlError &error) const {
     auto query = Room::findAllQuery(QSqlDatabase::database(mDbName));
     auto retVal = make_shared<vector<Room>>();
     query.exec();
@@ -99,7 +101,8 @@ shared_ptr<vector<Room>> DBManager::getAllRooms(QSqlError &error) {
     return retVal;
 }
 
-shared_ptr<Room> DBManager::getRoom(const QUuid &roomUUID, QSqlError &error) {
+shared_ptr<Room> DBManager::getRoom(const QUuid &roomUUID,
+                                    QSqlError &error) const {
     auto query =
         Room::findByUuidQuery(QSqlDatabase::database(mDbName), roomUUID);
     query.exec();
@@ -112,7 +115,7 @@ shared_ptr<Room> DBManager::getRoom(const QUuid &roomUUID, QSqlError &error) {
     return nullptr;
 }
 
-bool DBManager::saveRoom(Room &room, QSqlError &error) {
+bool DBManager::saveRoom(Room &room, QSqlError &error) const {
     auto query = room.id() == 0
                      ? Room::insertQuery(QSqlDatabase::database(mDbName), room)
                      : Room::updateQuery(QSqlDatabase::database(mDbName), room);
@@ -125,7 +128,7 @@ bool DBManager::saveRoom(Room &room, QSqlError &error) {
     return error.type() == QSqlError::NoError;
 }
 
-bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) {
+bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) const {
     auto query =
         Room::deleteByUuidQuery(QSqlDatabase::database(mDbName), roomUUID);
     query.exec();
@@ -147,7 +150,7 @@ shared_ptr<Course> DBManager::getCourse(const QString &courseCode,
     return nullptr;
 }
 
-bool DBManager::saveCourse(Course &course, QSqlError &error) {
+bool DBManager::saveCourse(Course &course, QSqlError &error) const {
     auto query =
         course.id() == 0
             ? Course::insertQuery(QSqlDatabase::database(mDbName), course)
@@ -160,7 +163,8 @@ bool DBManager::saveCourse(Course &course, QSqlError &error) {
     return error.type() == QSqlError::NoError;
 }
 
-bool DBManager::deleteCourse(const QString &courseCode, QSqlError &error) {
+bool DBManager::deleteCourse(const QString &courseCode,
+                             QSqlError &error) const {
     auto query =
         Course::deleteByCodeQuery(QSqlDatabase::database(mDbName), courseCode);
     query.exec();
@@ -216,8 +220,20 @@ bool DBManager::courseCodeUnique(const QString &courseCode,
     return true;
 }
 
+bool DBManager::indexNumberUnique(const QString &indexNumber,
+                                  QSqlError &error) const {
+    auto query = Student::findByIndexNumberQuery(
+        QSqlDatabase::database(mDbName), indexNumber);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError || query.next()) {
+        return false;
+    }
+    return true;
+}
+
 CourseImportError DBManager::importCourse(const QString &csvLine,
-                                          QSqlError &error) {
+                                          QSqlError &error) const {
     auto segments = csvLine.split(",");
     if (segments.length() < 2) {
         return CourseImportError::INVALID_LINE;
@@ -249,6 +265,67 @@ CourseImportError DBManager::importCourse(const QString &csvLine,
         return CourseImportError::DB_ERROR;
     }
     return CourseImportError::NO_ERROR;
+}
+
+shared_ptr<Student>
+DBManager::getStudentByIndexNumber(const QString &indexNumber,
+                                   QSqlError &error) const {
+    auto query = Student::findByIndexNumberQuery(
+        QSqlDatabase::database(mDbName), indexNumber);
+    query.exec();
+    error = query.lastError();
+    if (error.type() == QSqlError::NoError) {
+        if (query.next()) {
+            return make_shared<Student>(recordToVariantMap(query.record()));
+        }
+    }
+    return nullptr;
+}
+
+bool DBManager::saveStudent(Student &student, QSqlError &error) const {
+    auto db = QSqlDatabase::database(mDbName);
+    db.transaction();
+    auto newStudent = student.id() == 0;
+    auto query = newStudent ? Person::insertQuery(db, student)
+                            : Person::updateQuery(db, student);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        db.rollback();
+        return false;
+    }
+    if (newStudent) {
+        student.setId(query.lastInsertId().toULongLong());
+    }
+    query = newStudent ? Student::insertQuery(db, student)
+                       : Student::updateQuery(db, student);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        if (newStudent) {
+            student.setId(0);
+        }
+        db.rollback();
+    }
+    db.commit();
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::deleteStudent(const QString &indexNumber,
+                              QSqlError &error) const {
+    auto student = getStudentByIndexNumber(indexNumber, error);
+    if (error.type() != QSqlError::NoError) {
+        return false;
+    }
+    if (!student) {
+        return true;
+    }
+
+    auto query =
+        Person::deleteQuery(QSqlDatabase::database(mDbName), student->id());
+    query.exec();
+    error = query.lastError();
+    return error.type() == QSqlError::NoError;
 }
 }
 }

@@ -4,6 +4,7 @@
 #include "systemuser.h"
 #include "room.h"
 #include "course.h"
+#include "student.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -18,10 +19,20 @@ void TestData::testComparingObjectWithItselfIsAlwaysTrue() {
     auto room = new Room(QUuid::createUuid().toString(), "Room 42", "42");
     std::shared_ptr<Course> course =
         std::make_shared<Course>("IR3SP", "Sistemsko programiranje");
+    Student student("Toplica", "Tanasković", "toptan@foo.com", "164/96", 5, 123,
+                    "RRFFIIDD");
     QVERIFY(user == user);
     QVERIFY(*room == *room);
     QVERIFY(*course == *course);
+    QVERIFY(student == student);
     delete room;
+}
+
+void TestData::testComparingStudentWithPersonOrProfessorIsAlwaysFalse() {
+    Student student("Toplica", "Tanasković", "toptan@foo.com", "164/96", 5, 123,
+                    "RRFFIIDD");
+    Person person("Toplica", "Tanaskovic", "toptan@foo.com", 123, "RRFFIIDD");
+    QVERIFY(!(student == person));
 }
 
 void TestData::testRoomSerialization() {
@@ -74,6 +85,15 @@ void TestData::testCourseSerialization() {
     deserialized->fromJsonString(jsonString);
     QCOMPARE(*deserialized, expected);
     delete deserialized;
+}
+
+void TestData::testStudentSerialization() {
+    Student expected("Toplica", "Tanaskovic", "toptan@foo.com", "164/96", 5,
+                     123, "RRFFIIDD");
+    QString jsonString = expected.toJsonString();
+    Student deserialized((QVariantMap()));
+    deserialized.fromJsonString(jsonString);
+    QCOMPARE(deserialized, expected);
 }
 
 QTEST_MAIN(TestData)

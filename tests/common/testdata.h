@@ -8,11 +8,12 @@ class TestData : public QObject {
 
 private slots:
     void testComparingObjectWithItselfIsAlwaysTrue();
+    void testComparingStudentWithPersonOrProfessorIsAlwaysFalse();
     void testSystemUserSerialization();
     void testRoomSerialization();
     void testSystemRoleSerialization();
     void testCourseSerialization();
-
+    void testStudentSerialization();
 };
 
 #endif // TESTDATA_H

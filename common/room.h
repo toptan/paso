@@ -86,7 +86,7 @@ public:
     /// bound.
     /// \param database The database to use.
     /// \param room The room to insert.
-    /// \return The query
+    /// \return The query.
     ///
     static QSqlQuery insertQuery(const QSqlDatabase &database,
                                  const Room &room);

@@ -45,6 +45,8 @@ void TestPasoDB::cleanup() {
     db.exec("DROP TABLE SYSTEM_USER");
     db.exec("DROP TABLE COURSE");
     db.exec("DROP TABLE ROOM");
+    db.exec("DROP TABLE STUDENT");
+    db.exec("DROP TABLE PERSON");
 }
 
 void TestPasoDB::testOperationsShouldFailOnDatabaseErrors() {
@@ -59,6 +61,7 @@ void TestPasoDB::testOperationsShouldFailOnDatabaseErrors() {
     user.setEmail("toptan@server.com");
     user.setRole(SystemRole::SCHEDULER);
     QVERIFY(!manager.saveSystemUser(user, error));
+    db.exec("DROP TABLE SYSTEM_USERS");
     db.close();
     auto roomUUID = QUuid::createUuid();
     Room room(roomUUID.toString(), "Demo Room 1", "3");
@@ -286,6 +289,73 @@ void TestPasoDB::testCourseImport() {
     course = manager.getCourse("IR3XY", error);
     QCOMPARE(course->code(), QString("IR3XY"));
     QCOMPARE(course->name(), QString("Osnove X sa Y"));
+}
+
+void TestPasoDB::testIndexNumberUnique() {
+    DBManager manager(dbName);
+    QSqlError error;
+    // This index number is from in_memory.sql so it should exist.
+    QVERIFY(!manager.indexNumberUnique("164/96", error));
+    QVERIFY(manager.indexNumberUnique("111/11", error));
+}
+
+void TestPasoDB::testSaveStudent() {
+    DBManager manager(dbName);
+    QSqlError error;
+    Student student("Pera", "Perić", "pera@foo.com", "222/11", 2);
+    QVERIFY(manager.saveStudent(student, error));
+    QVERIFY(student.id() != 0);
+    auto loadedStudent = manager.getStudentByIndexNumber("222/11", error);
+    QCOMPARE(*loadedStudent, student);
+    student.setFirstName("Jovan");
+    student.setLastName("Jovanović");
+    student.setEmail("jovan@jova.org");
+    student.setRfid(QString());
+    student.setIndexNumber("333/12");
+    student.setYearOfStudy(3);
+    QVERIFY(manager.saveStudent(student, error));
+    auto updatedStudent = manager.getStudentByIndexNumber("333/12", error);
+    QVERIFY(bool(updatedStudent));
+    QCOMPARE(updatedStudent->firstName(), QString("Jovan"));
+    QCOMPARE(updatedStudent->lastName(), QString("Jovanović"));
+    QCOMPARE(updatedStudent->email(), QString("jovan@jova.org"));
+    QVERIFY(updatedStudent->rfid().isNull());
+    QCOMPARE(updatedStudent->indexNumber(), QString("333/12"));
+    QCOMPARE(updatedStudent->yearOfStudy(), 3);
+    updatedStudent->setRfid("RFID");
+    QVERIFY(manager.saveStudent(*updatedStudent, error));
+    loadedStudent = manager.getStudentByIndexNumber("333/12", error);
+    QCOMPARE(updatedStudent->rfid(), QString("RFID"));
+}
+
+void TestPasoDB::testGetStudent() {
+    DBManager manager(dbName);
+    QSqlError error;
+    auto student = manager.getStudentByIndexNumber("164/96", error);
+    QVERIFY(error.type() == QSqlError::NoError);
+    QVERIFY((bool)student);
+    QCOMPARE(student->firstName(), QString("Toplica"));
+    QCOMPARE(student->lastName(), QString("Tanasković"));
+    QCOMPARE(student->email(), QString("toptan@foo.com"));
+    QCOMPARE(student->rfid(), QString("RRFFIIDD"));
+    QCOMPARE(student->indexNumber(), QString("164/96"));
+    QCOMPARE(student->yearOfStudy(), 5);
+    student = manager.getStudentByIndexNumber("XXX/YY", error);
+    QVERIFY(error.type() == QSqlError::NoError);
+    QVERIFY(!(bool)student);
+}
+
+void TestPasoDB::testDeleteStudent() {
+    DBManager manager(dbName);
+    QSqlError error;
+    Student student("John", "Doe", "j.d@b.com", "555/15", 4, 0, "RRFFID");
+    QVERIFY(manager.saveStudent(student, error));
+    auto studentFromDB = manager.getStudentByIndexNumber("555/15", error);
+    QVERIFY((bool)studentFromDB);
+    QVERIFY(manager.deleteStudent("555/15", error));
+    studentFromDB = manager.getStudentByIndexNumber("555/15", error);
+    QVERIFY(!(bool)studentFromDB);
+    QVERIFY(manager.deleteStudent("XXX/YY", error));
 }
 
 QTEST_MAIN(TestPasoDB)

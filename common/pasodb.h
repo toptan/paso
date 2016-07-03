@@ -5,6 +5,7 @@
 #include "systemuser.h"
 #include "room.h"
 #include "course.h"
+#include "student.h"
 
 #include <QObject>
 #include <QSqlDatabase>
@@ -52,33 +53,33 @@ public:
     /// \return A vector of all system users.
     ///
     std::shared_ptr<std::vector<data::entity::SystemUser>>
-    getAllSystemUsers(QSqlError &error);
+    getAllSystemUsers(QSqlError &error) const;
 
     ///
-    /// \brief getSystemUser Returns a system user with username \code username.
+    /// \brief getSystemUser Returns a system user with username \c username.
     /// \param [in]  username The user name to look for.
     /// \param [out] error SQL error if any.
-    /// \return Found user or \code nullptr of none is found.
+    /// \return Found user or \c nullptr of none is found.
     ///
     std::shared_ptr<data::entity::SystemUser>
-    getSystemUser(const QString &username, QSqlError &error);
+    getSystemUser(const QString &username, QSqlError &error) const;
 
     ///
     /// \brief saveSystemUser Adds a new or updates existing system user.
     /// \param [in]  user The user.
     /// \param [out] error SQL error if any.
-    /// \return \code true if user is successfully saved.
+    /// \return \c true if user is successfully saved.
     ///
-    bool saveSystemUser(data::entity::SystemUser &user, QSqlError &error);
+    bool saveSystemUser(data::entity::SystemUser &user, QSqlError &error) const;
 
     ///
-    /// \brief deleteSystemUser Deletes system user with given \code username.
+    /// \brief deleteSystemUser Deletes system user with given \c username.
     /// The user 'root' cannot be deleted.
     /// \param [in]  username The username.
     /// \param [out] error SQL error if any.
-    /// \return \code true if user is succesdfully deleted.
+    /// \return \c true if user is succesdfully deleted.
     ///
-    bool deleteSystemUser(const QString &username, QSqlError &error);
+    bool deleteSystemUser(const QString &username, QSqlError &error) const;
 
     ///
     /// \brief getAllRooms Returns a vector of all rooms.
@@ -86,39 +87,39 @@ public:
     /// \return A vector of all system users.
     ///
     std::shared_ptr<std::vector<data::entity::Room>>
-    getAllRooms(QSqlError &error);
+    getAllRooms(QSqlError &error) const;
 
     ///
-    /// \brief getRoom Returns room with given \code roomUUID
+    /// \brief getRoom Returns room with given \c roomUUID
     /// \param [in]  roomUUID The room UUID to look for.
     /// \param [out] error SQL error if any.
-    /// \return Found room or \code nullptr if none is found.
+    /// \return Found room or \c nullptr if none is found.
     ///
     std::shared_ptr<data::entity::Room> getRoom(const QUuid &roomUUID,
-                                                QSqlError &error);
+                                                QSqlError &error) const;
 
     ///
     /// \brief saveRoom Adds a new or updates existing room. If adding new one
     /// the id property of the room will be updated.
     /// \param room The room.
     /// \param error SQL error if any.
-    /// \return \code true if room is successfully saved.
+    /// \return \c true if room is successfully saved.
     ///
-    bool saveRoom(data::entity::Room &room, QSqlError &error);
+    bool saveRoom(data::entity::Room &room, QSqlError &error) const;
 
     ///
     /// \brief deleteRoom Deletes the room with given UUID.
     /// \param [in]  roomUUID The UUID of the room to delete.
     /// \param [out] error SQL error if any.
-    /// \return \code true of room is succesfully deleted.
+    /// \return \c true of room is succesfully deleted.
     ///
-    bool deleteRoom(const QUuid &roomUUID, QSqlError &error);
+    bool deleteRoom(const QUuid &roomUUID, QSqlError &error) const;
 
     ///
-    /// \brief getCourse Returns course with given \code courseCode.
+    /// \brief getCourse Returns course with given \c courseCode.
     /// \param [in]  courseCode The course code to look for.
     /// \param [out] error The SQL error if any.
-    /// \return \code Found course or \code nullptr if none is found.
+    /// \return \c Found course or \c nullptr if none is found.
     ///
     std::shared_ptr<data::entity::Course> getCourse(const QString &courseCode,
                                                     QSqlError &error) const;
@@ -128,23 +129,51 @@ public:
     /// one the id property of the course will be updated.
     /// \param course The course.
     /// \param error The SQL error if any.
-    /// \return \code true if course is successfully safed.
+    /// \return \c true if course is successfully safed.
     ///
-    bool saveCourse(data::entity::Course &course, QSqlError &error);
+    bool saveCourse(data::entity::Course &course, QSqlError &error) const;
 
     ///
     /// \brief deleteCourse Deletes course with given code.
     /// \param [in]  courseCode The code of the course to delete.
     /// \param [out] error The SQL error if any.
-    /// \return \code true if course is successfully deleted.
+    /// \return \c true if course is successfully deleted.
     ///
-    bool deleteCourse(const QString &courseCode, QSqlError &error);
+    bool deleteCourse(const QString &courseCode, QSqlError &error) const;
+
+    ///
+    /// \brief getStudentByIndexNumber Returns student with given \c
+    /// indexNumber.
+    /// \param [in]  indexNumber The index number to look for.
+    /// \param [out] error The SQL error if any.
+    /// \return \c Found student or \c nullptr if none is found.
+    ///
+    std::shared_ptr<data::entity::Student>
+    getStudentByIndexNumber(const QString &indexNumber, QSqlError &error) const;
+
+    ///
+    /// \brief saveStudent Adds new or updates existing student. If adding new
+    /// student the id property of the student will be updated.
+    /// \param student The student.
+    /// \param error The SQL error if any.
+    /// \return \c true if student is successfully saved.
+    ///
+    bool saveStudent(data::entity::Student &student, QSqlError &error) const;
+
+    ///
+    /// \brief deleteStudent Deletes student with given \c indexNumber. Deleting
+    /// non existant student will not result in error.
+    /// \param indexNumber The index number of the student to delete.
+    /// \param error The SQL error if any.
+    /// \return \c true if student is successfully deleted.
+    ///
+    bool deleteStudent(const QString &indexNumber, QSqlError &error) const;
 
     ///
     /// \brief usernameUnique checks if given username is unique.
     /// \param [in] username The username to check.
     /// \param [out] error The sql error if any.
-    /// \return \code true if username does not exist in the database.
+    /// \return \c true if username does not exist in the database.
     ///
     bool usernameUnique(const QString &username, QSqlError &error) const;
 
@@ -152,7 +181,7 @@ public:
     /// \brief roomUuidUnique checks if given room UUID is unique.
     /// \param [in] roomUUID The room UUID to check.
     /// \param [out] error The sql error if any.
-    /// \return \code true if the room UUID does not exit in the database.
+    /// \return \c true if the room UUID does not exit in the database.
     ///
     bool roomUuidUnique(const QString &roomUUID, QSqlError &error) const;
 
@@ -160,7 +189,7 @@ public:
     /// \brief roomNumberUnique checks if given room number is unique.
     /// \param [in] roomNumber The room number to check.
     /// \param [out] error The sql error if any.
-    /// \return \code true if the room number does not exist in the database.
+    /// \return \c true if the room number does not exist in the database.
     ///
     bool roomNumberUnique(const QString &roomNumber, QSqlError &error) const;
 
@@ -168,9 +197,17 @@ public:
     /// \brief courseCodeUnique checks if given course code is unique.
     /// \param [in] courseCode The course code to check.
     /// \param [out] error The sql error if any.
-    /// \return \code true if the course code does not exist in the database.
+    /// \return \c true if the course code does not exist in the database.
     ///
     bool courseCodeUnique(const QString &courseCode, QSqlError &error) const;
+
+    ///
+    /// \brief indexNumberUnique checks if given index number is unique.
+    /// \param indexNumber The index number to check.
+    /// \param error The sql error if any.
+    /// \return \c true if the index number does not exist int the database.
+    ///
+    bool indexNumberUnique(const QString &indexNumber, QSqlError &error) const;
 
     ///
     /// \brief importCourse imports course from given CSV line.
@@ -178,7 +215,7 @@ public:
     /// \param error The sql error if any.
     /// \return The course import error.
     ///
-    CourseImportError importCourse(const QString &csvLine, QSqlError &error);
+    CourseImportError importCourse(const QString &csvLine, QSqlError &error) const;
 
 private:
     const QString mDbName;
