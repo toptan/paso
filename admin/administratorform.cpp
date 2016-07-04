@@ -22,10 +22,10 @@ namespace paso {
 namespace admin {
 
 AdministratorForm::AdministratorForm(QWidget *parent)
-    : AbstractForm(createModelAndEditor(), parent),
-      ui(new Ui::AdministratorForm) {
+    : TableForm(createModelAndEditor(), parent), ui(new Ui::AdministratorForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
+    ui->tableView->hideColumn(0);
 
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 3);
@@ -60,6 +60,15 @@ AdministratorForm::createModelAndEditor() {
 }
 
 void AdministratorForm::prepareRecordForSaving(QSqlRecord &record) {
+    // If value of the ID field is null, we need to remove it to let database
+    // assign a value.
+    auto index = record.indexOf("ID");
+    if (index == -1) {
+        return;
+    }
+    if (record.field(index).isNull()) {
+        record.remove(index);
+    }
     // Ensure that root always has SUPER_USER role
     if (record.value("username").toString() == "root") {
         record.setValue("role", roleToString(SystemRole::SUPER_USER));

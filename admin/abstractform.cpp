@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QSqlField>
+#include <QSqlQuery>
 #include <QSqlTableModel>
 #include <QTableView>
 
@@ -13,7 +14,7 @@ namespace paso {
 namespace admin {
 
 AbstractForm::AbstractForm(
-    std::pair<QSqlTableModel *, RecordEditorWidget *> modelAndEditor,
+    std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
     QWidget *parent)
     : QWidget(parent), mActions(), mModel(modelAndEditor.first),
       mRecordEditor(modelAndEditor.second), mTableView(nullptr) {
@@ -21,7 +22,9 @@ AbstractForm::AbstractForm(
     mRecordEditor->setParent(this);
 }
 
-QSqlTableModel *AbstractForm::model() const { return mModel; }
+AbstractForm::~AbstractForm() {}
+
+QSqlQueryModel *AbstractForm::model() const { return mModel; }
 
 RecordEditorWidget *AbstractForm::recordEditor() const { return mRecordEditor; }
 
@@ -30,6 +33,8 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
     mTableView->setModel(mModel);
     mTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    mTableView->sortByColumn(1, Qt::SortOrder::AscendingOrder);
+
     connect(mTableView->selectionModel(),
             &QItemSelectionModel::currentRowChanged,
             [this](const QModelIndex &selected, const QModelIndex &) {
@@ -66,8 +71,7 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
     mActions.push_back(separator);
 
     mRefreshAction = new QAction(tr("Refresh data"), this);
-    connect(mRefreshAction, &QAction::triggered, mModel,
-            &QSqlTableModel::select);
+    connect(mRefreshAction, &QAction::triggered, [this]() { refreshModel(); });
     connect(mRefreshAction, &QAction::triggered, [this]() {
         mTableView->clearSelection();
         mEditRecordAction->setEnabled(false);
@@ -108,30 +112,19 @@ void AbstractForm::onDeleteRecord() {
     if (!shouldDeleteRecord(mModel->record(index.row()))) {
         return;
     }
-
-    if (!mModel->removeRow(index.row())) {
+    QSqlError error;
+    if (!removeRow(index.row(), error)) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText(tr("There was an error while deleting record from the "
                           "database."));
-        msgBox.setDetailedText(mModel->lastError().text());
+        msgBox.setDetailedText(error.text());
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
         return;
     }
-    if (!mModel->submitAll()) {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText(
-            tr("There was an error while deleting record from the database."));
-        msgBox.setDetailedText(mModel->lastError().text());
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setDefaultButton(QMessageBox::Ok);
-        msgBox.exec();
-        return;
-    }
-    mModel->select();
+    refreshModel();
     mRecordEditor->clearData();
     mEditRecordAction->setEnabled(false);
 }
@@ -153,16 +146,16 @@ void AbstractForm::onEditFinished() {
 
 void AbstractForm::onRequestSave(QSqlRecord record) {
     prepareRecordForSaving(record);
-    mModel->insertRecord(-1, record);
-    if (!mModel->submitAll()) {
+    QSqlError error;
+    if (!insertRecord(record, error)) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText(tr("There was an error while saving data."));
-        msgBox.setDetailedText(mModel->lastError().text());
+        msgBox.setDetailedText(error.text());
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
-        mModel->select();
+        refreshModel();
         mRecordEditor->saveError();
         return;
     }
@@ -176,16 +169,16 @@ void AbstractForm::onRequestSave(QSqlRecord record) {
 void AbstractForm::onRequestUpdate(QSqlRecord record) {
     prepareRecordForSaving(record);
     auto index = mTableView->selectionModel()->currentIndex();
-    mModel->setRecord(index.row(), record);
-    if (!mModel->submitAll()) {
+    QSqlError error;
+    if (!updateRecord(index.row(), record, error)) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText(tr("There was an error while saving data."));
-        msgBox.setDetailedText(model()->lastError().text());
+        msgBox.setDetailedText(error.text());
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
-        mModel->select();
+        refreshModel();
         mTableView->selectRow(index.row());
         mRecordEditor->saveError();
         return;
@@ -203,6 +196,15 @@ void AbstractForm::onSelectionChanged(const QSqlRecord &record) {
     mDeleteRecordAction->setEnabled(shouldEnableDeleteAction(record));
     mEditRecordAction->setEnabled(shouldEnableEditAction(record));
     mRecordEditor->onDisplayRecord(record);
+}
+
+void AbstractForm::refreshModel() {
+    auto model = dynamic_cast<QSqlTableModel *>(mModel);
+    if (model != nullptr) {
+        model->select();
+    } else {
+        mModel->query().exec();
+    }
 }
 }
 }

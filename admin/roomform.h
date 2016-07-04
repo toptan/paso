@@ -1,7 +1,7 @@
 #ifndef ROOMFORM_H
 #define ROOMFORM_H
 
-#include "abstractform.h"
+#include "tableform.h"
 #include "roomeditorwidget.h"
 #include "roomtablemodel.h"
 
@@ -16,7 +16,7 @@ class RoomForm;
 namespace paso {
 namespace admin {
 
-class RoomForm : public AbstractForm {
+class RoomForm : public TableForm {
     Q_OBJECT
 
 public:

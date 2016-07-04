@@ -26,7 +26,7 @@ namespace paso {
 namespace admin {
 
 CourseForm::CourseForm(QWidget *parent)
-    : AbstractForm(createModelAndEditor(), parent), ui(new Ui::CourseForm) {
+    : TableForm(createModelAndEditor(), parent), ui(new Ui::CourseForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
     ui->tableView->hideColumn(0);
@@ -55,7 +55,6 @@ CourseForm::createModelAndEditor() {
                                       QSqlDatabase::database(DEFAULT_DB_NAME));
     FieldTypes fieldTypes = {{"code", FieldType::LineEdit},
                              {"name", FieldType::LineEdit}};
-
     auto editor = new CourseEditorWidget(model->record(), fieldTypes);
     editor->setupUi(columnLabels, model->record());
     editor->setValidator(new CourseValidator(editor->fieldTypes(),
@@ -185,8 +184,10 @@ void CourseForm::onImport() {
             emit newLogLine(tr("Import finished without errors."));
         } else {
             emit newLogLine("");
-            emit newLogLine(tr("Not all lines could be imported. Please see messages above."));
+            emit newLogLine(tr(
+                "Not all lines could be imported. Please see messages above."));
         }
+        refreshModel();
         emit importDone();
     };
 

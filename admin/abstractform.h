@@ -8,8 +8,9 @@
 #include <QWidget>
 
 class QAction;
-class QSqlTableModel;
+class QSqlQueryModel;
 class QTableView;
+class QSqlError;
 
 namespace paso {
 namespace admin {
@@ -22,9 +23,9 @@ class AbstractForm : public QWidget {
     Q_OBJECT
 public:
     explicit AbstractForm(
-        std::pair<QSqlTableModel *, RecordEditorWidget *> modelAndEditor,
+        std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
         QWidget *parent = nullptr);
-    virtual ~AbstractForm() {}
+    virtual ~AbstractForm();
 
     ///
     /// \brief toolBarActions returns reference to the list with actions for the
@@ -33,7 +34,7 @@ public:
     ///
     QList<QAction *> &toolBarActions() { return mActions; }
 
-    QSqlTableModel *model() const;
+    QSqlQueryModel *model() const;
     RecordEditorWidget *recordEditor() const;
 
 protected slots:
@@ -54,6 +55,11 @@ protected:
     /// \param tableView The table view that displays data.
     ///
     void setupWidgets(QTableView *tableView);
+
+    ///
+    /// \brief refreshModel Refreshes the data model.
+    ///
+    void refreshModel();
 
     ///
     /// \brief prepareRecordForSaving Called before any save or update operation
@@ -86,6 +92,32 @@ protected:
     ///
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const = 0;
 
+    ///
+    /// \brief removeRow deletes the row from model/table view.
+    /// \param row row to remove.
+    /// \param error the SQL error if any.
+    /// \return \c true if removal was successful.
+    ///
+    virtual bool removeRow(int row, QSqlError &error) = 0;
+
+    ///
+    /// \brief insertRecord inserts a new record.
+    /// \param record The record to insert
+    /// \param error The SQL error if any.
+    /// \return \c true if insert vas successfull.
+    ///
+    virtual bool insertRecord(const QSqlRecord &record, QSqlError &error) = 0;
+
+    ///
+    /// \brief updateRecord Updates the record at given row.
+    /// \param row The row.
+    /// \param record The record.
+    /// \param error The SQL error if any.
+    /// \return \c true if update was successfull
+    ///
+    virtual bool updateRecord(int row, const QSqlRecord &record,
+                              QSqlError &error) = 0;
+
 private:
     QList<QAction *> mActions;
     QAction *mNewRecordAction;
@@ -93,7 +125,7 @@ private:
     QAction *mDeleteRecordAction;
     QAction *mRefreshAction;
 
-    QSqlTableModel *mModel;
+    QSqlQueryModel *mModel;
     RecordEditorWidget *mRecordEditor;
     QTableView *mTableView;
 };

@@ -23,9 +23,9 @@ SystemUserTableModel::SystemUserTableModel(const QVariantMap &columnLabels,
 
 QVariant SystemUserTableModel::data(const QModelIndex &idx, int role) const {
     if (role == Qt::DisplayRole) {
-        if (idx.column() == 1) {
+        if (idx.column() == 2) {
             return tr("<hidden>");
-        } else if (idx.column() == 5) {
+        } else if (idx.column() == 6) {
             return stringEnumeratedRoles[QSqlTableModel::data(idx, role)
                                              .toString()];
         }

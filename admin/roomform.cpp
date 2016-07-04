@@ -18,7 +18,7 @@ namespace paso {
 namespace admin {
 
 RoomForm::RoomForm(QWidget *parent)
-    : AbstractForm(createModelAndEditor(), parent), ui(new Ui::RoomForm) {
+    : TableForm(createModelAndEditor(), parent), ui(new Ui::RoomForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
     ui->tableView->hideColumn(0);

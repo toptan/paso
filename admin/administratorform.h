@@ -1,13 +1,13 @@
 #ifndef ADMINISTRATORFORM_H
 #define ADMINISTRATORFORM_H
 
-#include "abstractform.h"
+#include "tableform.h"
 
 #include <QAction>
 #include <QSqlRecord>
 #include <QWidget>
 
-class QSqlModel;
+class QSqlTableModel;
 
 namespace Ui {
 class AdministratorForm;
@@ -16,7 +16,7 @@ class AdministratorForm;
 namespace paso {
 namespace admin {
 
-class AdministratorForm : public AbstractForm {
+class AdministratorForm : public TableForm {
     Q_OBJECT
 
 public:

@@ -1,7 +1,7 @@
 #ifndef COURSEFORM_H
 #define COURSEFORM_H
 
-#include "abstractform.h"
+#include "tableform.h"
 #include "courseeditorwidget.h"
 #include "coursetablemodel.h"
 
@@ -16,7 +16,7 @@ class CourseForm;
 namespace paso {
 namespace admin {
 
-class CourseForm : public AbstractForm {
+class CourseForm : public TableForm {
     Q_OBJECT
 
 public:
