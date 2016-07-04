@@ -1,13 +1,9 @@
 #include "coursetablemodel.h"
 
-#include "data.h"
-
 #include <QSqlRecord>
 
 namespace paso {
 namespace admin {
-
-using namespace paso::data;
 
 CourseTableModel::CourseTableModel(const QVariantMap &columnLabels,
                                    QSqlDatabase db, QObject *parent)

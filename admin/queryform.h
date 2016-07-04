@@ -1,22 +1,21 @@
-#ifndef TABLEFORM_H
-#define TABLEFORM_H
+#ifndef QUERYFORM_H
+#define QUERYFORM_H
 
 #include "abstractform.h"
 
 #include <utility>
 
-class QSqlTableModel;
+class QSqlQueryModel;
 
 namespace paso {
 namespace admin {
 
-class TableForm : public AbstractForm {
-    Q_OBJECT
+class QueryForm : public AbstractForm {
 public:
-    explicit TableForm(
-        std::pair<QSqlTableModel *, RecordEditorWidget *> modelAndEditor,
+    explicit QueryForm(
+        std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
         QWidget *parent = nullptr);
-    virtual ~TableForm();
+    virtual ~QueryForm();
 
 protected:
     virtual bool removeRow(int row, QSqlError &error) override;
@@ -24,11 +23,7 @@ protected:
                               QSqlError &error) override;
     virtual bool updateRecord(int row, const QSqlRecord &record,
                               QSqlError &error) override;
-
-private:
-    QSqlTableModel *tableModel() const;
 };
 }
 }
-
-#endif // TABLEFORM_H
+#endif // QUERYFORM_H

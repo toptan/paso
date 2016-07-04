@@ -47,6 +47,7 @@ private:
     void setupAdministratorUI();
     void setupRoomManagerUI();
     void setupManagerUI();
+    void setupStudentUI();
 };
 }
 }

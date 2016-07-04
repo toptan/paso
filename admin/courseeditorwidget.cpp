@@ -17,7 +17,8 @@ bool CourseEditorWidget::fieldReadOnly(const QString &) {
     return false;
 }
 
-QWidget *CourseEditorWidget::createComboBoxForRecordField(const QString &field) {
+QWidget *
+CourseEditorWidget::createComboBoxForRecordField(const QString &field) {
     // No field requires combo box for editing.
     return nullptr;
 }

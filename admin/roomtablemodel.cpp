@@ -1,13 +1,9 @@
 #include "roomtablemodel.h"
 
-#include "data.h"
-
 #include <QSqlRecord>
 
 namespace paso {
 namespace admin {
-
-using namespace paso::data;
 
 RoomTableModel::RoomTableModel(const QVariantMap &columnLabels, QSqlDatabase db,
                                QObject *parent)

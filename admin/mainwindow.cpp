@@ -6,6 +6,7 @@
 #include "administratorform.h"
 #include "roomform.h"
 #include "courseform.h"
+#include "studentform.h"
 #include "data.h"
 
 #include <QDebug>
@@ -92,6 +93,7 @@ void MainWindow::createWidgets() {
         setupAdministratorUI();
         setupRoomManagerUI();
         setupManagerUI();
+        setupStudentUI();
         break;
     case SystemRole::ADMINISTRATOR:
         setupAdministratorUI();
@@ -123,6 +125,12 @@ void MainWindow::setupManagerUI() {
     auto form = new CourseForm(this);
     mMainWidget->addWidget(form);
     mWidgetChooserComboBox->addItem(tr("Course administration"));
+}
+
+void MainWindow::setupStudentUI() {
+    auto form = new StudentForm(this);
+    mMainWidget->addWidget(form);
+    mWidgetChooserComboBox->addItem(tr("Student administration"));
 }
 
 void MainWindow::onWidgetChooserCurrentIndexChanged(int index) {
