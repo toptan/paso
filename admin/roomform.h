@@ -1,9 +1,9 @@
 #ifndef ROOMFORM_H
 #define ROOMFORM_H
 
+#include "tableform.h"
 #include "roomeditorwidget.h"
 #include "roomtablemodel.h"
-#include "tableform.h"
 
 #include <QAction>
 #include <QSqlRecord>
@@ -37,7 +37,7 @@ protected:
 private:
     Ui::RoomForm *ui;
 
-    static std::pair<AbstractQueryModel *, RecordEditorWidget *>
+    static std::pair<QSqlTableModel *, RecordEditorWidget *>
     createModelAndEditor();
 };
 }

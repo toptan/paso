@@ -23,13 +23,13 @@ RoomForm::RoomForm(QWidget *parent)
     setupWidgets(ui->tableView);
     ui->tableView->hideColumn(0);
     ui->horizontalLayout->addWidget(recordEditor());
-    ui->horizontalLayout->setStretch(0, 3);
+    ui->horizontalLayout->setStretch(0, 2);
     ui->horizontalLayout->setStretch(1, 1);
 }
 
 RoomForm::~RoomForm() { delete ui; }
 
-pair<AbstractQueryModel *, RecordEditorWidget *> RoomForm::createModelAndEditor() {
+pair<QSqlTableModel *, RecordEditorWidget *> RoomForm::createModelAndEditor() {
     QVariantMap columnLabels = {{"room_uuid", QObject::tr("Room UUID")},
                                 {"name", QObject::tr("Name")},
                                 {"room_number", QObject::tr("Number")}};

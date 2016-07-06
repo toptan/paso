@@ -1,8 +1,6 @@
 #ifndef ROOMTABLEMODEL_H
 #define ROOMTABLEMODEL_H
 
-#include "abstractquerymodel.h"
-
 #include <QObject>
 #include <QSqlTableModel>
 #include <QVariantMap>
@@ -10,8 +8,7 @@
 namespace paso {
 namespace admin {
 
-class RoomTableModel : public QSqlTableModel,
-                       virtual public AbstractQueryModel {
+class RoomTableModel : public QSqlTableModel {
     Q_OBJECT
 public:
     explicit RoomTableModel(const QVariantMap &columnLabels,

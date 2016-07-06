@@ -1,36 +1,35 @@
 #include "tableform.h"
 
-#include "abstractquerymodel.h"
-
+#include <QSqlTableModel>
 #include <QSqlError>
 
 namespace paso {
 namespace admin {
 
 TableForm::TableForm(
-    std::pair<AbstractQueryModel *, RecordEditorWidget *> modelAndEditor,
+    std::pair<QSqlTableModel *, RecordEditorWidget *> modelAndEditor,
     QWidget *parent)
     : AbstractForm(modelAndEditor, parent) {}
 
 TableForm::~TableForm() {}
 
 bool TableForm::removeRow(int row, QSqlError &error) {
-    if (!model()->removeRow(row)) {
-        error = model()->lastError();
+    if (!tableModel()->removeRow(row)) {
+        error = tableModel()->lastError();
         return false;
     }
 
-    if (!model()->submitAll()) {
-        error = model()->lastError();
+    if (!tableModel()->submitAll()) {
+        error = tableModel()->lastError();
         return false;
     }
     return true;
 }
 
 bool TableForm::insertRecord(const QSqlRecord &record, QSqlError &error) {
-    model()->insertRecord(-1, record);
-    if (!model()->submitAll()) {
-        error = model()->lastError();
+    tableModel()->insertRecord(-1, record);
+    if (!tableModel()->submitAll()) {
+        error = tableModel()->lastError();
         return false;
     }
     return true;
@@ -38,13 +37,17 @@ bool TableForm::insertRecord(const QSqlRecord &record, QSqlError &error) {
 
 bool TableForm::updateRecord(int row, const QSqlRecord &record,
                              QSqlError &error) {
-    model()->setRecord(row, record);
-    if (!model()->submitAll()) {
-        error = model()->lastError();
+    tableModel()->setRecord(row, record);
+    if (!tableModel()->submitAll()) {
+        error = tableModel()->lastError();
         return false;
     }
 
     return true;
+}
+
+QSqlTableModel *TableForm::tableModel() const {
+    return dynamic_cast<QSqlTableModel *>(model());
 }
 }
 }

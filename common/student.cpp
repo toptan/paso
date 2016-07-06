@@ -1,7 +1,5 @@
 #include "student.h"
 
-#include <typeinfo>
-
 namespace paso {
 namespace data {
 namespace entity {
@@ -56,7 +54,7 @@ QSqlQuery Student::insertQuery(const QSqlDatabase &database,
     QSqlQuery query(database);
     query.prepare("INSERT INTO STUDENT (ID, INDEX_NUMBER, YEAR_OF_STUDY) "
                   "VALUES (:id, :index_number, :year_of_study)");
-    query.bindValue(":id", static_cast<quint64>(student.id()));
+    query.bindValue("id:", student.id());
     query.bindValue(":index_number", student.indexNumber());
     query.bindValue(":year_of_study", student.yearOfStudy());
     return query;
@@ -69,7 +67,7 @@ QSqlQuery Student::updateQuery(const QSqlDatabase &database,
                   "INDEX_NUMBER = :index_number, "
                   "YEAR_OF_STUDY = :year_of_study "
                   "WHERE ID = :id");
-    query.bindValue(":id", static_cast<quint64>(student.id()));
+    query.bindValue(":id", student.id());
     query.bindValue(":index_number", student.indexNumber());
     query.bindValue(":year_of_study", student.yearOfStudy());
     return query;

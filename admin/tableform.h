@@ -5,7 +5,7 @@
 
 #include <utility>
 
-class AbstractQueryModel;
+class QSqlTableModel;
 
 namespace paso {
 namespace admin {
@@ -14,7 +14,7 @@ class TableForm : public AbstractForm {
     Q_OBJECT
 public:
     explicit TableForm(
-        std::pair<AbstractQueryModel *, RecordEditorWidget *> modelAndEditor,
+        std::pair<QSqlTableModel *, RecordEditorWidget *> modelAndEditor,
         QWidget *parent = nullptr);
     virtual ~TableForm();
 
@@ -24,6 +24,9 @@ protected:
                               QSqlError &error) override;
     virtual bool updateRecord(int row, const QSqlRecord &record,
                               QSqlError &error) override;
+
+private:
+    QSqlTableModel *tableModel() const;
 };
 }
 }

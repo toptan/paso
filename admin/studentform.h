@@ -1,7 +1,6 @@
 #ifndef STUDENTFORM_H
 #define STUDENTFORM_H
 
-#include "pasodb.h"
 #include "queryform.h"
 #include "studenteditorwidget.h"
 #include "studentvalidator.h"
@@ -26,23 +25,23 @@ public:
 
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;
+
     virtual bool
     shouldEnableEditAction(const QSqlRecord &record) const override;
+
     virtual bool
     shouldEnableDeleteAction(const QSqlRecord &record) const override;
+
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
-    virtual bool insertRecord(const QSqlRecord &record,
-                              QSqlError &error) override;
 private slots:
     void onImport();
 
 private:
     Ui::StudentForm *ui;
     QAction *mImportAction;
-    paso::db::DBManager m_manager;
 
-    static std::pair<AbstractQueryModel *, RecordEditorWidget *>
+    static std::pair<QSqlQueryModel *, RecordEditorWidget *>
     createModelAndEditor();
 };
 }

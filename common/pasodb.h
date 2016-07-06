@@ -1,18 +1,18 @@
 #ifndef PASODB_H
 #define PASODB_H
 
-#include "course.h"
 #include "data.h"
-#include "room.h"
-#include "student.h"
 #include "systemuser.h"
+#include "room.h"
+#include "course.h"
+#include "student.h"
 
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QString>
-#include <QVariantMap>
 #include <QVector>
+#include <QVariantMap>
 
 #include <memory>
 
@@ -33,13 +33,6 @@ enum class CourseImportError {
     NAME_TOO_LONG, //!< Course name too long.
     DB_ERROR       //!< Generic database error.
 };
-
-///
-/// \brief recordToVariantMap converts SQL record to variant map.
-/// \param record The record to convert.
-/// \return The variant map with data from the record.
-///
-const QVariantMap recordToVariantMap(const QSqlRecord &record);
 
 ///
 /// \brief The DBManager class is responsible for all database operations.
@@ -222,8 +215,7 @@ public:
     /// \param error The sql error if any.
     /// \return The course import error.
     ///
-    CourseImportError importCourse(const QString &csvLine,
-                                   QSqlError &error) const;
+    CourseImportError importCourse(const QString &csvLine, QSqlError &error) const;
 
 private:
     const QString mDbName;

@@ -3,9 +3,9 @@
 
 #include "data.h"
 #include "pasodb.h"
-#include "systemusereditorwidget.h"
 #include "systemusertablemodel.h"
 #include "systemuservalidator.h"
+#include "systemusereditorwidget.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -29,12 +29,11 @@ AdministratorForm::AdministratorForm(QWidget *parent)
 
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 3);
-    ui->horizontalLayout->setStretch(1, 1);
 }
 
 AdministratorForm::~AdministratorForm() { delete ui; }
 
-pair<AbstractQueryModel *, RecordEditorWidget *>
+pair<QSqlTableModel *, RecordEditorWidget *>
 AdministratorForm::createModelAndEditor() {
     QVariantMap columnLabels = {{"username", QObject::tr("Username")},
                                 {"password", QObject::tr("Password")},

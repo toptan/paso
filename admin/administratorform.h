@@ -37,7 +37,7 @@ protected:
 private:
     Ui::AdministratorForm *ui;
 
-    static std::pair<AbstractQueryModel *, RecordEditorWidget *>
+    static std::pair<QSqlTableModel *, RecordEditorWidget *>
     createModelAndEditor();
 };
 }
