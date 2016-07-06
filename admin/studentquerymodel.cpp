@@ -13,8 +13,9 @@ StudentQueryModel::StudentQueryModel(const QVariantMap &columnLabels,
     : QSqlQueryModel(parent) {
     setQuery("SELECT P.ID, P.FIRST_NAME, P.LAST_NAME, P.EMAIL, P.RFID, "
              "S.INDEX_NUMBER, S.YEAR_OF_STUDY "
-             "FROM PERSON P JOIN STUDENT S USING (ID)", db);
-//    query().exec();
+             "FROM PERSON P JOIN STUDENT S USING (ID)",
+             db);
+    //    query().exec();
     qDebug() << lastError() << " SIZE: " << query().size();
     const auto &rec = record();
     for (auto i = 0; i < rec.count(); i++) {
@@ -27,6 +28,5 @@ QVariant StudentQueryModel::data(const QModelIndex &idx, int role) const {
     qDebug() << idx << " - " << retVal;
     return retVal;
 }
-
 }
 }

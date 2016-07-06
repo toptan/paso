@@ -54,7 +54,7 @@ QSqlQuery Student::insertQuery(const QSqlDatabase &database,
     QSqlQuery query(database);
     query.prepare("INSERT INTO STUDENT (ID, INDEX_NUMBER, YEAR_OF_STUDY) "
                   "VALUES (:id, :index_number, :year_of_study)");
-    query.bindValue("id:", student.id());
+    query.bindValue(":id:", student.id());
     query.bindValue(":index_number", student.indexNumber());
     query.bindValue(":year_of_study", student.yearOfStudy());
     return query;
