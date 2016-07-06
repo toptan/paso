@@ -1,5 +1,7 @@
 #include "abstractform.h"
 
+#include "abstractquerymodel.h"
+
 #include <QAction>
 #include <QDebug>
 #include <QHeaderView>
@@ -7,14 +9,13 @@
 #include <QSqlError>
 #include <QSqlField>
 #include <QSqlQuery>
-#include <QSqlTableModel>
 #include <QTableView>
 
 namespace paso {
 namespace admin {
 
 AbstractForm::AbstractForm(
-    std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
+    std::pair<AbstractQueryModel *, RecordEditorWidget *> modelAndEditor,
     QWidget *parent)
     : QWidget(parent), mActions(), mModel(modelAndEditor.first),
       mRecordEditor(modelAndEditor.second), mTableView(nullptr) {
@@ -24,7 +25,7 @@ AbstractForm::AbstractForm(
 
 AbstractForm::~AbstractForm() {}
 
-QSqlQueryModel *AbstractForm::model() const { return mModel; }
+AbstractQueryModel *AbstractForm::model() const { return mModel; }
 
 RecordEditorWidget *AbstractForm::recordEditor() const { return mRecordEditor; }
 

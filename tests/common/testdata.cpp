@@ -6,6 +6,7 @@
 #include "course.h"
 #include "student.h"
 
+#include <memory>
 #include <QDebug>
 #include <QJsonDocument>
 #include <QUuid>

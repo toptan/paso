@@ -3,17 +3,18 @@
 
 #include "recordeditorwidget.h"
 
-#include <utility>
 #include <QList>
 #include <QWidget>
+#include <utility>
 
 class QAction;
-class QSqlQueryModel;
 class QTableView;
 class QSqlError;
 
 namespace paso {
 namespace admin {
+
+class AbstractQueryModel;
 
 ///
 /// \brief The AbstractForm class is a base abstract class for all forms that
@@ -23,7 +24,7 @@ class AbstractForm : public QWidget {
     Q_OBJECT
 public:
     explicit AbstractForm(
-        std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
+        std::pair<AbstractQueryModel *, RecordEditorWidget *> modelAndEditor,
         QWidget *parent = nullptr);
     virtual ~AbstractForm();
 
@@ -34,7 +35,7 @@ public:
     ///
     QList<QAction *> &toolBarActions() { return mActions; }
 
-    QSqlQueryModel *model() const;
+    AbstractQueryModel *model() const;
     RecordEditorWidget *recordEditor() const;
 
 protected slots:
@@ -125,7 +126,7 @@ private:
     QAction *mDeleteRecordAction;
     QAction *mRefreshAction;
 
-    QSqlQueryModel *mModel;
+    AbstractQueryModel *mModel;
     RecordEditorWidget *mRecordEditor;
     QTableView *mTableView;
 };

@@ -7,13 +7,14 @@ namespace admin {
 
 RoomTableModel::RoomTableModel(const QVariantMap &columnLabels, QSqlDatabase db,
                                QObject *parent)
-    : QSqlTableModel(parent, db) {
+    : AbstractQueryModel("", parent), QSqlTableModel(parent, db) {
     setTable("room");
     setEditStrategy(QSqlTableModel::OnManualSubmit);
-    select();
-    const auto &rec = record();
+    QSqlTableModel::select();
+    const auto &rec = QSqlTableModel::record();
     for (auto i = 0; i < rec.count(); i++) {
-        setHeaderData(i, Qt::Horizontal, columnLabels[rec.fieldName(i)]);
+        QSqlTableModel::setHeaderData(i, Qt::Horizontal,
+                                      columnLabels[rec.fieldName(i)]);
     }
 }
 }

@@ -32,7 +32,7 @@ CourseForm::CourseForm(QWidget *parent)
     ui->tableView->hideColumn(0);
 
     ui->horizontalLayout->addWidget(recordEditor());
-    ui->horizontalLayout->setStretch(0, 2);
+    ui->horizontalLayout->setStretch(0, 3);
     ui->horizontalLayout->setStretch(1, 1);
     auto separator = new QAction(this);
     separator->setSeparator(true);

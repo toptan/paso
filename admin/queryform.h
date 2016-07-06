@@ -13,14 +13,12 @@ namespace admin {
 class QueryForm : public AbstractForm {
 public:
     explicit QueryForm(
-        std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
+        std::pair<AbstractQueryModel *, RecordEditorWidget *> modelAndEditor,
         QWidget *parent = nullptr);
     virtual ~QueryForm();
 
 protected:
     virtual bool removeRow(int row, QSqlError &error) override;
-    virtual bool insertRecord(const QSqlRecord &record,
-                              QSqlError &error) override;
     virtual bool updateRecord(int row, const QSqlRecord &record,
                               QSqlError &error) override;
 };

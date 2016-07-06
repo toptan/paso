@@ -1,13 +1,17 @@
 #include "studentform.h"
 #include "ui_studentform.h"
 
-#include "studentquerymodel.h"
+#include "abstractquerymodel.h"
+
 #include "studenteditorwidget.h"
+#include "studentquerymodel.h"
 #include "studentvalidator.h"
 
-#include "pasodb.h"
+#include <QDebug>
+#include <QSqlError>
 
 using namespace paso::db;
+using namespace paso::data::entity;
 
 using namespace std;
 
@@ -15,12 +19,13 @@ namespace paso {
 namespace admin {
 
 StudentForm::StudentForm(QWidget *parent)
-    : QueryForm(createModelAndEditor(), parent), ui(new Ui::StudentForm) {
+    : QueryForm(createModelAndEditor(), parent), ui(new Ui::StudentForm),
+      m_manager() {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
-
+    ui->tableView->hideColumn(0);
     ui->horizontalLayout->addWidget(recordEditor());
-    ui->horizontalLayout->setStretch(0, 2);
+    ui->horizontalLayout->setStretch(0, 3);
     ui->horizontalLayout->setStretch(1, 1);
     auto separator = new QAction(this);
     separator->setSeparator(true);
@@ -33,7 +38,7 @@ StudentForm::StudentForm(QWidget *parent)
 
 StudentForm::~StudentForm() { delete ui; }
 
-std::pair<QSqlQueryModel *, RecordEditorWidget *>
+std::pair<AbstractQueryModel *, RecordEditorWidget *>
 StudentForm::createModelAndEditor() {
     QVariantMap columnLabels = {
         {"first_name", QObject::tr("First Name")},
@@ -57,7 +62,7 @@ StudentForm::createModelAndEditor() {
                                               editor->fieldEditors(), editor));
     editor->clearData();
 
-    return make_pair<QSqlQueryModel *, RecordEditorWidget *>(model, editor);
+    return make_pair<AbstractQueryModel *, RecordEditorWidget *>(model, editor);
 }
 
 void StudentForm::prepareRecordForSaving(QSqlRecord &record) {
@@ -81,6 +86,14 @@ bool StudentForm::shouldDeleteRecord(const QSqlRecord &record) const {
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     return msgBox.exec() == QMessageBox::Yes;
+}
+
+bool StudentForm::insertRecord(const QSqlRecord &record, QSqlError &error) {
+    auto map = recordToVariantMap(record);
+    qDebug() << map;
+    Student student(map);
+    m_manager.saveStudent(student, error);
+    return error.type() == QSqlError::NoError;
 }
 
 void StudentForm::onImport() {

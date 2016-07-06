@@ -98,7 +98,7 @@ QSqlQuery SystemUser::updateQuery(const QSqlDatabase &database,
     query.prepare("UPDATE SYSTEM_USER SET USERNAME = :username, PASSWORD = "
                   ":password, FIRST_NAME = :first_name, LAST_NAME = "
                   ":last_name, EMAIL = :email, ROLE = :role WHERE ID = :id");
-    query.bindValue(":id", user.id());
+    query.bindValue(":id", static_cast<quint64>(user.id()));
     query.bindValue(":username", user.username());
     query.bindValue(":password", user.password());
     query.bindValue(":first_name", user.firstName());
