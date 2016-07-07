@@ -67,12 +67,12 @@ shared_ptr<ValidationError> CourseValidator::validateName() const {
     if (text.isEmpty()) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
-            tr("The name of the room cannot be left emtpy."));
+            tr("The name of the course cannot be left emtpy."));
     }
     if (text.size() > 64) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
-            tr("The name of the room cannot exceed 64 characters."));
+            tr("The name of the course cannot exceed 64 characters."));
     }
     return nullptr;
 }

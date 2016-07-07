@@ -2,6 +2,7 @@
 
 #include "data.h"
 
+#include <QApplication>
 #include <QSqlRecord>
 
 namespace paso {
@@ -26,8 +27,11 @@ QVariant SystemUserTableModel::data(const QModelIndex &idx, int role) const {
         if (idx.column() == 2) {
             return tr("<hidden>");
         } else if (idx.column() == 6) {
-            return tr(stringEnumeratedRoles[QSqlTableModel::data(idx, role)
-                                                .toString()].toStdString().c_str());
+            return QApplication::instance()->translate(
+                "QObject", stringEnumeratedRoles[QSqlTableModel::data(idx, role)
+                                                     .toString()]
+                               .toStdString()
+                               .c_str());
         }
     }
     return QSqlTableModel::data(idx, role);

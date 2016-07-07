@@ -331,12 +331,12 @@
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="70"/>
-        <source>The name of the room cannot be left emtpy.</source>
+        <source>The name of the course cannot be left emtpy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="75"/>
-        <source>The name of the room cannot exceed 64 characters.</source>
+        <source>The name of the course cannot exceed 64 characters.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -486,7 +486,7 @@
 <context>
     <name>paso::admin::SystemUserTableModel</name>
     <message>
-        <location filename="../admin/systemusertablemodel.cpp" line="27"/>
+        <location filename="../admin/systemusertablemodel.cpp" line="28"/>
         <source>&lt;hidden&gt;</source>
         <translation type="unfinished"></translation>
     </message>

@@ -27,7 +27,7 @@ enum class SystemRole {
 /// \brief The enumeratedRoles provides translatable system roles for displaying
 /// text.
 ///
-static const QMap<SystemRole, QString> enumeratedRoles = {
+const QMap<SystemRole, QString> enumeratedRoles = {
     {SystemRole::ADMINISTRATOR, QObject::tr("Administrator")},
     {SystemRole::MANAGER, QObject::tr("Manager")},
     {SystemRole::ROOM_MANAGER, QObject::tr("Room manager")},
@@ -38,7 +38,7 @@ static const QMap<SystemRole, QString> enumeratedRoles = {
 /// \brief The stringEnumeratedRoles provides translatable system roles from
 /// displaying text out if their string representations.
 ///
-static const QMap<QString, QString> stringEnumeratedRoles = {
+const QMap<QString, QString> stringEnumeratedRoles = {
     {"ADMINISTRATOR", QObject::tr("Administrator")},
     {"MANAGER", QObject::tr("Manager")},
     {"ROOM_MANAGER", QObject::tr("Room manager")},

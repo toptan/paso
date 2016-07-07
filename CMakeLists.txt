@@ -23,12 +23,6 @@ find_package(Qt5Test    5.5 REQUIRED)
 find_package(Qt5Widgets 5.5 REQUIRED)
 find_package(Qt5LinguistTools)
 
-# Add subdirectories
-add_subdirectory(admin)
-add_subdirectory(common)
-add_subdirectory(server)
-add_subdirectory(tests)
-
 # Adding translations
 file(GLOB COMMON_HEADERS ${CMAKE_SOURCE_DIR}/common/*.h)
 file(GLOB SERVER_HEADERS ${CMAKE_SOURCE_DIR}/server/*.h)
@@ -63,3 +57,10 @@ endif()
 
 add_custom_target(translations DEPENDS ${QM_FILES})
 set_property(DIRECTORY PROPERTY CLEAN_NO_CUSTOM TRUE)
+
+# Add subdirectories
+add_subdirectory(admin)
+add_subdirectory(common)
+add_subdirectory(server)
+add_subdirectory(tests)
+

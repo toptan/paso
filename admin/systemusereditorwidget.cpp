@@ -2,6 +2,7 @@
 
 #include "data.h"
 
+#include <QApplication>
 #include <QComboBox>
 #include <QWidget>
 
@@ -32,7 +33,10 @@ SystemUserEditorWidget::createComboBoxForRecordField(const QString &field) {
 
     auto combo = new QComboBox(this);
     for (const auto &role : enumeratedRoles.keys()) {
-        combo->addItem(enumeratedRoles[role], roleToString(role));
+        combo->addItem(
+            QApplication::instance()->translate(
+                "QObject", enumeratedRoles[role].toStdString().c_str()),
+            roleToString(role));
     }
     combo->setEnabled(false);
     combo->setCurrentIndex(-1);
