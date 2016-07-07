@@ -37,7 +37,7 @@ std::pair<QSqlQueryModel *, RecordEditorWidget *>
 StudentForm::createModelAndEditor() {
     QVariantMap columnLabels = {
         {"first_name", QObject::tr("First Name")},
-        {"last_name", QObject::tr("LastName")},
+        {"last_name", QObject::tr("Last Name")},
         {"email", QObject::tr("Email")},
         {"rfid", QObject::tr("RFID")},
         {"index_number", QObject::tr("Index Number")},

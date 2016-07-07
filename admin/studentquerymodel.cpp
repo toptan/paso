@@ -16,7 +16,7 @@ StudentQueryModel::StudentQueryModel(const QVariantMap &columnLabels,
              "FROM PERSON P JOIN STUDENT S USING (ID)",
              db);
     //    query().exec();
-    qDebug() << lastError() << " SIZE: " << query().size();
+//    qDebug() << lastError() << " SIZE: " << query().size();
     const auto &rec = record();
     for (auto i = 0; i < rec.count(); i++) {
         setHeaderData(i, Qt::Horizontal, columnLabels[rec.fieldName(i)]);
@@ -25,7 +25,7 @@ StudentQueryModel::StudentQueryModel(const QVariantMap &columnLabels,
 
 QVariant StudentQueryModel::data(const QModelIndex &idx, int role) const {
     auto retVal = QSqlQueryModel::data(idx, role);
-    qDebug() << idx << " - " << retVal;
+//    qDebug() << idx << " - " << retVal;
     return retVal;
 }
 }
