@@ -82,7 +82,7 @@ QSqlQuery Person::updateQuery(const QSqlDatabase &database,
                   "EMAIL = :email, "
                   "RFID = :rfid "
                   "WHERE ID = :id");
-    query.bindValue(":id", person.id());
+    query.bindValue(":id", static_cast<quint64>(person.id()));
     query.bindValue(":first_name", person.firstName());
     query.bindValue(":last_name", person.lastName());
     query.bindValue(":email", person.email());
@@ -97,7 +97,7 @@ QSqlQuery Person::updateQuery(const QSqlDatabase &database,
 QSqlQuery Person::deleteQuery(const QSqlDatabase &database, uint64_t id) {
     QSqlQuery query(database);
     query.prepare("DELETE FROM PERSON WHERE ID = :id");
-    query.bindValue(":id", id);
+    query.bindValue(":id", static_cast<quint64>(id));
     return query;
 }
 

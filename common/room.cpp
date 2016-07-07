@@ -61,7 +61,7 @@ QSqlQuery Room::updateQuery(const QSqlDatabase &database, const Room &room) {
     QSqlQuery query(database);
     query.prepare("UPDATE ROOM SET ROOM_UUID = :uuid, NAME = :name, "
                   "ROOM_NUMBER = :number WHERE ID = :id");
-    query.bindValue(":id", room.id());
+    query.bindValue(":id", static_cast<quint64>(room.id()));
     query.bindValue(":uuid", room.roomUUID());
     query.bindValue(":name", room.name());
     query.bindValue(":number", room.number());

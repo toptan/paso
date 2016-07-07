@@ -58,7 +58,7 @@ QSqlQuery Course::updateQuery(const QSqlDatabase &database,
     QSqlQuery query(database);
     query.prepare(
         "UPDATE COURSE SET CODE = :code, NAME = :name WHERE ID = :id");
-    query.bindValue(":id", course.id());
+    query.bindValue(":id", static_cast<quint64>(course.id()));
     query.bindValue(":code", course.code());
     query.bindValue(":name", course.name());
     return query;

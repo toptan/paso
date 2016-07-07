@@ -1,15 +1,17 @@
 #include "testdata.h"
 
-#include "data.h"
-#include "systemuser.h"
-#include "room.h"
 #include "course.h"
+#include "data.h"
+#include "room.h"
 #include "student.h"
+#include "systemuser.h"
 
 #include <QDebug>
 #include <QJsonDocument>
 #include <QUuid>
+#include <memory>
 
+using namespace std;
 using namespace paso::data;
 using namespace paso::data::entity;
 
@@ -17,8 +19,8 @@ void TestData::testComparingObjectWithItselfIsAlwaysTrue() {
     SystemUser user("user", "user_pass", "John", "Doe", "john.doe@internet.com",
                     SystemRole::MANAGER);
     auto room = new Room(QUuid::createUuid().toString(), "Room 42", "42");
-    std::shared_ptr<Course> course =
-        std::make_shared<Course>("IR3SP", "Sistemsko programiranje");
+    shared_ptr<Course> course =
+        make_shared<Course>("IR3SP", "Sistemsko programiranje");
     Student student("Toplica", "Tanasković", "toptan@foo.com", "164/96", 5, 123,
                     "RRFFIIDD");
     QVERIFY(user == user);
