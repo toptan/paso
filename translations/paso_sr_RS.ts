@@ -4,7 +4,7 @@
 <context>
     <name>AdministratorForm</name>
     <message>
-        <location filename="../admin/administratorform.ui" line="14"/>
+        <location filename="../admin/systemusersform.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30,22 +30,22 @@
     <message>
         <location filename="../admin/logindialog.ui" line="14"/>
         <source>PaSo Administration Login</source>
-        <translation>ПаСо Администрација пријава</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/logindialog.ui" line="28"/>
         <source>&amp;Username</source>
-        <translation>&amp;Корисничко име</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/logindialog.ui" line="41"/>
         <source>&amp;Password</source>
-        <translation>&amp;Лозинка</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/logindialog.ui" line="54"/>
         <source>&amp;Server</source>
-        <translation>&amp;Сервер</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -53,113 +53,113 @@
     <message>
         <location filename="../admin/mainwindow.ui" line="14"/>
         <source>MainWindow</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../admin/courseform.cpp" line="51"/>
-        <source>Code</source>
-        <translation>Шифра</translation>
-    </message>
-    <message>
-        <location filename="../admin/courseform.cpp" line="51"/>
-        <source>Course</source>
-        <translation>Предмет</translation>
-    </message>
-    <message>
-        <location filename="../admin/administratorform.cpp" line="38"/>
-        <source>Username</source>
-        <translation>Корисничко име</translation>
-    </message>
-    <message>
-        <location filename="../admin/administratorform.cpp" line="39"/>
-        <source>Password</source>
-        <translation>Лозинка</translation>
-    </message>
-    <message>
-        <location filename="../admin/administratorform.cpp" line="40"/>
-        <location filename="../admin/studentform.cpp" line="39"/>
-        <source>First Name</source>
-        <translation>Име</translation>
-    </message>
-    <message>
-        <location filename="../admin/administratorform.cpp" line="41"/>
+        <location filename="../admin/systemusersform.cpp" line="40"/>
         <location filename="../admin/studentform.cpp" line="40"/>
-        <source>Last Name</source>
-        <translation>Презиме</translation>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/administratorform.cpp" line="42"/>
+        <location filename="../admin/systemusersform.cpp" line="41"/>
         <location filename="../admin/studentform.cpp" line="41"/>
-        <source>Email</source>
-        <translation>Е-пошта</translation>
+        <source>Last Name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/administratorform.cpp" line="43"/>
-        <source>Role</source>
-        <translation>Улога</translation>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="42"/>
+        <source>Email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="43"/>
+        <source>RFID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="44"/>
+        <source>Index Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="45"/>
+        <source>Year of Study</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomform.cpp" line="33"/>
         <source>Room UUID</source>
-        <translation>УУИД собе</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomform.cpp" line="34"/>
         <source>Name</source>
-        <translation>Назив</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomform.cpp" line="35"/>
         <source>Number</source>
-        <translation>Број</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="42"/>
-        <source>RFID</source>
-        <translation>РФИД</translation>
+        <location filename="../admin/courseform.cpp" line="51"/>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="43"/>
-        <source>Index Number</source>
-        <translation>Број индекса</translation>
+        <location filename="../admin/courseform.cpp" line="51"/>
+        <source>Course</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="44"/>
-        <source>Year of Study</source>
-        <translation>Година студија</translation>
+        <location filename="../admin/systemusersform.cpp" line="38"/>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/systemusersform.cpp" line="39"/>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
+        <source>Role</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../common/data.h" line="31"/>
         <location filename="../common/data.h" line="42"/>
         <source>Administrator</source>
-        <translation>Администратор</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../common/data.h" line="32"/>
         <location filename="../common/data.h" line="43"/>
         <source>Manager</source>
-        <translation>Управник</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../common/data.h" line="33"/>
         <location filename="../common/data.h" line="44"/>
         <source>Room manager</source>
-        <translation>Управник соба</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../common/data.h" line="34"/>
         <location filename="../common/data.h" line="45"/>
         <source>Scheduler</source>
-        <translation>Заказивач</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../common/data.h" line="35"/>
         <location filename="../common/data.h" line="46"/>
         <source>Super user</source>
-        <translation>Супер корисник</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -181,43 +181,35 @@
 <context>
     <name>paso::admin::AbstractForm</name>
     <message>
-        <location filename="../admin/abstractform.cpp" line="52"/>
+        <location filename="../admin/abstractform.cpp" line="54"/>
         <source>New</source>
-        <translation>Нов запис</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="57"/>
+        <location filename="../admin/abstractform.cpp" line="59"/>
         <source>Edit</source>
-        <translation>Уреди</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="63"/>
+        <location filename="../admin/abstractform.cpp" line="65"/>
         <source>Delete</source>
-        <translation>Обриши</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="73"/>
+        <location filename="../admin/abstractform.cpp" line="75"/>
         <source>Refresh data</source>
-        <translation>Освежи податке</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="119"/>
+        <location filename="../admin/abstractform.cpp" line="121"/>
         <source>There was an error while deleting record from the database.</source>
-        <translation>Дошло је то грешке приликом брисања записа из базе.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="153"/>
-        <location filename="../admin/abstractform.cpp" line="176"/>
+        <location filename="../admin/abstractform.cpp" line="155"/>
+        <location filename="../admin/abstractform.cpp" line="178"/>
         <source>There was an error while saving data.</source>
-        <translation>Дошло је до грешке приликом снимања подата.</translation>
-    </message>
-</context>
-<context>
-    <name>paso::admin::AdministratorForm</name>
-    <message>
-        <location filename="../admin/administratorform.cpp" line="90"/>
-        <source>Do you want to delete selected system user?</source>
-        <translation>Да ли стварно желите да обришете одабраног корисника?</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -225,72 +217,72 @@
     <message>
         <location filename="../admin/courseform.cpp" line="39"/>
         <source>Import</source>
-        <translation>Увоз</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="92"/>
         <source>Do you want to delete selected course from the system?</source>
-        <translation>Да ли стварно желите да обришете одабрани предмет из система?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="100"/>
         <source>Open courses import file</source>
-        <translation>Отвори датотеку за увоз предмета</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="107"/>
         <source>The file %1 cannot be opened.</source>
-        <translation>Датотека %1 не може да се отвори.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="117"/>
         <source>Importing course data...</source>
-        <translation>Увожење података о предметима...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="136"/>
         <source>Importing course data from %1</source>
-        <translation>Увожење података о предметима из %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="145"/>
         <source>OK.</source>
-        <translation>ОК.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="149"/>
         <source>The course code and name must be comma separated.</source>
-        <translation>Шифра предмета и предмет морају да буду одвојени зарезом.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="154"/>
         <source>The course code is missing.</source>
-        <translation>Недостаје шифра предмета.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="159"/>
         <source>The course code exceeds 8 characters.</source>
-        <translation>Шифра предмета је дужа од осам знакова.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="164"/>
         <source>The course name is missing.</source>
-        <translation>Недостаје име предмета.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="169"/>
         <source>The course name exceeds 64 characters.</source>
-        <translation>Име предмета је дуже од 64 знака.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="184"/>
         <source>Import finished without errors.</source>
-        <translation>Увожење је завршено без грешака.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="187"/>
         <source>Not all lines could be imported. Please see messages above.</source>
-        <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -302,42 +294,42 @@
         <location filename="../admin/coursevalidator.cpp" line="69"/>
         <location filename="../admin/coursevalidator.cpp" line="74"/>
         <source>Invalid data entered</source>
-        <translation>Унешени су неисправни подаци</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="36"/>
         <source>The course code has to be provided.</source>
-        <translation>Морате унети шифру предмета.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="42"/>
         <source>The course code cannot exceed 8 characters.</source>
-        <translation>Шифра предмета не може бити дужа од осам знакова.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="50"/>
         <source>Critical error</source>
-        <translation>Критична грешка</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="51"/>
         <source>There was an error working with the database.</source>
-        <translation>Дошло је до грешке при раду са базом података.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="57"/>
         <source>The course with entered code already exists in the system.</source>
-        <translation>Шифра предмета коју сте унеки већ постоји у систему.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="70"/>
         <source>The name of the course cannot be left emtpy.</source>
-        <translation>Мора постојати име предмета.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="75"/>
         <source>The name of the course cannot exceed 64 characters.</source>
-        <translation>Име предмета не може да буде дуже од 64 знака.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -345,22 +337,22 @@
     <message>
         <location filename="../admin/logindialog.cpp" line="29"/>
         <source>You need to provide username.</source>
-        <translation>Морате унети корисничко име.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/logindialog.cpp" line="34"/>
         <source>You need to provide password.</source>
-        <translation>Морате унети лозинку.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/logindialog.cpp" line="39"/>
         <source>You need to provide server name.</source>
-        <translation>Морате унети име сервера.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/logindialog.cpp" line="67"/>
         <source>Login failed.</source>
-        <translation>Неуспешна пријава.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -368,37 +360,37 @@
     <message>
         <location filename="../admin/mainwindow.cpp" line="58"/>
         <source>Critical error</source>
-        <translation>Критична грешка</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/mainwindow.cpp" line="59"/>
         <source>Could not establish database connection.</source>
-        <translation>Није могуће успоставити везу са базом података.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/mainwindow.cpp" line="72"/>
         <source>Main Toolbar</source>
-        <translation>Главна трака са алаткама</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/mainwindow.cpp" line="115"/>
         <source>System users administration</source>
-        <translation>Управљање системским корисницима</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/mainwindow.cpp" line="121"/>
         <source>Room administration</source>
-        <translation>Управљање просторијама</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/mainwindow.cpp" line="127"/>
         <source>Course administration</source>
-        <translation>Управљање предметима</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/mainwindow.cpp" line="133"/>
         <source>Student administration</source>
-        <translation>Управљање студентима</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -406,7 +398,7 @@
     <message>
         <location filename="../admin/roomform.cpp" line="76"/>
         <source>Do you want to delete selected room from the system?</source>
-        <translation>Да ли стварно желите да обришете одабрану просторију из система?</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -420,67 +412,67 @@
         <location filename="../admin/roomvalidator.cpp" line="90"/>
         <location filename="../admin/roomvalidator.cpp" line="105"/>
         <source>Invalid data entered</source>
-        <translation>Унешени су неисправни подаци</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="40"/>
         <source>Room UUID has to be provided.</source>
-        <translation>Морате унети УУИД просторије.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="48"/>
         <location filename="../admin/roomvalidator.cpp" line="99"/>
         <source>Critical error</source>
-        <translation>Критична грешка</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="49"/>
         <location filename="../admin/roomvalidator.cpp" line="100"/>
         <source>There was an error working with the database.</source>
-        <translation>Дошло је до грешке при раду са базом података.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="55"/>
         <source>The room UUID you entered is not unique.</source>
-        <translation>Унети УУИД просторије није јединствен.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="67"/>
         <source>The name of the room cannot be left emtpy.</source>
-        <translation>Морате унети име просторије.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="72"/>
         <source>The name of the room cannot exceed 64 characters.</source>
-        <translation>Име просторије не може да буде дуже од 64 знака.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="85"/>
         <source>The room number has to be provided.</source>
-        <translation>Морате унети број просторије.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="91"/>
         <source>The room number cannot exceed 8 characters.</source>
-        <translation>Број просторије не може да буде дужи од осам знакова.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="106"/>
         <source>The room with entered number already exists in the system.</source>
-        <translation>Просторија са унетим бројем већ постоји у систему.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>paso::admin::StudentForm</name>
     <message>
-        <location filename="../admin/studentform.cpp" line="27"/>
+        <location filename="../admin/studentform.cpp" line="28"/>
         <source>Import</source>
-        <translation>Увоз</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="80"/>
+        <location filename="../admin/studentform.cpp" line="81"/>
         <source>Do you want to delete selected student from the system?</source>
-        <translation>Да ли стварно желите да обришете одабраног студента из система?</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -488,7 +480,7 @@
     <message>
         <location filename="../admin/systemusertablemodel.cpp" line="28"/>
         <source>&lt;hidden&gt;</source>
-        <translation>&lt;скривено&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -503,53 +495,61 @@
         <location filename="../admin/systemuservalidator.cpp" line="111"/>
         <location filename="../admin/systemuservalidator.cpp" line="126"/>
         <source>Invalid data entered</source>
-        <translation>Унешени су неисправни подаци</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="50"/>
         <source>The username has to be at least four characters long and cannot be longer than sixteen.</source>
-        <translation>Корисничко име мора да има најмање четири, а највише шеснаест знакова.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="59"/>
         <source>Critical error</source>
-        <translation>Критична грешка</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="60"/>
         <source>There was an error working with the database.</source>
-        <translation>Дошло је до грешке при раду са базом података.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="66"/>
         <source>A user with entered username already exists in the system.</source>
-        <translation>Корисник са унетим корисничким именом већ постоји у систему.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="79"/>
         <source>The password has to be at least eight characters long and cannot be longer than sixteen.</source>
-        <translation>Лозинка мора да има најмање четири, а највише шеснаест знакова.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="91"/>
         <source>You need to specify user&apos;s first name.</source>
-        <translation>Морате унети име корисника.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="96"/>
         <location filename="../admin/systemuservalidator.cpp" line="112"/>
         <source>The first name cannot be longer than 32 characters.</source>
-        <translation>Име корисника не може да буде дуже од 32 знака.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="107"/>
         <source>You need to specify user&apos;s last name.</source>
-        <translation>Морате унети презиме корисника.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="127"/>
         <source>You need to provide a valid email address for the user.</source>
-        <translation>Морате унети исправно адресу е-поште корисника.</translation>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::SystemUsersForm</name>
+    <message>
+        <location filename="../admin/systemusersform.cpp" line="90"/>
+        <source>Do you want to delete selected system user?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

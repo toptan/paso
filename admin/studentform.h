@@ -34,6 +34,9 @@ protected:
 
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
+    virtual bool insertRecord(const QSqlRecord &record,
+                              QSqlError &error) override;
+
 private slots:
     void onImport();
 

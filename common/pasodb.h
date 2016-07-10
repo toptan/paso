@@ -41,6 +41,13 @@ class DBManager : public QObject {
     Q_OBJECT
 public:
     ///
+    /// \brief recordToVariantMap Converts SQL record to variant map.
+    /// \param record The record to convert.
+    /// \return The variant map containing the same data as record.
+    ///
+    static const QVariantMap recordToVariantMap(const QSqlRecord &record);
+
+    ///
     /// \brief DBManager Constructs database manager that will use database with
     /// given name.
     /// \param dbName the name of database to use.
@@ -215,7 +222,8 @@ public:
     /// \param error The sql error if any.
     /// \return The course import error.
     ///
-    CourseImportError importCourse(const QString &csvLine, QSqlError &error) const;
+    CourseImportError importCourse(const QString &csvLine,
+                                   QSqlError &error) const;
 
 private:
     const QString mDbName;

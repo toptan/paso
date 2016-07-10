@@ -13,7 +13,7 @@ using namespace std;
 using namespace paso::data;
 using namespace paso::data::entity;
 
-const QVariantMap recordToVariantMap(const QSqlRecord &record) {
+const QVariantMap DBManager::recordToVariantMap(const QSqlRecord &record) {
     QVariantMap retVal;
     for (auto i = 0; i < record.count(); i++) {
         retVal.insert(record.fieldName(i).toUpper(), record.value(i));

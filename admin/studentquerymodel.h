@@ -1,22 +1,28 @@
 #ifndef STUDENTQUERYMODEL_H
 #define STUDENTQUERYMODEL_H
 
+#include "refreshablesqlquerymodel.h"
+
+#include "pasodb.h"
+#include "student.h"
+
 #include <QObject>
-#include <QSqlQueryModel>
 #include <QVariantMap>
+
+using namespace paso::db;
+using namespace paso::data::entity;
 
 namespace paso {
 namespace admin {
 
-class StudentQueryModel : public QSqlQueryModel {
+class StudentQueryModel : public RefreshableSqlQueryModel {
     Q_OBJECT
 public:
-    explicit StudentQueryModel(const QVariantMap &columnLabels,
-                               QSqlDatabase db = QSqlDatabase(),
+    explicit StudentQueryModel(const QVariantMap &columnLabels, QSqlDatabase db,
                                QObject *parent = nullptr);
 
-    virtual QVariant data(const QModelIndex &idx,
-                          int role = Qt::DisplayRole) const override;
+private:
+    static const QString QUERY;
 };
 }
 }

@@ -2,6 +2,7 @@
 #define QUERYFORM_H
 
 #include "abstractform.h"
+#include "pasodb.h"
 
 #include <utility>
 
@@ -18,11 +19,14 @@ public:
     virtual ~QueryForm();
 
 protected:
+    db::DBManager &manager();
+
     virtual bool removeRow(int row, QSqlError &error) override;
-    virtual bool insertRecord(const QSqlRecord &record,
-                              QSqlError &error) override;
     virtual bool updateRecord(int row, const QSqlRecord &record,
                               QSqlError &error) override;
+
+private:
+    db::DBManager mManager; //!< The dabase manager to use.
 };
 }
 }

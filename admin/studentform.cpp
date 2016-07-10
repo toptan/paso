@@ -7,8 +7,9 @@
 
 #include "pasodb.h"
 
-using namespace paso::db;
+#include <QDebug>
 
+using namespace paso::db;
 using namespace std;
 
 namespace paso {
@@ -43,8 +44,8 @@ StudentForm::createModelAndEditor() {
         {"index_number", QObject::tr("Index Number")},
         {"year_of_study", QObject::tr("Year of Study")}};
 
-    auto model = new StudentQueryModel(columnLabels,
-                                       QSqlDatabase::database(DEFAULT_DB_NAME));
+    StudentQueryModel *model = new StudentQueryModel(
+        columnLabels, QSqlDatabase::database(DEFAULT_DB_NAME));
     FieldTypes fieldTypes = {{"first_name", FieldType::LineEdit},
                              {"last_name", FieldType::LineEdit},
                              {"email", FieldType::LineEdit},
@@ -81,6 +82,17 @@ bool StudentForm::shouldDeleteRecord(const QSqlRecord &record) const {
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     return msgBox.exec() == QMessageBox::Yes;
+}
+
+bool StudentForm::insertRecord(const QSqlRecord &record, QSqlError &error) {
+    auto map = DBManager::recordToVariantMap(record);
+    map.remove("id");
+    Student student(map);
+    if (manager().saveStudent(student, error)) {
+        refreshModel();
+        return true;
+    }
+    return false;
 }
 
 void StudentForm::onImport() {

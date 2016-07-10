@@ -3,7 +3,7 @@
 
 #include "logindialog.h"
 #include "pasodb.h"
-#include "administratorform.h"
+#include "systemusersform.h"
 #include "roomform.h"
 #include "courseform.h"
 #include "studentform.h"
@@ -110,7 +110,7 @@ void MainWindow::createWidgets() {
 }
 
 void MainWindow::setupAdministratorUI() {
-    auto form = new AdministratorForm(this);
+    auto form = new SystemUsersForm(this);
     mMainWidget->addWidget(form);
     mWidgetChooserComboBox->addItem(tr("System users administration"));
 }

@@ -1,5 +1,5 @@
-#include "administratorform.h"
-#include "ui_administratorform.h"
+#include "systemusersform.h"
+#include "ui_systemusersform.h"
 
 #include "data.h"
 #include "pasodb.h"
@@ -21,7 +21,7 @@ using namespace std;
 namespace paso {
 namespace admin {
 
-AdministratorForm::AdministratorForm(QWidget *parent)
+SystemUsersForm::SystemUsersForm(QWidget *parent)
     : TableForm(createModelAndEditor(), parent), ui(new Ui::AdministratorForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
@@ -31,10 +31,10 @@ AdministratorForm::AdministratorForm(QWidget *parent)
     ui->horizontalLayout->setStretch(0, 3);
 }
 
-AdministratorForm::~AdministratorForm() { delete ui; }
+SystemUsersForm::~SystemUsersForm() { delete ui; }
 
 pair<QSqlTableModel *, RecordEditorWidget *>
-AdministratorForm::createModelAndEditor() {
+SystemUsersForm::createModelAndEditor() {
     QVariantMap columnLabels = {{"username", QObject::tr("Username")},
                                 {"password", QObject::tr("Password")},
                                 {"first_name", QObject::tr("First Name")},
@@ -59,7 +59,7 @@ AdministratorForm::createModelAndEditor() {
     return make_pair<QSqlTableModel *, RecordEditorWidget *>(model, editor);
 }
 
-void AdministratorForm::prepareRecordForSaving(QSqlRecord &record) {
+void SystemUsersForm::prepareRecordForSaving(QSqlRecord &record) {
     // If value of the ID field is null, we need to remove it to let database
     // assign a value.
     auto index = record.indexOf("ID");
@@ -75,16 +75,16 @@ void AdministratorForm::prepareRecordForSaving(QSqlRecord &record) {
     }
 }
 
-bool AdministratorForm::shouldEnableEditAction(const QSqlRecord &record) const {
+bool SystemUsersForm::shouldEnableEditAction(const QSqlRecord &record) const {
     return !record.isEmpty();
 }
 
-bool AdministratorForm::shouldEnableDeleteAction(
+bool SystemUsersForm::shouldEnableDeleteAction(
     const QSqlRecord &record) const {
     return record.value("username").toString() != "root";
 }
 
-bool AdministratorForm::shouldDeleteRecord(const QSqlRecord &record) const {
+bool SystemUsersForm::shouldDeleteRecord(const QSqlRecord &record) const {
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setText(tr("Do you want to delete selected system user?"));

@@ -1,5 +1,7 @@
 #include "abstractform.h"
 
+#include "refreshablesqlquerymodel.h"
+
 #include <QAction>
 #include <QDebug>
 #include <QHeaderView>
@@ -199,12 +201,15 @@ void AbstractForm::onSelectionChanged(const QSqlRecord &record) {
 }
 
 void AbstractForm::refreshModel() {
-    auto model = dynamic_cast<QSqlTableModel *>(mModel);
-    if (model != nullptr) {
-        model->select();
-    } else {
-        mModel->query().exec();
+    auto tableModel = dynamic_cast<QSqlTableModel *>(mModel);
+    if (tableModel != nullptr) {
+        tableModel->select();
     }
+    auto refreshableModel = dynamic_cast<RefreshableSqlQueryModel *>(mModel);
+    if (refreshableModel != nullptr) {
+        refreshableModel->select();
+    }
+    mTableView->clearSelection();
 }
 }
 }

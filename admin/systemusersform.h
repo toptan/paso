@@ -16,12 +16,12 @@ class AdministratorForm;
 namespace paso {
 namespace admin {
 
-class AdministratorForm : public TableForm {
+class SystemUsersForm : public TableForm {
     Q_OBJECT
 
 public:
-    explicit AdministratorForm(QWidget *parent = nullptr);
-    virtual ~AdministratorForm();
+    explicit SystemUsersForm(QWidget *parent = nullptr);
+    virtual ~SystemUsersForm();
 
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;
