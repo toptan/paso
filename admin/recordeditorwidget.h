@@ -47,7 +47,7 @@ protected:
     virtual void prepareEdit(QSqlRecord &record) = 0;
     virtual bool fieldReadOnly(const QString &key) = 0;
 
-    virtual QWidget *createComboBoxForRecordField(const QString &field) = 0;
+    virtual QWidget *createEditorForRecordField(const QString &field) = 0;
 
 private:
     const FieldTypes mFieldTypes;

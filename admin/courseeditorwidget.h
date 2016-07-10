@@ -17,6 +17,9 @@ protected:
 
     virtual QWidget *
     createComboBoxForRecordField(const QString &field) override;
+
+    virtual QWidget *
+    createLineEditForRecordField(const QString &field) override;
 };
 }
 }
