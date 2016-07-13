@@ -17,15 +17,14 @@ bool CourseEditorWidget::fieldReadOnly(const QString &) {
     return false;
 }
 
-QWidget *
-CourseEditorWidget::createComboBoxForRecordField(const QString &field) {
-    // No field requires combo box for editing.
-    return nullptr;
-}
-
-QWidget *
-CourseEditorWidget::createLineEditForRecordField(const QString &field) {
-
+QLineEdit *CourseEditorWidget::createLineEdit(const QString &field) {
+    auto retVal = RecordEditorWidget::createLineEdit(field);
+    if (field == "code") {
+        retVal->setMaxLength(8);
+    } else if (field == "name") {
+        retVal->setMaxLength(64);
+    }
+    return retVal;
 }
 }
 }

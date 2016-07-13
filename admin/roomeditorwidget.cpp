@@ -20,9 +20,14 @@ bool RoomEditorWidget::fieldReadOnly(const QString &key) {
     return key == "room_uuid";
 }
 
-QWidget *RoomEditorWidget::createComboBoxForRecordField(const QString &) {
-    // No field requires combo box for editing.
-    return nullptr;
+QLineEdit *RoomEditorWidget::createLineEdit(const QString &field) {
+    auto retVal = RecordEditorWidget::createLineEdit(field);
+    if (field == "name") {
+        retVal->setMaxLength(64);
+    } else if (field == "room_number") {
+        retVal->setMaxLength(8);
+    }
+    return retVal;
 }
 }
 }

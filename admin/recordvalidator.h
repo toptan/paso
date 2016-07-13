@@ -18,7 +18,13 @@ namespace admin {
 ///
 /// \brief The FieldType enum defines widget to be used for record fields.
 ///
-enum class FieldType { LineEdit, PasswordEdit, ComboBox };
+enum class FieldType {
+    LineEdit,
+    MaskedLineEdit,
+    PasswordEdit,
+    NumberEdit,
+    ComboBox
+};
 
 using FieldTypes = QMap<QString, FieldType>;
 using FieldEditors = QMap<QString, QWidget *>;

@@ -25,22 +25,36 @@ bool SystemUserEditorWidget::fieldReadOnly(const QString &key) {
     return key == "username" && mEditingRootSystemUser;
 }
 
-QWidget *
-SystemUserEditorWidget::createComboBoxForRecordField(const QString &field) {
-    if (field != "role") {
-        return nullptr;
-    }
-
-    auto combo = new QComboBox(this);
+QComboBox *SystemUserEditorWidget::createComboBox(const QString &field) {
+    auto retVal = RecordEditorWidget::createComboBox(field);
     for (const auto &role : enumeratedRoles.keys()) {
-        combo->addItem(
+        retVal->addItem(
             QApplication::instance()->translate(
                 "QObject", enumeratedRoles[role].toStdString().c_str()),
             roleToString(role));
     }
-    combo->setEnabled(false);
-    combo->setCurrentIndex(-1);
-    return combo;
+    return retVal;
+}
+
+QLineEdit *SystemUserEditorWidget::createLineEdit(const QString &field) {
+    auto retVal = RecordEditorWidget::createLineEdit(field);
+    if (field == "username") {
+        retVal->setMaxLength(16);
+    } else if (field == "first_name" || field == "last_name") {
+        retVal->setMaxLength(32);
+    } else if (field == "email") {
+        retVal->setMaxLength(64);
+    }
+    return retVal;
+}
+
+QLineEdit *
+SystemUserEditorWidget::createPasswordLineEdit(const QString &field) {
+    auto retVal = RecordEditorWidget::createPasswordLineEdit(field);
+    if (field == "password") {
+        retVal->setMaxLength(16);
+    }
+    return retVal;
 }
 }
 }

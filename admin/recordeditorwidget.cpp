@@ -50,25 +50,60 @@ void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
             &RecordEditorWidget::rejected);
 }
 
+QLineEdit *RecordEditorWidget::createLineEdit(const QString &) {
+    auto retVal = new QLineEdit(this);
+    retVal->setReadOnly(true);
+    return retVal;
+}
+
+QLineEdit *RecordEditorWidget::createPasswordLineEdit(const QString &) {
+    auto retVal = new QLineEdit(this);
+    retVal->setReadOnly(true);
+    retVal->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+    return retVal;
+}
+
+QLineEdit *RecordEditorWidget::createMaskedLineEdit(const QString &) {
+    auto retVal = new QLineEdit(this);
+    retVal->setReadOnly(true);
+    return retVal;
+}
+
+QComboBox *RecordEditorWidget::createComboBox(const QString &) {
+    auto retVal = new QComboBox(this);
+    retVal->setCurrentIndex(-1);
+    retVal->setEnabled(false);
+    return retVal;
+}
+
+QSpinBox *RecordEditorWidget::createSpinBox(const QString &field) {
+    auto retVal = new QSpinBox(this);
+    retVal->setValue(0);
+    retVal->setEnabled(false);
+    return retVal;
+}
+
 QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
                                                   int index) {
-    auto fieldType = mFieldTypes[record.fieldName(index)];
+    auto fieldName = record.fieldName(index);
+    auto fieldType = mFieldTypes[fieldName];
     QWidget *fieldEditor;
     switch (fieldType) {
     case FieldType::ComboBox:
-        fieldEditor = createComboBoxForRecordField(record.fieldName(index));
+        fieldEditor = createComboBox(fieldName);
         break;
-    case FieldType::LineEdit: {
-        auto edit = new QLineEdit(this);
-        edit->setReadOnly(true);
-        fieldEditor = edit;
-    } break;
-    case FieldType::PasswordEdit: {
-        auto pwdEdit = new QLineEdit(this);
-        pwdEdit->setReadOnly(true);
-        pwdEdit->setEchoMode(QLineEdit::PasswordEchoOnEdit);
-        fieldEditor = pwdEdit;
-    } break;
+    case FieldType::LineEdit:
+        fieldEditor = createLineEdit(fieldName);
+        break;
+    case FieldType::PasswordEdit:
+        fieldEditor = createPasswordLineEdit(fieldName);
+        break;
+    case FieldType::MaskedLineEdit:
+        fieldEditor = createMaskedLineEdit(fieldName);
+        break;
+    case FieldType::NumberEdit:
+        fieldEditor = createSpinBox(fieldName);
+        break;
     default:
         fieldEditor = new QWidget(this);
     }
@@ -82,20 +117,26 @@ QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
 
 void RecordEditorWidget::onDisplayRecord(const QSqlRecord &record) {
     for (int i = 0; i < record.count(); i++) {
-        if (record.fieldName(i).toUpper() == "ID") {
+        auto fieldName = record.fieldName(i);
+        if (fieldName.toUpper() == "ID") {
             continue;
         }
-        switch (mFieldTypes[record.fieldName(i)]) {
+        switch (mFieldTypes[fieldName]) {
         case FieldType::ComboBox: {
-            auto field =
-                dynamic_cast<QComboBox *>(mFieldEditors[record.fieldName(i)]);
+            auto field = dynamic_cast<QComboBox *>(mFieldEditors[fieldName]);
             field->setCurrentIndex(
-                mNewRecord ? 0 : field->findData(record.value(i)));
+                mNewRecord ? 0 : field->findData(record.value(fieldName)));
         } break;
         case FieldType::LineEdit:
         case FieldType::PasswordEdit:
-            dynamic_cast<QLineEdit *>(mFieldEditors[record.fieldName(i)])
-                ->setText(record.value(i).toString());
+        case FieldType::MaskedLineEdit:
+            dynamic_cast<QLineEdit *>(mFieldEditors[fieldName])
+                ->setText(record.value(fieldName).toString());
+            break;
+        case FieldType::NumberEdit:
+            dynamic_cast<QSpinBox *>(mFieldEditors[fieldName])
+                ->setValue(record.value(fieldName).toLongLong());
+            break;
         }
     }
 }
@@ -124,8 +165,13 @@ void RecordEditorWidget::clearData() {
             break;
         case FieldType::LineEdit:
         case FieldType::PasswordEdit:
+        case FieldType::MaskedLineEdit: {
             dynamic_cast<QLineEdit *>(mFieldEditors[key])->clear();
-            break;
+
+        } break;
+        case FieldType::NumberEdit: {
+            dynamic_cast<QSpinBox *>(mFieldEditors[key])->clear();
+        }
         }
     }
 }
@@ -169,7 +215,11 @@ void RecordEditorWidget::accepted() {
             break;
         case FieldType::LineEdit:
         case FieldType::PasswordEdit:
+        case FieldType::MaskedLineEdit:
             value = dynamic_cast<QLineEdit *>(field)->text().trimmed();
+            break;
+        case FieldType::NumberEdit:
+            value = dynamic_cast<QSpinBox *>(field)->text().trimmed();
             break;
         }
 
@@ -199,9 +249,11 @@ void RecordEditorWidget::setFieldsEditable() {
         auto readOnly = fieldReadOnly(key);
         switch (fieldType) {
         case FieldType::ComboBox:
+        case FieldType::NumberEdit:
             field->setEnabled(!readOnly);
             break;
-        case FieldType::LineEdit: {
+        case FieldType::LineEdit:
+        case FieldType::MaskedLineEdit: {
             auto edit = dynamic_cast<QLineEdit *>(field);
             // Handle special case where root username cannot be changed.
             edit->setReadOnly(readOnly);
@@ -226,9 +278,11 @@ void RecordEditorWidget::setFieldsReadOnly() {
         auto fieldType = mFieldTypes[key];
         switch (fieldType) {
         case FieldType::ComboBox:
+        case FieldType::NumberEdit:
             field->setEnabled(false);
             break;
-        case FieldType::LineEdit: {
+        case FieldType::LineEdit:
+        case FieldType::MaskedLineEdit: {
             auto edit = dynamic_cast<QLineEdit *>(field);
             edit->setReadOnly(true);
         } break;
@@ -254,6 +308,11 @@ void RecordEditorWidget::focusFirstEditable() {
         auto combo = dynamic_cast<QComboBox *>(child);
         if (combo != nullptr && combo->isEnabled()) {
             combo->setFocus();
+            return;
+        }
+        auto spinBox = dynamic_cast<QSpinBox *>(child);
+        if (spinBox != nullptr && spinBox->isEnabled()) {
+            spinBox->setFocus();
             return;
         }
     }

@@ -15,8 +15,7 @@ protected:
     virtual void prepareEdit(QSqlRecord &record) override;
     virtual bool fieldReadOnly(const QString &key) override;
 
-    virtual QWidget *
-    createComboBoxForRecordField(const QString &field) override;
+    virtual QLineEdit *createLineEdit(const QString &field) override;
 };
 }
 }

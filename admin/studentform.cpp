@@ -50,8 +50,8 @@ StudentForm::createModelAndEditor() {
                              {"last_name", FieldType::LineEdit},
                              {"email", FieldType::LineEdit},
                              {"rfid", FieldType::LineEdit},
-                             {"index_number", FieldType::LineEdit},
-                             {"year_of_study", FieldType::LineEdit}};
+                             {"index_number", FieldType::MaskedLineEdit},
+                             {"year_of_study", FieldType::NumberEdit}};
     auto editor = new StudentEditorWidget(model->record(), fieldTypes);
     editor->setupUi(columnLabels, model->record());
     editor->setValidator(new StudentValidator(editor->fieldTypes(),
