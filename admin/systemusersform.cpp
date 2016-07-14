@@ -29,6 +29,7 @@ SystemUsersForm::SystemUsersForm(QWidget *parent)
 
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 3);
+    ui->horizontalLayout->setStretch(1, 1);
 }
 
 SystemUsersForm::~SystemUsersForm() { delete ui; }

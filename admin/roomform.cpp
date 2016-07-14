@@ -23,7 +23,7 @@ RoomForm::RoomForm(QWidget *parent)
     setupWidgets(ui->tableView);
     ui->tableView->hideColumn(0);
     ui->horizontalLayout->addWidget(recordEditor());
-    ui->horizontalLayout->setStretch(0, 2);
+    ui->horizontalLayout->setStretch(0, 3);
     ui->horizontalLayout->setStretch(1, 1);
 }
 

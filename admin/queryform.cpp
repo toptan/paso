@@ -1,8 +1,8 @@
 #include "queryform.h"
 
 #include <QSqlDatabase>
-#include <QSqlQueryModel>
 #include <QSqlError>
+#include <QSqlQueryModel>
 
 using namespace paso::db;
 

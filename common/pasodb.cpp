@@ -306,6 +306,7 @@ bool DBManager::saveStudent(Student &student, QSqlError &error) const {
             student.setId(0);
         }
         db.rollback();
+        return false;
     }
     db.commit();
     return error.type() == QSqlError::NoError;

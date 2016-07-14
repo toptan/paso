@@ -1,7 +1,5 @@
 #include "studenteditorwidget.h"
 
-#include <QDebug>
-
 namespace paso {
 namespace admin {
 
@@ -10,13 +8,27 @@ StudentEditorWidget::StudentEditorWidget(const QSqlRecord &record,
                                          QWidget *parent)
     : RecordEditorWidget(record, fieldTypes, parent) {}
 
-void StudentEditorWidget::prepareEdit(QSqlRecord &record) {
-    // TODO: Prepare student record for editing.
+void StudentEditorWidget::prepareEdit(QSqlRecord &) {
+    // Nothing to prepare.
 }
 
 bool StudentEditorWidget::fieldReadOnly(const QString &key) {
-    // TODO: Check if all fields are editable.
+    // All fields are editable.
     return false;
+}
+
+QLineEdit *StudentEditorWidget::createLineEdit(const QString &field) {
+    auto retVal = RecordEditorWidget::createLineEdit(field);
+    if (field == "first_name") {
+        retVal->setMaxLength(32);
+    } else if (field == "last_name") {
+        retVal->setMaxLength(32);
+    } else if (field == "email") {
+        retVal->setMaxLength(64);
+    } else if (field == "rfid") {
+        retVal->setMaxLength(64);
+    }
+    return retVal;
 }
 
 QLineEdit *StudentEditorWidget::createMaskedLineEdit(const QString &field) {
@@ -37,6 +49,5 @@ QSpinBox *StudentEditorWidget::createSpinBox(const QString &field) {
     }
     return retVal;
 }
-
 }
 }

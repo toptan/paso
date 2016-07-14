@@ -59,19 +59,19 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="40"/>
+        <location filename="../admin/systemusersform.cpp" line="41"/>
         <location filename="../admin/studentform.cpp" line="40"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="41"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="41"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="42"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
@@ -117,17 +117,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="38"/>
+        <location filename="../admin/systemusersform.cpp" line="39"/>
         <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="39"/>
+        <location filename="../admin/systemusersform.cpp" line="40"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Role</source>
         <translation type="unfinished"></translation>
     </message>
@@ -470,7 +470,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="81"/>
+        <location filename="../admin/studentform.cpp" line="80"/>
         <source>Do you want to delete selected student from the system?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -547,7 +547,7 @@
 <context>
     <name>paso::admin::SystemUsersForm</name>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="90"/>
+        <location filename="../admin/systemusersform.cpp" line="91"/>
         <source>Do you want to delete selected system user?</source>
         <translation type="unfinished"></translation>
     </message>

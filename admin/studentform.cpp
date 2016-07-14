@@ -21,7 +21,7 @@ StudentForm::StudentForm(QWidget *parent)
     setupWidgets(ui->tableView);
 
     ui->horizontalLayout->addWidget(recordEditor());
-    ui->horizontalLayout->setStretch(0, 2);
+    ui->horizontalLayout->setStretch(0, 3);
     ui->horizontalLayout->setStretch(1, 1);
     auto separator = new QAction(this);
     separator->setSeparator(true);
@@ -62,7 +62,6 @@ StudentForm::createModelAndEditor() {
 }
 
 void StudentForm::prepareRecordForSaving(QSqlRecord &record) {
-    // TODO: Prepare student record for saving.
 }
 
 bool StudentForm::shouldEnableEditAction(const QSqlRecord &record) const {
