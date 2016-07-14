@@ -10,6 +10,7 @@
 class QAction;
 class QSqlQueryModel;
 class QTableView;
+class QSortFilterProxyModel;
 class QSqlError;
 
 namespace paso {
@@ -126,6 +127,9 @@ private:
     QAction *mRefreshAction;
 
     QSqlQueryModel *mModel;
+    /// Used when \ref mModel is not QSqlTableModel to support sorting.
+    QSortFilterProxyModel *mProxyModel;
+
     RecordEditorWidget *mRecordEditor;
     QTableView *mTableView;
 };

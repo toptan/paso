@@ -18,11 +18,6 @@ QueryForm::~QueryForm() {}
 
 bool QueryForm::removeRow(int row, QSqlError &error) { return true; }
 
-bool QueryForm::updateRecord(int row, const QSqlRecord &record,
-                             QSqlError &error) {
-    return true;
-}
-
 DBManager &QueryForm::manager() { return mManager; }
 }
 }

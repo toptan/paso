@@ -8,6 +8,7 @@
 #include "pasodb.h"
 
 #include <QDebug>
+#include <QSortFilterProxyModel>
 
 using namespace paso::db;
 using namespace std;
@@ -19,6 +20,7 @@ StudentForm::StudentForm(QWidget *parent)
     : QueryForm(createModelAndEditor(), parent), ui(new Ui::StudentForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
+    ui->tableView->hideColumn(0);
 
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 3);
@@ -61,8 +63,7 @@ StudentForm::createModelAndEditor() {
     return make_pair<QSqlQueryModel *, RecordEditorWidget *>(model, editor);
 }
 
-void StudentForm::prepareRecordForSaving(QSqlRecord &record) {
-}
+void StudentForm::prepareRecordForSaving(QSqlRecord &record) {}
 
 bool StudentForm::shouldEnableEditAction(const QSqlRecord &record) const {
     return !record.isEmpty();
@@ -86,6 +87,17 @@ bool StudentForm::shouldDeleteRecord(const QSqlRecord &record) const {
 bool StudentForm::insertRecord(const QSqlRecord &record, QSqlError &error) {
     auto map = DBManager::recordToVariantMap(record);
     map.remove("id");
+    Student student(map);
+    if (manager().saveStudent(student, error)) {
+        refreshModel();
+        return true;
+    }
+    return false;
+}
+
+bool StudentForm::updateRecord(int, const QSqlRecord &record,
+                               QSqlError &error) {
+    auto map = DBManager::recordToVariantMap(record);
     Student student(map);
     if (manager().saveStudent(student, error)) {
         refreshModel();

@@ -36,7 +36,8 @@ protected:
 
     virtual bool insertRecord(const QSqlRecord &record,
                               QSqlError &error) override;
-
+    virtual bool updateRecord(int row, const QSqlRecord &record,
+                              QSqlError &error) override;
 private slots:
     void onImport();
 

@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QSortFilterProxyModel>
 #include <QSqlError>
 #include <QSqlField>
 #include <QSqlQuery>
@@ -15,6 +16,7 @@
 namespace paso {
 namespace admin {
 
+//TODO: Fix selected row problem when using proxy model.
 AbstractForm::AbstractForm(
     std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
     QWidget *parent)
@@ -32,7 +34,15 @@ RecordEditorWidget *AbstractForm::recordEditor() const { return mRecordEditor; }
 
 void AbstractForm::setupWidgets(QTableView *tableView) {
     mTableView = tableView;
-    mTableView->setModel(mModel);
+
+    if (dynamic_cast<RefreshableSqlQueryModel *>(mModel) == nullptr) {
+        // Ok, we don't need proxy for sorting.
+        mTableView->setModel(mModel);
+    } else {
+        mProxyModel = new QSortFilterProxyModel(this);
+        mProxyModel->setSourceModel(mModel);
+        mTableView->setModel(mProxyModel);
+    }
     mTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     mTableView->sortByColumn(1, Qt::SortOrder::AscendingOrder);
@@ -40,7 +50,13 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
     connect(mTableView->selectionModel(),
             &QItemSelectionModel::currentRowChanged,
             [this](const QModelIndex &selected, const QModelIndex &) {
-                auto record = mModel->record(selected.row());
+                int row;
+                if (mProxyModel != nullptr) {
+                    row = mProxyModel->mapToSource(mProxyModel->index(selected.row(), 0)).row();
+                } else {
+                    row = selected.row();
+                }
+                auto record = mModel->record(row);
                 this->onSelectionChanged(record);
             });
 
