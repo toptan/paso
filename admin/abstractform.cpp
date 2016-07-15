@@ -1,6 +1,7 @@
 #include "abstractform.h"
 
 #include "refreshablesqlquerymodel.h"
+#include "stablerownumbersortfilterproxymodel.h"
 
 #include <QAction>
 #include <QDebug>
@@ -16,12 +17,13 @@
 namespace paso {
 namespace admin {
 
-//TODO: Fix selected row problem when using proxy model.
+// TODO: Fix selected row problem when using proxy model.
 AbstractForm::AbstractForm(
     std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
     QWidget *parent)
     : QWidget(parent), mActions(), mModel(modelAndEditor.first),
-      mRecordEditor(modelAndEditor.second), mTableView(nullptr) {
+      mProxyModel(nullptr), mRecordEditor(modelAndEditor.second),
+      mTableView(nullptr) {
     mModel->setParent(this);
     mRecordEditor->setParent(this);
 }
@@ -39,7 +41,7 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
         // Ok, we don't need proxy for sorting.
         mTableView->setModel(mModel);
     } else {
-        mProxyModel = new QSortFilterProxyModel(this);
+        mProxyModel = new StableRowNumberSortFilterProxyModel(this);
         mProxyModel->setSourceModel(mModel);
         mTableView->setModel(mProxyModel);
     }
@@ -50,14 +52,9 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
     connect(mTableView->selectionModel(),
             &QItemSelectionModel::currentRowChanged,
             [this](const QModelIndex &selected, const QModelIndex &) {
-                int row;
-                if (mProxyModel != nullptr) {
-                    row = mProxyModel->mapToSource(mProxyModel->index(selected.row(), 0)).row();
-                } else {
-                    row = selected.row();
-                }
-                auto record = mModel->record(row);
+                auto record = mModel->record(mapRowToModel(selected.row()));
                 this->onSelectionChanged(record);
+                mTableView->selectRow(selected.row());
             });
 
     connect(mRecordEditor, &RecordEditorWidget::editFinished, this,
@@ -119,7 +116,8 @@ void AbstractForm::onEditRecord() {
         action->setEnabled(false);
     }
 
-    mRecordEditor->onEditExistingRecord(mModel->record(index.row()));
+    mRecordEditor->onEditExistingRecord(
+        mModel->record(mapRowToModel(index.row())));
 }
 
 void AbstractForm::onDeleteRecord() {
@@ -127,11 +125,12 @@ void AbstractForm::onDeleteRecord() {
     if (!index.isValid()) {
         return;
     }
-    if (!shouldDeleteRecord(mModel->record(index.row()))) {
+    auto row = mapRowToModel(index.row());
+    if (!shouldDeleteRecord(mModel->record(row))) {
         return;
     }
     QSqlError error;
-    if (!removeRow(index.row(), error)) {
+    if (!removeRow(row, error)) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText(tr("There was an error while deleting record from the "
@@ -153,13 +152,8 @@ void AbstractForm::onEditFinished() {
     }
     mTableView->setDisabled(false);
     mTableView->setFocus();
-    auto index = mTableView->selectionModel()->currentIndex();
-    if (index.isValid()) {
-        onSelectionChanged(mModel->record(index.row()));
-    } else {
-        mDeleteRecordAction->setEnabled(false);
-        mEditRecordAction->setEnabled(false);
-    }
+    mDeleteRecordAction->setEnabled(false);
+    mEditRecordAction->setEnabled(false);
 }
 
 void AbstractForm::onRequestSave(QSqlRecord record) {
@@ -188,7 +182,8 @@ void AbstractForm::onRequestUpdate(QSqlRecord record) {
     prepareRecordForSaving(record);
     auto index = mTableView->selectionModel()->currentIndex();
     QSqlError error;
-    if (!updateRecord(index.row(), record, error)) {
+    auto row = mapRowToModel(index.row());
+    if (!updateRecord(row, record, error)) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText(tr("There was an error while saving data."));
@@ -202,12 +197,10 @@ void AbstractForm::onRequestUpdate(QSqlRecord record) {
         return;
     }
 
-    recordEditor()->saveSuccessfull();
+    mRecordEditor->saveSuccessfull();
     mTableView->clearSelection();
-    mTableView->selectRow(index.row());
+    mRecordEditor->clearData();
     onEditFinished();
-    onSelectionChanged(
-        mModel->record(mTableView->selectionModel()->currentIndex().row()));
 }
 
 void AbstractForm::onSelectionChanged(const QSqlRecord &record) {
@@ -225,7 +218,22 @@ void AbstractForm::refreshModel() {
     if (refreshableModel != nullptr) {
         refreshableModel->select();
     }
-    mTableView->clearSelection();
+}
+
+int AbstractForm::mapRowToModel(int proxyRow) const {
+    if (mProxyModel != nullptr) {
+        return mProxyModel->mapToSource(mProxyModel->index(proxyRow, 0)).row();
+    } else {
+        return proxyRow;
+    }
+}
+
+int AbstractForm::mapRowToProxy(int modelRow) const {
+    if (mProxyModel != nullptr) {
+        return mProxyModel->mapFromSource(mModel->index(modelRow, 0)).row();
+    } else {
+        return modelRow;
+    }
 }
 }
 }

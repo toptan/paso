@@ -77,7 +77,6 @@ void CourseForm::prepareRecordForSaving(QSqlRecord &record) {
 }
 
 bool CourseForm::shouldEnableEditAction(const QSqlRecord &record) const {
-    qDebug() << __PRETTY_FUNCTION__ << record;
     return !record.isEmpty();
 }
 

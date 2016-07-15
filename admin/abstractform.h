@@ -132,6 +132,22 @@ private:
 
     RecordEditorWidget *mRecordEditor;
     QTableView *mTableView;
+
+    ///
+    /// \brief mapRowToModel Maps proxy row to model row. If proxy does not
+    /// exist the same value is returned.
+    /// \param proxyRow Proxy row to map to model row.
+    /// \return Mapped model row.
+    ///
+    int mapRowToModel(int proxyRow) const;
+
+    ///
+    /// \brief mapRowToProxy Maps model row to proxy row. If proxy does not
+    /// exist the same value is returned.
+    /// \param modelRow Model row to map to proxy row.
+    /// \return Mapped proxy row.
+    ///
+    int mapRowToProxy(int modelRow) const;
 };
 }
 }

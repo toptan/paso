@@ -1,6 +1,7 @@
 #include "coursetablemodel.h"
 
 #include <QSqlRecord>
+#include <QDebug>
 
 namespace paso {
 namespace admin {
