@@ -16,8 +16,6 @@ QueryForm::QueryForm(
 
 QueryForm::~QueryForm() {}
 
-bool QueryForm::removeRow(int row, QSqlError &error) { return true; }
-
 DBManager &QueryForm::manager() { return mManager; }
 }
 }

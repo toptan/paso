@@ -7,6 +7,10 @@
 namespace paso {
 namespace admin {
 
+///
+/// \brief The StableRowNumberSortFilterProxyModel class fixes vertical header
+/// on table views that use SQL query based models to have stable row numbers.
+///
 class StableRowNumberSortFilterProxyModel : public QSortFilterProxyModel {
 public:
     explicit StableRowNumberSortFilterProxyModel(QObject *parent = nullptr);

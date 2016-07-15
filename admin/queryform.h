@@ -21,8 +21,6 @@ public:
 protected:
     db::DBManager &manager();
 
-    virtual bool removeRow(int row, QSqlError &error) override;
-
 private:
     db::DBManager mManager; //!< The dabase manager to use.
 };

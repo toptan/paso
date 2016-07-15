@@ -106,6 +106,15 @@ bool StudentForm::updateRecord(int, const QSqlRecord &record,
     return false;
 }
 
+bool StudentForm::removeRow(int row, QSqlError &error) {
+    auto indexNumber = model()->record(row).value("index_number").toString();
+    if (manager().deleteStudent(indexNumber, error)) {
+        refreshModel();
+        return true;
+    }
+    return false;
+}
+
 void StudentForm::onImport() {
     // TODO: Implement students import.
 }

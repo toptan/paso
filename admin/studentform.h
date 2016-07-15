@@ -38,6 +38,9 @@ protected:
                               QSqlError &error) override;
     virtual bool updateRecord(int row, const QSqlRecord &record,
                               QSqlError &error) override;
+
+    virtual bool removeRow(int row, QSqlError &error) override;
+
 private slots:
     void onImport();
 
