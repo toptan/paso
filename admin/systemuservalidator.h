@@ -21,7 +21,6 @@ public:
     validate(const QSqlRecord &original) const override;
 
 private:
-    db::DBManager dbManager;
     std::shared_ptr<ValidationError>
     validateUsername(const QString &original) const;
     std::shared_ptr<ValidationError> validatePassword() const;

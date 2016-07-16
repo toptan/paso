@@ -44,7 +44,7 @@ CourseValidator::validateCode(const QString &original) const {
 
     if (original.isEmpty() || text != original) {
         QSqlError error;
-        auto unique = dbManager.courseCodeUnique(text, error);
+        const auto unique = dbManager().courseCodeUnique(text, error);
         if (error.type() != QSqlError::NoError) {
             return make_shared<ValidationError>(
                 nullptr, tr("Critical error"),

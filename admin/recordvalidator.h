@@ -1,6 +1,8 @@
 #ifndef RECORDVALIDATOR_H
 #define RECORDVALIDATOR_H
 
+#include "pasodb.h"
+
 #include <QObject>
 #include <QMap>
 #include <QString>
@@ -58,8 +60,8 @@ public:
     explicit RecordValidator(const FieldTypes &fieldTypes,
                              const FieldEditors &fieldEditors,
                              QObject *parent = 0)
-        : QObject(parent), mFieldTypes(fieldTypes),
-          mFieldEditors(fieldEditors) {}
+        : QObject(parent), mFieldTypes(fieldTypes), mFieldEditors(fieldEditors),
+          mDbManager() {}
     virtual ~RecordValidator() {}
 
     ///
@@ -75,6 +77,11 @@ public:
 protected:
     const FieldTypes &mFieldTypes;
     const FieldEditors &mFieldEditors;
+
+    const db::DBManager &dbManager() const { return mDbManager; }
+
+private:
+    db::DBManager mDbManager;
 };
 
 static void setEntryError(QWidget *widget, bool error) {}

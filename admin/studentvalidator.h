@@ -2,6 +2,7 @@
 #define STUDENTVALIDATOR_H
 
 #include "recordvalidator.h"
+#include "pasodb.h"
 
 #include <QObject>
 
@@ -18,6 +19,9 @@ public:
 
     virtual std::shared_ptr<ValidationError>
     validate(const QSqlRecord &original) const override;
+
+private:
+
 };
 }
 }

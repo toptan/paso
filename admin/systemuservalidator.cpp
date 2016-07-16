@@ -16,7 +16,7 @@ using namespace std;
 SystemUserValidator::SystemUserValidator(const FieldTypes &fieldTypes,
                                          const FieldEditors &fieldEditors,
                                          QObject *parent)
-    : RecordValidator(fieldTypes, fieldEditors, parent), dbManager() {}
+    : RecordValidator(fieldTypes, fieldEditors, parent) {}
 
 shared_ptr<ValidationError>
 SystemUserValidator::validate(const QSqlRecord &original) const {
@@ -53,7 +53,7 @@ SystemUserValidator::validateUsername(const QString &original) const {
     if (original.isEmpty() || text != original) {
         // Check if entered username is unique.
         QSqlError error;
-        auto unique = dbManager.usernameUnique(text, error);
+        const auto unique = dbManager().usernameUnique(text, error);
         if (error.type() != QSqlError::NoError) {
             return make_shared<ValidationError>(
                 nullptr, tr("Critical error"),

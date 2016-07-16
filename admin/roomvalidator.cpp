@@ -12,7 +12,7 @@ using namespace std;
 
 RoomValidator::RoomValidator(const FieldTypes &fieldTypes,
                              const FieldEditors &fieldEditors, QObject *parent)
-    : RecordValidator(fieldTypes, fieldEditors, parent), dbManager() {}
+    : RecordValidator(fieldTypes, fieldEditors, parent) {}
 
 shared_ptr<ValidationError>
 RoomValidator::validate(const QSqlRecord &original) const {
@@ -42,7 +42,7 @@ RoomValidator::validateRoomUuid(const QString &original) const {
 
     if (original.isEmpty() || text != original) {
         QSqlError error;
-        auto unique = dbManager.roomUuidUnique(text, error);
+        const auto unique = dbManager().roomUuidUnique(text, error);
         if (error.type() != QSqlError::NoError) {
             return make_shared<ValidationError>(
                 nullptr, tr("Critical error"),
@@ -93,7 +93,7 @@ RoomValidator::validateRoomNumber(const QString &original) const {
 
     if (original.isEmpty() || text != original) {
         QSqlError error;
-        auto unique = dbManager.roomNumberUnique(text, error);
+        const auto unique = dbManager().roomNumberUnique(text, error);
         if (error.type() != QSqlError::NoError) {
             return make_shared<ValidationError>(
                 nullptr, tr("Critical error"),
