@@ -23,6 +23,10 @@ public:
     explicit StudentForm(QWidget *parent = 0);
     ~StudentForm();
 
+signals:
+    void newLogLine(const QString &line);
+    void importDone();
+
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;
 
@@ -34,8 +38,7 @@ protected:
 
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
-    virtual bool insertRecord(QSqlRecord &record,
-                              QSqlError &error) override;
+    virtual bool insertRecord(QSqlRecord &record, QSqlError &error) override;
     virtual bool updateRecord(int row, const QSqlRecord &record,
                               QSqlError &error) override;
 

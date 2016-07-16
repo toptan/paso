@@ -78,7 +78,7 @@ QSqlQuery Student::updateQuery(const QSqlDatabase &database,
 QSqlQuery Student::findByIndexNumberQuery(const QSqlDatabase &database,
                                           const QString &indexNumber) {
     QSqlQuery query(database);
-    query.prepare("SELECT P.ID, P.FIRST_NAME, P.LAST_NAME, P.EMAIL, P.RFID, "
+    query.prepare("SELECT P.ID, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, "
                   "S.INDEX_NUMBER, S.YEAR_OF_STUDY "
                   "FROM PERSON P JOIN STUDENT S USING (ID) "
                   "WHERE S.INDEX_NUMBER = :index_number");

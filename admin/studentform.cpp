@@ -4,11 +4,15 @@
 #include "studentquerymodel.h"
 #include "studenteditorwidget.h"
 #include "studentvalidator.h"
+#include "logdialog.h"
 
 #include "pasodb.h"
 
-#include <QDebug>
-#include <QSortFilterProxyModel>
+#include <QFile>
+#include <QFileDialog>
+#include <QSqlError>
+#include <QtConcurrent>
+#include <QTextStream>
 
 using namespace paso::db;
 using namespace std;
@@ -117,7 +121,126 @@ bool StudentForm::removeRow(int row, QSqlError &error) {
 }
 
 void StudentForm::onImport() {
-    // TODO: Implement students import.
+    auto fileName = QFileDialog::getOpenFileName(
+        this, tr("Open students import file"), "", "*.csv");
+    auto file = new QFile(fileName);
+    if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox msgBox(this);
+        msgBox.setWindowModality(Qt::WindowModal);
+        msgBox.setIcon(QMessageBox::Critical);
+        QString text =
+            QString(tr("The file %1 cannot be opened.")).arg(fileName);
+        msgBox.setText(text);
+        msgBox.setDetailedText(file->errorString());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        delete file;
+        return;
+    }
+
+    auto logDialog = new LogDialog(tr("Importing students..."));
+    logDialog->setModal(true);
+    logDialog->show();
+    connect(logDialog, &LogDialog::accepted, logDialog,
+            &LogDialog::deleteLater);
+    connect(logDialog, &LogDialog::rejected, logDialog,
+            &LogDialog::deleteLater);
+    connect(this, &StudentForm::newLogLine, logDialog, &LogDialog::appendLine);
+    connect(this, &StudentForm::importDone, logDialog,
+            &LogDialog::processingDone);
+
+    auto work = [this, file, logDialog]() {
+        QTextStream in(file);
+        bool errorOccured = false;
+        int lineNo = 1;
+        db::DBManager manager;
+        QSqlError sqlError;
+        QString format("Importing line %1... %2");
+        emit newLogLine(
+            QString(tr("Importing students from %1")).arg(file->fileName()));
+        emit newLogLine("");
+        while (!in.atEnd()) {
+            QString message;
+            QString line = in.readLine();
+            auto error = manager.importStudent(line, sqlError);
+
+            switch (error) {
+            case StudentImportError::NO_ERROR:
+                message = format.arg(lineNo).arg(tr("OK."));
+                break;
+            case StudentImportError::INVALID_LINE:
+                message = format.arg(lineNo).arg(
+                    tr("The student data must be properly comma separated."));
+                errorOccured = true;
+                break;
+            case StudentImportError::NO_INDEX_NUMBER:
+                message =
+                    format.arg(lineNo).arg(tr("The index number is missing."));
+                errorOccured = true;
+                break;
+            case StudentImportError::BAD_INDEX_NUMBER:
+                message = format.arg(lineNo)
+                              .arg(tr("The index number is in wrong format."));
+                errorOccured = true;
+                break;
+            case StudentImportError::NO_FIRST_NAME:
+                message = format.arg(lineNo)
+                              .arg(tr("The student's first name is missing."));
+                errorOccured = true;
+                break;
+            case StudentImportError::FIRST_NAME_TOO_LONG:
+                message = format.arg(lineNo).arg(
+                    tr("The student's first name exceeds 32 characters."));
+                errorOccured = true;
+                break;
+            case StudentImportError::NO_LAST_NAME:
+                message = format.arg(lineNo)
+                              .arg(tr("The student's last name is missing."));
+                errorOccured = true;
+                break;
+            case StudentImportError::LAST_NAME_TOO_LONG:
+                message = format.arg(lineNo).arg(
+                    tr("The student's last name exceeds 32 characters."));
+                errorOccured = true;
+                break;
+            case StudentImportError::BAD_EMAIL:
+                message = format.arg(lineNo)
+                              .arg(tr("The student's email is illformed."));
+                errorOccured = true;
+                break;
+            case StudentImportError::NO_YEAR_OF_STUDY:
+                message = format.arg(lineNo).arg(
+                    tr("The student's year of study is missing."));
+                errorOccured = true;
+                break;
+            case StudentImportError::BAD_YEAR_OF_STUDY:
+                message = format.arg(lineNo)
+                              .arg(tr("The student's year of study is wrong."));
+                errorOccured = true;
+                break;
+            case StudentImportError::DB_ERROR:
+                message = format.arg(lineNo).arg(sqlError.text());
+                errorOccured = true;
+                break;
+            }
+            emit newLogLine(message);
+            lineNo++;
+        }
+        delete file;
+        if (!errorOccured) {
+            emit newLogLine("");
+            emit newLogLine(tr("Import finished without errors."));
+        } else {
+            emit newLogLine("");
+            emit newLogLine(tr(
+                "Not all lines could be imported. Please see messages above."));
+        }
+        refreshModel();
+        emit importDone();
+    };
+
+    QtConcurrent::run(work);
 }
 }
 }

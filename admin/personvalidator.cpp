@@ -68,6 +68,10 @@ shared_ptr<ValidationError> PersonValidator::validateLastName() const {
 shared_ptr<ValidationError> PersonValidator::validateEmail() const {
     auto editor = dynamic_cast<QLineEdit *>(mFieldEditors["email"]);
     auto text = editor->text().trimmed();
+    if(text.isEmpty()) {
+        return nullptr;
+    }
+
     QRegExp regExp("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b",
                    Qt::CaseInsensitive);
     QRegExpValidator validator(regExp);

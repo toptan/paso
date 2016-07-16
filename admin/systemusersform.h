@@ -10,7 +10,7 @@
 class QSqlTableModel;
 
 namespace Ui {
-class AdministratorForm;
+class SystemUsersForm;
 }
 
 namespace paso {
@@ -35,7 +35,7 @@ protected:
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
 private:
-    Ui::AdministratorForm *ui;
+    Ui::SystemUsersForm *ui;
 
     static std::pair<QSqlTableModel *, RecordEditorWidget *>
     createModelAndEditor();

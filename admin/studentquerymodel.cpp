@@ -9,7 +9,7 @@ namespace paso {
 namespace admin {
 
 const QString StudentQueryModel::QUERY =
-    "SELECT P.ID, P.FIRST_NAME, P.LAST_NAME, P.EMAIL, P.RFID, S.INDEX_NUMBER, "
+    "SELECT P.ID, S.INDEX_NUMBER, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, "
     "S.YEAR_OF_STUDY FROM PERSON P JOIN STUDENT S USING (ID)";
 
 StudentQueryModel::StudentQueryModel(const QVariantMap &columnLabels,

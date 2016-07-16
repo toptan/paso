@@ -1,6 +1,7 @@
 #include "pasodb.h"
 
-#include <QDebug>
+#include <QDate>
+#include <QRegExp>
 #include <QSqlRecord>
 #include <QSqlResult>
 #include <QSqlError>
@@ -232,41 +233,6 @@ bool DBManager::indexNumberUnique(const QString &indexNumber,
     return true;
 }
 
-CourseImportError DBManager::importCourse(const QString &csvLine,
-                                          QSqlError &error) const {
-    auto segments = csvLine.split(",");
-    if (segments.length() < 2) {
-        return CourseImportError::INVALID_LINE;
-    }
-    auto code = segments[0].trimmed();
-    auto name = segments[1].trimmed();
-    if (code.isEmpty()) {
-        return CourseImportError::NO_CODE;
-    }
-    if (code.length() > 8) {
-        return CourseImportError::CODE_TOO_LONG;
-    }
-    if (name.isEmpty()) {
-        return CourseImportError::NO_NAME;
-    }
-    if (name.length() > 64) {
-        return CourseImportError::NAME_TOO_LONG;
-    }
-    auto course = getCourse(code, error);
-    if (error.type() != QSqlError::NoError) {
-        return CourseImportError::DB_ERROR;
-    }
-    if (course) {
-        course->setName(name);
-    } else {
-        course = make_shared<Course>(code, name);
-    }
-    if (!saveCourse(*course, error)) {
-        return CourseImportError::DB_ERROR;
-    }
-    return CourseImportError::NO_ERROR;
-}
-
 shared_ptr<Student>
 DBManager::getStudentByIndexNumber(const QString &indexNumber,
                                    QSqlError &error) const {
@@ -327,6 +293,120 @@ bool DBManager::deleteStudent(const QString &indexNumber,
     query.exec();
     error = query.lastError();
     return error.type() == QSqlError::NoError;
+}
+
+CourseImportError DBManager::importCourse(const QString &csvLine,
+                                          QSqlError &error) const {
+    QString noQuotes = csvLine;
+    noQuotes.replace("\"", "");
+    auto segments = noQuotes.split(",");
+    if (segments.length() < 2) {
+        return CourseImportError::INVALID_LINE;
+    }
+    auto code = segments[0].trimmed();
+    auto name = segments[1].trimmed();
+    if (code.isEmpty()) {
+        return CourseImportError::NO_CODE;
+    }
+    if (code.length() > 8) {
+        return CourseImportError::CODE_TOO_LONG;
+    }
+    if (name.isEmpty()) {
+        return CourseImportError::NO_NAME;
+    }
+    if (name.length() > 64) {
+        return CourseImportError::NAME_TOO_LONG;
+    }
+    auto course = getCourse(code, error);
+    if (error.type() != QSqlError::NoError) {
+        return CourseImportError::DB_ERROR;
+    }
+    if (course) {
+        course->setName(name);
+    } else {
+        course = make_shared<Course>(code, name);
+    }
+    if (!saveCourse(*course, error)) {
+        return CourseImportError::DB_ERROR;
+    }
+    return CourseImportError::NO_ERROR;
+}
+
+StudentImportError DBManager::importStudent(const QString &csvLine,
+                                            QSqlError &error) const {
+    QString noQuotes = csvLine;
+    noQuotes.replace("\"", "");
+    auto segments = noQuotes.split(",");
+    if (segments.length() < 5) {
+        return StudentImportError::INVALID_LINE;
+    }
+    auto indexNumber = segments[0];
+    auto lastName = segments[1];
+    auto firstName = segments[2];
+    auto email = segments[3];
+    auto yearOfStudy = segments[4];
+
+    if (lastName.isEmpty()) {
+        return StudentImportError::NO_LAST_NAME;
+    }
+    if (lastName.size() > 32) {
+        return StudentImportError::LAST_NAME_TOO_LONG;
+    }
+    if (firstName.isEmpty()) {
+        return StudentImportError::NO_FIRST_NAME;
+    }
+    if (firstName.size() > 32) {
+        return StudentImportError::NO_FIRST_NAME;
+    }
+    if (!email.isEmpty()) {
+        QRegExp regExp("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b",
+                       Qt::CaseInsensitive);
+        if (!regExp.exactMatch(email)) {
+            return StudentImportError::BAD_EMAIL;
+        }
+    }
+
+    if (indexNumber.isEmpty()) {
+        return StudentImportError::NO_INDEX_NUMBER;
+    }
+    if (indexNumber.size() != 9 || indexNumber.count("/") != 1) {
+        return StudentImportError::BAD_INDEX_NUMBER;
+    }
+    auto indexSegments = indexNumber.split("/");
+    if (indexSegments[0].size() != 4 || indexSegments[1].size() != 4) {
+        return StudentImportError::BAD_INDEX_NUMBER;
+    }
+    if (indexSegments[0].toInt() < 1990 ||
+        indexSegments[0].toInt() > QDate::currentDate().year() ||
+        indexSegments[1].toInt() < 1) {
+        return StudentImportError::BAD_INDEX_NUMBER;
+    }
+    if (yearOfStudy.isEmpty()) {
+        return StudentImportError::NO_YEAR_OF_STUDY;
+    }
+    if (yearOfStudy.toInt() < 1 || yearOfStudy.toInt() > 7) {
+        return StudentImportError::BAD_YEAR_OF_STUDY;
+    }
+
+    auto student = getStudentByIndexNumber(indexNumber, error);
+    if (error.type() != QSqlError::NoError) {
+        return StudentImportError::DB_ERROR;
+    }
+    if (student) {
+        student->setFirstName(firstName);
+        student->setLastName(lastName);
+        student->setEmail(email);
+        student->setYearOfStudy(yearOfStudy.toInt());
+    } else {
+        student = make_shared<Student>(firstName, lastName, email, indexNumber,
+                                       yearOfStudy.toInt());
+    }
+
+    if (!saveStudent(*student, error)) {
+        return StudentImportError::DB_ERROR;
+    }
+
+    return StudentImportError::NO_ERROR;
 }
 }
 }

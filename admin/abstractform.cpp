@@ -17,7 +17,6 @@
 namespace paso {
 namespace admin {
 
-// TODO: Fix selected row problem when using proxy model.
 AbstractForm::AbstractForm(
     std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
     QWidget *parent)

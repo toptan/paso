@@ -175,7 +175,6 @@ void CourseForm::onImport() {
                 break;
             }
             emit newLogLine(message);
-            QThread::currentThread()->msleep(200);
             lineNo++;
         }
         delete file;

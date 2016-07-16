@@ -26,7 +26,7 @@ void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
                                  const QSqlRecord &record) {
     setLayout(new QFormLayout(this));
     layout()->setMargin(0);
-    setMinimumWidth(320);
+    setMinimumWidth(400);
     auto l = dynamic_cast<QFormLayout *>(layout());
     l->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for (int i = 0; i < record.count(); i++) {

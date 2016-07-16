@@ -34,6 +34,21 @@ enum class CourseImportError {
     DB_ERROR       //!< Generic database error.
 };
 
+enum class StudentImportError {
+    NO_ERROR,            //!< All fine, no error.
+    INVALID_LINE,        //!< The CSV line is illformed.
+    NO_INDEX_NUMBER,     //!< Missing index number.
+    BAD_INDEX_NUMBER,    //!< The index number is wrong.
+    NO_FIRST_NAME,       //!< Missing first name.
+    FIRST_NAME_TOO_LONG, //!< First name is too long.
+    NO_LAST_NAME,        //!< Missing last name.
+    LAST_NAME_TOO_LONG,  //!< Last name is too long.
+    BAD_EMAIL,           //!< The email is bad.
+    NO_YEAR_OF_STUDY,    //!< Year of study missing.
+    BAD_YEAR_OF_STUDY,   //<! The year of study is bad.
+    DB_ERROR             //!< Generic database error.
+};
+
 ///
 /// \brief The DBManager class is responsible for all database operations.
 ///
@@ -224,6 +239,15 @@ public:
     ///
     CourseImportError importCourse(const QString &csvLine,
                                    QSqlError &error) const;
+
+    ///
+    /// \brief importStudent imports student from given CSV line.
+    /// \param csvLine The CSV line with student data.
+    /// \param error The sql error if any.
+    /// \return The student import error.
+    ///
+    StudentImportError importStudent(const QString &csvLine,
+                                     QSqlError &error) const;
 
 private:
     const QString mDbName;

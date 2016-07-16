@@ -64,12 +64,12 @@ QSqlQuery Person::insertQuery(const QSqlDatabase &database,
         "(:first_name, :last_name, :email, :rfid)");
     query.bindValue(":first_name", person.firstName());
     query.bindValue(":last_name", person.lastName());
-    query.bindValue(":email", person.email());
-    if (person.rfid().isEmpty()) {
-        query.bindValue(":rfid", QVariant(QVariant::String));
-    } else {
-        query.bindValue(":rfid", person.rfid());
-    }
+    query.bindValue(":email", person.email().isEmpty()
+                                  ? QVariant(QVariant::String)
+                                  : person.email());
+    query.bindValue(":rfid", person.rfid().isEmpty()
+                                 ? QVariant(QVariant::String)
+                                 : person.rfid());
     return query;
 }
 
@@ -85,12 +85,12 @@ QSqlQuery Person::updateQuery(const QSqlDatabase &database,
     query.bindValue(":id", static_cast<quint64>(person.id()));
     query.bindValue(":first_name", person.firstName());
     query.bindValue(":last_name", person.lastName());
-    query.bindValue(":email", person.email());
-    if (person.rfid().isEmpty()) {
-        query.bindValue(":rfid", QVariant(QVariant::String));
-    } else {
-        query.bindValue(":rfid", person.rfid());
-    }
+    query.bindValue(":email", person.email().isEmpty()
+                                  ? QVariant(QVariant::String)
+                                  : person.email());
+    query.bindValue(":rfid", person.rfid().isEmpty()
+                                 ? QVariant(QVariant::String)
+                                 : person.rfid());
     return query;
 }
 
@@ -100,7 +100,6 @@ QSqlQuery Person::deleteQuery(const QSqlDatabase &database, uint64_t id) {
     query.bindValue(":id", static_cast<quint64>(id));
     return query;
 }
-
 }
 }
 }

@@ -22,7 +22,7 @@ namespace paso {
 namespace admin {
 
 SystemUsersForm::SystemUsersForm(QWidget *parent)
-    : TableForm(createModelAndEditor(), parent), ui(new Ui::AdministratorForm) {
+    : TableForm(createModelAndEditor(), parent), ui(new Ui::SystemUsersForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
     ui->tableView->hideColumn(0);

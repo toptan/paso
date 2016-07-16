@@ -2,27 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sr_RS">
 <context>
-    <name>AdministratorForm</name>
-    <message>
-        <location filename="../admin/systemusersform.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CourseForm</name>
     <message>
         <location filename="../admin/courseform.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
+        <source>Courses</source>
+        <translation>Предмети</translation>
     </message>
 </context>
 <context>
     <name>LogDialog</name>
     <message>
         <location filename="../admin/logdialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <source>Progress...</source>
+        <translation>Напредак...</translation>
     </message>
 </context>
 <context>
@@ -52,8 +44,8 @@
     <name>MainWindow</name>
     <message>
         <location filename="../admin/mainwindow.ui" line="14"/>
-        <source>MainWindow</source>
-        <translation></translation>
+        <source>PaSo Administration</source>
+        <translation>ПаСо администрација</translation>
     </message>
 </context>
 <context>
@@ -80,19 +72,19 @@
     </message>
     <message>
         <location filename="../admin/systemusersform.cpp" line="41"/>
-        <location filename="../admin/studentform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="46"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
         <location filename="../admin/systemusersform.cpp" line="42"/>
-        <location filename="../admin/studentform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="47"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
         <location filename="../admin/systemusersform.cpp" line="43"/>
-        <location filename="../admin/studentform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="48"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>
@@ -117,17 +109,17 @@
         <translation>Број</translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="45"/>
+        <location filename="../admin/studentform.cpp" line="49"/>
         <source>RFID</source>
         <translation>РФИД</translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="46"/>
+        <location filename="../admin/studentform.cpp" line="50"/>
         <source>Index Number</source>
         <translation>Број индекса</translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="47"/>
+        <location filename="../admin/studentform.cpp" line="51"/>
         <source>Year of Study</source>
         <translation>Година студија</translation>
     </message>
@@ -166,48 +158,56 @@
     <name>RoomForm</name>
     <message>
         <location filename="../admin/roomform.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
+        <source>Rooms</source>
+        <translation>Просторије</translation>
     </message>
 </context>
 <context>
     <name>StudentForm</name>
     <message>
         <location filename="../admin/studentform.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
+        <source>Students</source>
+        <translation>Студенти</translation>
+    </message>
+</context>
+<context>
+    <name>SystemUsersForm</name>
+    <message>
+        <location filename="../admin/systemusersform.ui" line="14"/>
+        <source>System users</source>
+        <translation>Системски корисници</translation>
     </message>
 </context>
 <context>
     <name>paso::admin::AbstractForm</name>
     <message>
-        <location filename="../admin/abstractform.cpp" line="65"/>
+        <location filename="../admin/abstractform.cpp" line="64"/>
         <source>New</source>
         <translation>Нов запис</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="70"/>
+        <location filename="../admin/abstractform.cpp" line="69"/>
         <source>Edit</source>
         <translation>Уреди</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="76"/>
+        <location filename="../admin/abstractform.cpp" line="75"/>
         <source>Delete</source>
         <translation>Обриши</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="86"/>
+        <location filename="../admin/abstractform.cpp" line="85"/>
         <source>Refresh data</source>
         <translation>Освежи податке</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="128"/>
+        <location filename="../admin/abstractform.cpp" line="127"/>
         <source>There was an error while deleting record from the database.</source>
         <translation>Дошло је то грешке приликом брисања записа из базе.</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="177"/>
-        <location filename="../admin/abstractform.cpp" line="202"/>
+        <location filename="../admin/abstractform.cpp" line="176"/>
+        <location filename="../admin/abstractform.cpp" line="201"/>
         <source>There was an error while saving data.</source>
         <translation>Дошло је до грешке приликом снимања подата.</translation>
     </message>
@@ -282,12 +282,12 @@
         <translation>Име предмета је дуже од 64 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="184"/>
+        <location filename="../admin/courseform.cpp" line="183"/>
         <source>Import finished without errors.</source>
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="187"/>
+        <location filename="../admin/courseform.cpp" line="186"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
@@ -407,34 +407,34 @@
         <location filename="../admin/personvalidator.cpp" line="44"/>
         <location filename="../admin/personvalidator.cpp" line="56"/>
         <location filename="../admin/personvalidator.cpp" line="61"/>
-        <location filename="../admin/personvalidator.cpp" line="77"/>
+        <location filename="../admin/personvalidator.cpp" line="81"/>
         <source>Invalid data entered</source>
-        <translation type="unfinished">Унешени су неисправни подаци</translation>
+        <translation>Унешени су неисправни подаци</translation>
     </message>
     <message>
         <location filename="../admin/personvalidator.cpp" line="40"/>
         <source>You need to specifiy person&apos;s first name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Морате да унесете име особе.</translation>
     </message>
     <message>
         <location filename="../admin/personvalidator.cpp" line="45"/>
         <source>The first name cannot be longer than 32 characters.</source>
-        <translation type="unfinished">Име корисника не може да буде дуже од 32 знака.</translation>
+        <translation>Име не може да буде дуже од 32 знака.</translation>
     </message>
     <message>
         <location filename="../admin/personvalidator.cpp" line="57"/>
         <source>You need to specifiy person&apos;s last name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Морате да унесете презиме особе.</translation>
     </message>
     <message>
         <location filename="../admin/personvalidator.cpp" line="62"/>
         <source>The last name cannot be longer than 32 characters.</source>
-        <translation type="unfinished"></translation>
+        <translation>Презиме не може да буде дуже од 32 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/personvalidator.cpp" line="78"/>
+        <location filename="../admin/personvalidator.cpp" line="82"/>
         <source>You need to provide a valid person&apos;s email address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Морате да унесете исправну адресу електронске поште особе.</translation>
     </message>
 </context>
 <context>
@@ -509,14 +509,99 @@
 <context>
     <name>paso::admin::StudentForm</name>
     <message>
-        <location filename="../admin/studentform.cpp" line="30"/>
+        <location filename="../admin/studentform.cpp" line="34"/>
         <source>Import</source>
         <translation>Увоз</translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="81"/>
+        <location filename="../admin/studentform.cpp" line="85"/>
         <source>Do you want to delete selected student from the system?</source>
         <translation>Да ли стварно желите да обришете одабраног студента из система?</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="125"/>
+        <source>Open students import file</source>
+        <translation>Отвори датотеку за увоз студената</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="132"/>
+        <source>The file %1 cannot be opened.</source>
+        <translation>Датотека %1 не може да се отвори.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="142"/>
+        <source>Importing students...</source>
+        <translation>Увожење података о студентима...</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="161"/>
+        <source>Importing students from %1</source>
+        <translation>Овожење података о студентима из %1</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="170"/>
+        <source>OK.</source>
+        <translation>ОК.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="174"/>
+        <source>The student data must be properly comma separated.</source>
+        <translation>Подаци о студенту нису исправно одвојени запетама.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="179"/>
+        <source>The index number is missing.</source>
+        <translation>Недостаје број индекса.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="184"/>
+        <source>The index number is in wrong format.</source>
+        <translation>Број индекса је у погрешном формату.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="189"/>
+        <source>The student&apos;s first name is missing.</source>
+        <translation>Недостаје име студента.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="194"/>
+        <source>The student&apos;s first name exceeds 32 characters.</source>
+        <translation>Име студента не може да буде дуже од 32 знака.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="199"/>
+        <source>The student&apos;s last name is missing.</source>
+        <translation>Недостаје презиме студента.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="204"/>
+        <source>The student&apos;s last name exceeds 32 characters.</source>
+        <translation>Презиме студента не може да буде дуже од 32 знака.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="209"/>
+        <source>The student&apos;s email is illformed.</source>
+        <translation>Адреса е-поште студента је неисправна.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="214"/>
+        <source>The student&apos;s year of study is missing.</source>
+        <translation>Недостаје година студија.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="219"/>
+        <source>The student&apos;s year of study is wrong.</source>
+        <translation>Погрешна година студија.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="233"/>
+        <source>Import finished without errors.</source>
+        <translation>Увожење је завршено без грешака.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="236"/>
+        <source>Not all lines could be imported. Please see messages above.</source>
+        <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
 </context>
 <context>
@@ -529,43 +614,43 @@
         <location filename="../admin/studentvalidator.cpp" line="74"/>
         <location filename="../admin/studentvalidator.cpp" line="87"/>
         <source>Invalid data entered</source>
-        <translation type="unfinished">Унешени су неисправни подаци</translation>
+        <translation>Унешени су неисправни подаци</translation>
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="41"/>
         <location filename="../admin/studentvalidator.cpp" line="47"/>
         <source>The index number must be in format YYYY/NNNN.</source>
-        <translation type="unfinished"></translation>
+        <translation>Број индекса мора да буде у формату ГГГГ/ББББ.</translation>
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="53"/>
         <source>Enrollment year must be between 1990 and %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Година уписа мора да буде између 1990 и %1.</translation>
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="59"/>
         <source>The index number must be greater than zero.</source>
-        <translation type="unfinished"></translation>
+        <translation>Број идекса мора да буде већи од нуле.</translation>
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="67"/>
         <source>Critical error</source>
-        <translation type="unfinished">Критична грешка</translation>
+        <translation>Критична грешка</translation>
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="68"/>
         <source>There was an error working with the database.</source>
-        <translation type="unfinished">Дошло је до грешке при раду са базом података.</translation>
+        <translation>Дошло је до грешке при раду са базом података.</translation>
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="75"/>
         <source>The student with index number %1 already exists in the system.</source>
-        <translation type="unfinished"></translation>
+        <translation>Студент са бројем индекса %1 већ постоји у систему.</translation>
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="88"/>
         <source>Year of study must be between 1 and 7.</source>
-        <translation type="unfinished"></translation>
+        <translation>Година студија мора да буде између 1 и 7.</translation>
     </message>
 </context>
 <context>

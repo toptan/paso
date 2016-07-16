@@ -41,7 +41,7 @@ StudentValidator::validateIndexNumber(const QString &original) const {
             tr("The index number must be in format YYYY/NNNN."));
     }
     auto split = text.split("/");
-    if (split[0].size() != 4 || split[0].size() != 4) {
+    if (split[0].size() != 4 || split[1].size() != 4) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
             tr("The index number must be in format YYYY/NNNN."));
