@@ -2,7 +2,6 @@
 
 #include <QLineEdit>
 #include <QVariant>
-#include <QStyle>
 #include <QSqlError>
 #include <QMessageBox>
 #include <QRegExp>
@@ -91,7 +90,7 @@ shared_ptr<ValidationError> SystemUserValidator::validateFirstName() const {
             tr("You need to specify user's first name."));
     }
     if (text.size() > 32) {
-        make_shared<ValidationError>(
+        return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
             tr("The first name cannot be longer than 32 characters."));
     }

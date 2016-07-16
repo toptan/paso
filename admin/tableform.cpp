@@ -1,5 +1,6 @@
 #include "tableform.h"
 
+#include <QDebug>
 #include <QSqlTableModel>
 #include <QSqlError>
 
@@ -26,12 +27,13 @@ bool TableForm::removeRow(int row, QSqlError &error) {
     return true;
 }
 
-bool TableForm::insertRecord(const QSqlRecord &record, QSqlError &error) {
+bool TableForm::insertRecord(QSqlRecord &record, QSqlError &error) {
     tableModel()->insertRecord(-1, record);
     if (!tableModel()->submitAll()) {
         error = tableModel()->lastError();
         return false;
     }
+    record = tableModel()->record(tableModel()->rowCount() - 1);
     return true;
 }
 

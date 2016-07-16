@@ -181,33 +181,33 @@
 <context>
     <name>paso::admin::AbstractForm</name>
     <message>
-        <location filename="../admin/abstractform.cpp" line="67"/>
+        <location filename="../admin/abstractform.cpp" line="65"/>
         <source>New</source>
         <translation>Нов запис</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="72"/>
+        <location filename="../admin/abstractform.cpp" line="70"/>
         <source>Edit</source>
         <translation>Уреди</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="78"/>
+        <location filename="../admin/abstractform.cpp" line="76"/>
         <source>Delete</source>
         <translation>Обриши</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="88"/>
+        <location filename="../admin/abstractform.cpp" line="86"/>
         <source>Refresh data</source>
         <translation>Освежи податке</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="136"/>
+        <location filename="../admin/abstractform.cpp" line="128"/>
         <source>There was an error while deleting record from the database.</source>
         <translation>Дошло је то грешке приликом брисања записа из базе.</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="165"/>
-        <location filename="../admin/abstractform.cpp" line="189"/>
+        <location filename="../admin/abstractform.cpp" line="177"/>
+        <location filename="../admin/abstractform.cpp" line="202"/>
         <source>There was an error while saving data.</source>
         <translation>Дошло је до грешке приликом снимања подата.</translation>
     </message>
@@ -401,6 +401,43 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::PersonValidator</name>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="39"/>
+        <location filename="../admin/personvalidator.cpp" line="44"/>
+        <location filename="../admin/personvalidator.cpp" line="56"/>
+        <location filename="../admin/personvalidator.cpp" line="61"/>
+        <location filename="../admin/personvalidator.cpp" line="77"/>
+        <source>Invalid data entered</source>
+        <translation type="unfinished">Унешени су неисправни подаци</translation>
+    </message>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="40"/>
+        <source>You need to specifiy person&apos;s first name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="45"/>
+        <source>The first name cannot be longer than 32 characters.</source>
+        <translation type="unfinished">Име корисника не може да буде дуже од 32 знака.</translation>
+    </message>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="57"/>
+        <source>You need to specifiy person&apos;s last name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="62"/>
+        <source>The last name cannot be longer than 32 characters.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="78"/>
+        <source>You need to provide a valid person&apos;s email address.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::RoomForm</name>
     <message>
         <location filename="../admin/roomform.cpp" line="76"/>
@@ -483,6 +520,55 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::StudentValidator</name>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="40"/>
+        <location filename="../admin/studentvalidator.cpp" line="46"/>
+        <location filename="../admin/studentvalidator.cpp" line="52"/>
+        <location filename="../admin/studentvalidator.cpp" line="58"/>
+        <location filename="../admin/studentvalidator.cpp" line="74"/>
+        <location filename="../admin/studentvalidator.cpp" line="87"/>
+        <source>Invalid data entered</source>
+        <translation type="unfinished">Унешени су неисправни подаци</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="41"/>
+        <location filename="../admin/studentvalidator.cpp" line="47"/>
+        <source>The index number must be in format YYYY/NNNN.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="53"/>
+        <source>Enrollment year must be between 1990 and %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="59"/>
+        <source>The index number must be greater than zero.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="67"/>
+        <source>Critical error</source>
+        <translation type="unfinished">Критична грешка</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="68"/>
+        <source>There was an error working with the database.</source>
+        <translation type="unfinished">Дошло је до грешке при раду са базом података.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="75"/>
+        <source>The student with index number %1 already exists in the system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="88"/>
+        <source>Year of study must be between 1 and 7.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::SystemUserTableModel</name>
     <message>
         <location filename="../admin/systemusertablemodel.cpp" line="28"/>
@@ -493,60 +579,60 @@
 <context>
     <name>paso::admin::SystemUserValidator</name>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="49"/>
-        <location filename="../admin/systemuservalidator.cpp" line="65"/>
-        <location filename="../admin/systemuservalidator.cpp" line="78"/>
-        <location filename="../admin/systemuservalidator.cpp" line="90"/>
-        <location filename="../admin/systemuservalidator.cpp" line="95"/>
-        <location filename="../admin/systemuservalidator.cpp" line="106"/>
-        <location filename="../admin/systemuservalidator.cpp" line="111"/>
-        <location filename="../admin/systemuservalidator.cpp" line="126"/>
+        <location filename="../admin/systemuservalidator.cpp" line="48"/>
+        <location filename="../admin/systemuservalidator.cpp" line="64"/>
+        <location filename="../admin/systemuservalidator.cpp" line="77"/>
+        <location filename="../admin/systemuservalidator.cpp" line="89"/>
+        <location filename="../admin/systemuservalidator.cpp" line="94"/>
+        <location filename="../admin/systemuservalidator.cpp" line="105"/>
+        <location filename="../admin/systemuservalidator.cpp" line="110"/>
+        <location filename="../admin/systemuservalidator.cpp" line="125"/>
         <source>Invalid data entered</source>
         <translation>Унешени су неисправни подаци</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="50"/>
+        <location filename="../admin/systemuservalidator.cpp" line="49"/>
         <source>The username has to be at least four characters long and cannot be longer than sixteen.</source>
         <translation>Корисничко име мора да има најмање четири, а највише шеснаест знакова.</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="59"/>
+        <location filename="../admin/systemuservalidator.cpp" line="58"/>
         <source>Critical error</source>
         <translation>Критична грешка</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="60"/>
+        <location filename="../admin/systemuservalidator.cpp" line="59"/>
         <source>There was an error working with the database.</source>
         <translation>Дошло је до грешке при раду са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="66"/>
+        <location filename="../admin/systemuservalidator.cpp" line="65"/>
         <source>A user with entered username already exists in the system.</source>
         <translation>Корисник са унетим корисничким именом већ постоји у систему.</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="79"/>
+        <location filename="../admin/systemuservalidator.cpp" line="78"/>
         <source>The password has to be at least eight characters long and cannot be longer than sixteen.</source>
         <translation>Лозинка мора да има најмање четири, а највише шеснаест знакова.</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="91"/>
+        <location filename="../admin/systemuservalidator.cpp" line="90"/>
         <source>You need to specify user&apos;s first name.</source>
         <translation>Морате унети име корисника.</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="96"/>
-        <location filename="../admin/systemuservalidator.cpp" line="112"/>
+        <location filename="../admin/systemuservalidator.cpp" line="95"/>
+        <location filename="../admin/systemuservalidator.cpp" line="111"/>
         <source>The first name cannot be longer than 32 characters.</source>
         <translation>Име корисника не може да буде дуже од 32 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="107"/>
+        <location filename="../admin/systemuservalidator.cpp" line="106"/>
         <source>You need to specify user&apos;s last name.</source>
         <translation>Морате унети презиме корисника.</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="127"/>
+        <location filename="../admin/systemuservalidator.cpp" line="126"/>
         <source>You need to provide a valid email address for the user.</source>
         <translation>Морате унети исправно адресу е-поште корисника.</translation>
     </message>

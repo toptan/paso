@@ -1,7 +1,7 @@
 #ifndef STUDENTVALIDATOR_H
 #define STUDENTVALIDATOR_H
 
-#include "recordvalidator.h"
+#include "personvalidator.h"
 #include "pasodb.h"
 
 #include <QObject>
@@ -9,7 +9,7 @@
 namespace paso {
 namespace admin {
 
-class StudentValidator : public RecordValidator {
+class StudentValidator : public PersonValidator {
     Q_OBJECT
 public:
     StudentValidator(const FieldTypes &fieldTypes,
@@ -21,7 +21,9 @@ public:
     validate(const QSqlRecord &original) const override;
 
 private:
-
+    std::shared_ptr<ValidationError>
+    validateIndexNumber(const QString &original) const;
+    std::shared_ptr<ValidationError> validateYearOfStudy() const;
 };
 }
 }

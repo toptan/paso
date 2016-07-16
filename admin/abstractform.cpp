@@ -37,14 +37,12 @@ RecordEditorWidget *AbstractForm::recordEditor() const { return mRecordEditor; }
 void AbstractForm::setupWidgets(QTableView *tableView) {
     mTableView = tableView;
 
-    if (dynamic_cast<RefreshableSqlQueryModel *>(mModel) == nullptr) {
-        // Ok, we don't need proxy for sorting.
-        mTableView->setModel(mModel);
-    } else {
-        mProxyModel = new StableRowNumberSortFilterProxyModel(this);
-        mProxyModel->setSourceModel(mModel);
-        mTableView->setModel(mProxyModel);
-    }
+    mProxyModel = new StableRowNumberSortFilterProxyModel(this);
+    mProxyModel->setSortLocaleAware(true);
+    mProxyModel->setDynamicSortFilter(false);
+    mProxyModel->setSourceModel(mModel);
+
+    mTableView->setModel(mProxyModel);
     mTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     mTableView->sortByColumn(1, Qt::SortOrder::AscendingOrder);
@@ -86,14 +84,8 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
     mActions.push_back(separator);
 
     mRefreshAction = new QAction(tr("Refresh data"), this);
-    connect(mRefreshAction, &QAction::triggered, [this]() { refreshModel(); });
-    connect(mRefreshAction, &QAction::triggered, [this]() {
-        mTableView->clearSelection();
-        mEditRecordAction->setEnabled(false);
-        mDeleteRecordAction->setEnabled(false);
-    });
-    connect(mRefreshAction, &QAction::triggered, mRecordEditor,
-            &RecordEditorWidget::clearData);
+    connect(mRefreshAction, &QAction::triggered, this,
+            &AbstractForm::onRefreshData);
     mActions.push_back(mRefreshAction);
 }
 
@@ -146,6 +138,26 @@ void AbstractForm::onDeleteRecord() {
     mEditRecordAction->setEnabled(false);
 }
 
+void AbstractForm::onRefreshData() {
+    auto index = mTableView->selectionModel()->currentIndex();
+    bool selectionExists = index.isValid();
+    QSqlRecord selectedRecord;
+    if (selectionExists) {
+        selectedRecord = mModel->record(mapRowToModel(index.row()));
+    }
+    refreshModel();
+    int row = selectionExists ? findRecord(selectedRecord) : -1;
+    if (row != -1) {
+        mTableView->selectRow(row);
+        onSelectionChanged(selectedRecord);
+    } else {
+        mTableView->clearSelection();
+        mEditRecordAction->setEnabled(false);
+        mDeleteRecordAction->setEnabled(false);
+        mRecordEditor->clearData();
+    }
+}
+
 void AbstractForm::onEditFinished() {
     for (auto &action : mActions) {
         action->setEnabled(true);
@@ -173,9 +185,10 @@ void AbstractForm::onRequestSave(QSqlRecord record) {
     }
 
     mRecordEditor->saveSuccessfull();
-    mTableView->clearSelection();
     mRecordEditor->clearData();
+    mTableView->selectRow(findRecord(record));
     onEditFinished();
+    onSelectionChanged(record);
 }
 
 void AbstractForm::onRequestUpdate(QSqlRecord record) {
@@ -198,9 +211,10 @@ void AbstractForm::onRequestUpdate(QSqlRecord record) {
     }
 
     mRecordEditor->saveSuccessfull();
-    mTableView->clearSelection();
     mRecordEditor->clearData();
+    mTableView->selectRow(findRecord(record));
     onEditFinished();
+    onSelectionChanged(record);
 }
 
 void AbstractForm::onSelectionChanged(const QSqlRecord &record) {
@@ -234,6 +248,15 @@ int AbstractForm::mapRowToProxy(int modelRow) const {
     } else {
         return modelRow;
     }
+}
+
+int AbstractForm::findRecord(const QSqlRecord &record) const {
+    for (int i = 0; i < mModel->rowCount(); i++) {
+        if (record == mModel->record(i)) {
+            return mapRowToProxy(i);
+        }
+    }
+    return -1;
 }
 }
 }

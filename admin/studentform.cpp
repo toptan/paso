@@ -84,12 +84,13 @@ bool StudentForm::shouldDeleteRecord(const QSqlRecord &record) const {
     return msgBox.exec() == QMessageBox::Yes;
 }
 
-bool StudentForm::insertRecord(const QSqlRecord &record, QSqlError &error) {
+bool StudentForm::insertRecord(QSqlRecord &record, QSqlError &error) {
     auto map = DBManager::recordToVariantMap(record);
     map.remove("id");
     Student student(map);
     if (manager().saveStudent(student, error)) {
         refreshModel();
+        record.setValue("id", static_cast<quint64>(student.id()));
         return true;
     }
     return false;

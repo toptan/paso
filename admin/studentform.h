@@ -34,7 +34,7 @@ protected:
 
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
-    virtual bool insertRecord(const QSqlRecord &record,
+    virtual bool insertRecord(QSqlRecord &record,
                               QSqlError &error) override;
     virtual bool updateRecord(int row, const QSqlRecord &record,
                               QSqlError &error) override;

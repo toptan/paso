@@ -42,12 +42,14 @@ protected slots:
     virtual void onNewRecord();
     virtual void onEditRecord();
     virtual void onDeleteRecord();
+    virtual void onRefreshData();
 
     virtual void onEditFinished();
 
     virtual void onRequestSave(QSqlRecord record);
     virtual void onRequestUpdate(QSqlRecord record);
     virtual void onSelectionChanged(const QSqlRecord &record);
+
 
 protected:
     ///
@@ -102,12 +104,13 @@ protected:
     virtual bool removeRow(int row, QSqlError &error) = 0;
 
     ///
-    /// \brief insertRecord inserts a new record.
-    /// \param record The record to insert
+    /// \brief insertRecord inserts a new record. The record will contain
+    /// updated values after saving like primary keys, etc.
+    /// \param record The record to insert.
     /// \param error The SQL error if any.
     /// \return \c true if insert vas successfull.
     ///
-    virtual bool insertRecord(const QSqlRecord &record, QSqlError &error) = 0;
+    virtual bool insertRecord(QSqlRecord &record, QSqlError &error) = 0;
 
     ///
     /// \brief updateRecord Updates the record at given row.
@@ -127,11 +130,18 @@ private:
     QAction *mRefreshAction;
 
     QSqlQueryModel *mModel;
-    /// Used when \ref mModel is not QSqlTableModel to support sorting.
     QSortFilterProxyModel *mProxyModel;
 
     RecordEditorWidget *mRecordEditor;
     QTableView *mTableView;
+
+    ///
+    /// \brief findRecord Finds record in underlying model and returns the row
+    /// for table view selection. If record is not found -1 is returned.
+    /// \param record Record to find.
+    /// \return Row to select in table view.
+    ///
+    int findRecord(const QSqlRecord &record) const;
 
     ///
     /// \brief mapRowToModel Maps proxy row to model row. If proxy does not
