@@ -99,7 +99,7 @@ public:
     /// The user 'root' cannot be deleted.
     /// \param [in]  username The username.
     /// \param [out] error SQL error if any.
-    /// \return \c true if user is succesdfully deleted.
+    /// \return \c true if user is successfully deleted.
     ///
     bool deleteSystemUser(const QString &username, QSqlError &error) const;
 
@@ -248,6 +248,70 @@ public:
     ///
     StudentImportError importStudent(const QString &csvLine,
                                      QSqlError &error) const;
+
+    ///
+    /// \brief getCourseStudents Returns all students that are enrolled to a
+    /// course.
+    /// \param courseCode The course code.
+    /// \param error The sql error if any.
+    /// \return The students that are enrolled to a course.
+    ///
+    std::shared_ptr<std::vector<data::entity::Student>>
+    getCourseStudents(const QString &courseCode, QSqlError &error) const;
+
+    ///
+    /// \brief getStudentCourses Returns all courses that student is enrolled
+    /// to.
+    /// \param indexNumber The index number.
+    /// \param error The sql error if any.
+    /// \return The courses that student is enrolled to.
+    ///
+    std::shared_ptr<std::vector<data::entity::Course>>
+    getStudentCourses(const QString &indexNumber, QSqlError &error) const;
+
+    ///
+    /// \brief enlistStudentsToCourse Enlists students to the course.
+    /// \param courseCode The course code.
+    /// \param indexNumbers The list of students index numbers.
+    /// \param error The sql error if any.
+    /// \return \c true if students are successfully enlisted.
+    ///
+    bool enlistStudentsToCourse(const QString &courseCode,
+                                const QStringList &indexNumbers,
+                                QSqlError &error) const;
+
+    ///
+    /// \brief enlistStudentToCourses Enlists student to courses.
+    /// \param indexNumber The student's index number.
+    /// \param courseCodes The list of course codes to enlist student to.
+    /// \param error The sql error if any.
+    /// \return \c true if student is successfully enlisted.
+    ///
+    bool enlistStudentToCourses(const QString &indexNumber,
+                                const QStringList &courseCodes,
+                                QSqlError &error) const;
+
+    ///
+    /// \brief removeStudentsFromCourse Removes students from given course.
+    /// \param courseCode The course code.
+    /// \param indexNumbers The list of stundents index numbers.
+    /// \param error The sql error if any.
+    /// \return \c true if students are successfully removed from the course.
+    ///
+    bool removeStudentsFromCourse(const QString &courseCode,
+                                  const QStringList &indexNumbers,
+                                  QSqlError &error) const;
+
+    ///
+    /// \brief removeStudentFromCourses Removes student from given courses.
+    /// \param indexNumber The index number.
+    /// \param courseCodes The list of course codes.
+    /// \param error The sql error if any.
+    /// \return \c true if student is succesfully removed from courses.
+    ///
+    bool removeStudentFromCourses(const QString &indexNumber,
+                                  const QStringList &courseCodes,
+                                  QSqlError &error) const;
 
 private:
     const QString mDbName;

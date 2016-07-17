@@ -38,6 +38,8 @@ protected:
 
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
+    virtual void updateActions(const QSqlRecord &record) override;
+
     virtual bool insertRecord(QSqlRecord &record, QSqlError &error) override;
     virtual bool updateRecord(int row, const QSqlRecord &record,
                               QSqlError &error) override;
@@ -50,6 +52,7 @@ private slots:
 private:
     Ui::StudentForm *ui;
     QAction *mImportAction;
+    QAction *mDetailsAction;
 
     static std::pair<QSqlQueryModel *, RecordEditorWidget *>
     createModelAndEditor();

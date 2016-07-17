@@ -112,6 +112,40 @@ public:
     static QSqlQuery findByCodeQuery(const QSqlDatabase &database,
                                      const QString &code);
 
+    ///
+    /// \brief findCourseStudents Returns query that finds all students enlisted
+    /// to a given course.
+    /// \param database The database to use.
+    /// \param code The course code.
+    /// \return The query.
+    ///
+    static QSqlQuery findCourseStudentsQuery(const QSqlDatabase &database,
+                                             const QString &code);
+
+    ///
+    /// \brief enlistStudentToCourseQuery Returns query that enlists student to
+    /// the course. If student is already enlisted the query will do nothing.
+    /// \param database The database to use.
+    /// \param code The course code.
+    /// \param indexNumber The student's index number.
+    /// \return The query.
+    ///
+    static QSqlQuery enlistStudentToCourseQuery(const QSqlDatabase &database,
+                                                const QString &code,
+                                                const QString &indexNumber);
+
+    ///
+    /// \brief removeStudentFromCourseQuery Returns query that removes a student
+    /// from the course. If student is not enlisted the query will do nothing.
+    /// \param database The database to use.
+    /// \param code The course code.
+    /// \param indexNumber The student's index number.
+    /// \return The query.
+    ///
+    static QSqlQuery removeStudentFromCourseQuery(const QSqlDatabase &database,
+                                                  const QString &code,
+                                                  const QString &indexNumber);
+
 private:
     QString mCode; //!< The course code.
     QString mName; //!< The course name.

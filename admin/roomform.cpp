@@ -78,5 +78,9 @@ bool RoomForm::shouldDeleteRecord(const QSqlRecord &record) const {
     msgBox.setDefaultButton(QMessageBox::No);
     return msgBox.exec() == QMessageBox::Yes;
 }
+
+void RoomForm::updateActions(const QSqlRecord &record) {
+    // No form specific actions.
+}
 }
 }

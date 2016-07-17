@@ -34,6 +34,8 @@ protected:
 
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const override;
 
+    virtual void updateActions(const QSqlRecord &record) override;
+
 private:
     Ui::RoomForm *ui;
 

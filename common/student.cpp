@@ -85,6 +85,19 @@ QSqlQuery Student::findByIndexNumberQuery(const QSqlDatabase &database,
     query.bindValue(":index_number", indexNumber);
     return query;
 }
+
+QSqlQuery Student::findStudentCoursesQuery(const QSqlDatabase &database,
+                                           const QString &indexNumber) {
+    QSqlQuery query(database);
+    query.prepare("SELECT C.ID, C.CODE, C.NAME"
+                  "  FROM COURSE C"
+                  "  JOIN ENLISTED E ON C.ID = E.ID_COURSE"
+                  "  JOIN STUDENT S ON S.ID = E.ID_STUDENT"
+                  " WHERE S.INDEX_NUMBER = :index_number");
+    query.bindValue(":index_number", indexNumber);
+    return query;
+}
+
 }
 }
 }

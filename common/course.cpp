@@ -79,6 +79,57 @@ QSqlQuery Course::findByCodeQuery(const QSqlDatabase &database,
     query.bindValue(":code", code);
     return query;
 }
+
+QSqlQuery Course::findCourseStudentsQuery(const QSqlDatabase &database,
+                                          const QString &code) {
+    QSqlQuery query(database);
+    query.prepare("SELECT P.ID, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, "
+                  "       S.INDEX_NUMBER, S.YEAR_OF_STUDY "
+                  "  FROM PERSON P JOIN STUDENT S USING(ID) "
+                  "  JOIN ENLISTED E ON E.ID_STUDENT = S.ID "
+                  "  JOIN COURSE C ON C.ID = E.ID_COURSE"
+                  " WHERE C.CODE = :code");
+    query.bindValue(":code", code);
+    return query;
+}
+
+QSqlQuery Course::enlistStudentToCourseQuery(const QSqlDatabase &database,
+                                             const QString &code,
+                                             const QString &indexNumber) {
+    QSqlQuery query(database);
+    query.prepare("INSERT INTO ENLISTED(ID_COURSE, ID_STUDENT) "
+                  "SELECT C.ID, S.ID "
+                  "  FROM COURSE C, STUDENT S "
+                  " WHERE C.CODE = :code_1 "
+                  "   AND S.INDEX_NUMBER = :index_number_1 "
+                  "   AND (SELECT COUNT(1) "
+                  "          FROM ENLISTED E "
+                  "         WHERE E.ID_COURSE = C.ID "
+                  "           AND E.ID_STUDENT = S.ID "
+                  "           AND C.CODE = :code_2 "
+                  "           AND S.INDEX_NUMBER = :index_number_2) = 0");
+    query.bindValue(":code_1", code);
+    query.bindValue(":index_number_1", indexNumber);
+    query.bindValue(":code_2", code);
+    query.bindValue(":index_number_2", indexNumber);
+    return query;
+}
+
+QSqlQuery Course::removeStudentFromCourseQuery(const QSqlDatabase &database,
+                                               const QString &code,
+                                               const QString &indexNumber) {
+    QSqlQuery query(database);
+    query.prepare("DELETE FROM ENLISTED"
+                  " WHERE ID_COURSE = (SELECT ID"
+                  "                      FROM COURSE"
+                  "                     WHERE CODE = :code)"
+                  "   AND ID_STUDENT = (SELECT ID"
+                  "                       FROM STUDENT"
+                  "                      WHERE INDEX_NUMBER = :index_number)");
+    query.bindValue(":code", code);
+    query.bindValue(":index_number", indexNumber);
+    return query;
+}
 }
 }
 }

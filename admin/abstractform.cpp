@@ -135,6 +135,8 @@ void AbstractForm::onDeleteRecord() {
     refreshModel();
     mRecordEditor->clearData();
     mEditRecordAction->setEnabled(false);
+    mDeleteRecordAction->setEnabled(false);
+    updateActions(mModel->record());
 }
 
 void AbstractForm::onRefreshData() {
@@ -154,6 +156,7 @@ void AbstractForm::onRefreshData() {
         mEditRecordAction->setEnabled(false);
         mDeleteRecordAction->setEnabled(false);
         mRecordEditor->clearData();
+        updateActions(mModel->record());
     }
 }
 
@@ -220,6 +223,7 @@ void AbstractForm::onSelectionChanged(const QSqlRecord &record) {
     mDeleteRecordAction->setEnabled(shouldEnableDeleteAction(record));
     mEditRecordAction->setEnabled(shouldEnableEditAction(record));
     mRecordEditor->onDisplayRecord(record);
+    updateActions(record);
 }
 
 void AbstractForm::refreshModel() {

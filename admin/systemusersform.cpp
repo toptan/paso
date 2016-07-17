@@ -85,6 +85,10 @@ bool SystemUsersForm::shouldEnableDeleteAction(
     return record.value("username").toString() != "root";
 }
 
+void SystemUsersForm::updateActions(const QSqlRecord &record) {
+    // No form specific actions.
+}
+
 bool SystemUsersForm::shouldDeleteRecord(const QSqlRecord &record) const {
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Question);

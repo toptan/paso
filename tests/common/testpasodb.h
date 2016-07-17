@@ -40,7 +40,13 @@ private slots:
 
     void testCourseImport();
     void testStudentImport();
- private:
+
+    void testEnlistingStudentToCourses();
+    void testEnlistingStudentsToCourse();
+    void testRemovingStudentFromCourses();
+    void testRemovingStudentsFromCourse();
+
+private:
     QString dbName;
     QStringList usernames;
     QStringList roomUUIDs;

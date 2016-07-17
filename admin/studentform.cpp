@@ -34,7 +34,12 @@ StudentForm::StudentForm(QWidget *parent)
     mImportAction = new QAction(tr("Import"), this);
     toolBarActions().append(separator);
     toolBarActions().append(mImportAction);
-
+    separator = new QAction(this);
+    separator->setSeparator(true);
+    mDetailsAction = new QAction(tr("Details"), this);
+    toolBarActions().append(separator);
+    toolBarActions().append(mDetailsAction);
+    mDetailsAction->setEnabled(false);
     connect(mImportAction, &QAction::triggered, this, &StudentForm::onImport);
 }
 
@@ -86,6 +91,10 @@ bool StudentForm::shouldDeleteRecord(const QSqlRecord &record) const {
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     return msgBox.exec() == QMessageBox::Yes;
+}
+
+void StudentForm::updateActions(const QSqlRecord &record) {
+    mDetailsAction->setEnabled(record.value("id") != 0);
 }
 
 bool StudentForm::insertRecord(QSqlRecord &record, QSqlError &error) {

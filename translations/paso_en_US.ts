@@ -52,34 +52,34 @@
     <name>QObject</name>
     <message>
         <location filename="../admin/systemusersform.cpp" line="41"/>
-        <location filename="../admin/studentform.cpp" line="46"/>
+        <location filename="../admin/studentform.cpp" line="51"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemusersform.cpp" line="42"/>
-        <location filename="../admin/studentform.cpp" line="47"/>
+        <location filename="../admin/studentform.cpp" line="52"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemusersform.cpp" line="43"/>
-        <location filename="../admin/studentform.cpp" line="48"/>
+        <location filename="../admin/studentform.cpp" line="53"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="49"/>
+        <location filename="../admin/studentform.cpp" line="54"/>
         <source>RFID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="50"/>
+        <location filename="../admin/studentform.cpp" line="55"/>
         <source>Index Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="51"/>
+        <location filename="../admin/studentform.cpp" line="56"/>
         <source>Year of Study</source>
         <translation type="unfinished"></translation>
     </message>
@@ -99,12 +99,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="51"/>
+        <location filename="../admin/courseform.cpp" line="58"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="51"/>
+        <location filename="../admin/courseform.cpp" line="58"/>
         <source>Course</source>
         <translation type="unfinished"></translation>
     </message>
@@ -206,8 +206,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="176"/>
-        <location filename="../admin/abstractform.cpp" line="201"/>
+        <location filename="../admin/abstractform.cpp" line="179"/>
+        <location filename="../admin/abstractform.cpp" line="204"/>
         <source>There was an error while saving data.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -220,67 +220,72 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="92"/>
+        <location filename="../admin/courseform.cpp" line="44"/>
+        <source>Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/courseform.cpp" line="99"/>
         <source>Do you want to delete selected course from the system?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="100"/>
+        <location filename="../admin/courseform.cpp" line="111"/>
         <source>Open courses import file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="107"/>
+        <location filename="../admin/courseform.cpp" line="118"/>
         <source>The file %1 cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="117"/>
+        <location filename="../admin/courseform.cpp" line="128"/>
         <source>Importing course data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="136"/>
+        <location filename="../admin/courseform.cpp" line="147"/>
         <source>Importing course data from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="145"/>
+        <location filename="../admin/courseform.cpp" line="156"/>
         <source>OK.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="149"/>
+        <location filename="../admin/courseform.cpp" line="160"/>
         <source>The course code and name must be comma separated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="154"/>
+        <location filename="../admin/courseform.cpp" line="165"/>
         <source>The course code is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="159"/>
+        <location filename="../admin/courseform.cpp" line="170"/>
         <source>The course code exceeds 8 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="164"/>
+        <location filename="../admin/courseform.cpp" line="175"/>
         <source>The course name is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="169"/>
+        <location filename="../admin/courseform.cpp" line="180"/>
         <source>The course name exceeds 64 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="183"/>
+        <location filename="../admin/courseform.cpp" line="194"/>
         <source>Import finished without errors.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="186"/>
+        <location filename="../admin/courseform.cpp" line="197"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -507,92 +512,97 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="85"/>
+        <location filename="../admin/studentform.cpp" line="39"/>
+        <source>Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="90"/>
         <source>Do you want to delete selected student from the system?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="125"/>
+        <location filename="../admin/studentform.cpp" line="134"/>
         <source>Open students import file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="132"/>
+        <location filename="../admin/studentform.cpp" line="141"/>
         <source>The file %1 cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="142"/>
+        <location filename="../admin/studentform.cpp" line="151"/>
         <source>Importing students...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="161"/>
+        <location filename="../admin/studentform.cpp" line="170"/>
         <source>Importing students from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="170"/>
+        <location filename="../admin/studentform.cpp" line="179"/>
         <source>OK.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="174"/>
+        <location filename="../admin/studentform.cpp" line="183"/>
         <source>The student data must be properly comma separated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="179"/>
+        <location filename="../admin/studentform.cpp" line="188"/>
         <source>The index number is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="184"/>
+        <location filename="../admin/studentform.cpp" line="193"/>
         <source>The index number is in wrong format.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="189"/>
+        <location filename="../admin/studentform.cpp" line="198"/>
         <source>The student&apos;s first name is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="194"/>
+        <location filename="../admin/studentform.cpp" line="203"/>
         <source>The student&apos;s first name exceeds 32 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="199"/>
+        <location filename="../admin/studentform.cpp" line="208"/>
         <source>The student&apos;s last name is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="204"/>
+        <location filename="../admin/studentform.cpp" line="213"/>
         <source>The student&apos;s last name exceeds 32 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="209"/>
+        <location filename="../admin/studentform.cpp" line="218"/>
         <source>The student&apos;s email is illformed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="214"/>
+        <location filename="../admin/studentform.cpp" line="223"/>
         <source>The student&apos;s year of study is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="219"/>
+        <location filename="../admin/studentform.cpp" line="228"/>
         <source>The student&apos;s year of study is wrong.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="233"/>
+        <location filename="../admin/studentform.cpp" line="242"/>
         <source>Import finished without errors.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="236"/>
+        <location filename="../admin/studentform.cpp" line="245"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -718,7 +728,7 @@
 <context>
     <name>paso::admin::SystemUsersForm</name>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="91"/>
+        <location filename="../admin/systemusersform.cpp" line="95"/>
         <source>Do you want to delete selected system user?</source>
         <translation type="unfinished"></translation>
     </message>

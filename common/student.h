@@ -103,6 +103,16 @@ public:
     static QSqlQuery findByIndexNumberQuery(const QSqlDatabase &database,
                                             const QString &indexNumber);
 
+    ///
+    /// \brief findStudentCoursesQuery Returns query that finds all courses that
+    /// this student is enlisted to.
+    /// \param database The databae to use.
+    /// \param indexNumber The index number.
+    /// \return The query.
+    ///
+    static QSqlQuery findStudentCoursesQuery(const QSqlDatabase &database,
+                                             const QString &indexNumber);
+
 private:
     QString mIndexNumber; //!< The students index number.
     int mYearOfStudy;     //!< The students year of study.

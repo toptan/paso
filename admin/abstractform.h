@@ -50,7 +50,6 @@ protected slots:
     virtual void onRequestUpdate(QSqlRecord record);
     virtual void onSelectionChanged(const QSqlRecord &record);
 
-
 protected:
     ///
     /// \brief setupWidgets Sets up all necessary widgets and standard actions
@@ -94,6 +93,13 @@ protected:
     /// \return Whether the record should be deleted.
     ///
     virtual bool shouldDeleteRecord(const QSqlRecord &record) const = 0;
+
+    ///
+    /// \brief updateActions is called whenever selection changes to update form
+    /// specific actions.
+    /// \param record The newly selected record.
+    ///
+    virtual void updateActions(const QSqlRecord &record) = 0;
 
     ///
     /// \brief removeRow deletes the row from model/table view.
