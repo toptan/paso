@@ -1,18 +1,18 @@
 language: cpp
-compiler:
-    - gcc
 
 sudo: required
 
-dist: xenial
+services:
+    - docker
 
 os:
     - linux
 
 before_install:
-    - sudo apt-get update
-    - sudo apt-get install cmake qt5-default libqt5sql5-psqli libqt5sql5-sqlite
-    - sudo apt-get install qttools5-dev-tools
+    - docker pull pull centos/centos7
+    - docker run -d -p 127.0.0.1:4567 centos/centos7 /bin/sh -c "cd /root; bundle exec foreman start;"
+    - docker ps -a
+    - docker run centos/centos7 /bin/sh -c "cd /root; ls -la"
 
 branches:
     only:
