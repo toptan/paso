@@ -1,7 +1,11 @@
 language: cpp
 compiler:
     - gcc
-    - clang
+
+sudo: required
+
+dist: xenial
+
 os:
     - linux
 
