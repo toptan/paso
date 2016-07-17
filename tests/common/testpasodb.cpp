@@ -5,6 +5,7 @@
 
 #include <QDebug>
 #include <QSqlError>
+#include <QSqlRecord>
 #include <QUuid>
 #include <QDataStream>
 
@@ -23,6 +24,7 @@ void TestPasoDB::initTestCase() {
               << "root";
     auto db = QSqlDatabase::addDatabase("QSQLITE", dbName);
     db.setDatabaseName(":memory:");
+    //    db.setDatabaseName("/tmp/test.db");
     db.open();
 }
 
@@ -302,7 +304,7 @@ void TestPasoDB::testIndexNumberUnique() {
 void TestPasoDB::testSaveStudent() {
     DBManager manager(dbName);
     QSqlError error;
-    Student student("Pera", "Perić", "pera@foo.com", "222/11", 2);
+    Student student("Pera", "Perić", "", "222/11", 2);
     QVERIFY(manager.saveStudent(student, error));
     QVERIFY(student.id() != 0);
     auto loadedStudent = manager.getStudentByIndexNumber("222/11", error);
@@ -323,9 +325,11 @@ void TestPasoDB::testSaveStudent() {
     QCOMPARE(updatedStudent->indexNumber(), QString("333/12"));
     QCOMPARE(updatedStudent->yearOfStudy(), 3);
     updatedStudent->setRfid("RFID");
+    updatedStudent->setEmail("");
     QVERIFY(manager.saveStudent(*updatedStudent, error));
     loadedStudent = manager.getStudentByIndexNumber("333/12", error);
     QCOMPARE(updatedStudent->rfid(), QString("RFID"));
+    QCOMPARE(updatedStudent->email(), QString(""));
 }
 
 void TestPasoDB::testGetStudent() {
@@ -356,6 +360,74 @@ void TestPasoDB::testDeleteStudent() {
     studentFromDB = manager.getStudentByIndexNumber("555/15", error);
     QVERIFY(!(bool)studentFromDB);
     QVERIFY(manager.deleteStudent("XXX/YY", error));
+}
+
+void TestPasoDB::testStudentImport() {
+    DBManager manager(dbName);
+    QSqlError error;
+    QString csvLine = "164/96 Toplica Tanaskovic";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::INVALID_LINE);
+    csvLine = ",Tanaskovic, Toplica,,";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::NO_INDEX_NUMBER);
+    csvLine = "164/96,,Toplica,,";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::NO_LAST_NAME);
+    csvLine = "164/96,TanaskovicTanaskovicTanaskovicTanaskovic,Toplica,,";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::LAST_NAME_TOO_LONG);
+    csvLine = "164/96,Tanaskovic,,,";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::NO_FIRST_NAME);
+    csvLine = "164/96,Tanaskovic,ToplicaToplicaToplicaToplicaToplicaToplica,,";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::FIRST_NAME_TOO_LONG);
+    csvLine = "164/96,Tanaskovic,Toplica,,";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::NO_YEAR_OF_STUDY);
+    csvLine = "164/96,Tanaskovic,Toplica,toplica<at>gmail.com,4";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::BAD_EMAIL);
+    csvLine = "164/96,Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "11996/164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "1986/0164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "2986/0164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "1996/0000, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "1996/0164, Tanaskovic,Toplica,toplica@gmail.com,cetvrta";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::BAD_YEAR_OF_STUDY);
+    csvLine = "1996/0164, Tanaskovic,Toplica,toplica@gmail.com,15";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::BAD_YEAR_OF_STUDY);
+    csvLine = "1996/0164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::NO_ERROR);
+    auto student = manager.getStudentByIndexNumber("1996/0164", error);
+    QCOMPARE(student->indexNumber(), QString("1996/0164"));
+    QCOMPARE(student->lastName(), QString("Tanaskovic"));
+    QCOMPARE(student->firstName(), QString("Toplica"));
+    QCOMPARE(student->email(), QString("toplica@gmail.com"));
+    QCOMPARE(student->yearOfStudy(), 4);
+    csvLine = "1996/0164,Танасковић,\"Топлица\",toptan@etf.rs,5";
+    QCOMPARE(manager.importStudent(csvLine, error),
+             StudentImportError::NO_ERROR);
+    student = manager.getStudentByIndexNumber("1996/0164", error);
+    QCOMPARE(student->indexNumber(), QString("1996/0164"));
+    QCOMPARE(student->lastName(), QString("Танасковић"));
+    QCOMPARE(student->firstName(), QString("Топлица"));
+    QCOMPARE(student->email(), QString("toptan@etf.rs"));
+    QCOMPARE(student->yearOfStudy(), 5);
 }
 
 QTEST_MAIN(TestPasoDB)

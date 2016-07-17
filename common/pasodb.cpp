@@ -1,6 +1,7 @@
 #include "pasodb.h"
 
 #include <QDate>
+#include <QDebug>
 #include <QRegExp>
 #include <QSqlRecord>
 #include <QSqlResult>
@@ -257,6 +258,7 @@ bool DBManager::saveStudent(Student &student, QSqlError &error) const {
     query.exec();
     error = query.lastError();
     if (error.type() != QSqlError::NoError) {
+        qDebug() << error;
         db.rollback();
         return false;
     }
@@ -340,12 +342,15 @@ StudentImportError DBManager::importStudent(const QString &csvLine,
     if (segments.length() < 5) {
         return StudentImportError::INVALID_LINE;
     }
-    auto indexNumber = segments[0];
-    auto lastName = segments[1];
-    auto firstName = segments[2];
-    auto email = segments[3];
-    auto yearOfStudy = segments[4];
+    auto indexNumber = segments[0].trimmed();
+    auto lastName = segments[1].trimmed();
+    auto firstName = segments[2].trimmed();
+    auto email = segments[3].trimmed();
+    auto yearOfStudy = segments[4].trimmed();
 
+    if (indexNumber.isEmpty()) {
+        return StudentImportError::NO_INDEX_NUMBER;
+    }
     if (lastName.isEmpty()) {
         return StudentImportError::NO_LAST_NAME;
     }
@@ -356,7 +361,7 @@ StudentImportError DBManager::importStudent(const QString &csvLine,
         return StudentImportError::NO_FIRST_NAME;
     }
     if (firstName.size() > 32) {
-        return StudentImportError::NO_FIRST_NAME;
+        return StudentImportError::FIRST_NAME_TOO_LONG;
     }
     if (!email.isEmpty()) {
         QRegExp regExp("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b",
@@ -365,10 +370,10 @@ StudentImportError DBManager::importStudent(const QString &csvLine,
             return StudentImportError::BAD_EMAIL;
         }
     }
-
-    if (indexNumber.isEmpty()) {
-        return StudentImportError::NO_INDEX_NUMBER;
+    if (yearOfStudy.isEmpty()) {
+        return StudentImportError::NO_YEAR_OF_STUDY;
     }
+
     if (indexNumber.size() != 9 || indexNumber.count("/") != 1) {
         return StudentImportError::BAD_INDEX_NUMBER;
     }
@@ -380,9 +385,6 @@ StudentImportError DBManager::importStudent(const QString &csvLine,
         indexSegments[0].toInt() > QDate::currentDate().year() ||
         indexSegments[1].toInt() < 1) {
         return StudentImportError::BAD_INDEX_NUMBER;
-    }
-    if (yearOfStudy.isEmpty()) {
-        return StudentImportError::NO_YEAR_OF_STUDY;
     }
     if (yearOfStudy.toInt() < 1 || yearOfStudy.toInt() > 7) {
         return StudentImportError::BAD_YEAR_OF_STUDY;
