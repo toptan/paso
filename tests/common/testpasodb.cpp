@@ -297,7 +297,7 @@ void TestPasoDB::testIndexNumberUnique() {
     DBManager manager(dbName);
     QSqlError error;
     // This index number is from in_memory.sql so it should exist.
-    QVERIFY(!manager.indexNumberUnique("164/96", error));
+    QVERIFY(!manager.indexNumberUnique("2001/2001", error));
     QVERIFY(manager.indexNumberUnique("111/11", error));
 }
 
@@ -335,14 +335,14 @@ void TestPasoDB::testSaveStudent() {
 void TestPasoDB::testGetStudent() {
     DBManager manager(dbName);
     QSqlError error;
-    auto student = manager.getStudentByIndexNumber("164/96", error);
+    auto student = manager.getStudentByIndexNumber("2001/2001", error);
     QVERIFY(error.type() == QSqlError::NoError);
     QVERIFY((bool)student);
-    QCOMPARE(student->firstName(), QString("Toplica"));
-    QCOMPARE(student->lastName(), QString("Tanasković"));
-    QCOMPARE(student->email(), QString("toptan@foo.com"));
+    QCOMPARE(student->firstName(), QString("Petar"));
+    QCOMPARE(student->lastName(), QString("Petrović"));
+    QCOMPARE(student->email(), QString("petar@petrovic.com"));
     QCOMPARE(student->rfid(), QString("RRFFIIDD"));
-    QCOMPARE(student->indexNumber(), QString("164/96"));
+    QCOMPARE(student->indexNumber(), QString("2001/2001"));
     QCOMPARE(student->yearOfStudy(), 5);
     student = manager.getStudentByIndexNumber("XXX/YY", error);
     QVERIFY(error.type() == QSqlError::NoError);

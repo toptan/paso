@@ -83,12 +83,12 @@ INSERT INTO COURSE (CODE, NAME) VALUES (
 
 INSERT INTO PERSON(ID, FIRST_NAME, LAST_NAME, EMAIL, RFID) VALUES (
         1,
-        'Toplica',
-        'Tanasković',
-        'toptan@foo.com',
+        'Petar',
+        'Petrović',
+        'petar@petrovic.com',
         'RRFFIIDD');
 
 INSERT INTO STUDENT(ID, INDEX_NUMBER, YEAR_OF_STUDY) VALUES (
         1,
-        '164/96',
+        '2001/2001',
         5);
