@@ -9,7 +9,7 @@ os:
     - linux
 
 before_install:
-    - docker run --name PASO -d -p 127.0.0.1:4567 centos:centos7 /bin/sh -c "cd /root; bundle exec foreman start;"
+    - docker run --name PASO -d centos:centos7 /bin/sh -c "cd /root; bundle exec foreman start;"
     - docker ps -a
     - docker run centos:centos7 /bin/sh -c "cd /root; ls -la"
 
