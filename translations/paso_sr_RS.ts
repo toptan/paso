@@ -2,6 +2,50 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sr_RS">
 <context>
+    <name>CourseDetailsDialog</name>
+    <message>
+        <location filename="../admin/coursedetailsdialog.ui" line="14"/>
+        <source>Course details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.ui" line="32"/>
+        <source>Course information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.ui" line="44"/>
+        <location filename="../admin/coursedetailsdialog.ui" line="57"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.ui" line="70"/>
+        <source>Enlisted students: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.ui" line="89"/>
+        <source>All students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.ui" line="98"/>
+        <source>&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.ui" line="105"/>
+        <source>&lt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.ui" line="114"/>
+        <source>Enlisted students</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CourseForm</name>
     <message>
         <location filename="../admin/courseform.ui" line="14"/>
@@ -51,12 +95,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../admin/courseform.cpp" line="58"/>
+        <location filename="../admin/courseform.cpp" line="61"/>
         <source>Code</source>
         <translation>Шифра</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="58"/>
+        <location filename="../admin/courseform.cpp" line="61"/>
         <source>Course</source>
         <translation>Предмет</translation>
     </message>
@@ -222,77 +266,77 @@
 <context>
     <name>paso::admin::CourseForm</name>
     <message>
-        <location filename="../admin/courseform.cpp" line="39"/>
+        <location filename="../admin/courseform.cpp" line="42"/>
         <source>Import</source>
         <translation>Увоз</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="44"/>
+        <location filename="../admin/courseform.cpp" line="47"/>
         <source>Details</source>
         <translation type="unfinished">Детаљи</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="99"/>
+        <location filename="../admin/courseform.cpp" line="102"/>
         <source>Do you want to delete selected course from the system?</source>
         <translation>Да ли стварно желите да обришете одабрани предмет из система?</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="111"/>
+        <location filename="../admin/courseform.cpp" line="114"/>
         <source>Open courses import file</source>
         <translation>Отвори датотеку за увоз предмета</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="118"/>
+        <location filename="../admin/courseform.cpp" line="121"/>
         <source>The file %1 cannot be opened.</source>
         <translation>Датотека %1 не може да се отвори.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="128"/>
+        <location filename="../admin/courseform.cpp" line="131"/>
         <source>Importing course data...</source>
         <translation>Увожење података о предметима...</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="147"/>
+        <location filename="../admin/courseform.cpp" line="150"/>
         <source>Importing course data from %1</source>
         <translation>Увожење података о предметима из %1</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="156"/>
+        <location filename="../admin/courseform.cpp" line="159"/>
         <source>OK.</source>
         <translation>ОК.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="160"/>
+        <location filename="../admin/courseform.cpp" line="163"/>
         <source>The course code and name must be comma separated.</source>
         <translation>Шифра предмета и предмет морају да буду одвојени зарезом.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="165"/>
+        <location filename="../admin/courseform.cpp" line="168"/>
         <source>The course code is missing.</source>
         <translation>Недостаје шифра предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="170"/>
+        <location filename="../admin/courseform.cpp" line="173"/>
         <source>The course code exceeds 8 characters.</source>
         <translation>Шифра предмета је дужа од осам знакова.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="175"/>
+        <location filename="../admin/courseform.cpp" line="178"/>
         <source>The course name is missing.</source>
         <translation>Недостаје име предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="180"/>
+        <location filename="../admin/courseform.cpp" line="183"/>
         <source>The course name exceeds 64 characters.</source>
         <translation>Име предмета је дуже од 64 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="194"/>
+        <location filename="../admin/courseform.cpp" line="197"/>
         <source>Import finished without errors.</source>
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="197"/>
+        <location filename="../admin/courseform.cpp" line="200"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>

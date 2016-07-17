@@ -128,6 +128,12 @@ protected:
     virtual bool updateRecord(int row, const QSqlRecord &record,
                               QSqlError &error) = 0;
 
+    ///
+    /// \brief selectedRecord Returns currently selected record.
+    /// \return Currently selected record.
+    ///
+    QSqlRecord selectedRecord() const;
+
 private:
     QList<QAction *> mActions;
     QAction *mNewRecordAction;

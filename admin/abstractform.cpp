@@ -237,6 +237,14 @@ void AbstractForm::refreshModel() {
     }
 }
 
+QSqlRecord AbstractForm::selectedRecord() const {
+    auto index = mTableView->currentIndex();
+    if (!index.isValid()) {
+        return QSqlRecord();
+    }
+    return mModel->record(mapRowToModel(index.row()));
+}
+
 int AbstractForm::mapRowToModel(int proxyRow) const {
     if (mProxyModel != nullptr) {
         return mProxyModel->mapToSource(mProxyModel->index(proxyRow, 0)).row();

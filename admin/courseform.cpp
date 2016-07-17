@@ -2,11 +2,13 @@
 #include "ui_courseform.h"
 
 #include "data.h"
+#include "course.h"
 #include "pasodb.h"
 #include "recordeditorwidget.h"
 #include "coursevalidator.h"
 #include "courseeditorwidget.h"
 #include "logdialog.h"
+#include "coursedetailsdialog.h"
 
 #include <QDebug>
 #include <QFile>
@@ -19,6 +21,7 @@
 
 using namespace paso::db;
 using namespace paso::data;
+using namespace paso::data::entity;
 
 using namespace std;
 
@@ -103,7 +106,7 @@ bool CourseForm::shouldDeleteRecord(const QSqlRecord &record) const {
 }
 
 void CourseForm::updateActions(const QSqlRecord &record) {
-    // No course form specific actions that need updating.
+    mDetailsAction->setEnabled(record.value("id") != 0);
 }
 
 void CourseForm::onImport() {
@@ -205,8 +208,9 @@ void CourseForm::onImport() {
 }
 
 void CourseForm::onDetails() {
-
+    Course course(DBManager::recordToVariantMap(selectedRecord()));
+    CourseDetailsDialog dlg(course, this);
+    dlg.exec();
 }
-
 }
 }
