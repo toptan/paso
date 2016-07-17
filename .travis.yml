@@ -1,0 +1,17 @@
+language: cpp
+compiler:
+    - gcc
+    - clang
+os:
+    - linux
+
+before_install:
+    - sudo apt-get update
+    - sudo apt-get install cmake qt5-default libqt5sql5-psqli libqt5sql5-sqlite
+    - sudo apt-get install qttools5-dev-tools
+
+branches:
+    only:
+        - master
+
+
