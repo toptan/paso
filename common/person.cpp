@@ -40,6 +40,29 @@ QString Person::rfid() const { return mRFID; }
 
 void Person::setRfid(const QString &rfid) { mRFID = rfid; }
 
+QVariantMap Person::toVariantMap() const {
+    auto retVal = Entity::toVariantMap();
+    retVal.insert("FIRST_NAME", mFirstName);
+    retVal.insert("LAST_NAME", mLastName);
+    retVal.insert("EMAIL", mEmail);
+    retVal.insert("RFID", mRFID);
+    return retVal;
+}
+
+QVariant Person::value(const QString &property) const {
+    if (property == "FIRST_NAME") {
+        return mFirstName;
+    } else if (property == "LAST_NAME") {
+        return mLastName;
+    } else if (property == "EMAIL") {
+        return mEmail;
+    } else if (property == "RFID") {
+        return mRFID;
+    }
+
+    return Entity::value(property);
+}
+
 void Person::read(const QJsonObject &jsonObject) {
     setId(jsonObject["ID"].toVariant().toULongLong());
     mFirstName = jsonObject["FIRST_NAME"].toString();

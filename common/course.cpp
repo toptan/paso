@@ -1,8 +1,8 @@
 #include "course.h"
 
 #include <QDebug>
-#include <QString>
 #include <QSqlError>
+#include <QString>
 #include <QVariantMap>
 
 namespace paso {
@@ -31,6 +31,23 @@ void Course::setCode(const QString &code) { mCode = code; }
 QString Course::name() const { return mName; }
 
 void Course::setName(const QString &name) { mName = name; }
+
+QVariantMap Course::toVariantMap() const {
+    auto retVal = Entity::toVariantMap();
+    retVal.insert("CODE", mCode);
+    retVal.insert("NAME", mName);
+    return retVal;
+}
+
+QVariant Course::value(const QString &property) const {
+    if (property == "CODE") {
+        return mCode;
+    } else if (property == "NAME") {
+        return mName;
+    }
+
+    return Entity::value(property);
+}
 
 void Course::read(const QJsonObject &jsonObject) {
     setId(jsonObject["ID"].toVariant().toULongLong());

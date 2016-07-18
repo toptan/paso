@@ -91,6 +91,16 @@ public:
     void setRfid(const QString &rfid);
 
     ///
+    /// \ref Entity::toVariantMap();
+    ///
+    virtual QVariantMap toVariantMap() const override;
+
+    ///
+    /// \ref Entity::value(const QStirng &);
+    ///
+    virtual QVariant value(const QString &property) const override;
+
+    ///
     /// \ref JsonSerializable::read(const QJsonObject&);
     ///
     virtual void read(const QJsonObject &jsonObject) override;
@@ -127,7 +137,6 @@ public:
     /// \return The query.
     ///
     static QSqlQuery deleteQuery(const QSqlDatabase &database, uint64_t id);
-
 
 private:
     QString mFirstName; //!< The first name.

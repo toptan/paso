@@ -39,6 +39,23 @@ void Student::setYearOfStudy(const int yearOfStudy) {
     mYearOfStudy = yearOfStudy;
 }
 
+QVariantMap Student::toVariantMap() const {
+    auto retVal = Person::toVariantMap();
+    retVal.insert("INDEX_NUMBER", mIndexNumber);
+    retVal.insert("YEAR_OF_STUDY", mYearOfStudy);
+    return retVal;
+}
+
+QVariant Student::value(const QString &property) const {
+    if (property == "INDEX_NUMBER") {
+        return mIndexNumber;
+    } else if (property == "YEAR_OF_STUDY") {
+        return mYearOfStudy;
+    }
+
+    return Person::value(property);
+}
+
 void Student::read(const QJsonObject &jsonObject) {
     Person::read(jsonObject);
     mIndexNumber = jsonObject["INDEX_NUMBER"].toString();
@@ -97,7 +114,6 @@ QSqlQuery Student::findStudentCoursesQuery(const QSqlDatabase &database,
     query.bindValue(":index_number", indexNumber);
     return query;
 }
-
 }
 }
 }

@@ -25,6 +25,8 @@ public:
 private:
     Ui::CourseDetailsDialog *ui;
     const paso::data::entity::Course mCourse;
+
+    bool mDirty;
 };
 }
 }

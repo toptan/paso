@@ -6,6 +6,9 @@
 class TestPasoDB : public QObject {
     Q_OBJECT
 
+public:
+    TestPasoDB();
+
 private slots:
 
     void initTestCase();
@@ -47,7 +50,7 @@ private slots:
     void testRemovingStudentsFromCourse();
 
 private:
-    QString dbName;
+    const QString dbName;
     QStringList usernames;
     QStringList roomUUIDs;
 };

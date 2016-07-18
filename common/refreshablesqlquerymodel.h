@@ -6,7 +6,7 @@
 #include <QSqlQuery>
 
 namespace paso {
-namespace admin {
+namespace model {
 
 class RefreshableSqlQueryModel : public QSqlQueryModel {
     Q_OBJECT

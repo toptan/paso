@@ -25,7 +25,8 @@ Operation operationFromString(const QString &operation) {
 
 // Base methods.
 
-Base::Base(const QString &jsonString) : JsonSerializable() {
+Base::Base(const QString &jsonString)
+    : JsonSerializable(), mOperation(Operation::UNKNOWN_OPERATION) {
     JsonSerializable::fromJsonString(jsonString);
 }
 
@@ -86,9 +87,7 @@ LoginResponse::LoginResponse(const SystemUser &systemUser,
       mSystemUser(systemUser), mDbName(dbName), mDbServer(dbServer),
       mDbUsername(dbUsername), mDbPassword(dbPassword), mDbPort(dbPort) {}
 
-const SystemUser &LoginResponse::systemUser() const {
-    return mSystemUser;
-}
+const SystemUser &LoginResponse::systemUser() const { return mSystemUser; }
 
 QString LoginResponse::dbName() const { return mDbName; }
 

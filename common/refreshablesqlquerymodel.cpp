@@ -3,7 +3,7 @@
 #include <QSqlError>
 
 namespace paso {
-namespace admin {
+namespace model {
 
 RefreshableSqlQueryModel::RefreshableSqlQueryModel(const QString &strQuery,
                                                    const QString &databaseName,

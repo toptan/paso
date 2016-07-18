@@ -14,6 +14,8 @@
 #include <QSqlTableModel>
 #include <QTableView>
 
+using namespace paso::model;
+
 namespace paso {
 namespace admin {
 

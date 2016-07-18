@@ -1,9 +1,10 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <cstdint>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QVariantMap>
+#include <cstdint>
 
 namespace paso {
 namespace data {
@@ -20,7 +21,7 @@ public:
     /// \param id The id (primary key) of an entity. The value of zero is
     /// considered as indicator that this is a new entity not yet persisted.
     ///
-    Entity(uint64_t id = 0);
+    explicit Entity(uint64_t id = 0);
 
     ///
     /// \brief id Returns entity id.
@@ -33,6 +34,22 @@ public:
     /// \param id The id to set.
     ///
     void setId(const uint64_t id);
+
+    ///
+    /// \brief toVariantMap Returns variant map representation of an entity.
+    /// Derived classes should first call this method before adding their own
+    /// properties to the map.
+    /// \return The variant map representation of entity.
+    ///
+    virtual QVariantMap toVariantMap() const;
+
+    ///
+    /// \brief value Returns value of given property. If property does not
+    /// exist, null variant will be returned.
+    /// \param propertyName The property.
+    /// \return The value of the property.
+    ///
+    virtual QVariant value(const QString &property) const;
 
 private:
     uint64_t mId;

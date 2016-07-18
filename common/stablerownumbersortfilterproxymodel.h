@@ -5,7 +5,7 @@
 #include <QVariant>
 
 namespace paso {
-namespace admin {
+namespace model {
 
 ///
 /// \brief The StableRowNumberSortFilterProxyModel class fixes vertical header

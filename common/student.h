@@ -64,6 +64,16 @@ public:
     void setYearOfStudy(const int yearOfStudy);
 
     ///
+    /// \ref Entity::toVariantMap();
+    ///
+    virtual QVariantMap toVariantMap() const override;
+
+    ///
+    /// \ref Entity::value(const QStirng &);
+    ///
+    virtual QVariant value(const QString &property) const override;
+
+    ///
     /// \ref JsonSerializable::read(const QJsonObject&);
     ///
     virtual void read(const QJsonObject &jsonObject) override;

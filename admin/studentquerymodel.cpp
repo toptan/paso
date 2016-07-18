@@ -6,7 +6,7 @@
 #include <QDebug>
 
 namespace paso {
-namespace admin {
+namespace model {
 
 const QString StudentQueryModel::QUERY =
     "SELECT P.ID, S.INDEX_NUMBER, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, "

@@ -33,6 +33,11 @@ add_test(NAME "Communication_tests" COMMAND testcommmanager)
 target_link_libraries(testcommmanager pasocommon)
 enable_coverage(testcommmanager pasocommon)
 
+add_executable(testmodels testmodels.cpp)
+add_test(NAME "Model_tests" COMMAND testmodels)
+target_link_libraries(testmodels pasocommon)
+enable_coverage(testmodels pasocommon)
+
 # Don't forget to add each test to DEPENDS section
 add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} -V

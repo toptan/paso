@@ -5,8 +5,8 @@
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QLabel>
-#include <QVariantMap>
 #include <QToolTip>
+#include <QVariantMap>
 
 #include "data.h"
 
@@ -19,8 +19,8 @@ using namespace std;
 RecordEditorWidget::RecordEditorWidget(const QSqlRecord &record,
                                        const FieldTypes &fieldTypes,
                                        QWidget *parent)
-    : QWidget(parent), mFieldTypes(fieldTypes), mValidator(nullptr),
-      mNewRecord(false), mFirstResponder(nullptr) {}
+    : QWidget(parent), mFieldTypes(fieldTypes), mButtonBox(nullptr),
+      mValidator(nullptr), mNewRecord(false), mFirstResponder(nullptr) {}
 
 void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
                                  const QSqlRecord &record) {

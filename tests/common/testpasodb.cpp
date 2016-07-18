@@ -3,18 +3,19 @@
 #include "data.h"
 #include "pasodb.h"
 
+#include <QDataStream>
 #include <QDebug>
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QUuid>
-#include <QDataStream>
 
 using namespace paso::db;
 using namespace paso::data;
 using namespace paso::data::entity;
 
+TestPasoDB::TestPasoDB() : QObject(), dbName("paso") {}
+
 void TestPasoDB::initTestCase() {
-    dbName = "paso";
     roomUUIDs << QUuid("{d23a502b-a567-4929-ba99-9f93f36bf4e3}").toString();
     roomUUIDs << QUuid("{7003528d-4c44-4f91-91b4-b82cb5afb009}").toString();
     usernames << "admin"

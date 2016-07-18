@@ -33,6 +33,26 @@ QString Room::number() const { return mNumber; }
 
 void Room::setNumber(const QString &number) { mNumber = number; }
 
+QVariantMap Room::toVariantMap() const {
+    auto retVal = Entity::toVariantMap();
+    retVal.insert("ROOM_UUID", mRoomUUID);
+    retVal.insert("NAME", mName);
+    retVal.insert("ROOM_NUMBER", mNumber);
+    return retVal;
+}
+
+QVariant Room::value(const QString &property) const {
+    if (property == "ROOM_UUID") {
+        return mRoomUUID;
+    } else if (property == "NAME") {
+        return mName;
+    } else if (property == "ROOM_NUMBER") {
+        return mNumber;
+    }
+
+    return Entity::value(property);
+}
+
 void Room::read(const QJsonObject &jsonObject) {
     setId(jsonObject["ID"].toVariant().toULongLong());
     mRoomUUID = jsonObject["ROOM_UUID"].toString();

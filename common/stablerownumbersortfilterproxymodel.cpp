@@ -1,7 +1,7 @@
 #include "stablerownumbersortfilterproxymodel.h"
 
 namespace paso {
-namespace admin {
+namespace model {
 
 StableRowNumberSortFilterProxyModel::StableRowNumberSortFilterProxyModel(
     QObject *parent)

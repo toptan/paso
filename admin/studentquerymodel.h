@@ -13,7 +13,7 @@ using namespace paso::db;
 using namespace paso::data::entity;
 
 namespace paso {
-namespace admin {
+namespace model {
 
 class StudentQueryModel : public RefreshableSqlQueryModel {
     Q_OBJECT

@@ -56,6 +56,36 @@ SystemRole SystemUser::role() const { return mRole; }
 
 void SystemUser::setRole(const SystemRole &role) { mRole = role; }
 
+QVariantMap SystemUser::toVariantMap() const {
+    auto retVal = Entity::toVariantMap();
+    retVal.insert("USERNAME", mUsername);
+    retVal.insert("PASSWORD", mPassword);
+    retVal.insert("FIRST_NAME", mFirstName);
+    retVal.insert("LAST_NAME", mLastName);
+    retVal.insert("EMAIL", mEmail);
+    retVal.insert("ROLE", roleToString(mRole));
+
+    return retVal;
+}
+
+QVariant SystemUser::value(const QString &property) const {
+    if (property == "USERNAME") {
+        return mUsername;
+    } else if (property == "PASSWORD") {
+        return mPassword;
+    } else if (property == "FIRST_NAME") {
+        return mFirstName;
+    } else if (property == "LAST_NAME") {
+        return mLastName;
+    } else if (property == "EMAIL") {
+        return mEmail;
+    } else if (property == "ROLE") {
+        return roleToString(mRole);
+    }
+
+    return Entity::value(property);
+}
+
 void SystemUser::read(const QJsonObject &jsonObject) {
     setId(jsonObject["ID"].toVariant().toULongLong());
     mUsername = jsonObject["USERNAME"].toString();

@@ -98,4 +98,84 @@ void TestData::testStudentSerialization() {
     QCOMPARE(deserialized, expected);
 }
 
+void TestData::testConversionToVariantMap() {
+    SystemUser systemUser("user", "user_pass", "John", "Doe",
+                          "john.doe@internet.com", SystemRole::MANAGER);
+    Student student("Toplica", "Tanasković", "toptan@foo.com", "164/96", 5, 123,
+                    "RRFFIIDD");
+    Course course("IR3SP", "Sistemsko programiranje", 8);
+    Room room(QUuid::createUuid().toString(), "Room 42", "42");
+
+    QStringList systemUserKeys{"ID",         "USERNAME",  "PASSWORD",
+                               "FIRST_NAME", "LAST_NAME", "EMAIL",
+                               "ROLE"};
+    QStringList studentKeys{"ID",    "FIRST_NAME",   "LAST_NAME",
+                            "EMAIL", "INDEX_NUMBER", "YEAR_OF_STUDY",
+                            "RFID"};
+    QStringList courseKeys{"ID", "CODE", "NAME"};
+    QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER"};
+
+    QCOMPARE(systemUser.toVariantMap().keys().size(), systemUserKeys.size());
+    QCOMPARE(student.toVariantMap().keys().size(), studentKeys.size());
+    QCOMPARE(course.toVariantMap().keys().size(), courseKeys.size());
+    QCOMPARE(room.toVariantMap().keys().size(), roomKeys.size());
+    for (const auto &key : systemUser.toVariantMap().keys()) {
+        systemUserKeys.removeOne(key);
+    }
+    QVERIFY(systemUserKeys.empty());
+    for (const auto &key : student.toVariantMap().keys()) {
+        studentKeys.removeOne(key);
+    }
+    QVERIFY(studentKeys.empty());
+    for (const auto &key : course.toVariantMap().keys()) {
+        courseKeys.removeOne(key);
+    }
+    QVERIFY(courseKeys.empty());
+    for (const auto &key : room.toVariantMap().keys()) {
+        roomKeys.removeOne(key);
+    }
+    QVERIFY(roomKeys.empty());
+}
+
+void TestData::testPropertyValues() {
+    SystemUser systemUser("user", "user_pass", "John", "Doe",
+                          "john.doe@internet.com", SystemRole::MANAGER, 6);
+    QCOMPARE(systemUser.value("FOO"), QVariant());
+    QCOMPARE(systemUser.value("ID"),
+             QVariant(static_cast<quint64>(systemUser.id())));
+    QCOMPARE(systemUser.value("USERNAME"), QVariant(systemUser.username()));
+    QCOMPARE(systemUser.value("PASSWORD"), QVariant(systemUser.password()));
+    QCOMPARE(systemUser.value("FIRST_NAME"), QVariant(systemUser.firstName()));
+    QCOMPARE(systemUser.value("LAST_NAME"), QVariant(systemUser.lastName()));
+    QCOMPARE(systemUser.value("EMAIL"), QVariant(systemUser.email()));
+    QCOMPARE(systemUser.value("ROLE"),
+             QVariant(roleToString(systemUser.role())));
+
+    Student student("Toplica", "Tanasković", "toptan@foo.com", "164/96", 5, 123,
+                    "RRFFIIDD");
+    QCOMPARE(student.value("FOO"), QVariant());
+    QCOMPARE(student.value("ID"), QVariant(static_cast<quint64>(student.id())));
+    QCOMPARE(student.value("FIRST_NAME"), QVariant(student.firstName()));
+    QCOMPARE(student.value("LAST_NAME"), QVariant(student.lastName()));
+    QCOMPARE(student.value("EMAIL"), QVariant(student.email()));
+    QCOMPARE(student.value("INDEX_NUMBER"), QVariant(student.indexNumber()));
+    QCOMPARE(student.value("YEAR_OF_STUDY"), QVariant(student.yearOfStudy()));
+    QCOMPARE(student.value("RFID"), QVariant(student.rfid()));
+
+    Course course("IR3SP", "Sistemsko programiranje", 8);
+    QCOMPARE(course.value("FOO"), QVariant());
+    QCOMPARE(course.value("ID"), QVariant(static_cast<quint64>(course.id())));
+    QCOMPARE(course.value("CODE"), QVariant(course.code()));
+    QCOMPARE(course.value("NAME"), QVariant(course.name()));
+
+    QString uuid = QUuid::createUuid().toString();
+    Room room(uuid, "Room 42", "42");
+    QCOMPARE(room.value("FOO"), QVariant());
+    QCOMPARE(room.value("ID"), QVariant(static_cast<quint64>(room.id())));
+    QCOMPARE(room.value("ROOM_UUID"), QVariant(uuid));
+    QCOMPARE(room.value("ROOM_UUID"), QVariant(room.roomUUID()));
+    QCOMPARE(room.value("NAME"), QVariant(room.name()));
+    QCOMPARE(room.value("ROOM_NUMBER"), QVariant(room.number()));
+}
+
 QTEST_MAIN(TestData)
