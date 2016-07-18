@@ -1,27 +1,41 @@
 #include "entitytablemodel.h"
 
+#include <QDebug>
+
+using namespace std;
+
 namespace paso {
 namespace model {
-EntityTableModel::EntityTableModel(
-    const QStringList &columns, const QMap<QString, QString> &columnNames,
-    std::shared_ptr<std::vector<data::entity::Entity>> data, QObject *parent)
-    : QAbstractTableModel(parent), mColumns(columns), mColumnNames(columnNames),
-      mData(data) {}
 
-int EntityTableModel::columnCount(const QModelIndex &parent) const {
+template <class T>
+EntityTableModel<T>::EntityTableModel(const QStringList &columns,
+                                      const QMap<QString, QString> &columnNames,
+                                      shared_ptr<vector<T>> data,
+                                      QObject *parent)
+    : QAbstractTableModel(parent), mColumns(columns), mColumnNames(columnNames),
+      mData(data) {
+    qDebug() << __PRETTY_FUNCTION__ << ":" << mData->size();
+}
+
+template <class T>
+int EntityTableModel<T>::columnCount(const QModelIndex &parent) const {
     return parent.isValid() ? 0 : mColumns.size();
 }
 
-int EntityTableModel::rowCount(const QModelIndex &parent) const {
+template <class T>
+int EntityTableModel<T>::rowCount(const QModelIndex &parent) const {
     return parent.isValid() ? 0 : mData->size();
 }
 
-QVariant EntityTableModel::data(const QModelIndex &index, int role) const {
-    auto &entity = (*mData)[index.row()];
+template <class T>
+QVariant EntityTableModel<T>::data(const QModelIndex &index, int role) const {
+    qDebug() << __PRETTY_FUNCTION__ << ":" << index;
+    auto entity = (*mData)[index.row()];
     auto column = mColumns[index.column()];
+    qDebug() << __PRETTY_FUNCTION__ << ":" << column;
     auto retVal = entity.value(column);
     return retVal;
-//    return (*mData)[index.row()].value(mColumns[index.column()]);
+    //    return (*mData)[index.row()].value(mColumns[index.column()]);
 }
 }
 }

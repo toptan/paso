@@ -68,18 +68,18 @@ void TestModels::testStableRowNumberSortFilterProxyModel() {
 }
 
 void TestModels::testEntityModel() {
-    auto data = make_shared<vector<Entity>>();
-    data->emplace_back(Course("IR3SP", "Sistemsko programiranje", 3));
-    data->emplace_back(Course("IR4BP1", "Baze podataka 1", 5));
+    shared_ptr<vector<Course>> data;// = make_shared<vector<Course>(2);
+    data->push_back(Course("IR3SP", "Sistemsko programiranje", 3));
+    data->push_back(Course("IR4BP1", "Baze podataka 1", 5));
     QStringList columns{"NAME", "CODE"};
     QMap<QString, QString> columnNames{{"NAME", "Predmet"}, {"CODE", "Šifra"}};
-    EntityTableModel model(columns, columnNames, data);
+    EntityTableModel<Course> model(columns, columnNames, data);
     QCOMPARE(model.columnCount(), 2);
     auto validIndex = model.index(1, 1);
     QCOMPARE(model.columnCount(validIndex), 0);
     QCOMPARE(model.rowCount(), 2);
     QCOMPARE(model.rowCount(validIndex), 0);
-    QCOMPARE(model.data(validIndex), QVariant("Baze podataka 1"));
+    QCOMPARE(model.data(validIndex), QVariant("IR4BP1"));
 }
 
 QTEST_MAIN(TestModels)

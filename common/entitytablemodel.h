@@ -6,17 +6,18 @@
 #include <QAbstractTableModel>
 #include <QMap>
 #include <QStringList>
+#include <functional>
 #include <memory>
 #include <vector>
 
 namespace paso {
 namespace model {
 
-class EntityTableModel : public QAbstractTableModel {
+template <class T> class EntityTableModel : public QAbstractTableModel {
 public:
     EntityTableModel(const QStringList &columns,
                      const QMap<QString, QString> &columnNames,
-                     std::shared_ptr<std::vector<data::entity::Entity>> data,
+                     std::shared_ptr<std::vector<T>> data,
                      QObject *parent = nullptr);
 
     virtual int
@@ -29,7 +30,7 @@ public:
 private:
     QStringList mColumns;
     QMap<QString, QString> mColumnNames;
-    std::shared_ptr<std::vector<data::entity::Entity>> mData;
+    std::shared_ptr<std::vector<T>> mData;
 };
 }
 }
