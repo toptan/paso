@@ -90,4 +90,35 @@ void TestModels::testEntityModel() {
     QCOMPARE(model.data(index), QVariant("IR3BP1"));
 }
 
+void TestModels::testEntityModelDataUpdates() {
+    EntityVector data;
+    data.emplace_back(
+        make_shared<Course>("IR3SP", "Sistemsko programiranje", 3));
+    data.emplace_back(make_shared<Course>("IR3BP1", "Baze podataka 1", 5));
+    QStringList columns{"NAME", "CODE"};
+    QMap<QString, QString> columnNames{{"NAME", "Predmet"}, {"CODE", "Šifra"}};
+    EntityTableModel model(columns, columnNames, data);
+
+    shared_ptr<Entity> entity =
+        make_shared<Course>("IR4PRS", "Performanse računarskih sistema");
+
+    model.insertEntity(1, entity);
+    QCOMPARE(model.rowCount(), 3);
+    QCOMPARE(model.entity(1), entity);
+    QCOMPARE(model.data(model.index(1, 0)),
+             QVariant("Performanse računarskih sistema"));
+    QCOMPARE(model.data(model.index(1, 1)), QVariant("IR4PRS"));
+    model.removeEntity(1);
+    QCOMPARE(model.rowCount(), 2);
+    QCOMPARE(model.entity(1), data[1]);
+    QCOMPARE(model.data(model.index(1, 0)), QVariant("Baze podataka 1"));
+    QCOMPARE(model.data(model.index(1, 1)), QVariant("IR3BP1"));
+    model.insertEntity(315, entity);
+    QCOMPARE(model.rowCount(), 3);
+    QCOMPARE(model.entity(1), data[1]);
+    QCOMPARE(model.entity(model.rowCount() - 1), entity);
+    QCOMPARE(model.data(model.index(1, 0)), QVariant("Baze podataka 1"));
+    QCOMPARE(model.data(model.index(1, 1)), QVariant("IR3BP1"));
+}
+
 QTEST_MAIN(TestModels)

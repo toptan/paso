@@ -27,6 +27,13 @@ public:
     virtual QVariant data(const QModelIndex &index,
                           int role = Qt::DisplayRole) const override;
 
+    std::shared_ptr<paso::data::entity::Entity> entity(size_t position) const;
+
+    void insertEntity(size_t position,
+                      std::shared_ptr<paso::data::entity::Entity> entity);
+
+    void removeEntity(size_t position);
+
 private:
     QStringList mColumns;
     QMap<QString, QString> mColumnNames;

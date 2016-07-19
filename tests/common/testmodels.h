@@ -17,6 +17,7 @@ private slots:
     void testStableRowNumberSortFilterProxyModel();
     void testRefreshableSqlQueryModel();
     void testEntityModel();
+    void testEntityModelDataUpdates();
 
 private:
     const QString dbName;
