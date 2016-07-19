@@ -12,13 +12,13 @@
 
 namespace paso {
 namespace model {
+using EntityVector = std::vector<std::shared_ptr<paso::data::entity::Entity>>;
 
-template <class T> class EntityTableModel : public QAbstractTableModel {
+class EntityTableModel : public QAbstractTableModel {
 public:
     EntityTableModel(const QStringList &columns,
                      const QMap<QString, QString> &columnNames,
-                     std::shared_ptr<std::vector<T>> data,
-                     QObject *parent = nullptr);
+                     const EntityVector &data, QObject *parent = nullptr);
 
     virtual int
     columnCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -30,7 +30,7 @@ public:
 private:
     QStringList mColumns;
     QMap<QString, QString> mColumnNames;
-    std::shared_ptr<std::vector<T>> mData;
+    EntityVector mData;
 };
 }
 }

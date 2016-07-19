@@ -40,7 +40,6 @@ QVariantMap Course::toVariantMap() const {
 }
 
 QVariant Course::value(const QString &property) const {
-    qDebug() << property << ":" << mCode << ":" << mName;
     if (property == "CODE") {
         return mCode;
     } else if (property == "NAME") {

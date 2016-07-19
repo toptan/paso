@@ -68,18 +68,26 @@ void TestModels::testStableRowNumberSortFilterProxyModel() {
 }
 
 void TestModels::testEntityModel() {
-    shared_ptr<vector<Course>> data;// = make_shared<vector<Course>(2);
-    data->push_back(Course("IR3SP", "Sistemsko programiranje", 3));
-    data->push_back(Course("IR4BP1", "Baze podataka 1", 5));
+    EntityVector data;
+    data.emplace_back(
+        make_shared<Course>("IR3SP", "Sistemsko programiranje", 3));
+    data.emplace_back(make_shared<Course>("IR3BP1", "Baze podataka 1", 5));
     QStringList columns{"NAME", "CODE"};
     QMap<QString, QString> columnNames{{"NAME", "Predmet"}, {"CODE", "Šifra"}};
-    EntityTableModel<Course> model(columns, columnNames, data);
+    EntityTableModel model(columns, columnNames, data);
     QCOMPARE(model.columnCount(), 2);
     auto validIndex = model.index(1, 1);
     QCOMPARE(model.columnCount(validIndex), 0);
     QCOMPARE(model.rowCount(), 2);
     QCOMPARE(model.rowCount(validIndex), 0);
-    QCOMPARE(model.data(validIndex), QVariant("IR4BP1"));
+    auto index = model.index(0, 0);
+    QCOMPARE(model.data(index), QVariant("Sistemsko programiranje"));
+    index = model.index(0, 1);
+    QCOMPARE(model.data(index), QVariant("IR3SP"));
+    index = model.index(1, 0);
+    QCOMPARE(model.data(index), QVariant("Baze podataka 1"));
+    index = model.index(1, 1);
+    QCOMPARE(model.data(index), QVariant("IR3BP1"));
 }
 
 QTEST_MAIN(TestModels)
