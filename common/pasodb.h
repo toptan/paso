@@ -313,6 +313,8 @@ public:
                                   const QStringList &courseCodes,
                                   QSqlError &error) const;
 
+
+
 private:
     const QString mDbName;
 };

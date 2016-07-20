@@ -68,10 +68,10 @@ void TestModels::testStableRowNumberSortFilterProxyModel() {
 }
 
 void TestModels::testEntityModel() {
-    EntityVector data;
-    data.emplace_back(
+    EntityVector data = make_shared<vector<shared_ptr<Entity>>>();
+    data->emplace_back(
         make_shared<Course>("IR3SP", "Sistemsko programiranje", 3));
-    data.emplace_back(make_shared<Course>("IR3BP1", "Baze podataka 1", 5));
+    data->emplace_back(make_shared<Course>("IR3BP1", "Baze podataka 1", 5));
     QStringList columns{"NAME", "CODE"};
     QMap<QString, QString> columnNames{{"NAME", "Predmet"}, {"CODE", "Šifra"}};
     EntityTableModel model(columns, columnNames, data);

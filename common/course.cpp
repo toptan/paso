@@ -147,6 +147,25 @@ QSqlQuery Course::removeStudentFromCourseQuery(const QSqlDatabase &database,
     query.bindValue(":index_number", indexNumber);
     return query;
 }
+
+QSqlQuery Course::enlistedStudents(const QSqlDatabase &database,
+                                   const QString &code) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM ENLISTED_STUDENTS WHERE CODE = :code");
+    query.bindValue(":code", code);
+
+    return query;
+}
+
+QSqlQuery Course::notEnlistedStudents(const QSqlDatabase &database,
+                                      const QString &code) {
+    QSqlQuery query(database);
+    query.prepare(
+        "SELECT * FROM ENLISTED_STUDENTS WHERE COALESCE(CODE, 'X') <> :code");
+    query.bindValue(":code", code);
+
+    return query;
+}
 }
 }
 }

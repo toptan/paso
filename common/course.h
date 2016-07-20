@@ -156,6 +156,26 @@ public:
                                                   const QString &code,
                                                   const QString &indexNumber);
 
+    ///
+    /// \brief enlistedStudents Returns query that selects all students enlisted
+    /// to the course.
+    /// \param database The database to use.
+    /// \param code The course code.
+    /// \return The query.
+    ///
+    static QSqlQuery enlistedStudents(const QSqlDatabase &database,
+                                      const QString &code);
+
+    ///
+    /// \brief notEnlistedStudents Returns query that selects all students that
+    /// are not enlisted to the course.
+    /// \param database The database to use.
+    /// \param code The course code.
+    /// \return The query.
+    ///
+    static QSqlQuery notEnlistedStudents(const QSqlDatabase &database,
+                                         const QString &code);
+
 private:
     QString mCode; //!< The course code.
     QString mName; //!< The course name.
