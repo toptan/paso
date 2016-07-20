@@ -5,6 +5,8 @@
 #include <QSqlQuery>
 #include <QVariantMap>
 #include <cstdint>
+#include <memory>
+#include <vector>
 
 namespace paso {
 namespace data {

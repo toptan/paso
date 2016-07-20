@@ -89,36 +89,13 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="41"/>
-        <location filename="../admin/studentform.cpp" line="52"/>
-        <source>First Name</source>
+        <location filename="../admin/courseform.cpp" line="61"/>
+        <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
-        <location filename="../admin/studentform.cpp" line="53"/>
-        <source>Last Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
-        <location filename="../admin/studentform.cpp" line="54"/>
-        <source>Email</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/studentform.cpp" line="55"/>
-        <source>RFID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/studentform.cpp" line="56"/>
-        <source>Index Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/studentform.cpp" line="57"/>
-        <source>Year of Study</source>
+        <location filename="../admin/courseform.cpp" line="61"/>
+        <source>Course</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -137,16 +114,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="61"/>
-        <source>Code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/courseform.cpp" line="61"/>
-        <source>Course</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../admin/systemusersform.cpp" line="39"/>
         <source>Username</source>
         <translation type="unfinished"></translation>
@@ -157,8 +124,41 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../admin/systemusersform.cpp" line="41"/>
+        <location filename="../admin/studentform.cpp" line="52"/>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="53"/>
+        <source>Last Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="54"/>
+        <source>Email</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Role</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="55"/>
+        <source>RFID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="56"/>
+        <source>Index Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentform.cpp" line="57"/>
+        <source>Year of Study</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

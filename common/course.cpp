@@ -161,8 +161,11 @@ QSqlQuery Course::notEnlistedStudents(const QSqlDatabase &database,
                                       const QString &code) {
     QSqlQuery query(database);
     query.prepare(
-        "SELECT * FROM ENLISTED_STUDENTS WHERE COALESCE(CODE, 'X') <> :code");
-    query.bindValue(":code", code);
+        "SELECT * FROM ENLISTED_STUDENTS "
+        " WHERE COALESCE(CODE, 'X') <> :code_1 "
+        "  AND ID NOT IN (SELECT ID FROM ENLISTED_STUDENTS WHERE CODE = :code_2)");
+    query.bindValue(":code_1", code);
+    query.bindValue(":code_2", code);
 
     return query;
 }

@@ -251,13 +251,6 @@
     </message>
 </context>
 <context>
-    <name>paso::admin::AdministratorForm</name>
-    <message>
-        <source>Do you want to delete selected system user?</source>
-        <translation type="vanished">Да ли стварно желите да обришете одабраног корисника?</translation>
-    </message>
-</context>
-<context>
     <name>paso::admin::CourseForm</name>
     <message>
         <location filename="../admin/courseform.cpp" line="42"/>

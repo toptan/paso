@@ -1,18 +1,19 @@
 #ifndef PASODB_H
 #define PASODB_H
 
-#include "data.h"
-#include "systemuser.h"
-#include "room.h"
 #include "course.h"
+#include "data.h"
+#include "entity.h"
+#include "room.h"
 #include "student.h"
+#include "systemuser.h"
 
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QString>
-#include <QVector>
 #include <QVariantMap>
+#include <QVector>
 
 #include <memory>
 
@@ -313,7 +314,26 @@ public:
                                   const QStringList &courseCodes,
                                   QSqlError &error) const;
 
+    ///
+    /// \brief studentsEnlistedToCourse Returns all students that are enlisted
+    /// to given course.
+    /// \param courseCode The course code.
+    /// \param error The SQL error if any.
+    /// \return Vector of students that are enlisted to given course.
+    ///
+    data::entity::EntityVector
+    studentsEnlistedToCourse(const QString &courseCode, QSqlError &error) const;
 
+    ///
+    /// \brief studentsNotEnlistedToCourse Returns all student that are not
+    /// enlisted to given course.
+    /// \param courseCode The course code.
+    /// \param error The SQL error if any.
+    /// \return Vector of students that are not enlisted to given course.
+    ///
+    data::entity::EntityVector
+    studentsNotEnlistedToCourse(const QString &courseCode,
+                                QSqlError &error) const;
 
 private:
     const QString mDbName;

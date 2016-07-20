@@ -3,9 +3,9 @@
 #include <QDate>
 #include <QDebug>
 #include <QRegExp>
+#include <QSqlError>
 #include <QSqlRecord>
 #include <QSqlResult>
-#include <QSqlError>
 #include <QUuid>
 
 namespace paso {
@@ -521,6 +521,38 @@ StudentImportError DBManager::importStudent(const QString &csvLine,
     }
 
     return StudentImportError::NO_ERROR;
+}
+
+EntityVector DBManager::studentsEnlistedToCourse(const QString &courseCode,
+                                                 QSqlError &error) const {
+    auto query =
+        Course::enlistedStudents(QSqlDatabase::database(mDbName), courseCode);
+    query.exec();
+    error = query.lastError();
+    auto retVal = make_shared<vector<shared_ptr<Entity>>>();
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal->emplace_back(
+                make_shared<Student>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
+
+EntityVector DBManager::studentsNotEnlistedToCourse(const QString &courseCode,
+                                                    QSqlError &error) const {
+    auto query =
+        Course::notEnlistedStudents(QSqlDatabase::database(mDbName), courseCode);
+    query.exec();
+    error = query.lastError();
+    auto retVal = make_shared<vector<shared_ptr<Entity>>>();
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal->emplace_back(
+                make_shared<Student>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
 }
 }
 }

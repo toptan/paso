@@ -44,6 +44,7 @@ void TestPasoDB::init() {
 
 void TestPasoDB::cleanup() {
     auto db = QSqlDatabase::database(dbName);
+    db.exec("DROP VIEW ENLISTED_STUDENTS");
     db.exec("DROP TABLE SYSTEM_USER");
     db.exec("DROP TABLE ENLISTED");
     db.exec("DROP TABLE COURSE");
@@ -297,8 +298,9 @@ void TestPasoDB::testCourseImport() {
 void TestPasoDB::testIndexNumberUnique() {
     DBManager manager(dbName);
     QSqlError error;
-    // This index number is from in_memory.sql so it should exist.
-    QVERIFY(!manager.indexNumberUnique("2001/2001", error));
+    manager.importStudent("1996/0164, Tanaskovic,Toplica,toplica@gmail.com,4",
+                          error);
+    QVERIFY(!manager.indexNumberUnique("1996/0164", error));
     QVERIFY(manager.indexNumberUnique("111/11", error));
 }
 
@@ -336,6 +338,9 @@ void TestPasoDB::testSaveStudent() {
 void TestPasoDB::testGetStudent() {
     DBManager manager(dbName);
     QSqlError error;
+    Student temp("Petar", "Petrović", "petar@petrovic.com", "2001/2001", 5, 0,
+                 "RRFFIIDD");
+    manager.saveStudent(temp, error);
     auto student = manager.getStudentByIndexNumber("2001/2001", error);
     QVERIFY(error.type() == QSqlError::NoError);
     QVERIFY((bool)student);
@@ -460,6 +465,8 @@ void TestPasoDB::testEnlistingStudentToCourses() {
     DBManager manager(dbName);
     QStringList courseCodes{"IR3AA", "IR3AB"};
     QSqlError error;
+    manager.importStudent("2001/2001,Jovan, Jovanovic,,2", error);
+    manager.importStudent("2002/2002,Milan,Milanovic,,2", error);
     manager.importStudent("2003/2003,Ivana, Ivanovic,,2", error);
     manager.importCourse("IR3AA, AA course", error);
     manager.importCourse("IR3AB, AB course", error);
@@ -471,6 +478,33 @@ void TestPasoDB::testEnlistingStudentToCourses() {
         courseCodes.removeOne(course.code());
     }
     QVERIFY(courseCodes.empty());
+    QStringList notEnlisted{"2001/2001", "2002/2002"};
+    auto enlistedStudents = manager.studentsEnlistedToCourse("IR3AA", error);
+    auto notEnlistedStudents =
+        manager.studentsNotEnlistedToCourse("IR3AA", error);
+    QCOMPARE(enlistedStudents->size(), static_cast<size_t>(1));
+    QCOMPARE((*enlistedStudents)[0]->value("INDEX_NUMBER").toString(),
+             QString("2003/2003"));
+    QCOMPARE(notEnlistedStudents->size(), static_cast<size_t>(2));
+    for (auto entity : *notEnlistedStudents) {
+        notEnlisted.removeOne(entity->value("INDEX_NUMBER").toString());
+    }
+    QVERIFY(notEnlisted.empty());
+
+    enlistedStudents = manager.studentsEnlistedToCourse("IR3AB", error);
+    notEnlistedStudents = manager.studentsNotEnlistedToCourse("IR3AB", error);
+    notEnlisted.push_back("2001/2001");
+    notEnlisted.push_back("2002/2002");
+
+    QCOMPARE(enlistedStudents->size(), static_cast<size_t>(1));
+    QCOMPARE((*enlistedStudents)[0]->value("INDEX_NUMBER").toString(),
+             QString("2003/2003"));
+    QCOMPARE(notEnlistedStudents->size(), static_cast<size_t>(2));
+    for (auto entity : *notEnlistedStudents) {
+        notEnlisted.removeOne(entity->value("INDEX_NUMBER").toString());
+    }
+    QVERIFY(notEnlisted.empty());
+
     courseCodes.push_back("IR3AA");
     courseCodes.push_back("IR3AC");
     QVERIFY(manager.enlistStudentToCourses("2003/2003", courseCodes, error));
@@ -486,12 +520,16 @@ void TestPasoDB::testRemovingStudentFromCourses() {
     DBManager manager(dbName);
     QStringList courseCodes{"IR3AA", "IR3AB"};
     QSqlError error;
+    manager.importStudent("2001/2001,Jovan, Jovanovic,,2", error);
+    manager.importStudent("2002/2002,Milan,Milanovic,,2", error);
     manager.importStudent("2003/2003,Ivana, Ivanovic,,2", error);
     manager.importCourse("IR3AA, AA course", error);
     manager.importCourse("IR3AB, AB course", error);
     manager.importCourse("IR3AC, AC course", error);
     manager.enlistStudentToCourses("2003/2003", courseCodes, error);
     QVERIFY(manager.removeStudentFromCourses("2003/2003", courseCodes, error));
+    QVERIFY(manager.studentsEnlistedToCourse("IR3AA", error)->empty());
+    QVERIFY(manager.studentsEnlistedToCourse("IR3AB", error)->empty());
     QVERIFY(manager.getStudentCourses("2003/2003", error)->empty());
 }
 
@@ -504,6 +542,7 @@ void TestPasoDB::testRemovingStudentsFromCourse() {
     manager.importStudent("2003/2003,Ivana, Ivanovic,,2", error);
     manager.importCourse("IR3AA, AA course", error);
     manager.importCourse("IR3AB, AB course", error);
+    manager.importCourse("IR3AC, AC course", error);
     manager.enlistStudentsToCourse("IR3AB", indexeNumbers, error);
     QVERIFY(manager.removeStudentsFromCourse("IR3AB", indexeNumbers, error));
     QVERIFY(manager.getCourseStudents("IR3AB", error)->empty());
