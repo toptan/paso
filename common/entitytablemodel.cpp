@@ -28,24 +28,24 @@ QVariant EntityTableModel::data(const QModelIndex &index, int role) const {
 }
 
 shared_ptr<Entity> EntityTableModel::entity(size_t position) const {
-    return mData[position];
+    return (*mData)[position];
 }
 
 void EntityTableModel::insertEntity(size_t position,
                                     std::shared_ptr<Entity> entity) {
     emit beginInsertRows(QModelIndex(), position, position);
-    if (position < mData.size()) {
-        mData.insert(mData.begin() + position, entity);
+    if (position < mData->size()) {
+        mData->insert(mData->begin() + position, entity);
     } else {
-        mData.push_back(entity);
+        mData->push_back(entity);
     }
     emit endInsertRows();
 }
 
 void EntityTableModel::removeEntity(size_t position) {
-    if (position < mData.size()) {
+    if (position < mData->size()) {
         emit beginRemoveRows(QModelIndex(), position, position);
-        mData.erase(mData.begin() + position);
+        mData->erase(mData->begin() + position);
         emit endRemoveRows();
     }
 }
