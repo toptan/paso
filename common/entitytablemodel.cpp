@@ -11,7 +11,8 @@ namespace model {
 
 EntityTableModel::EntityTableModel(const QStringList &columns,
                                    const QMap<QString, QString> &columnNames,
-                                   const data::entity::EntityVector &data, QObject *parent)
+                                   const data::entity::EntityVector &data,
+                                   QObject *parent)
     : QAbstractTableModel(parent), mColumns(columns), mColumnNames(columnNames),
       mData(data) {}
 
@@ -24,7 +25,19 @@ int EntityTableModel::rowCount(const QModelIndex &parent) const {
 }
 
 QVariant EntityTableModel::data(const QModelIndex &index, int role) const {
-    return (*mData)[index.row()]->value(mColumns[index.column()]);
+    if (role == Qt::DisplayRole) {
+        return (*mData)[index.row()]->value(mColumns[index.column()]);
+    }
+    return QVariant();
+}
+
+QVariant EntityTableModel::headerData(int section, Qt::Orientation orientation,
+                                      int role) const {
+    if (role == Qt::DisplayRole && orientation == Qt::Orientation::Horizontal &&
+        section < mColumns.size()) {
+        return mColumnNames[mColumns[section]];
+    }
+    return QAbstractTableModel::headerData(section, orientation, role);
 }
 
 shared_ptr<Entity> EntityTableModel::entity(size_t position) const {
@@ -40,6 +53,7 @@ void EntityTableModel::insertEntity(size_t position,
         mData->push_back(entity);
     }
     emit endInsertRows();
+    emit rowCountChanged(mData->size());
 }
 
 void EntityTableModel::removeEntity(size_t position) {
@@ -47,6 +61,7 @@ void EntityTableModel::removeEntity(size_t position) {
         emit beginRemoveRows(QModelIndex(), position, position);
         mData->erase(mData->begin() + position);
         emit endRemoveRows();
+        emit rowCountChanged(mData->size());
     }
 }
 }

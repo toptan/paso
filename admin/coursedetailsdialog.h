@@ -1,9 +1,13 @@
 #ifndef COURSEDETAILSDIALOG_H
 #define COURSEDETAILSDIALOG_H
 
-#include "pasodb.h"
 #include "course.h"
+#include "entity.h"
+#include "entitytablemodel.h"
+#include "pasodb.h"
+#include "stablerownumbersortfilterproxymodel.h"
 #include "student.h"
+#include <memory>
 
 #include <QDialog>
 
@@ -22,11 +26,18 @@ public:
                                  QWidget *parent = 0);
     ~CourseDetailsDialog();
 
+public slots:
+    virtual int exec() override;
+
+private slots:
+    void enlistedCountChanged(size_t count);
+
 private:
     Ui::CourseDetailsDialog *ui;
-    const paso::data::entity::Course mCourse;
 
-    bool mDirty;
+    struct CourseDetailsDialogPrivate;
+    std::unique_ptr<CourseDetailsDialogPrivate> mPrivate;
+
 };
 }
 }

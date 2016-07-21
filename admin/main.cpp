@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
     QTranslator translator;
     translator.load(
         QLocale::Serbian,
-        "/home/toptan/Documents/diplomski/git/paso/build/Debug/paso_sr_RS.qm");
+        "/Users/toptan/Documents/Work/diplomski/git/paso/build/Debug/paso_sr_RS.qm");
     app.installTranslator(&translator);
     paso::admin::MainWindow mainWindow;
     app.setStyleSheet("QLineEdit[error='true'] { color: #FF0000 }");

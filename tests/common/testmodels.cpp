@@ -82,12 +82,26 @@ void TestModels::testEntityModel() {
     QCOMPARE(model.rowCount(validIndex), 0);
     auto index = model.index(0, 0);
     QCOMPARE(model.data(index), QVariant("Sistemsko programiranje"));
+    QCOMPARE(model.data(index, Qt::EditRole), QVariant());
     index = model.index(0, 1);
     QCOMPARE(model.data(index), QVariant("IR3SP"));
+    QCOMPARE(model.data(index, Qt::EditRole), QVariant());
     index = model.index(1, 0);
     QCOMPARE(model.data(index), QVariant("Baze podataka 1"));
+    QCOMPARE(model.data(index, Qt::EditRole), QVariant());
     index = model.index(1, 1);
     QCOMPARE(model.data(index), QVariant("IR3BP1"));
+    QCOMPARE(model.data(index, Qt::EditRole), QVariant());
+
+    QCOMPARE(model.headerData(0, Qt::Horizontal), QVariant("Predmet"));
+    QCOMPARE(model.headerData(0, Qt::Horizontal, Qt::EditRole), QVariant());
+    QCOMPARE(model.headerData(0, Qt::Vertical), QVariant(1));
+    QCOMPARE(model.headerData(0, Qt::Vertical, Qt::EditRole), QVariant());
+    QCOMPARE(model.headerData(1, Qt::Horizontal), QVariant("Šifra"));
+    QCOMPARE(model.headerData(1, Qt::Horizontal, Qt::EditRole), QVariant());
+    QCOMPARE(model.headerData(1, Qt::Vertical), QVariant(2));
+    QCOMPARE(model.headerData(1, Qt::Vertical, Qt::EditRole), QVariant());
+
 }
 
 void TestModels::testEntityModelDataUpdates() {

@@ -145,7 +145,7 @@ void CourseForm::onImport() {
         int lineNo = 1;
         db::DBManager manager;
         QSqlError sqlError;
-        QString format("Importing line %1... %2");
+        QString format(tr("Importing line %1... %2"));
         emit newLogLine(
             QString(tr("Importing course data from %1")).arg(file->fileName()));
         emit newLogLine("");

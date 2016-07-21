@@ -18,7 +18,7 @@ DemoServer::DemoServer(QObject *parent)
     tcpServer = new QTcpServer(this);
     connect(tcpServer, &QTcpServer::newConnection, this,
             &DemoServer::handleRequest);
-    tcpServer->listen(QHostAddress::Any, mPort);
+    tcpServer->listen(QHostAddress::LocalHost, mPort);
     auto db = QSqlDatabase::addDatabase("QSQLITE", mDbName);
     db.setDatabaseName(":memory:");
     db.open();

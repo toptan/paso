@@ -20,21 +20,21 @@
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.ui" line="89"/>
-        <source>All students</source>
+        <source>Not enlisted students</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="98"/>
+        <location filename="../admin/coursedetailsdialog.ui" line="116"/>
         <source>&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="105"/>
+        <location filename="../admin/coursedetailsdialog.ui" line="123"/>
         <source>&lt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="114"/>
+        <location filename="../admin/coursedetailsdialog.ui" line="132"/>
         <source>Enlisted students</source>
         <translation type="unfinished"></translation>
     </message>
@@ -251,6 +251,41 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::CourseDetailsDialog</name>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="18"/>
+        <source>Enlisted students: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="74"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="87"/>
+        <source>Critical error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="75"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="88"/>
+        <source>There was an error working with the database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
+        <source>Index Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="97"/>
+        <source>Last Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="98"/>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::CourseForm</name>
     <message>
         <location filename="../admin/courseform.cpp" line="42"/>
@@ -280,6 +315,11 @@
     <message>
         <location filename="../admin/courseform.cpp" line="131"/>
         <source>Importing course data...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/courseform.cpp" line="148"/>
+        <source>Importing line %1... %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -416,22 +456,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="115"/>
+        <location filename="../admin/mainwindow.cpp" line="124"/>
         <source>System users administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="121"/>
+        <location filename="../admin/mainwindow.cpp" line="130"/>
         <source>Room administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="127"/>
+        <location filename="../admin/mainwindow.cpp" line="136"/>
         <source>Course administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="133"/>
+        <location filename="../admin/mainwindow.cpp" line="142"/>
         <source>Student administration</source>
         <translation type="unfinished"></translation>
     </message>

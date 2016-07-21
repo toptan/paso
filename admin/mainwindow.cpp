@@ -1,21 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "courseform.h"
+#include "data.h"
 #include "logindialog.h"
 #include "pasodb.h"
-#include "systemusersform.h"
 #include "roomform.h"
-#include "courseform.h"
 #include "studentform.h"
-#include "data.h"
+#include "systemusersform.h"
 
+#include <QComboBox>
 #include <QDebug>
 #include <QMessageBox>
 #include <QSqlDatabase>
 #include <QSqlError>
-#include <QToolBar>
-#include <QComboBox>
 #include <QStackedWidget>
+#include <QToolBar>
 
 namespace paso {
 namespace admin {
@@ -106,6 +106,15 @@ void MainWindow::createWidgets() {
         break;
     default:
         break;
+    }
+
+    for (auto i = 0; i < mWidgetChooserComboBox->count(); i++) {
+        auto action = new QAction(this);
+        action->setShortcut(Qt::CTRL | (Qt::Key_1 + i));
+        connect(action, &QAction::triggered, [this, i]() {
+            mWidgetChooserComboBox->setCurrentIndex(i);
+        });
+        addAction(action);
     }
 }
 

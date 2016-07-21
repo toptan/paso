@@ -16,27 +16,31 @@
     <message>
         <location filename="../admin/coursedetailsdialog.ui" line="70"/>
         <source>Enlisted students: %1</source>
-        <translation>Пријављени студенти: %1</translation>
+        <translation>Студенти који слушају предмет: %1</translation>
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.ui" line="89"/>
-        <source>All students</source>
-        <translation>Сви студенти</translation>
+        <source>Not enlisted students</source>
+        <translation>Студенти који не слушају предмет</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="98"/>
+        <source>All students</source>
+        <translation type="vanished">Сви студенти</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.ui" line="116"/>
         <source>&gt;</source>
         <translation>&gt;</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="105"/>
+        <location filename="../admin/coursedetailsdialog.ui" line="123"/>
         <source>&lt;</source>
         <translation>&lt;</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="114"/>
+        <location filename="../admin/coursedetailsdialog.ui" line="132"/>
         <source>Enlisted students</source>
-        <translation>Пријављени студенти</translation>
+        <translation>Студенти који слушају предмет</translation>
     </message>
 </context>
 <context>
@@ -191,6 +195,10 @@
         <source>Super user</source>
         <translation>Супер корисник</translation>
     </message>
+    <message>
+        <source>Enlisted students: %1</source>
+        <translation type="vanished">Пријављени студенти: %1</translation>
+    </message>
 </context>
 <context>
     <name>RoomForm</name>
@@ -251,6 +259,45 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::CourseDetailsDialog</name>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="74"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="87"/>
+        <source>Critical error</source>
+        <translation>Критична грешка</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="75"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="88"/>
+        <source>There was an error working with the database.</source>
+        <translation>Дошло је до грешке при раду са базом података.</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
+        <source>Index Number</source>
+        <translation>Број индекса</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="97"/>
+        <source>Last Name</source>
+        <translation>Презиме</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="98"/>
+        <source>First Name</source>
+        <translation>Име</translation>
+    </message>
+    <message>
+        <source>Index number</source>
+        <translation type="vanished">Број индекса</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="18"/>
+        <source>Enlisted students: %1</source>
+        <translation>Студенти који слушају предмет: %1</translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::CourseForm</name>
     <message>
         <location filename="../admin/courseform.cpp" line="42"/>
@@ -281,6 +328,11 @@
         <location filename="../admin/courseform.cpp" line="131"/>
         <source>Importing course data...</source>
         <translation>Увожење података о предметима...</translation>
+    </message>
+    <message>
+        <location filename="../admin/courseform.cpp" line="148"/>
+        <source>Importing line %1... %2</source>
+        <translation>Увожење линије %1... %2</translation>
     </message>
     <message>
         <location filename="../admin/courseform.cpp" line="150"/>
@@ -416,22 +468,22 @@
         <translation>Главна трака са алаткама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="115"/>
+        <location filename="../admin/mainwindow.cpp" line="124"/>
         <source>System users administration</source>
         <translation>Управљање системским корисницима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="121"/>
+        <location filename="../admin/mainwindow.cpp" line="130"/>
         <source>Room administration</source>
         <translation>Управљање просторијама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="127"/>
+        <location filename="../admin/mainwindow.cpp" line="136"/>
         <source>Course administration</source>
         <translation>Управљање предметима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="133"/>
+        <location filename="../admin/mainwindow.cpp" line="142"/>
         <source>Student administration</source>
         <translation>Управљање студентима</translation>
     </message>
