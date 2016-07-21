@@ -482,11 +482,11 @@ void TestPasoDB::testEnlistingStudentToCourses() {
     auto enlistedStudents = manager.studentsEnlistedToCourse("IR3AA", error);
     auto notEnlistedStudents =
         manager.studentsNotEnlistedToCourse("IR3AA", error);
-    QCOMPARE(enlistedStudents->size(), static_cast<size_t>(1));
-    QCOMPARE((*enlistedStudents)[0]->value("INDEX_NUMBER").toString(),
+    QCOMPARE(enlistedStudents.size(), static_cast<size_t>(1));
+    QCOMPARE(enlistedStudents[0]->value("INDEX_NUMBER").toString(),
              QString("2003/2003"));
-    QCOMPARE(notEnlistedStudents->size(), static_cast<size_t>(2));
-    for (auto entity : *notEnlistedStudents) {
+    QCOMPARE(notEnlistedStudents.size(), static_cast<size_t>(2));
+    for (auto entity : notEnlistedStudents) {
         notEnlisted.removeOne(entity->value("INDEX_NUMBER").toString());
     }
     QVERIFY(notEnlisted.empty());
@@ -496,11 +496,11 @@ void TestPasoDB::testEnlistingStudentToCourses() {
     notEnlisted.push_back("2001/2001");
     notEnlisted.push_back("2002/2002");
 
-    QCOMPARE(enlistedStudents->size(), static_cast<size_t>(1));
-    QCOMPARE((*enlistedStudents)[0]->value("INDEX_NUMBER").toString(),
+    QCOMPARE(enlistedStudents.size(), static_cast<size_t>(1));
+    QCOMPARE(enlistedStudents[0]->value("INDEX_NUMBER").toString(),
              QString("2003/2003"));
-    QCOMPARE(notEnlistedStudents->size(), static_cast<size_t>(2));
-    for (auto entity : *notEnlistedStudents) {
+    QCOMPARE(notEnlistedStudents.size(), static_cast<size_t>(2));
+    for (auto entity : notEnlistedStudents) {
         notEnlisted.removeOne(entity->value("INDEX_NUMBER").toString());
     }
     QVERIFY(notEnlisted.empty());
@@ -528,8 +528,8 @@ void TestPasoDB::testRemovingStudentFromCourses() {
     manager.importCourse("IR3AC, AC course", error);
     manager.enlistStudentToCourses("2003/2003", courseCodes, error);
     QVERIFY(manager.removeStudentFromCourses("2003/2003", courseCodes, error));
-    QVERIFY(manager.studentsEnlistedToCourse("IR3AA", error)->empty());
-    QVERIFY(manager.studentsEnlistedToCourse("IR3AB", error)->empty());
+    QVERIFY(manager.studentsEnlistedToCourse("IR3AA", error).empty());
+    QVERIFY(manager.studentsEnlistedToCourse("IR3AB", error).empty());
     QVERIFY(manager.getStudentCourses("2003/2003", error)->empty());
 }
 

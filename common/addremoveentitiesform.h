@@ -61,6 +61,8 @@ public:
     /// \param destinationColumnNames The column names for the destination table
     /// header.
     /// \param destinationData The destination data itself.
+    /// \param totalLabelsVisible Whether to show total labels for source and
+    /// destination.
     ///
     void setData(const QString &sourceLabel, const QStringList &sourceColumns,
                  const QMap<QString, QString> &sourceColumnNames,
@@ -68,7 +70,8 @@ public:
                  const QString &destinationLabel,
                  const QStringList &destinationColumns,
                  const QMap<QString, QString> &destinationColumnNames,
-                 const data::entity::EntityVector &destinationData);
+                 const data::entity::EntityVector &destinationData,
+                 bool totalLabelsVisible = true);
 
 private slots:
     ///
@@ -87,8 +90,6 @@ private slots:
 private:
     Ui::AddRemoveEntitiesForm *ui;
 
-    /// Tells whether there were changes or not.
-    bool mDirty;
     /// The source data.
     data::entity::EntityVector mSourceData;
     /// The destination data.

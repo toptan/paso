@@ -21,12 +21,12 @@ int EntityTableModel::columnCount(const QModelIndex &parent) const {
 }
 
 int EntityTableModel::rowCount(const QModelIndex &parent) const {
-    return parent.isValid() ? 0 : mData->size();
+    return parent.isValid() ? 0 : mData.size();
 }
 
 QVariant EntityTableModel::data(const QModelIndex &index, int role) const {
     if (role == Qt::DisplayRole) {
-        return (*mData)[index.row()]->value(mColumns[index.column()]);
+        return mData[index.row()]->value(mColumns[index.column()]);
     }
     return QVariant();
 }
@@ -41,29 +41,49 @@ QVariant EntityTableModel::headerData(int section, Qt::Orientation orientation,
 }
 
 shared_ptr<Entity> EntityTableModel::entity(size_t position) const {
-    return (*mData)[position];
+    return mData[position];
 }
 
 void EntityTableModel::insertEntity(size_t position,
                                     std::shared_ptr<Entity> entity) {
-    if (position < mData->size()) {
+    if (position < mData.size()) {
         emit beginInsertRows(QModelIndex(), position, position);
-        mData->insert(mData->begin() + position, entity);
+        mData.insert(mData.begin() + position, entity);
     } else {
-        emit beginInsertRows(QModelIndex(), mData->size(), mData->size());
-        mData->push_back(entity);
+        emit beginInsertRows(QModelIndex(), mData.size(), mData.size());
+        mData.push_back(entity);
     }
     emit endInsertRows();
-    emit rowCountChanged(mData->size());
+    emit rowCountChanged(mData.size());
 }
 
 void EntityTableModel::removeEntity(size_t position) {
-    if (position < mData->size()) {
+    if (position < mData.size()) {
         emit beginRemoveRows(QModelIndex(), position, position);
-        mData->erase(mData->begin() + position);
+        mData.erase(mData.begin() + position);
         emit endRemoveRows();
-        emit rowCountChanged(mData->size());
+        emit rowCountChanged(mData.size());
     }
+}
+
+void EntityTableModel::setData(const EntityVector &newData) {
+    emit beginResetModel();
+    mData.erase(mData.begin(), mData.end());
+    mData.insert(mData.begin(), newData.begin(), newData.end());
+    emit endResetModel();
+    emit rowCountChanged(mData.size());
+}
+
+void EntityTableModel::setData(const QStringList &columns,
+                               const QMap<QString, QString> &columnNames,
+                               const EntityVector &newData) {
+    emit beginResetModel();
+    mColumns = columns;
+    mColumnNames = columnNames;
+    mData.erase(mData.begin(), mData.end());
+    mData.insert(mData.begin(), newData.begin(), newData.end());
+    emit endResetModel();
+    emit rowCountChanged(mData.size());
 }
 }
 }

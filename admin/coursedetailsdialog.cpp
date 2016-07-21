@@ -20,8 +20,6 @@ struct CourseDetailsDialog::CourseDetailsDialogPrivate {
           enlistedStudentsModel(nullptr), notEnlistedStudentsModel(nullptr),
           enlistedProxyModel(nullptr), notEnlistedProxyModel(nullptr),
           manager(DEFAULT_DB_NAME), dirty(false) {
-        addedStudents = make_shared<vector<shared_ptr<Entity>>>();
-        removedStudents = make_shared<vector<shared_ptr<Entity>>>();
     }
 
     const QString ENLISTED_COUNT_FORMAT;

@@ -529,10 +529,10 @@ EntityVector DBManager::studentsEnlistedToCourse(const QString &courseCode,
         Course::enlistedStudents(QSqlDatabase::database(mDbName), courseCode);
     query.exec();
     error = query.lastError();
-    auto retVal = make_shared<vector<shared_ptr<Entity>>>();
+    EntityVector retVal;
     if (error.type() == QSqlError::NoError) {
         while (query.next()) {
-            retVal->emplace_back(
+            retVal.emplace_back(
                 make_shared<Student>(recordToVariantMap(query.record())));
         }
     }
@@ -541,14 +541,14 @@ EntityVector DBManager::studentsEnlistedToCourse(const QString &courseCode,
 
 EntityVector DBManager::studentsNotEnlistedToCourse(const QString &courseCode,
                                                     QSqlError &error) const {
-    auto query =
-        Course::notEnlistedStudents(QSqlDatabase::database(mDbName), courseCode);
+    auto query = Course::notEnlistedStudents(QSqlDatabase::database(mDbName),
+                                             courseCode);
     query.exec();
     error = query.lastError();
-    auto retVal = make_shared<vector<shared_ptr<Entity>>>();
+    EntityVector retVal;
     if (error.type() == QSqlError::NoError) {
         while (query.next()) {
-            retVal->emplace_back(
+            retVal.emplace_back(
                 make_shared<Student>(recordToVariantMap(query.record())));
         }
     }

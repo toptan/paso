@@ -258,29 +258,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="85"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="98"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="83"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
         <source>Critical error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="86"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="99"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="84"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="97"/>
         <source>There was an error working with the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="107"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="105"/>
         <source>Index Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="108"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="106"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="109"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="107"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -808,6 +808,15 @@
     <message>
         <location filename="../admin/systemusersform.cpp" line="95"/>
         <source>Do you want to delete selected system user?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>paso::widget::AddRemoveEntitiesForm</name>
+    <message>
+        <location filename="../common/addremoveentitiesform.cpp" line="68"/>
+        <location filename="../common/addremoveentitiesform.cpp" line="76"/>
+        <source>Total %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

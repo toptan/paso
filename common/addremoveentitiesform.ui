@@ -23,7 +23,7 @@
       <item>
        <widget class="QLabel" name="sourceTotalLabel">
         <property name="text">
-         <string/>
+         <string notr="true"/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -112,7 +112,7 @@
       <item>
        <widget class="QLabel" name="destinationTotalLabel">
         <property name="text">
-         <string/>
+         <string notr="true"/>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

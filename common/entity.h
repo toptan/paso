@@ -57,8 +57,7 @@ private:
     uint64_t mId;
 };
 
-using EntityVector =
-    std::shared_ptr<std::vector<std::shared_ptr<paso::data::entity::Entity>>>;
+using EntityVector = std::vector<std::shared_ptr<paso::data::entity::Entity>>;
 }
 }
 }

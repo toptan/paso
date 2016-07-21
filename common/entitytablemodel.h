@@ -38,6 +38,10 @@ public:
                       std::shared_ptr<paso::data::entity::Entity> entity);
 
     void removeEntity(size_t position);
+    void setData(const data::entity::EntityVector &newData);
+    void setData(const QStringList &columns,
+                 const QMap<QString, QString> &columnNames,
+                 const data::entity::EntityVector &newData);
 
 signals:
     void rowCountChanged(size_t newRowCount) const;
