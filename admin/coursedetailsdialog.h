@@ -28,16 +28,19 @@ public:
 
 public slots:
     virtual int exec() override;
+    virtual void reject() override;
+    virtual void accept() override;
 
 private slots:
     void enlistedCountChanged(size_t count);
+    void addButtonClicked();
+    void removeButtonClicked();
 
 private:
     Ui::CourseDetailsDialog *ui;
 
     struct CourseDetailsDialogPrivate;
     std::unique_ptr<CourseDetailsDialogPrivate> mPrivate;
-
 };
 }
 }

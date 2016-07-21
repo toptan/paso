@@ -261,29 +261,29 @@
 <context>
     <name>paso::admin::CourseDetailsDialog</name>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="74"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="87"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="85"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="98"/>
         <source>Critical error</source>
         <translation>Критична грешка</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="75"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="88"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="86"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="99"/>
         <source>There was an error working with the database.</source>
         <translation>Дошло је до грешке при раду са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="107"/>
         <source>Index Number</source>
         <translation>Број индекса</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="97"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="108"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="98"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="109"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
@@ -292,7 +292,7 @@
         <translation type="vanished">Број индекса</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="18"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="19"/>
         <source>Enlisted students: %1</source>
         <translation>Студенти који слушају предмет: %1</translation>
     </message>

@@ -1,6 +1,7 @@
 #include "coursedetailsdialog.h"
 #include "ui_coursedetailsdialog.h"
 
+#include <QDebug>
 #include <QMessageBox>
 #include <QSqlError>
 #include <memory>
@@ -45,8 +46,13 @@ CourseDetailsDialog::CourseDetailsDialog(const Course &course, QWidget *parent)
     ui->nameLabel->setText(mPrivate->course.name());
     mPrivate->enlistedProxyModel =
         new StableRowNumberSortFilterProxyModel(this);
+    mPrivate->enlistedProxyModel->setSortLocaleAware(true);
+    mPrivate->enlistedProxyModel->setDynamicSortFilter(false);
+
     mPrivate->notEnlistedProxyModel =
         new StableRowNumberSortFilterProxyModel(this);
+    mPrivate->notEnlistedProxyModel->setSortLocaleAware(true);
+    mPrivate->notEnlistedProxyModel->setDynamicSortFilter(false);
 
     ui->enlistedTableView->setModel(mPrivate->enlistedProxyModel);
     ui->enlistedTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -60,6 +66,11 @@ CourseDetailsDialog::CourseDetailsDialog(const Course &course, QWidget *parent)
     ui->notEnlistedTableView->horizontalHeader()->setSectionResizeMode(
         QHeaderView::Stretch);
     ui->notEnlistedTableView->sortByColumn(0, Qt::SortOrder::AscendingOrder);
+
+    connect(ui->enlistButton, &QPushButton::clicked, this,
+            &CourseDetailsDialog::addButtonClicked);
+    connect(ui->removeButton, &QPushButton::clicked, this,
+            &CourseDetailsDialog::removeButtonClicked);
 }
 
 CourseDetailsDialog::~CourseDetailsDialog() { delete ui; }
@@ -107,11 +118,48 @@ int CourseDetailsDialog::exec() {
         mPrivate->enlistedStudentsModel);
     mPrivate->notEnlistedProxyModel->setSourceModel(
         mPrivate->notEnlistedStudentsModel);
+
+    connect(mPrivate->enlistedStudentsModel, &EntityTableModel::rowCountChanged,
+            this, &CourseDetailsDialog::enlistedCountChanged);
     return QDialog::exec();
+}
+
+void CourseDetailsDialog::reject() {
+    qDebug() << __PRETTY_FUNCTION__;
+    QDialog::reject();
+}
+
+void CourseDetailsDialog::accept() {
+    qDebug() << __PRETTY_FUNCTION__;
+    QDialog::accept();
 }
 
 void CourseDetailsDialog::enlistedCountChanged(size_t count) {
     ui->totalStudentsLabel->setText(mPrivate->ENLISTED_COUNT_FORMAT.arg(count));
+}
+
+void CourseDetailsDialog::addButtonClicked() {
+    auto index = ui->notEnlistedTableView->selectionModel()->currentIndex();
+    if (!index.isValid()) {
+        return;
+    }
+    auto modelRow = mPrivate->notEnlistedProxyModel->mapToSource(index).row();
+    auto entity = mPrivate->notEnlistedStudentsModel->entity(modelRow);
+    mPrivate->enlistedStudentsModel->insertEntity(-1, entity);
+    mPrivate->notEnlistedStudentsModel->removeEntity(modelRow);
+    mPrivate->dirty = true;
+}
+
+void CourseDetailsDialog::removeButtonClicked() {
+    auto index = ui->enlistedTableView->selectionModel()->currentIndex();
+    if (!index.isValid()) {
+        return;
+    }
+    auto modelRow = mPrivate->enlistedProxyModel->mapToSource(index).row();
+    auto entity = mPrivate->enlistedStudentsModel->entity(modelRow);
+    mPrivate->notEnlistedStudentsModel->insertEntity(-1, entity);
+    mPrivate->enlistedStudentsModel->removeEntity(modelRow);
+    mPrivate->dirty = true;
 }
 }
 }

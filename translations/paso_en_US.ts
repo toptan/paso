@@ -253,34 +253,34 @@
 <context>
     <name>paso::admin::CourseDetailsDialog</name>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="18"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="19"/>
         <source>Enlisted students: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="74"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="87"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="85"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="98"/>
         <source>Critical error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="75"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="88"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="86"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="99"/>
         <source>There was an error working with the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="107"/>
         <source>Index Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="97"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="108"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="98"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="109"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>

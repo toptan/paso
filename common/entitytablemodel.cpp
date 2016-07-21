@@ -46,10 +46,11 @@ shared_ptr<Entity> EntityTableModel::entity(size_t position) const {
 
 void EntityTableModel::insertEntity(size_t position,
                                     std::shared_ptr<Entity> entity) {
-    emit beginInsertRows(QModelIndex(), position, position);
     if (position < mData->size()) {
+        emit beginInsertRows(QModelIndex(), position, position);
         mData->insert(mData->begin() + position, entity);
     } else {
+        emit beginInsertRows(QModelIndex(), mData->size(), mData->size());
         mData->push_back(entity);
     }
     emit endInsertRows();
