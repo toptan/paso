@@ -1,6 +1,7 @@
 #include "entitytablemodel.h"
 
 #include <QDebug>
+#include <algorithm>
 
 using namespace std;
 
@@ -45,7 +46,7 @@ shared_ptr<Entity> EntityTableModel::entity(size_t position) const {
 }
 
 void EntityTableModel::insertEntity(size_t position,
-                                    std::shared_ptr<Entity> entity) {
+                                    shared_ptr<Entity> entity) {
     if (position < mData.size()) {
         emit beginInsertRows(QModelIndex(), position, position);
         mData.insert(mData.begin() + position, entity);
@@ -64,6 +65,18 @@ void EntityTableModel::removeEntity(size_t position) {
         emit endRemoveRows();
         emit rowCountChanged(mData.size());
     }
+}
+
+void EntityTableModel::removeEntity(const shared_ptr<Entity> entity) {
+    auto position = find(mData.begin(), mData.end(), entity);
+    if (position == mData.end()) {
+        return;
+    }
+    emit beginRemoveRows(QModelIndex(), position - mData.begin(),
+                         position - mData.begin());
+    mData.erase(position);
+    emit endRemoveRows();
+    emit rowCountChanged(mData.size());
 }
 
 void EntityTableModel::setData(const EntityVector &newData) {

@@ -163,7 +163,7 @@ void TestModels::testEntityModelDataUpdates() {
     QCOMPARE(model.entity(model.rowCount() - 1), entity);
     QCOMPARE(model.data(model.index(1, 0)), QVariant("Baze podataka 1"));
     QCOMPARE(model.data(model.index(1, 1)), QVariant("IR3BP1"));
-    model.removeEntity(0);
+    model.removeEntity(entity);
     model.removeEntity(0);
     model.removeEntity(0);
     QCOMPARE(model.rowCount(), 0);

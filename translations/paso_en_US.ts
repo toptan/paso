@@ -9,33 +9,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="32"/>
+        <location filename="../admin/coursedetailsdialog.ui" line="28"/>
         <source>Course information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="70"/>
+        <location filename="../admin/coursedetailsdialog.ui" line="66"/>
         <source>Enlisted students: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="89"/>
-        <source>Not enlisted students</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="116"/>
-        <source>&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="123"/>
-        <source>&lt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/coursedetailsdialog.ui" line="132"/>
-        <source>Enlisted students</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -254,34 +234,45 @@
     <name>paso::admin::CourseDetailsDialog</name>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="19"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="72"/>
         <source>Enlisted students: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="83"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="45"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="58"/>
         <source>Critical error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="84"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="97"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="46"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="59"/>
         <source>There was an error working with the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="105"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="67"/>
         <source>Index Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="106"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="68"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="107"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="69"/>
         <source>First Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="74"/>
+        <source>Not enlisted students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="75"/>
+        <source>Enlisted students</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -814,8 +805,10 @@
 <context>
     <name>paso::widget::AddRemoveEntitiesForm</name>
     <message>
-        <location filename="../common/addremoveentitiesform.cpp" line="68"/>
-        <location filename="../common/addremoveentitiesform.cpp" line="76"/>
+        <location filename="../common/addremoveentitiesform.cpp" line="45"/>
+        <location filename="../common/addremoveentitiesform.cpp" line="49"/>
+        <location filename="../common/addremoveentitiesform.cpp" line="85"/>
+        <location filename="../common/addremoveentitiesform.cpp" line="93"/>
         <source>Total %1</source>
         <translation type="unfinished"></translation>
     </message>

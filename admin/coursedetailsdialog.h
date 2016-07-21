@@ -23,18 +23,13 @@ class CourseDetailsDialog : public QDialog {
 
 public:
     explicit CourseDetailsDialog(const paso::data::entity::Course &course,
-                                 QWidget *parent = 0);
+                                 QWidget *parent = nullptr);
     ~CourseDetailsDialog();
 
 public slots:
     virtual int exec() override;
     virtual void reject() override;
     virtual void accept() override;
-
-private slots:
-    void enlistedCountChanged(size_t count);
-    void addButtonClicked();
-    void removeButtonClicked();
 
 private:
     Ui::CourseDetailsDialog *ui;

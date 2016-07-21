@@ -4,9 +4,11 @@
 #include "course.h"
 #include "entity.h"
 
+#include <QAbstractTableModel>
 #include <QDebug>
 #include <QPushButton>
 #include <QSignalSpy>
+#include <QSortFilterProxyModel>
 #include <QTableView>
 
 using namespace std;
@@ -28,6 +30,7 @@ void TestWidgets::testAddRemoveEntityWidget() {
     auto sourceTable = form.findChild<QTableView *>("sourceTableView");
     auto destinationTable =
         form.findChild<QTableView *>("destinationTableView");
+
     auto addButton = form.findChild<QPushButton *>("addButton");
     auto removeButton = form.findChild<QPushButton *>("removeButton");
     auto resetButton = form.findChild<QPushButton *>("resetButton");
@@ -66,6 +69,30 @@ void TestWidgets::testAddRemoveEntityWidget() {
     QVERIFY(form.addedEntities().empty());
     QVERIFY(form.removedEntities().empty());
     QVERIFY(!form.dirty());
+
+    auto sourceRowCount =
+        dynamic_cast<QSortFilterProxyModel *>(sourceTable->model())
+            ->sourceModel()
+            ->rowCount();
+    for (int row = 0; row < sourceRowCount; row++) {
+        sourceTable->selectRow(row);
+    }
+    QTest::mouseClick(addButton, Qt::LeftButton);
+    QCOMPARE(form.addedEntities().size(), size_t(2));
+    QVERIFY(form.removedEntities().empty());
+    QVERIFY(form.dirty());
+
+    auto destinationRowCount =
+        dynamic_cast<QSortFilterProxyModel *>(destinationTable->model())
+            ->sourceModel()
+            ->rowCount();
+    for (int row = 0; row < destinationRowCount; row++) {
+        destinationTable->selectRow(row);
+    }
+    QTest::mouseClick(removeButton, Qt::LeftButton);
+    QVERIFY(form.addedEntities().empty());
+    QCOMPARE(form.removedEntities().size(), size_t(2));
+    QVERIFY(form.dirty());
 }
 
 QTEST_MAIN(TestWidgets)

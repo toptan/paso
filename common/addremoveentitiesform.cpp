@@ -15,7 +15,6 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent)
       mDestinationModel(nullptr), mSourceProxyModel(nullptr),
       mDestinationProxyModel(nullptr) {
     ui->setupUi(this);
-
     mSourceModel = new EntityTableModel(QStringList(), QMap<QString, QString>(),
                                         EntityVector(), this);
     mSourceProxyModel = new StableRowNumberSortFilterProxyModel(this);
@@ -23,6 +22,10 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent)
     mSourceProxyModel->setDynamicSortFilter(false);
     mSourceProxyModel->setSourceModel(mSourceModel);
     ui->sourceTableView->setModel(mSourceProxyModel);
+    ui->sourceTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->sourceTableView->horizontalHeader()->setSectionResizeMode(
+        QHeaderView::Stretch);
+    ui->sourceTableView->sortByColumn(0, Qt::SortOrder::AscendingOrder);
 
     mDestinationModel = new EntityTableModel(
         QStringList(), QMap<QString, QString>(), EntityVector(), this);
@@ -31,6 +34,21 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent)
     mDestinationProxyModel->setDynamicSortFilter(true);
     mDestinationProxyModel->setSourceModel(mDestinationModel);
     ui->destinationTableView->setModel(mDestinationProxyModel);
+    ui->destinationTableView->setEditTriggers(
+        QAbstractItemView::NoEditTriggers);
+    ui->destinationTableView->horizontalHeader()->setSectionResizeMode(
+        QHeaderView::Stretch);
+    ui->destinationTableView->sortByColumn(0, Qt::SortOrder::AscendingOrder);
+
+    connect(mSourceModel, &EntityTableModel::rowCountChanged,
+            [this](size_t rowCount) {
+                ui->sourceTotalLabel->setText(tr("Total %1").arg(rowCount));
+            });
+    connect(mDestinationModel, &EntityTableModel::rowCountChanged,
+            [this](size_t rowCount) {
+                ui->destinationTotalLabel->setText(tr("Total %1").arg(rowCount));
+            });
+
     connect(ui->addButton, &QPushButton::clicked, this,
             &AddRemoveEntitiesForm::addButtonClicked);
     connect(ui->removeButton, &QPushButton::clicked, this,
@@ -64,8 +82,7 @@ void AddRemoveEntitiesForm::setData(
     mSourceData = sourceData;
     mSourceModel->setData(sourceColumns, sourceColumnNames, sourceData);
     ui->sourceTotalLabel->setVisible(totalLabelsVisible);
-    ui->sourceTotalLabel->setText(
-        QString(tr("Total %1")).arg(mSourceModel->rowCount()));
+    ui->sourceTotalLabel->setText(tr("Total %1").arg(mSourceModel->rowCount()));
 
     ui->destinationGroupBox->setTitle(destinationLabel);
     mDestinationData = destinationData;
@@ -73,7 +90,7 @@ void AddRemoveEntitiesForm::setData(
                                destinationData);
     ui->destinationTotalLabel->setVisible(totalLabelsVisible);
     ui->destinationTotalLabel->setText(
-        QString(tr("Total %1")).arg(mDestinationModel->rowCount()));
+        tr("Total %1").arg(mDestinationModel->rowCount()));
 }
 
 void AddRemoveEntitiesForm::addButtonClicked() {
@@ -81,14 +98,23 @@ void AddRemoveEntitiesForm::addButtonClicked() {
     if (indexes.isEmpty()) {
         return;
     }
+
+    vector<shared_ptr<Entity>> entitiesForRemoval;
+
     for (const auto &index : indexes) {
         auto modelRow = mSourceProxyModel->mapToSource(index).row();
         auto entity = mSourceModel->entity(modelRow);
+        entitiesForRemoval.push_back(entity);
         mAddedEntities.insert(entity);
         mRemovedEntities.erase(entity);
         mDestinationModel->insertEntity(-1, entity);
-        mSourceModel->removeEntity(modelRow);
     }
+
+    for (const auto &entity : entitiesForRemoval) {
+        mSourceModel->removeEntity(entity);
+    }
+
+    ui->sourceTableView->clearSelection();
 }
 
 void AddRemoveEntitiesForm::removeButtonClicked() {
@@ -96,14 +122,23 @@ void AddRemoveEntitiesForm::removeButtonClicked() {
     if (indexes.isEmpty()) {
         return;
     }
+
+    vector<shared_ptr<Entity>> entitiesForRemoval;
+
     for (const auto &index : indexes) {
         auto modelRow = mDestinationProxyModel->mapToSource(index).row();
         auto entity = mDestinationModel->entity(modelRow);
+        entitiesForRemoval.push_back(entity);
         mAddedEntities.erase(entity);
         mRemovedEntities.insert(entity);
         mSourceModel->insertEntity(-1, entity);
-        mDestinationModel->removeEntity(modelRow);
     }
+
+    for (const auto &entity : entitiesForRemoval) {
+        mDestinationModel->removeEntity(entity);
+    }
+
+    ui->destinationTableView->clearSelection();
 }
 
 void AddRemoveEntitiesForm::resetButtonClicked() {
@@ -111,6 +146,8 @@ void AddRemoveEntitiesForm::resetButtonClicked() {
     mRemovedEntities.clear();
     mSourceModel->setData(mSourceData);
     mDestinationModel->setData(mDestinationData);
+    ui->sourceTableView->clearSelection();
+    ui->destinationTableView->clearSelection();
 }
 }
 }
