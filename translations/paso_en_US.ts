@@ -2,6 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>AddRemoveEntitiesForm</name>
+    <message>
+        <location filename="../common/addremoveentitiesform.ui" line="85"/>
+        <source>&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/addremoveentitiesform.ui" line="92"/>
+        <source>&lt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/addremoveentitiesform.ui" line="112"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CourseDetailsDialog</name>
     <message>
         <location filename="../admin/coursedetailsdialog.ui" line="14"/>
@@ -233,45 +251,54 @@
 <context>
     <name>paso::admin::CourseDetailsDialog</name>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="19"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="72"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="75"/>
         <source>Enlisted students: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="45"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="58"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="48"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="61"/>
         <source>Critical error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="46"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="59"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="35"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="36"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="49"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="62"/>
         <source>There was an error working with the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="67"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="70"/>
         <source>Index Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="68"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="71"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="69"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="72"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="74"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="77"/>
         <source>Not enlisted students</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="75"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="78"/>
         <source>Enlisted students</source>
         <translation type="unfinished"></translation>
     </message>

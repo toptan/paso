@@ -2,7 +2,9 @@
 #include "ui_coursedetailsdialog.h"
 
 #include <QDebug>
+#include <QDialogButtonBox>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QSqlError>
 #include <memory>
 
@@ -16,10 +18,8 @@ namespace admin {
 
 struct CourseDetailsDialog::CourseDetailsDialogPrivate {
     explicit CourseDetailsDialogPrivate(const Course &course)
-        : ENLISTED_COUNT_FORMAT(tr("Enlisted students: %1")), course(course),
-          manager(DEFAULT_DB_NAME) {}
+        : course(course), manager(DEFAULT_DB_NAME) {}
 
-    const QString ENLISTED_COUNT_FORMAT;
     const Course course;
 
     DBManager manager;
@@ -31,6 +31,9 @@ CourseDetailsDialog::CourseDetailsDialog(const Course &course, QWidget *parent)
     ui->setupUi(this);
     ui->codeLabel->setText(mPrivate->course.code());
     ui->nameLabel->setText(mPrivate->course.name());
+    ui->buttonBox->buttons();
+    ui->buttonBox->button(QDialogButtonBox::Save)->setText(tr("Save"));
+    ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
 }
 
 CourseDetailsDialog::~CourseDetailsDialog() { delete ui; }
