@@ -16,7 +16,7 @@ class RoomForm;
 namespace paso {
 namespace admin {
 
-class RoomForm : public TableForm {
+class RoomForm : public widget::TableForm {
     Q_OBJECT
 
 public:
@@ -39,7 +39,7 @@ protected:
 private:
     Ui::RoomForm *ui;
 
-    static std::pair<QSqlTableModel *, RecordEditorWidget *>
+    static std::pair<QSqlTableModel *, widget::RecordEditorWidget *>
     createModelAndEditor();
 };
 }

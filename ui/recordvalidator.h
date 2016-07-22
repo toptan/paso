@@ -3,19 +3,19 @@
 
 #include "pasodb.h"
 
-#include <QObject>
 #include <QMap>
+#include <QMessageBox>
+#include <QObject>
+#include <QSqlRecord>
 #include <QString>
 #include <QStringList>
-#include <QSqlRecord>
-#include <QWidget>
 #include <QStyle>
 #include <QVariant>
-#include <QMessageBox>
+#include <QWidget>
 #include <memory>
 
 namespace paso {
-namespace admin {
+namespace widget {
 
 ///
 /// \brief The FieldType enum defines widget to be used for record fields.
@@ -83,8 +83,6 @@ protected:
 private:
     db::DBManager mDbManager;
 };
-
-static void setEntryError(QWidget *widget, bool error) {}
 
 static void showEntryError(QWidget *editor, const QString &title,
                            const QString &text,

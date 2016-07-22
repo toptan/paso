@@ -11,7 +11,7 @@
 #include "data.h"
 
 namespace paso {
-namespace admin {
+namespace widget {
 
 using namespace paso::data;
 using namespace std;

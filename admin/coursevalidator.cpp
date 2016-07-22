@@ -1,14 +1,15 @@
 #include "coursevalidator.h"
 
 #include <QLineEdit>
-#include <QVariant>
-#include <QSqlError>
 #include <QMessageBox>
+#include <QSqlError>
+#include <QVariant>
+
+using namespace std;
+using namespace paso::widget;
 
 namespace paso {
 namespace admin {
-
-using namespace std;
 
 CourseValidator::CourseValidator(const FieldTypes &fieldTypes,
                                  const FieldEditors &fieldEditors,

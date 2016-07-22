@@ -8,6 +8,7 @@ class TestWidgets : public QObject {
 
 private slots:
     void testAddRemoveEntityWidget();
+    void testRecordEditorWidget();
 };
 
 #endif // TESTWIDGETS_H

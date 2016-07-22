@@ -1,14 +1,15 @@
 #include "personvalidator.h"
 
 #include <QLineEdit>
-#include <QVariant>
 #include <QRegExpValidator>
 #include <QSqlError>
+#include <QVariant>
+
+using namespace paso::widget;
+using namespace std;
 
 namespace paso {
 namespace admin {
-
-using namespace std;
 
 PersonValidator::PersonValidator(const FieldTypes &fieldTypes,
                                  const FieldEditors &fieldEditors,
@@ -68,7 +69,7 @@ shared_ptr<ValidationError> PersonValidator::validateLastName() const {
 shared_ptr<ValidationError> PersonValidator::validateEmail() const {
     auto editor = dynamic_cast<QLineEdit *>(mFieldEditors["email"]);
     auto text = editor->text().trimmed();
-    if(text.isEmpty()) {
+    if (text.isEmpty()) {
         return nullptr;
     }
 

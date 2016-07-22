@@ -5,7 +5,7 @@
 #include <QSqlError>
 
 namespace paso {
-namespace admin {
+namespace widget {
 
 TableForm::TableForm(
     std::pair<QSqlTableModel *, RecordEditorWidget *> modelAndEditor,

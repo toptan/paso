@@ -5,10 +5,11 @@
 #include <QSqlError>
 #include <QMessageBox>
 
+using namespace paso::widget;
+using namespace std;
+
 namespace paso {
 namespace admin {
-
-using namespace std;
 
 RoomValidator::RoomValidator(const FieldTypes &fieldTypes,
                              const FieldEditors &fieldEditors, QObject *parent)

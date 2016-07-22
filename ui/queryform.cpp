@@ -7,7 +7,7 @@
 using namespace paso::db;
 
 namespace paso {
-namespace admin {
+namespace widget {
 
 QueryForm::QueryForm(
     std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,

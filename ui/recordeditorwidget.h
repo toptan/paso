@@ -15,7 +15,7 @@
 #include <QWidget>
 
 namespace paso {
-namespace admin {
+namespace widget {
 
 class RecordEditorWidget : public QWidget {
     Q_OBJECT

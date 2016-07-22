@@ -3,8 +3,11 @@
 #include <QSqlField>
 #include <QUuid>
 
+using namespace paso::widget;
+
 namespace paso {
 namespace admin {
+
 RoomEditorWidget::RoomEditorWidget(const QSqlRecord &record,
                                    const FieldTypes &fieldTypes,
                                    QWidget *parent)

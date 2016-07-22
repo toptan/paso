@@ -6,9 +6,10 @@
 namespace paso {
 namespace admin {
 
-class StudentEditorWidget : public RecordEditorWidget {
+class StudentEditorWidget : public widget::RecordEditorWidget {
 public:
-    StudentEditorWidget(const QSqlRecord &record, const FieldTypes &fieldTypes,
+    StudentEditorWidget(const QSqlRecord &record,
+                        const widget::FieldTypes &fieldTypes,
                         QWidget *parent = nullptr);
 
 protected:

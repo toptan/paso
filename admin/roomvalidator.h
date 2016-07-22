@@ -9,21 +9,21 @@
 namespace paso {
 namespace admin {
 
-class RoomValidator : public RecordValidator {
+class RoomValidator : public widget::RecordValidator {
     Q_OBJECT
 public:
-    RoomValidator(const FieldTypes &fieldTypes,
-                  const FieldEditors &fieldEditors, QObject *parent = nullptr);
+    RoomValidator(const widget::FieldTypes &fieldTypes,
+                  const widget::FieldEditors &fieldEditors, QObject *parent = nullptr);
     virtual ~RoomValidator() {}
 
-    virtual std::shared_ptr<ValidationError>
+    virtual std::shared_ptr<widget::ValidationError>
     validate(const QSqlRecord &original) const override;
 
 private:
-    std::shared_ptr<ValidationError>
+    std::shared_ptr<widget::ValidationError>
     validateRoomUuid(const QString &original) const;
-    std::shared_ptr<ValidationError> validateName() const;
-    std::shared_ptr<ValidationError>
+    std::shared_ptr<widget::ValidationError> validateName() const;
+    std::shared_ptr<widget::ValidationError>
     validateRoomNumber(const QString &original) const;
 };
 }

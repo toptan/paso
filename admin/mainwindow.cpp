@@ -23,6 +23,7 @@ namespace admin {
 using namespace paso::comm;
 using namespace paso::data;
 using namespace paso::db;
+using namespace paso::widget;
 
 using namespace Ui;
 

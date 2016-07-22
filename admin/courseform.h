@@ -1,9 +1,9 @@
 #ifndef COURSEFORM_H
 #define COURSEFORM_H
 
-#include "tableform.h"
 #include "courseeditorwidget.h"
 #include "coursetablemodel.h"
+#include "tableform.h"
 
 #include <QAction>
 #include <QSqlRecord>
@@ -16,7 +16,7 @@ class CourseForm;
 namespace paso {
 namespace admin {
 
-class CourseForm : public TableForm {
+class CourseForm : public widget::TableForm {
     Q_OBJECT
 
 public:
@@ -49,7 +49,7 @@ private:
     QAction *mImportAction;
     QAction *mDetailsAction;
 
-    static std::pair<QSqlTableModel *, RecordEditorWidget *>
+    static std::pair<QSqlTableModel *, widget::RecordEditorWidget *>
     createModelAndEditor();
 };
 }

@@ -9,7 +9,7 @@
 class QSqlQueryModel;
 
 namespace paso {
-namespace admin {
+namespace widget {
 
 class QueryForm : public AbstractForm {
 public:

@@ -16,7 +16,7 @@ class SystemUsersForm;
 namespace paso {
 namespace admin {
 
-class SystemUsersForm : public TableForm {
+class SystemUsersForm : public widget::TableForm {
     Q_OBJECT
 
 public:
@@ -39,7 +39,7 @@ protected:
 private:
     Ui::SystemUsersForm *ui;
 
-    static std::pair<QSqlTableModel *, RecordEditorWidget *>
+    static std::pair<QSqlTableModel *, widget::RecordEditorWidget *>
     createModelAndEditor();
 };
 }

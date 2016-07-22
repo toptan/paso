@@ -3,6 +3,7 @@
 #include "addremoveentitiesform.h"
 #include "course.h"
 #include "entity.h"
+#include "recordeditorwidget.h"
 
 #include <QAbstractTableModel>
 #include <QDebug>
@@ -10,6 +11,9 @@
 #include <QSignalSpy>
 #include <QSortFilterProxyModel>
 #include <QTableView>
+
+
+
 
 using namespace std;
 using namespace paso::data::entity;
@@ -93,6 +97,10 @@ void TestWidgets::testAddRemoveEntityWidget() {
     QVERIFY(form.addedEntities().empty());
     QCOMPARE(form.removedEntities().size(), size_t(2));
     QVERIFY(form.dirty());
+}
+
+void TestWidgets::testRecordEditorWidget() {
+
 }
 
 QTEST_MAIN(TestWidgets)

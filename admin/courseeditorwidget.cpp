@@ -1,5 +1,7 @@
 #include "courseeditorwidget.h"
 
+using namespace paso::widget;
+
 namespace paso {
 namespace admin {
 

@@ -7,10 +7,11 @@
 #include <QRegExp>
 #include <QRegExpValidator>
 
+using namespace std;
+using namespace paso::widget;
+
 namespace paso {
 namespace admin {
-
-using namespace std;
 
 SystemUserValidator::SystemUserValidator(const FieldTypes &fieldTypes,
                                          const FieldEditors &fieldEditors,

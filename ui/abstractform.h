@@ -14,7 +14,7 @@ class QSortFilterProxyModel;
 class QSqlError;
 
 namespace paso {
-namespace admin {
+namespace widget {
 
 ///
 /// \brief The AbstractForm class is a base abstract class for all forms that

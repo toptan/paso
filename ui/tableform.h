@@ -8,7 +8,7 @@
 class QSqlTableModel;
 
 namespace paso {
-namespace admin {
+namespace widget {
 
 class TableForm : public AbstractForm {
     Q_OBJECT

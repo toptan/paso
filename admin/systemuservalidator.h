@@ -9,24 +9,24 @@
 namespace paso {
 namespace admin {
 
-class SystemUserValidator : public RecordValidator {
+class SystemUserValidator : public widget::RecordValidator {
     Q_OBJECT
 public:
-    SystemUserValidator(const FieldTypes &fieldTypes,
-                        const FieldEditors &fieldEditors,
+    SystemUserValidator(const widget::FieldTypes &fieldTypes,
+                        const widget::FieldEditors &fieldEditors,
                         QObject *parent = nullptr);
     virtual ~SystemUserValidator() {}
 
-    virtual std::shared_ptr<ValidationError>
+    virtual std::shared_ptr<widget::ValidationError>
     validate(const QSqlRecord &original) const override;
 
 private:
-    std::shared_ptr<ValidationError>
+    std::shared_ptr<widget::ValidationError>
     validateUsername(const QString &original) const;
-    std::shared_ptr<ValidationError> validatePassword() const;
-    std::shared_ptr<ValidationError> validateFirstName() const;
-    std::shared_ptr<ValidationError> validateLastName() const;
-    std::shared_ptr<ValidationError> validateEmail() const;
+    std::shared_ptr<widget::ValidationError> validatePassword() const;
+    std::shared_ptr<widget::ValidationError> validateFirstName() const;
+    std::shared_ptr<widget::ValidationError> validateLastName() const;
+    std::shared_ptr<widget::ValidationError> validateEmail() const;
 };
 }
 }

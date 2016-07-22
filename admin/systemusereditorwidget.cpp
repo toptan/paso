@@ -6,10 +6,11 @@
 #include <QComboBox>
 #include <QWidget>
 
+using namespace paso::data;
+using namespace paso::widget;
+
 namespace paso {
 namespace admin {
-
-using namespace paso::data;
 
 SystemUserEditorWidget::SystemUserEditorWidget(const QSqlRecord &record,
                                                const FieldTypes &fieldTypes,

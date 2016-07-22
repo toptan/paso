@@ -16,7 +16,7 @@ class StudentForm;
 namespace paso {
 namespace admin {
 
-class StudentForm : public QueryForm {
+class StudentForm : public widget::QueryForm {
     Q_OBJECT
 
 public:
@@ -54,7 +54,7 @@ private:
     QAction *mImportAction;
     QAction *mDetailsAction;
 
-    static std::pair<QSqlQueryModel *, RecordEditorWidget *>
+    static std::pair<QSqlQueryModel *, widget::RecordEditorWidget *>
     createModelAndEditor();
 };
 }

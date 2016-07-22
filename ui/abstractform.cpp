@@ -17,7 +17,7 @@
 using namespace paso::model;
 
 namespace paso {
-namespace admin {
+namespace widget {
 
 AbstractForm::AbstractForm(
     std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,

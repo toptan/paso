@@ -16,6 +16,7 @@
 
 using namespace paso::db;
 using namespace paso::model;
+using namespace paso::widget;
 using namespace std;
 
 namespace paso {

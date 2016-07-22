@@ -5,10 +5,11 @@
 #include <QSpinBox>
 #include <QSqlError>
 
+using namespace std;
+using namespace paso::widget;
+
 namespace paso {
 namespace admin {
-
-using namespace std;
 
 StudentValidator::StudentValidator(const FieldTypes &fieldTypes,
                                    const FieldEditors &fieldEditors,

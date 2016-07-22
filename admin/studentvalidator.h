@@ -12,18 +12,18 @@ namespace admin {
 class StudentValidator : public PersonValidator {
     Q_OBJECT
 public:
-    StudentValidator(const FieldTypes &fieldTypes,
-                     const FieldEditors &fieldEditors,
+    StudentValidator(const widget::FieldTypes &fieldTypes,
+                     const widget::FieldEditors &fieldEditors,
                      QObject *parent = nullptr);
     virtual ~StudentValidator() {}
 
-    virtual std::shared_ptr<ValidationError>
+    virtual std::shared_ptr<widget::ValidationError>
     validate(const QSqlRecord &original) const override;
 
 private:
-    std::shared_ptr<ValidationError>
+    std::shared_ptr<widget::ValidationError>
     validateIndexNumber(const QString &original) const;
-    std::shared_ptr<ValidationError> validateYearOfStudy() const;
+    std::shared_ptr<widget::ValidationError> validateYearOfStudy() const;
 };
 }
 }
