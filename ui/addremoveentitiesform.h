@@ -25,7 +25,7 @@ class AddRemoveEntitiesForm : public QWidget {
 
 public:
     explicit AddRemoveEntitiesForm(QWidget *parent = 0);
-    ~AddRemoveEntitiesForm();
+    virtual ~AddRemoveEntitiesForm();
 
     ///
     /// Returns whether there were changes.

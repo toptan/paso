@@ -46,7 +46,8 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent)
             });
     connect(mDestinationModel, &EntityTableModel::rowCountChanged,
             [this](size_t rowCount) {
-                ui->destinationTotalLabel->setText(tr("Total %1").arg(rowCount));
+                ui->destinationTotalLabel->setText(
+                    tr("Total %1").arg(rowCount));
             });
 
     connect(ui->addButton, &QPushButton::clicked, this,
@@ -87,7 +88,7 @@ void AddRemoveEntitiesForm::setData(
     ui->destinationGroupBox->setTitle(destinationLabel);
     mDestinationData = destinationData;
     mDestinationModel->setEntityData(destinationColumns, destinationColumnNames,
-                               destinationData);
+                                     destinationData);
     ui->destinationTotalLabel->setVisible(totalLabelsVisible);
     ui->destinationTotalLabel->setText(
         tr("Total %1").arg(mDestinationModel->rowCount()));

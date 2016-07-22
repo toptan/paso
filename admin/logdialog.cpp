@@ -1,6 +1,7 @@
 #include "logdialog.h"
 #include "ui_logdialog.h"
 
+#include <QPushButton>
 #include <QDebug>
 
 namespace paso {
@@ -13,6 +14,7 @@ LogDialog::LogDialog(const QString &title, QWidget *parent)
     setWindowFlags((windowFlags() | Qt::CustomizeWindowHint) &
                    ~Qt::WindowMinMaxButtonsHint);
     ui->buttonBox->setVisible(false);
+    ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
 }
 
 LogDialog::~LogDialog() { delete ui; }

@@ -4,17 +4,17 @@
 <context>
     <name>AddRemoveEntitiesForm</name>
     <message>
-        <location filename="../common/addremoveentitiesform.ui" line="85"/>
+        <location filename="../ui/addremoveentitiesform.ui" line="85"/>
         <source>&gt;</source>
         <translation>&gt;</translation>
     </message>
     <message>
-        <location filename="../common/addremoveentitiesform.ui" line="92"/>
+        <location filename="../ui/addremoveentitiesform.ui" line="92"/>
         <source>&lt;</source>
         <translation>&lt;</translation>
     </message>
     <message>
-        <location filename="../common/addremoveentitiesform.ui" line="112"/>
+        <location filename="../ui/addremoveentitiesform.ui" line="112"/>
         <source>Reset</source>
         <translation>Поништи</translation>
     </message>
@@ -75,7 +75,7 @@
         <translation>&amp;Лозинка</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.ui" line="54"/>
+        <location filename="../admin/logindialog.ui" line="58"/>
         <source>&amp;Server</source>
         <translation>&amp;Сервер</translation>
     </message>
@@ -225,33 +225,33 @@
 <context>
     <name>paso::admin::AbstractForm</name>
     <message>
-        <location filename="../admin/abstractform.cpp" line="66"/>
+        <location filename="../ui/abstractform.cpp" line="66"/>
         <source>New</source>
         <translation>Нов запис</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="71"/>
+        <location filename="../ui/abstractform.cpp" line="71"/>
         <source>Edit</source>
         <translation>Уреди</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="77"/>
+        <location filename="../ui/abstractform.cpp" line="77"/>
         <source>Delete</source>
         <translation>Обриши</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="87"/>
+        <location filename="../ui/abstractform.cpp" line="87"/>
         <source>Refresh data</source>
         <translation>Освежи податке</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="129"/>
+        <location filename="../ui/abstractform.cpp" line="129"/>
         <source>There was an error while deleting record from the database.</source>
         <translation>Дошло је то грешке приликом брисања записа из базе.</translation>
     </message>
     <message>
-        <location filename="../admin/abstractform.cpp" line="181"/>
-        <location filename="../admin/abstractform.cpp" line="206"/>
+        <location filename="../ui/abstractform.cpp" line="181"/>
+        <location filename="../ui/abstractform.cpp" line="206"/>
         <source>There was an error while saving data.</source>
         <translation>Дошло је до грешке приликом снимања подата.</translation>
     </message>
@@ -491,24 +491,42 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::LogDialog</name>
+    <message>
+        <location filename="../admin/logdialog.cpp" line="17"/>
+        <source>Close</source>
+        <translation>Затвори</translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::LoginDialog</name>
     <message>
-        <location filename="../admin/logindialog.cpp" line="29"/>
+        <location filename="../admin/logindialog.cpp" line="23"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <location filename="../admin/logindialog.cpp" line="24"/>
+        <source>Cancel</source>
+        <translation>Одустани</translation>
+    </message>
+    <message>
+        <location filename="../admin/logindialog.cpp" line="32"/>
         <source>You need to provide username.</source>
         <translation>Морате унети корисничко име.</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="34"/>
+        <location filename="../admin/logindialog.cpp" line="37"/>
         <source>You need to provide password.</source>
         <translation>Морате унети лозинку.</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="39"/>
+        <location filename="../admin/logindialog.cpp" line="42"/>
         <source>You need to provide server name.</source>
         <translation>Морате унети име сервера.</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="67"/>
+        <location filename="../admin/logindialog.cpp" line="70"/>
         <source>Login failed.</source>
         <translation>Неуспешна пријава.</translation>
     </message>
@@ -889,10 +907,10 @@
 <context>
     <name>paso::widget::AddRemoveEntitiesForm</name>
     <message>
-        <location filename="../common/addremoveentitiesform.cpp" line="45"/>
-        <location filename="../common/addremoveentitiesform.cpp" line="49"/>
-        <location filename="../common/addremoveentitiesform.cpp" line="85"/>
-        <location filename="../common/addremoveentitiesform.cpp" line="93"/>
+        <location filename="../ui/addremoveentitiesform.cpp" line="45"/>
+        <location filename="../ui/addremoveentitiesform.cpp" line="50"/>
+        <location filename="../ui/addremoveentitiesform.cpp" line="86"/>
+        <location filename="../ui/addremoveentitiesform.cpp" line="94"/>
         <source>Total %1</source>
         <translation>Укупно %1</translation>
     </message>

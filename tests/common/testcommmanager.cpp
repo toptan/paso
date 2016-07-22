@@ -22,7 +22,7 @@ DemoServer::DemoServer(QObject *parent)
     auto db = QSqlDatabase::addDatabase("QSQLITE", mDbName);
     db.setDatabaseName(":memory:");
     db.open();
-    QFile in_memory_sql("in_memory.sql");
+    QFile in_memory_sql("../in_memory.sql");
     in_memory_sql.open(QIODevice::ReadOnly);
     QTextStream in(&in_memory_sql);
     QString sqlString = in.readAll();

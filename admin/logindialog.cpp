@@ -2,6 +2,7 @@
 #include "ui_logindialog.h"
 
 #include <QDebug>
+#include <QPushButton>
 
 namespace paso {
 namespace admin {
@@ -19,6 +20,8 @@ LoginDialog::LoginDialog(QWidget *parent)
     ui->usernameLineEdit->setText("root");
     ui->passwordLineEdit->setText("root");
     ui->serverLineEdit->setText("localhost");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 }
 
 LoginDialog::~LoginDialog() { delete ui; }

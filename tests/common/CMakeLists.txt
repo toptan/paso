@@ -7,12 +7,6 @@ link_libraries(Qt5::Core)
 link_libraries(Qt5::Network)
 link_libraries(Qt5::Sql)
 link_libraries(Qt5::Test)
-link_libraries(Qt5::Widgets)
-
-configure_file(${PROJECT_SOURCE_DIR}/sql/in_memory.sql ${PROJECT_BINARY_DIR}/in_memory.sql @ONLY)
-
-# Adding tests
-enable_testing()
 
 add_executable(testdata testdata.cpp)
 add_test(NAME "Data_tests" COMMAND testdata)
@@ -38,20 +32,3 @@ add_executable(testmodels testmodels.cpp)
 add_test(NAME "Model_tests" COMMAND testmodels)
 target_link_libraries(testmodels pasocommon)
 enable_coverage(testmodels pasocommon)
-
-add_executable(testwidgets testwidgets.cpp)
-add_test(NAME "Widgets_tests" COMMAND testwidgets)
-target_link_libraries(testwidgets pasocommon)
-enable_coverage(testwidgets pasocommon)
-
-# Don't forget to add each test to DEPENDS section
-add_custom_target(check
-    COMMAND ${CMAKE_CTEST_COMMAND} -V
-    DEPENDS
-    testdata
-    testpasodb
-    testcommdata
-    testcommmanager
-    testmodels
-    testwidgets
-    )

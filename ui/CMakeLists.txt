@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.4 FATAL_ERROR)
-project(pasocommon)
+project(pasoui)
 
 # Include our cmake macros and functions
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -21,13 +21,17 @@ find_package(Qt5Concurrent 5.5 REQUIRED)
 find_package(Qt5Network    5.5 REQUIRED)
 find_package(Qt5Sql        5.5 REQUIRED)
 find_package(Qt5Test       5.5 REQUIRED)
+find_package(Qt5Widgets    5.5 REQUIRED)
 
-# Common PaSo library
+# PaSo UI library
 file(GLOB COMMON_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
 add_library(${PROJECT_NAME} STATIC ${COMMON_SOURCES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/common)
 target_link_libraries(${PROJECT_NAME} Qt5::Core)
 target_link_libraries(${PROJECT_NAME} Qt5::Concurrent)
 target_link_libraries(${PROJECT_NAME} Qt5::Network)
 target_link_libraries(${PROJECT_NAME} Qt5::Sql)
+target_link_libraries(${PROJECT_NAME} Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} pasocommon)
 add_dependencies(${PROJECT_NAME} translations)
 enable_coverage(${PROJECT_NAME})

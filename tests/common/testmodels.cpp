@@ -26,7 +26,7 @@ void TestModels::initTestCase() {
 
 void TestModels::init() {
     auto db = QSqlDatabase::database(dbName);
-    QFile in_memory_sql("in_memory.sql");
+    QFile in_memory_sql("../in_memory.sql");
     in_memory_sql.open(QIODevice::ReadOnly);
     QTextStream in(&in_memory_sql);
     QString sqlString = in.readAll();
