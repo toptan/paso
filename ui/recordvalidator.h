@@ -59,7 +59,7 @@ class RecordValidator : public QObject {
 public:
     explicit RecordValidator(const FieldTypes &fieldTypes,
                              const FieldEditors &fieldEditors,
-                             QObject *parent = 0)
+                             QObject *parent = nullptr)
         : QObject(parent), mFieldTypes(fieldTypes), mFieldEditors(fieldEditors),
           mDbManager() {}
     virtual ~RecordValidator() {}

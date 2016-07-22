@@ -5,15 +5,14 @@
 #include "entity.h"
 #include "recordeditorwidget.h"
 
+#include "mocks/mockalwaysvalidrecordvalidator.h"
+
 #include <QAbstractTableModel>
 #include <QDebug>
 #include <QPushButton>
 #include <QSignalSpy>
 #include <QSortFilterProxyModel>
 #include <QTableView>
-
-
-
 
 using namespace std;
 using namespace paso::data::entity;
@@ -101,6 +100,14 @@ void TestWidgets::testAddRemoveEntityWidget() {
 
 void TestWidgets::testRecordEditorWidget() {
 
+}
+
+void TestWidgets::testRecordValidator() {
+    MockAlwaysValidRecordValidator validator;
+    QVERIFY(validator.validate(QSqlRecord()) == nullptr);
+    QWidget w;
+    showEntryError(&w, "A", "B", "C");
+    qDebug() << "AAAAA";
 }
 
 QTEST_MAIN(TestWidgets)
