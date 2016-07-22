@@ -79,7 +79,7 @@ void EntityTableModel::removeEntity(const shared_ptr<Entity> entity) {
     emit rowCountChanged(mData.size());
 }
 
-void EntityTableModel::setData(const EntityVector &newData) {
+void EntityTableModel::setEntityData(const EntityVector &newData) {
     emit beginResetModel();
     mData.erase(mData.begin(), mData.end());
     mData.insert(mData.begin(), newData.begin(), newData.end());
@@ -87,7 +87,7 @@ void EntityTableModel::setData(const EntityVector &newData) {
     emit rowCountChanged(mData.size());
 }
 
-void EntityTableModel::setData(const QStringList &columns,
+void EntityTableModel::setEntityData(const QStringList &columns,
                                const QMap<QString, QString> &columnNames,
                                const EntityVector &newData) {
     emit beginResetModel();

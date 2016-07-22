@@ -269,39 +269,84 @@
         <translation>Затвори</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="48"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="37"/>
+        <source>Refresh</source>
+        <translation>Освежи</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="56"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="99"/>
+        <source>Unsaved changes</source>
+        <translation>Неснимљене промене</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="57"/>
+        <source>You have changes that are not saved.</source>
+        <translation>Имате промене које нису снимњене.</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="58"/>
+        <source>Do you want to save them?</source>
+        <translation>Да ли желите да их снимите?</translation>
+    </message>
+    <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="61"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="105"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="62"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="106"/>
+        <source>No</source>
+        <translation>Не</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="100"/>
+        <source>You have changes that are not saved. If you reload data all unsaved changes will be lost.</source>
+        <translation>Имате промене које нису снимњене. Ако освежите податке изгубићете све неснимњене промене.</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="102"/>
+        <source>Do you still want to reload data?</source>
+        <translation>Да ли још увек желите да освежите податке?</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="121"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="134"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="174"/>
         <source>Critical error</source>
         <translation>Критична грешка</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="49"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="62"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="122"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="135"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="175"/>
         <source>There was an error working with the database.</source>
         <translation>Дошло је до грешке при раду са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="70"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="143"/>
         <source>Index Number</source>
         <translation>Број индекса</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="71"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="144"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="72"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="145"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="77"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="150"/>
         <source>Not enlisted students</source>
         <translation>Студенти који не слушају предмет</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="78"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="151"/>
         <source>Enlisted students</source>
         <translation>Студенти који слушају предмет</translation>
     </message>
@@ -310,7 +355,7 @@
         <translation type="vanished">Број индекса</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="75"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="148"/>
         <source>Enlisted students: %1</source>
         <translation>Студенти који слушају предмет: %1</translation>
     </message>

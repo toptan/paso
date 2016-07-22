@@ -15,6 +15,8 @@ namespace Ui {
 class CourseDetailsDialog;
 }
 
+class QAbstractButton;
+
 namespace paso {
 namespace admin {
 
@@ -31,11 +33,18 @@ public slots:
     virtual void reject() override;
     virtual void accept() override;
 
+private slots:
+    virtual void onButtonBoxButtonClicked(QAbstractButton *button);
+
 private:
     Ui::CourseDetailsDialog *ui;
 
     struct CourseDetailsDialogPrivate;
     std::unique_ptr<CourseDetailsDialogPrivate> mPrivate;
+
+    void refresh();
+    bool loadData();
+    bool saveData();
 };
 }
 }

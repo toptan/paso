@@ -60,7 +60,7 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent)
 AddRemoveEntitiesForm::~AddRemoveEntitiesForm() { delete ui; }
 
 bool AddRemoveEntitiesForm::dirty() const {
-    return !mAddedEntities.empty() || !mRemovedEntities.empty();
+    return !(mAddedEntities.empty() && mRemovedEntities.empty());
 }
 
 set<shared_ptr<Entity>> AddRemoveEntitiesForm::addedEntities() const {
@@ -80,17 +80,19 @@ void AddRemoveEntitiesForm::setData(
     const EntityVector &destinationData, bool totalLabelsVisible) {
     ui->sourceGroupBox->setTitle(sourceLabel);
     mSourceData = sourceData;
-    mSourceModel->setData(sourceColumns, sourceColumnNames, sourceData);
+    mSourceModel->setEntityData(sourceColumns, sourceColumnNames, sourceData);
     ui->sourceTotalLabel->setVisible(totalLabelsVisible);
     ui->sourceTotalLabel->setText(tr("Total %1").arg(mSourceModel->rowCount()));
 
     ui->destinationGroupBox->setTitle(destinationLabel);
     mDestinationData = destinationData;
-    mDestinationModel->setData(destinationColumns, destinationColumnNames,
+    mDestinationModel->setEntityData(destinationColumns, destinationColumnNames,
                                destinationData);
     ui->destinationTotalLabel->setVisible(totalLabelsVisible);
     ui->destinationTotalLabel->setText(
         tr("Total %1").arg(mDestinationModel->rowCount()));
+    mAddedEntities.clear();
+    mRemovedEntities.clear();
 }
 
 void AddRemoveEntitiesForm::addButtonClicked() {
@@ -144,8 +146,8 @@ void AddRemoveEntitiesForm::removeButtonClicked() {
 void AddRemoveEntitiesForm::resetButtonClicked() {
     mAddedEntities.clear();
     mRemovedEntities.clear();
-    mSourceModel->setData(mSourceData);
-    mDestinationModel->setData(mDestinationData);
+    mSourceModel->setEntityData(mSourceData);
+    mDestinationModel->setEntityData(mDestinationData);
     ui->sourceTableView->clearSelection();
     ui->destinationTableView->clearSelection();
 }

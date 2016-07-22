@@ -548,4 +548,94 @@ void TestPasoDB::testRemovingStudentsFromCourse() {
     QVERIFY(manager.getCourseStudents("IR3AB", error)->empty());
 }
 
+void TestPasoDB::testUpdatingCourseStudents() {
+    DBManager manager(dbName);
+    QStringList addIndexNumbers{"2001/2001", "2002/2002"};
+    QStringList removeIndexNumbers{"2003/2003", "2004/2004"};
+    QSqlError error;
+    manager.importStudent("2001/2001,Jovan, Jovanovic,,2", error);
+    manager.importStudent("2002/2002,Milan,Milanovic,,2", error);
+    manager.importStudent("2003/2003,Ivana, Ivanovic,,2", error);
+    manager.importStudent("2004/2004,Bojana, Bojanic,,2", error);
+    manager.importCourse("IR3AA, AA course", error);
+    manager.importCourse("IR3AB, AB course", error);
+    manager.importCourse("IR3AC, AC course", error);
+
+    // S: {}
+    manager.updateCourseStudents("IR3AB", QStringList(), QStringList(), error);
+    QVERIFY(manager.getCourseStudents("IR3AB", error)->empty());
+
+    // S: {}
+    manager.updateCourseStudents("IR3AB", QStringList(), removeIndexNumbers,
+                                 error);
+    QVERIFY(manager.getCourseStudents("IR3AB", error)->empty());
+
+    // S: {"2001/2001", "2002/2002"}
+    manager.updateCourseStudents("IR3AB", addIndexNumbers, QStringList(),
+                                 error);
+    auto courseStudents = manager.getCourseStudents("IR3AB", error);
+    QCOMPARE(courseStudents->size(), size_t(2));
+    QStringList temp(addIndexNumbers);
+    for (const auto &student : *courseStudents) {
+        temp.removeOne(student.indexNumber());
+    }
+    QVERIFY(temp.empty());
+
+    // S: {}
+    manager.updateCourseStudents("IR3AB", QStringList(), addIndexNumbers,
+                                 error);
+    QVERIFY(manager.getCourseStudents("IR3AB", error)->empty());
+
+    // S: {"2001/2001", "2002/2002"}
+    manager.updateCourseStudents("IR3AB", addIndexNumbers, removeIndexNumbers,
+                                 error);
+    courseStudents = manager.getCourseStudents("IR3AB", error);
+    QCOMPARE(courseStudents->size(), size_t(2));
+    temp = addIndexNumbers;
+    for (const auto &student : *courseStudents) {
+        temp.removeOne(student.indexNumber());
+    }
+    QVERIFY(temp.empty());
+
+    // S: {"2003/2003", "2004/2004"}
+    manager.updateCourseStudents("IR3AB", removeIndexNumbers, addIndexNumbers,
+                                 error);
+    courseStudents = manager.getCourseStudents("IR3AB", error);
+    QCOMPARE(courseStudents->size(), size_t(2));
+    temp = removeIndexNumbers;
+    for (const auto &student : *courseStudents) {
+        temp.removeOne(student.indexNumber());
+    }
+    QVERIFY(temp.empty());
+
+    // S: {"2001/2001", "2004/2004"}
+    manager.updateCourseStudents("IR3AB", QStringList{"2001/2001"},
+                                 QStringList{"2003/2003"}, error);
+    courseStudents = manager.getCourseStudents("IR3AB", error);
+    QCOMPARE(courseStudents->size(), size_t(2));
+    temp = QStringList{"2001/2001", "2004/2004"};
+    for (const auto &student : *courseStudents) {
+        temp.removeOne(student.indexNumber());
+    }
+    QVERIFY(temp.empty());
+
+    // S: {"2004/2004"}
+    manager.updateCourseStudents("IR3AB", QStringList(),
+                                 QStringList{"2001/2001"}, error);
+    courseStudents = manager.getCourseStudents("IR3AB", error);
+    QCOMPARE(courseStudents->size(), size_t(1));
+    QCOMPARE((*courseStudents)[0].indexNumber(), QString("2004/2004"));
+
+    // S: {"2002/2002", "2004/2004"}
+    manager.updateCourseStudents("IR3AB", QStringList{"2002/2002"},
+                                 QStringList(), error);
+    courseStudents = manager.getCourseStudents("IR3AB", error);
+    QCOMPARE(courseStudents->size(), size_t(2));
+    temp = QStringList{"2002/2002", "2004/2004"};
+    for (const auto &student : *courseStudents) {
+        temp.removeOne(student.indexNumber());
+    }
+    QVERIFY(temp.empty());
+}
+
 QTEST_MAIN(TestPasoDB)

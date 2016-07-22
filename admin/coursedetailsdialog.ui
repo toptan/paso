@@ -83,6 +83,9 @@
      <property name="standardButtons">
       <set>QDialogButtonBox::Close|QDialogButtonBox::Save</set>
      </property>
+     <property name="centerButtons">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
   </layout>

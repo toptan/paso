@@ -369,6 +369,38 @@ bool DBManager::enlistStudentToCourses(const QString &indexNumber,
     return error.type() == QSqlError::NoError;
 }
 
+bool DBManager::updateCourseStudents(const QString &courseCode,
+                                     const QStringList &addIndexNumbers,
+                                     const QStringList &removeIndexNumbers,
+                                     QSqlError &error) const {
+    auto db = QSqlDatabase::database(mDbName);
+    db.transaction();
+    for (const auto &indexNumber : addIndexNumbers) {
+        auto query =
+            Course::enlistStudentToCourseQuery(db, courseCode, indexNumber);
+        query.exec();
+        error = query.lastError();
+        if (error.type() != QSqlError::NoError) {
+            db.rollback();
+            return false;
+        }
+    }
+
+    for (const auto &indexNumber : removeIndexNumbers) {
+        auto query =
+            Course::removeStudentFromCourseQuery(db, courseCode, indexNumber);
+        query.exec();
+        error = query.lastError();
+        if (error.type() != QSqlError::NoError) {
+            db.rollback();
+            return false;
+        }
+    }
+    db.commit();
+
+    return error.type() == QSqlError::NoError;
+}
+
 bool DBManager::removeStudentFromCourses(const QString &indexNumber,
                                          const QStringList &courseCodes,
                                          QSqlError &error) const {

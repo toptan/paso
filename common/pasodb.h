@@ -195,7 +195,7 @@ public:
     ///
     /// \brief usernameUnique checks if given username is unique.
     /// \param [in] username The username to check.
-    /// \param [out] error The sql error if any.
+    /// \param [out] error The SQL error if any.
     /// \return \c true if username does not exist in the database.
     ///
     bool usernameUnique(const QString &username, QSqlError &error) const;
@@ -203,7 +203,7 @@ public:
     ///
     /// \brief roomUuidUnique checks if given room UUID is unique.
     /// \param [in] roomUUID The room UUID to check.
-    /// \param [out] error The sql error if any.
+    /// \param [out] error The SQL error if any.
     /// \return \c true if the room UUID does not exit in the database.
     ///
     bool roomUuidUnique(const QString &roomUUID, QSqlError &error) const;
@@ -211,7 +211,7 @@ public:
     ///
     /// \brief roomNumberUnique checks if given room number is unique.
     /// \param [in] roomNumber The room number to check.
-    /// \param [out] error The sql error if any.
+    /// \param [out] error The SQL error if any.
     /// \return \c true if the room number does not exist in the database.
     ///
     bool roomNumberUnique(const QString &roomNumber, QSqlError &error) const;
@@ -219,7 +219,7 @@ public:
     ///
     /// \brief courseCodeUnique checks if given course code is unique.
     /// \param [in] courseCode The course code to check.
-    /// \param [out] error The sql error if any.
+    /// \param [out] error The SQL error if any.
     /// \return \c true if the course code does not exist in the database.
     ///
     bool courseCodeUnique(const QString &courseCode, QSqlError &error) const;
@@ -227,7 +227,7 @@ public:
     ///
     /// \brief indexNumberUnique checks if given index number is unique.
     /// \param indexNumber The index number to check.
-    /// \param error The sql error if any.
+    /// \param error The SQL error if any.
     /// \return \c true if the index number does not exist int the database.
     ///
     bool indexNumberUnique(const QString &indexNumber, QSqlError &error) const;
@@ -235,7 +235,7 @@ public:
     ///
     /// \brief importCourse imports course from given CSV line.
     /// \param csvLine The CSV line with course data.
-    /// \param error The sql error if any.
+    /// \param error The SQL error if any.
     /// \return The course import error.
     ///
     CourseImportError importCourse(const QString &csvLine,
@@ -244,7 +244,7 @@ public:
     ///
     /// \brief importStudent imports student from given CSV line.
     /// \param csvLine The CSV line with student data.
-    /// \param error The sql error if any.
+    /// \param error The SQL error if any.
     /// \return The student import error.
     ///
     StudentImportError importStudent(const QString &csvLine,
@@ -254,7 +254,7 @@ public:
     /// \brief getCourseStudents Returns all students that are enrolled to a
     /// course.
     /// \param courseCode The course code.
-    /// \param error The sql error if any.
+    /// \param error The SQL error if any.
     /// \return The students that are enrolled to a course.
     ///
     std::shared_ptr<std::vector<data::entity::Student>>
@@ -264,7 +264,7 @@ public:
     /// \brief getStudentCourses Returns all courses that student is enrolled
     /// to.
     /// \param indexNumber The index number.
-    /// \param error The sql error if any.
+    /// \param error The SQL error if any.
     /// \return The courses that student is enrolled to.
     ///
     std::shared_ptr<std::vector<data::entity::Course>>
@@ -274,7 +274,7 @@ public:
     /// \brief enlistStudentsToCourse Enlists students to the course.
     /// \param courseCode The course code.
     /// \param indexNumbers The list of students index numbers.
-    /// \param error The sql error if any.
+    /// \param error The SQL error if any.
     /// \return \c true if students are successfully enlisted.
     ///
     bool enlistStudentsToCourse(const QString &courseCode,
@@ -285,7 +285,7 @@ public:
     /// \brief enlistStudentToCourses Enlists student to courses.
     /// \param indexNumber The student's index number.
     /// \param courseCodes The list of course codes to enlist student to.
-    /// \param error The sql error if any.
+    /// \param error The SQL error if any.
     /// \return \c true if student is successfully enlisted.
     ///
     bool enlistStudentToCourses(const QString &indexNumber,
@@ -296,7 +296,7 @@ public:
     /// \brief removeStudentsFromCourse Removes students from given course.
     /// \param courseCode The course code.
     /// \param indexNumbers The list of stundents index numbers.
-    /// \param error The sql error if any.
+    /// \param error The SQL error if any.
     /// \return \c true if students are successfully removed from the course.
     ///
     bool removeStudentsFromCourse(const QString &courseCode,
@@ -307,12 +307,28 @@ public:
     /// \brief removeStudentFromCourses Removes student from given courses.
     /// \param indexNumber The index number.
     /// \param courseCodes The list of course codes.
-    /// \param error The sql error if any.
+    /// \param error The SQL error if any.
     /// \return \c true if student is succesfully removed from courses.
     ///
     bool removeStudentFromCourses(const QString &indexNumber,
                                   const QStringList &courseCodes,
                                   QSqlError &error) const;
+
+    ///
+    /// Adds students from \c addIndexNumber to the course and removes ones from
+    /// \c removeIndexNumbers from the course.
+    /// \param courseCode The course code.
+    /// \param addIndexNumbers The index numbers of students to add to the
+    /// course.
+    /// \param removeIndexNumbers The index numbers of students to remove from
+    /// the course.
+    /// \param error The SQL error if any.
+    /// \return \c true if operation was successful.
+    ///
+    bool updateCourseStudents(const QString &courseCode,
+                              const QStringList &addIndexNumbers,
+                              const QStringList &removeIndexNumbers,
+                              QSqlError &error) const;
 
     ///
     /// \brief studentsEnlistedToCourse Returns all students that are enlisted

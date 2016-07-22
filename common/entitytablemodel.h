@@ -40,8 +40,8 @@ public:
     void removeEntity(size_t position);
     void removeEntity(const std::shared_ptr<paso::data::entity::Entity> entity);
 
-    void setData(const data::entity::EntityVector &newData);
-    void setData(const QStringList &columns,
+    void setEntityData(const data::entity::EntityVector &newData);
+    void setEntityData(const QStringList &columns,
                  const QMap<QString, QString> &columnNames,
                  const data::entity::EntityVector &newData);
 

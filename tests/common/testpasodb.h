@@ -48,6 +48,7 @@ private slots:
     void testEnlistingStudentsToCourse();
     void testRemovingStudentFromCourses();
     void testRemovingStudentsFromCourse();
+    void testUpdatingCourseStudents();
 
 private:
     const QString dbName;
