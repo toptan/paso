@@ -12,11 +12,9 @@ using namespace paso::widget;
 namespace paso {
 namespace admin {
 
-SystemUserEditorWidget::SystemUserEditorWidget(const QSqlRecord &record,
-                                               const FieldTypes &fieldTypes,
+SystemUserEditorWidget::SystemUserEditorWidget(const FieldTypes &fieldTypes,
                                                QWidget *parent)
-    : RecordEditorWidget(record, fieldTypes, parent),
-      mEditingRootSystemUser(false) {}
+    : RecordEditorWidget(fieldTypes, parent), mEditingRootSystemUser(false) {}
 
 void SystemUserEditorWidget::prepareEdit(QSqlRecord &record) {
     mEditingRootSystemUser = record.value("username") == "root";
@@ -24,6 +22,10 @@ void SystemUserEditorWidget::prepareEdit(QSqlRecord &record) {
 
 bool SystemUserEditorWidget::fieldReadOnly(const QString &key) {
     return key == "username" && mEditingRootSystemUser;
+}
+
+void SystemUserEditorWidget::saveError() {
+    // No action needed.
 }
 
 QComboBox *SystemUserEditorWidget::createComboBox(const QString &field) {

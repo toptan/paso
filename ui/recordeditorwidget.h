@@ -20,9 +20,8 @@ namespace widget {
 class RecordEditorWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit RecordEditorWidget(const QSqlRecord &record,
-                                const FieldTypes &fieldTypes,
-                                QWidget *parent = 0);
+    explicit RecordEditorWidget(const FieldTypes &fieldTypes,
+                                QWidget *parent = nullptr);
     virtual ~RecordEditorWidget() {}
 
     void setupUi(const QVariantMap &columnLabels, const QSqlRecord &record);
@@ -43,7 +42,7 @@ public slots:
     void onEditNewRecord(QSqlRecord record);
     void clearData();
     void saveSuccessfull();
-    void saveError();
+    virtual void saveError() = 0;
 
 protected:
     virtual void prepareEdit(QSqlRecord &record) = 0;
@@ -62,7 +61,6 @@ private:
     QDialogButtonBox *mButtonBox;
     RecordValidator *mValidator;
     bool mNewRecord;
-    QWidget *mFirstResponder;
 
     QWidget *createWidgetForField(const QSqlRecord &record, int index);
     void setFieldsEditable();

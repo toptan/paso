@@ -3,9 +3,9 @@
 
 #include "data.h"
 #include "pasodb.h"
+#include "systemusereditorwidget.h"
 #include "systemusertablemodel.h"
 #include "systemuservalidator.h"
-#include "systemusereditorwidget.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -52,7 +52,7 @@ SystemUsersForm::createModelAndEditor() {
                              {"email", FieldType::LineEdit},
                              {"role", FieldType::ComboBox}};
 
-    auto editor = new SystemUserEditorWidget(model->record(), fieldTypes);
+    auto editor = new SystemUserEditorWidget(fieldTypes);
     editor->setupUi(columnLabels, model->record());
     editor->setValidator(new SystemUserValidator(
         editor->fieldTypes(), editor->fieldEditors(), editor));
@@ -81,8 +81,7 @@ bool SystemUsersForm::shouldEnableEditAction(const QSqlRecord &record) const {
     return !record.isEmpty();
 }
 
-bool SystemUsersForm::shouldEnableDeleteAction(
-    const QSqlRecord &record) const {
+bool SystemUsersForm::shouldEnableDeleteAction(const QSqlRecord &record) const {
     return record.value("username").toString() != "root";
 }
 

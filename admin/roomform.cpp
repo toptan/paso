@@ -4,8 +4,8 @@
 #include "data.h"
 #include "pasodb.h"
 #include "recordeditorwidget.h"
-#include "roomvalidator.h"
 #include "roomeditorwidget.h"
+#include "roomvalidator.h"
 
 #include <QSqlField>
 
@@ -41,7 +41,7 @@ pair<QSqlTableModel *, RecordEditorWidget *> RoomForm::createModelAndEditor() {
                              {"name", FieldType::LineEdit},
                              {"room_number", FieldType::LineEdit}};
 
-    auto editor = new RoomEditorWidget(model->record(), fieldTypes);
+    auto editor = new RoomEditorWidget(fieldTypes);
     editor->setupUi(columnLabels, model->record());
     editor->setValidator(new RoomValidator(editor->fieldTypes(),
                                            editor->fieldEditors(), editor));

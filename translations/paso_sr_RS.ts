@@ -892,7 +892,7 @@
 <context>
     <name>paso::admin::SystemUsersForm</name>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="96"/>
+        <location filename="../admin/systemusersform.cpp" line="95"/>
         <source>Do you want to delete selected system user?</source>
         <translation>Да ли стварно желите да обришете одабраног корисника?</translation>
     </message>

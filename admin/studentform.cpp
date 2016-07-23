@@ -1,18 +1,18 @@
 #include "studentform.h"
 #include "ui_studentform.h"
 
-#include "studentquerymodel.h"
-#include "studenteditorwidget.h"
-#include "studentvalidator.h"
 #include "logdialog.h"
+#include "studenteditorwidget.h"
+#include "studentquerymodel.h"
+#include "studentvalidator.h"
 
 #include "pasodb.h"
 
 #include <QFile>
 #include <QFileDialog>
 #include <QSqlError>
-#include <QtConcurrent>
 #include <QTextStream>
+#include <QtConcurrent>
 
 using namespace paso::db;
 using namespace paso::model;
@@ -65,7 +65,7 @@ StudentForm::createModelAndEditor() {
                              {"rfid", FieldType::LineEdit},
                              {"index_number", FieldType::MaskedLineEdit},
                              {"year_of_study", FieldType::NumberEdit}};
-    auto editor = new StudentEditorWidget(model->record(), fieldTypes);
+    auto editor = new StudentEditorWidget(fieldTypes);
     editor->setupUi(columnLabels, model->record());
     editor->setValidator(new StudentValidator(editor->fieldTypes(),
                                               editor->fieldEditors(), editor));
@@ -191,13 +191,13 @@ void StudentForm::onImport() {
                 errorOccured = true;
                 break;
             case StudentImportError::BAD_INDEX_NUMBER:
-                message = format.arg(lineNo)
-                              .arg(tr("The index number is in wrong format."));
+                message = format.arg(lineNo).arg(
+                    tr("The index number is in wrong format."));
                 errorOccured = true;
                 break;
             case StudentImportError::NO_FIRST_NAME:
-                message = format.arg(lineNo)
-                              .arg(tr("The student's first name is missing."));
+                message = format.arg(lineNo).arg(
+                    tr("The student's first name is missing."));
                 errorOccured = true;
                 break;
             case StudentImportError::FIRST_NAME_TOO_LONG:
@@ -206,8 +206,8 @@ void StudentForm::onImport() {
                 errorOccured = true;
                 break;
             case StudentImportError::NO_LAST_NAME:
-                message = format.arg(lineNo)
-                              .arg(tr("The student's last name is missing."));
+                message = format.arg(lineNo).arg(
+                    tr("The student's last name is missing."));
                 errorOccured = true;
                 break;
             case StudentImportError::LAST_NAME_TOO_LONG:
@@ -216,8 +216,8 @@ void StudentForm::onImport() {
                 errorOccured = true;
                 break;
             case StudentImportError::BAD_EMAIL:
-                message = format.arg(lineNo)
-                              .arg(tr("The student's email is illformed."));
+                message = format.arg(lineNo).arg(
+                    tr("The student's email is illformed."));
                 errorOccured = true;
                 break;
             case StudentImportError::NO_YEAR_OF_STUDY:
@@ -226,8 +226,8 @@ void StudentForm::onImport() {
                 errorOccured = true;
                 break;
             case StudentImportError::BAD_YEAR_OF_STUDY:
-                message = format.arg(lineNo)
-                              .arg(tr("The student's year of study is wrong."));
+                message = format.arg(lineNo).arg(
+                    tr("The student's year of study is wrong."));
                 errorOccured = true;
                 break;
             case StudentImportError::DB_ERROR:

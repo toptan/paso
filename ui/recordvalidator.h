@@ -99,7 +99,7 @@ static void showEntryError(QWidget *editor, const QString &title,
     msgBox.setText(text);
     msgBox.setWindowModality(Qt::WindowModal);
     if (!detailedText.isEmpty()) {
-        msgBox.setDetailedText(text);
+        msgBox.setDetailedText(detailedText);
     }
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.setDefaultButton(QMessageBox::Ok);

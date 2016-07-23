@@ -1,23 +1,23 @@
 #include "courseform.h"
 #include "ui_courseform.h"
 
-#include "data.h"
 #include "course.h"
+#include "coursedetailsdialog.h"
+#include "courseeditorwidget.h"
+#include "coursevalidator.h"
+#include "data.h"
+#include "logdialog.h"
 #include "pasodb.h"
 #include "recordeditorwidget.h"
-#include "coursevalidator.h"
-#include "courseeditorwidget.h"
-#include "logdialog.h"
-#include "coursedetailsdialog.h"
 
 #include <QDebug>
 #include <QFile>
 #include <QFileDialog>
 #include <QSqlError>
 #include <QSqlField>
-#include <QtConcurrent>
 #include <QTextStream>
 #include <QThread>
+#include <QtConcurrent>
 
 using namespace paso::db;
 using namespace paso::data;
@@ -66,7 +66,7 @@ CourseForm::createModelAndEditor() {
                                       QSqlDatabase::database(DEFAULT_DB_NAME));
     FieldTypes fieldTypes = {{"code", FieldType::LineEdit},
                              {"name", FieldType::LineEdit}};
-    auto editor = new CourseEditorWidget(model->record(), fieldTypes);
+    auto editor = new CourseEditorWidget(fieldTypes);
     editor->setupUi(columnLabels, model->record());
     editor->setValidator(new CourseValidator(editor->fieldTypes(),
                                              editor->fieldEditors(), editor));
@@ -170,8 +170,8 @@ void CourseForm::onImport() {
                 errorOccured = true;
                 break;
             case CourseImportError::CODE_TOO_LONG:
-                message = format.arg(lineNo)
-                              .arg(tr("The course code exceeds 8 characters."));
+                message = format.arg(lineNo).arg(
+                    tr("The course code exceeds 8 characters."));
                 errorOccured = true;
                 break;
             case CourseImportError::NO_NAME:

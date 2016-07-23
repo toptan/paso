@@ -16,11 +16,10 @@ namespace widget {
 using namespace paso::data;
 using namespace std;
 
-RecordEditorWidget::RecordEditorWidget(const QSqlRecord &record,
-                                       const FieldTypes &fieldTypes,
+RecordEditorWidget::RecordEditorWidget(const FieldTypes &fieldTypes,
                                        QWidget *parent)
     : QWidget(parent), mFieldTypes(fieldTypes), mButtonBox(nullptr),
-      mValidator(nullptr), mNewRecord(false), mFirstResponder(nullptr) {}
+      mValidator(nullptr), mNewRecord(false) {}
 
 void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
                                  const QSqlRecord &record) {
@@ -59,7 +58,7 @@ QLineEdit *RecordEditorWidget::createLineEdit(const QString &) {
 QLineEdit *RecordEditorWidget::createPasswordLineEdit(const QString &) {
     auto retVal = new QLineEdit(this);
     retVal->setReadOnly(true);
-    retVal->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+    retVal->setEchoMode(QLineEdit::Password);
     return retVal;
 }
 
@@ -104,14 +103,9 @@ QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
     case FieldType::NumberEdit:
         fieldEditor = createSpinBox(fieldName);
         break;
-    default:
-        fieldEditor = new QWidget(this);
     }
     fieldEditor->setSizePolicy(QSizePolicy::Policy::Expanding,
                                QSizePolicy::Policy::Fixed);
-    if (index == 0) {
-        mFirstResponder = fieldEditor;
-    }
     return fieldEditor;
 }
 
@@ -170,6 +164,7 @@ void RecordEditorWidget::clearData() {
 
         } break;
         case FieldType::NumberEdit: {
+            dynamic_cast<QSpinBox *>(mFieldEditors[key])->setValue(0);
             dynamic_cast<QSpinBox *>(mFieldEditors[key])->clear();
         }
         }
@@ -180,8 +175,6 @@ void RecordEditorWidget::saveSuccessfull() {
     setFieldsReadOnly();
     mRecord.clear();
 }
-
-void RecordEditorWidget::saveError() {}
 
 void RecordEditorWidget::setValidator(RecordValidator *validator) {
     mValidator = validator;
@@ -263,8 +256,6 @@ void RecordEditorWidget::setFieldsEditable() {
             pwdEdit->setReadOnly(readOnly);
             pwdEdit->setEchoMode(QLineEdit::Normal);
         } break;
-        default:
-            break;
         }
     }
     mButtonBox->setVisible(true);
@@ -291,8 +282,6 @@ void RecordEditorWidget::setFieldsReadOnly() {
             pwdEdit->setReadOnly(true);
             pwdEdit->setEchoMode(QLineEdit::PasswordEchoOnEdit);
         } break;
-        default:
-            break;
         }
     }
     mButtonBox->setVisible(false);
@@ -316,8 +305,6 @@ void RecordEditorWidget::focusFirstEditable() {
             return;
         }
     }
-
-    mFirstResponder->setFocus();
 }
 }
 }

@@ -5,10 +5,9 @@ using namespace paso::widget;
 namespace paso {
 namespace admin {
 
-StudentEditorWidget::StudentEditorWidget(const QSqlRecord &record,
-                                         const FieldTypes &fieldTypes,
+StudentEditorWidget::StudentEditorWidget(const FieldTypes &fieldTypes,
                                          QWidget *parent)
-    : RecordEditorWidget(record, fieldTypes, parent) {}
+    : RecordEditorWidget(fieldTypes, parent) {}
 
 void StudentEditorWidget::prepareEdit(QSqlRecord &) {
     // Nothing to prepare.
@@ -17,6 +16,10 @@ void StudentEditorWidget::prepareEdit(QSqlRecord &) {
 bool StudentEditorWidget::fieldReadOnly(const QString &key) {
     // All fields are editable.
     return false;
+}
+
+void StudentEditorWidget::saveError() {
+    // No action needed.
 }
 
 QLineEdit *StudentEditorWidget::createLineEdit(const QString &field) {

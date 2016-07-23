@@ -8,9 +8,11 @@ namespace admin {
 
 class SystemUserEditorWidget : public widget::RecordEditorWidget {
 public:
-    SystemUserEditorWidget(const QSqlRecord &record,
-                           const widget::FieldTypes &fieldTypes,
+    SystemUserEditorWidget(const widget::FieldTypes &fieldTypes,
                            QWidget *parent = nullptr);
+
+public slots:
+    virtual void saveError() override;
 
 protected:
     virtual void prepareEdit(QSqlRecord &record) override;

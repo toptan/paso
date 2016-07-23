@@ -8,10 +8,9 @@ using namespace paso::widget;
 namespace paso {
 namespace admin {
 
-RoomEditorWidget::RoomEditorWidget(const QSqlRecord &record,
-                                   const FieldTypes &fieldTypes,
+RoomEditorWidget::RoomEditorWidget(const FieldTypes &fieldTypes,
                                    QWidget *parent)
-    : RecordEditorWidget(record, fieldTypes, parent) {}
+    : RecordEditorWidget(fieldTypes, parent) {}
 
 void RoomEditorWidget::prepareEdit(QSqlRecord &record) {
     if (record.field("room_uuid").isNull()) {
@@ -21,6 +20,10 @@ void RoomEditorWidget::prepareEdit(QSqlRecord &record) {
 
 bool RoomEditorWidget::fieldReadOnly(const QString &key) {
     return key == "room_uuid";
+}
+
+void RoomEditorWidget::saveError() {
+    // No action needed.
 }
 
 QLineEdit *RoomEditorWidget::createLineEdit(const QString &field) {

@@ -8,9 +8,11 @@ namespace admin {
 
 class RoomEditorWidget : public widget::RecordEditorWidget {
 public:
-    RoomEditorWidget(const QSqlRecord &record,
-                     const widget::FieldTypes &fieldTypes,
+    RoomEditorWidget(const widget::FieldTypes &fieldTypes,
                      QWidget *parent = nullptr);
+
+public slots:
+    virtual void saveError() override;
 
 protected:
     virtual void prepareEdit(QSqlRecord &record) override;
