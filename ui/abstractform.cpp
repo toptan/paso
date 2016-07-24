@@ -64,17 +64,20 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
             &AbstractForm::onRequestUpdate);
 
     mNewRecordAction = new QAction(tr("New"), this);
+    mNewRecordAction->setObjectName("NEW_RECORD_ACTION");
     connect(mNewRecordAction, &QAction::triggered, this,
             &AbstractForm::onNewRecord);
     mActions.push_back(mNewRecordAction);
 
     mEditRecordAction = new QAction(tr("Edit"), this);
+    mEditRecordAction->setObjectName("EDIT_RECORD_ACTION");
     mEditRecordAction->setEnabled(false);
     connect(mEditRecordAction, &QAction::triggered, this,
             &AbstractForm::onEditRecord);
     mActions.push_back(mEditRecordAction);
 
     mDeleteRecordAction = new QAction(tr("Delete"), this);
+    mDeleteRecordAction->setObjectName("DELETE_RECORD_ACTION");
     mDeleteRecordAction->setEnabled(false);
     connect(mDeleteRecordAction, &QAction::triggered, this,
             &AbstractForm::onDeleteRecord);
@@ -85,6 +88,7 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
     mActions.push_back(separator);
 
     mRefreshAction = new QAction(tr("Refresh data"), this);
+    mRefreshAction->setObjectName("REFRESH_ACTION");
     connect(mRefreshAction, &QAction::triggered, this,
             &AbstractForm::onRefreshData);
     mActions.push_back(mRefreshAction);

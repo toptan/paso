@@ -18,5 +18,5 @@ add_custom_target(check
     testcommdata
     testcommmanager
     testmodels
-    testwidgets
+    testui
     )

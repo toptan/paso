@@ -11,12 +11,11 @@ link_libraries(Qt5::Test)
 link_libraries(Qt5::Widgets)
 
 aux_source_directory(${PROJECT_SOURCE_DIR}/mocks MOCK_SOURCES)
+aux_source_directory(${PROJECT_SOURCE_DIR} TEST_SOURCES)
 
-add_executable(testwidgets testwidgets.cpp ${MOCK_SOURCES})
-add_dependencies(testwidgets pasoui)
-add_test(NAME "widgets_tests" COMMAND testwidgets)
-target_link_libraries(testwidgets pasocommon)
-target_link_libraries(testwidgets pasoui)
-enable_coverage(testwidgets pasocommon pasoui)
-
-
+add_executable(${PROJECT_NAME} ${TEST_SOURCES} ${MOCK_SOURCES})
+add_dependencies(${PROJECT_NAME} pasoui)
+add_test(NAME "ui_tests" COMMAND ${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} pasocommon)
+target_link_libraries(${PROJECT_NAME} pasoui)
+enable_coverage(${PROJECT_NAME} pasoui)

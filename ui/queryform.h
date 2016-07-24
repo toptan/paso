@@ -22,7 +22,7 @@ protected:
     db::DBManager &manager();
 
 private:
-    db::DBManager mManager; //!< The dabase manager to use.
+    db::DBManager mManager; //!< The database manager to use.
 };
 }
 }

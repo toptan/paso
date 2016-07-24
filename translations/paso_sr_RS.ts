@@ -902,33 +902,33 @@
     <message>
         <location filename="../ui/abstractform.cpp" line="66"/>
         <source>New</source>
-        <translation type="unfinished">Нов запис</translation>
+        <translation>Нов запис</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="71"/>
+        <location filename="../ui/abstractform.cpp" line="72"/>
         <source>Edit</source>
-        <translation type="unfinished">Уреди</translation>
+        <translation>Уреди</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="77"/>
+        <location filename="../ui/abstractform.cpp" line="79"/>
         <source>Delete</source>
-        <translation type="unfinished">Обриши</translation>
+        <translation>Обриши</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="87"/>
+        <location filename="../ui/abstractform.cpp" line="90"/>
         <source>Refresh data</source>
-        <translation type="unfinished">Освежи податке</translation>
+        <translation>Освежи податке</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="129"/>
+        <location filename="../ui/abstractform.cpp" line="133"/>
         <source>There was an error while deleting record from the database.</source>
-        <translation type="unfinished">Дошло је то грешке приликом брисања записа из базе.</translation>
+        <translation>Дошло је то грешке приликом брисања записа из базе.</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="181"/>
-        <location filename="../ui/abstractform.cpp" line="206"/>
+        <location filename="../ui/abstractform.cpp" line="185"/>
+        <location filename="../ui/abstractform.cpp" line="210"/>
         <source>There was an error while saving data.</source>
-        <translation type="unfinished">Дошло је до грешке приликом снимања подата.</translation>
+        <translation>Дошло је до грешке приликом снимања података.</translation>
     </message>
 </context>
 <context>

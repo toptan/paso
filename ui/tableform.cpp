@@ -1,8 +1,8 @@
 #include "tableform.h"
 
 #include <QDebug>
-#include <QSqlTableModel>
 #include <QSqlError>
+#include <QSqlTableModel>
 
 namespace paso {
 namespace widget {
@@ -15,11 +15,7 @@ TableForm::TableForm(
 TableForm::~TableForm() {}
 
 bool TableForm::removeRow(int row, QSqlError &error) {
-    if (!tableModel()->removeRow(row)) {
-        error = tableModel()->lastError();
-        return false;
-    }
-
+    tableModel()->removeRow(row);
     if (!tableModel()->submitAll()) {
         error = tableModel()->lastError();
         return false;

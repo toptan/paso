@@ -8,7 +8,6 @@ class TestWidgets : public QObject {
 
 private slots:
 
-    void initTestCase();
     void init();
     void cleanup();
 

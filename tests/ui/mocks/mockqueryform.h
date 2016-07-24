@@ -1,31 +1,16 @@
-#ifndef STUDENTFORM_H
-#define STUDENTFORM_H
+#ifndef MOCKQUERYFORM_H
+#define MOCKQUERYFORM_H
 
 #include "queryform.h"
-#include "studenteditorwidget.h"
-#include "studentvalidator.h"
 
-#include <QAction>
-#include <QSqlRecord>
-#include <QWidget>
+#include <QSqlQueryModel>
 
-namespace Ui {
-class StudentForm;
-}
+using namespace paso::widget;
 
-namespace paso {
-namespace admin {
-
-class StudentForm : public widget::QueryForm {
-    Q_OBJECT
-
+class MockQueryForm : public QueryForm {
 public:
-    explicit StudentForm(QWidget *parent = 0);
-    virtual ~StudentForm();
-
-signals:
-    void newLogLine(const QString &line);
-    void importDone();
+    MockQueryForm();
+    virtual ~MockQueryForm();
 
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;
@@ -46,17 +31,9 @@ protected:
 
     virtual bool removeRow(int row, QSqlError &error) override;
 
-private slots:
-    void onImport();
-
 private:
-    Ui::StudentForm *ui;
-    QAction *mImportAction;
-    QAction *mDetailsAction;
-
-    static std::pair<QSqlQueryModel *, widget::RecordEditorWidget *>
+    static std::pair<QSqlQueryModel *, RecordEditorWidget *>
     createModelAndEditor();
 };
-}
-}
-#endif // STUDENTFORM_H
+
+#endif // MOCKQUERYFORM_H

@@ -8,12 +8,14 @@
 #include "mocks/mockalwaysinvalidrecordvalidator.h"
 #include "mocks/mockalwaysvalidrecordvalidator.h"
 #include "mocks/mockrecordeditorwidget.h"
+#include "mocks/mocktableform.h"
 
 #include <QAbstractTableModel>
 #include <QDebug>
 #include <QPushButton>
 #include <QSignalSpy>
 #include <QSortFilterProxyModel>
+#include <QSqlError>
 #include <QSqlField>
 #include <QSqlRecord>
 #include <QTableView>
@@ -23,12 +25,6 @@
 using namespace std;
 using namespace paso::data::entity;
 using namespace paso::widget;
-
-void TestWidgets::initTestCase() {
-    auto db = QSqlDatabase::addDatabase("QSQLITE", "paso");
-    db.setDatabaseName(":memory:");
-    db.open();
-}
 
 void TestWidgets::init() {
     auto db = QSqlDatabase::database("paso");
@@ -410,7 +406,4 @@ void TestWidgets::testRecordEditorWidget() {
     QApplication::processEvents();
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
-
 }
-
-QTEST_MAIN(TestWidgets)
