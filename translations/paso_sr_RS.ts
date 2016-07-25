@@ -439,46 +439,46 @@
 <context>
     <name>paso::admin::CourseValidator</name>
     <message>
-        <location filename="../admin/coursevalidator.cpp" line="36"/>
-        <location filename="../admin/coursevalidator.cpp" line="42"/>
-        <location filename="../admin/coursevalidator.cpp" line="57"/>
-        <location filename="../admin/coursevalidator.cpp" line="70"/>
-        <location filename="../admin/coursevalidator.cpp" line="75"/>
+        <location filename="../admin/coursevalidator.cpp" line="38"/>
+        <location filename="../admin/coursevalidator.cpp" line="44"/>
+        <location filename="../admin/coursevalidator.cpp" line="59"/>
+        <location filename="../admin/coursevalidator.cpp" line="72"/>
+        <location filename="../admin/coursevalidator.cpp" line="77"/>
         <source>Invalid data entered</source>
         <translation>Унешени су неисправни подаци</translation>
     </message>
     <message>
-        <location filename="../admin/coursevalidator.cpp" line="37"/>
+        <location filename="../admin/coursevalidator.cpp" line="39"/>
         <source>The course code has to be provided.</source>
         <translation>Морате унети шифру предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/coursevalidator.cpp" line="43"/>
+        <location filename="../admin/coursevalidator.cpp" line="45"/>
         <source>The course code cannot exceed 8 characters.</source>
         <translation>Шифра предмета не може бити дужа од осам знакова.</translation>
     </message>
     <message>
-        <location filename="../admin/coursevalidator.cpp" line="51"/>
+        <location filename="../admin/coursevalidator.cpp" line="53"/>
         <source>Critical error</source>
         <translation>Критична грешка</translation>
     </message>
     <message>
-        <location filename="../admin/coursevalidator.cpp" line="52"/>
+        <location filename="../admin/coursevalidator.cpp" line="54"/>
         <source>There was an error working with the database.</source>
         <translation>Дошло је до грешке при раду са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/coursevalidator.cpp" line="58"/>
+        <location filename="../admin/coursevalidator.cpp" line="60"/>
         <source>The course with entered code already exists in the system.</source>
         <translation>Шифра предмета коју сте унеки већ постоји у систему.</translation>
     </message>
     <message>
-        <location filename="../admin/coursevalidator.cpp" line="71"/>
+        <location filename="../admin/coursevalidator.cpp" line="73"/>
         <source>The name of the course cannot be left emtpy.</source>
         <translation>Мора постојати име предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/coursevalidator.cpp" line="76"/>
+        <location filename="../admin/coursevalidator.cpp" line="78"/>
         <source>The name of the course cannot exceed 64 characters.</source>
         <translation>Име предмета не може да буде дуже од 64 знака.</translation>
     </message>

@@ -53,6 +53,7 @@ protected:
     virtual QLineEdit *createPasswordLineEdit(const QString &field);
     virtual QComboBox *createComboBox(const QString &field);
     virtual QSpinBox *createSpinBox(const QString &field);
+    virtual QCheckBox *createCheckBox(const QString &field);
 
 private:
     const FieldTypes mFieldTypes;

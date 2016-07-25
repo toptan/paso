@@ -188,7 +188,7 @@ function(enable_coverage TARGET)
     if(NOT TARGET coverage)
       add_custom_target(coverage
           COMMAND mkdir -p ${CMAKE_BINARY_DIR}/coverage
-          COMMAND find . -name *final.info -exec echo -a {} \\; \| xargs lcov -o ${CMAKE_BINARY_DIR}/combined-coverage.info
+          COMMAND find . -name *final.info -exec sh -c "echo -a {}" \\; \| xargs lcov -o ${CMAKE_BINARY_DIR}/combined-coverage.info
           COMMAND ${GENHTML} ${CMAKE_BINARY_DIR}/combined-coverage.info
           --title "Combined coverage report for ${CMAKE_PROJECT_NAME}"
           --legend
@@ -200,6 +200,7 @@ function(enable_coverage TARGET)
           --filter=.*/src/.*
           --exclude=.*/build/.*
           --xml-pretty > ${CMAKE_BINARY_DIR}/coverage.xml
+          WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
           VERBATIM)
     endif()
     add_dependencies(coverage coverage-${TARGET})

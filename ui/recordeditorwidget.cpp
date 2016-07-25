@@ -1,5 +1,6 @@
 #include "recordeditorwidget.h"
 
+#include <QCheckBox>
 #include <QComboBox>
 #include <QDebug>
 #include <QFormLayout>
@@ -82,6 +83,14 @@ QSpinBox *RecordEditorWidget::createSpinBox(const QString &field) {
     return retVal;
 }
 
+QCheckBox *RecordEditorWidget::createCheckBox(const QString &field) {
+    auto retVal = new QCheckBox(this);
+    retVal->setText(field);
+    retVal->setChecked(false);
+    retVal->setEnabled(false);
+    return retVal;
+}
+
 QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
                                                   int index) {
     auto fieldName = record.fieldName(index);
@@ -102,6 +111,9 @@ QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
         break;
     case FieldType::NumberEdit:
         fieldEditor = createSpinBox(fieldName);
+        break;
+    case FieldType::CheckBox:
+        fieldEditor = createCheckBox(fieldName);
         break;
     }
     fieldEditor->setSizePolicy(QSizePolicy::Policy::Expanding,
@@ -130,6 +142,8 @@ void RecordEditorWidget::onDisplayRecord(const QSqlRecord &record) {
         case FieldType::NumberEdit:
             dynamic_cast<QSpinBox *>(mFieldEditors[fieldName])
                 ->setValue(record.value(fieldName).toLongLong());
+            break;
+        case FieldType::CheckBox:
             break;
         }
     }

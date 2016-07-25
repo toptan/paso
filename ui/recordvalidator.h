@@ -25,7 +25,8 @@ enum class FieldType {
     MaskedLineEdit,
     PasswordEdit,
     NumberEdit,
-    ComboBox
+    ComboBox,
+    CheckBox
 };
 
 using FieldTypes = QMap<QString, FieldType>;

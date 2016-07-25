@@ -24,10 +24,12 @@ void TestData::testComparingObjectWithItselfIsAlwaysTrue() {
         make_shared<Course>("IR3SP", "Sistemsko programiranje");
     Student student("Toplica", "Tanasković", "toptan@foo.com", "164/96", 5, 123,
                     "RRFFIIDD");
+    List list("List name", false, 4);
     QVERIFY(user == user);
     QVERIFY(*room == *room);
     QVERIFY(*course == *course);
     QVERIFY(student == student);
+    QVERIFY(list == list);
     delete room;
 }
 

@@ -14,8 +14,16 @@
 #include <QTableView>
 #include <QTimer>
 
+TestForms::TestForms() : QObject(), dbName("paso") {}
+
+void TestForms::initTestCase() {
+    auto db = QSqlDatabase::addDatabase("QSQLITE", dbName);
+    db.setDatabaseName(":memory:");
+    db.open();
+}
+
 void TestForms::init() {
-    auto db = QSqlDatabase::database("paso");
+    auto db = QSqlDatabase::database(dbName);
     QFile in_memory_sql("../in_memory.sql");
     in_memory_sql.open(QIODevice::ReadOnly);
     QTextStream in(&in_memory_sql);
@@ -29,7 +37,7 @@ void TestForms::init() {
 }
 
 void TestForms::cleanup() {
-    auto db = QSqlDatabase::database("paso");
+    auto db = QSqlDatabase::database(dbName);
     db.exec("DROP VIEW ENLISTED_STUDENTS");
     db.exec("DROP TABLE SYSTEM_USER");
     db.exec("DROP TABLE ENLISTED");
@@ -88,7 +96,7 @@ void TestForms::testTableForm() {
             dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
         QTest::keyClick(msgBox, Qt::Key_Enter);
     };
-    QTimer::singleShot(100, timerCallback);
+    QTimer::singleShot(200, timerCallback);
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
     QCOMPARE(form.model()->rowCount(), 2);
@@ -109,7 +117,7 @@ void TestForms::testTableForm() {
     QApplication::processEvents();
     codeEdit->setText("XXXXX");
     nameEdit->setText("YYYYY");
-    QTimer::singleShot(100, timerCallback);
+    QTimer::singleShot(200, timerCallback);
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
     QCOMPARE(form.model()->record(0).value("CODE").toString(),
@@ -160,7 +168,7 @@ void TestForms::testTableForm() {
     tableView->selectRow(0);
     QApplication::processEvents();
     db.exec("DROP TABLE COURSE");
-    QTimer::singleShot(100, timerCallback);
+    QTimer::singleShot(200, timerCallback);
     deleteRecordAction->trigger();
     QApplication::processEvents();
     QVERIFY(form.model()->lastError().type() != QSqlError::NoError);
@@ -195,3 +203,5 @@ void TestForms::testQueryForm() {
     QApplication::processEvents();
     QCOMPARE(form.model()->rowCount(), 1);
 }
+
+QTEST_MAIN(TestForms)

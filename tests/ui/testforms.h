@@ -6,16 +6,19 @@
 class TestForms : public QObject {
     Q_OBJECT
 
-signals:
-    void newRecord();
+public:
+    TestForms();
 
 private slots:
-
+    void initTestCase();
     void init();
     void cleanup();
 
     void testTableForm();
     void testQueryForm();
+
+private:
+    const QString dbName;
 };
 
 #endif // TESTFORMS_H

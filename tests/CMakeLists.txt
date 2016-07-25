@@ -8,6 +8,7 @@ enable_testing()
 # Add subdirectories
 add_subdirectory(common)
 add_subdirectory(ui)
+add_subdirectory(admin)
 
 # Don't forget to add each test to DEPENDS section
 add_custom_target(check
@@ -18,5 +19,7 @@ add_custom_target(check
     testcommdata
     testcommmanager
     testmodels
-    testui
+    testforms
+    testwidgets
+    testlistadministration
     )

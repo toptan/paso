@@ -26,8 +26,16 @@ using namespace std;
 using namespace paso::data::entity;
 using namespace paso::widget;
 
+TestWidgets::TestWidgets() : QObject(), dbName("paso") {}
+
+void TestWidgets::initTestCase() {
+    auto db = QSqlDatabase::addDatabase("QSQLITE", dbName);
+    db.setDatabaseName(":memory:");
+    db.open();
+}
+
 void TestWidgets::init() {
-    auto db = QSqlDatabase::database("paso");
+    auto db = QSqlDatabase::database(dbName);
     QFile in_memory_sql("../in_memory.sql");
     in_memory_sql.open(QIODevice::ReadOnly);
     QTextStream in(&in_memory_sql);
@@ -41,7 +49,7 @@ void TestWidgets::init() {
 }
 
 void TestWidgets::cleanup() {
-    auto db = QSqlDatabase::database("paso");
+    auto db = QSqlDatabase::database(dbName);
     db.exec("DROP VIEW ENLISTED_STUDENTS");
     db.exec("DROP TABLE SYSTEM_USER");
     db.exec("DROP TABLE ENLISTED");
@@ -153,7 +161,7 @@ void TestWidgets::testRecordValidator() {
 
     bool msgBoxFinished = false;
     auto work = [&editor, &msgBoxFinished, timerCallback]() {
-        QTimer::singleShot(100, timerCallback);
+        QTimer::singleShot(200, timerCallback);
         showEntryError(editor, "AAA", "BBB", "CCC");
         QVERIFY(!editor->property("error").toBool());
         delete editor;
@@ -411,9 +419,11 @@ void TestWidgets::testRecordEditorWidget() {
         QCOMPARE(msgBox->detailedText(), QString("Just give up!"));
         QTest::keyClick(msgBox, Qt::Key_Enter);
     };
-    QTimer::singleShot(100, timerCallback);
+    QTimer::singleShot(200, timerCallback);
     w.onEditExistingRecord(record);
     QApplication::processEvents();
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
 }
+
+QTEST_MAIN(TestWidgets)

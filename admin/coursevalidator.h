@@ -15,7 +15,7 @@ public:
     CourseValidator(const widget::FieldTypes &fieldTypes,
                     const widget::FieldEditors &fieldEditors,
                     QObject *parent = nullptr);
-    virtual ~CourseValidator() {}
+    virtual ~CourseValidator();
 
     virtual std::shared_ptr<widget::ValidationError>
     validate(const QSqlRecord &original) const override;

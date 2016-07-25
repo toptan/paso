@@ -16,6 +16,8 @@ CourseValidator::CourseValidator(const FieldTypes &fieldTypes,
                                  QObject *parent)
     : RecordValidator(fieldTypes, fieldEditors, parent) {}
 
+CourseValidator::~CourseValidator() {}
+
 shared_ptr<ValidationError>
 CourseValidator::validate(const QSqlRecord &original) const {
     auto retVal = validateCode(original.value("code").toString());
