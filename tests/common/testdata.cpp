@@ -5,6 +5,7 @@
 #include "room.h"
 #include "student.h"
 #include "systemuser.h"
+#include "list.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -98,6 +99,14 @@ void TestData::testStudentSerialization() {
     QCOMPARE(deserialized, expected);
 }
 
+void TestData::testListSerialization() {
+    List expected("Demo lista", true, 4);
+    QString jsonString = expected.toJsonString();
+    List deserialized;
+    deserialized.fromJsonString(jsonString);
+    QCOMPARE(deserialized, expected);
+}
+
 void TestData::testConversionToVariantMap() {
     SystemUser systemUser("user", "user_pass", "John", "Doe",
                           "john.doe@internet.com", SystemRole::MANAGER);
@@ -105,6 +114,7 @@ void TestData::testConversionToVariantMap() {
                     "RRFFIIDD");
     Course course("IR3SP", "Sistemsko programiranje", 8);
     Room room(QUuid::createUuid().toString(), "Room 42", "42");
+    List list("Demo lista", false, 4);
 
     QStringList systemUserKeys{"ID",         "USERNAME",  "PASSWORD",
                                "FIRST_NAME", "LAST_NAME", "EMAIL",
@@ -114,11 +124,14 @@ void TestData::testConversionToVariantMap() {
                             "RFID"};
     QStringList courseKeys{"ID", "CODE", "NAME"};
     QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER"};
+    QStringList listKeys{"ID", "NAME", "SYSTEM", "PERMANENT"};
 
     QCOMPARE(systemUser.toVariantMap().keys().size(), systemUserKeys.size());
     QCOMPARE(student.toVariantMap().keys().size(), studentKeys.size());
     QCOMPARE(course.toVariantMap().keys().size(), courseKeys.size());
     QCOMPARE(room.toVariantMap().keys().size(), roomKeys.size());
+    QCOMPARE(list.toVariantMap().keys().size(), listKeys.size());
+
     for (const auto &key : systemUser.toVariantMap().keys()) {
         systemUserKeys.removeOne(key);
     }
@@ -135,6 +148,10 @@ void TestData::testConversionToVariantMap() {
         roomKeys.removeOne(key);
     }
     QVERIFY(roomKeys.empty());
+    for (const auto &key : list.toVariantMap().keys()) {
+        listKeys.removeOne(key);
+    }
+    QVERIFY(listKeys.empty());
 }
 
 void TestData::testPropertyValues() {
@@ -176,6 +193,13 @@ void TestData::testPropertyValues() {
     QCOMPARE(room.value("ROOM_UUID"), QVariant(room.roomUUID()));
     QCOMPARE(room.value("NAME"), QVariant(room.name()));
     QCOMPARE(room.value("ROOM_NUMBER"), QVariant(room.number()));
+
+    List list("Demo lista", true, 4);
+    QCOMPARE(list.value("FOO"), QVariant());
+    QCOMPARE(list.value("ID"), QVariant(static_cast<quint64>(list.id())));
+    QCOMPARE(list.value("NAME"), QVariant(list.name()));
+    QCOMPARE(list.value("SYSTEM"), QVariant(list.system()));
+    QCOMPARE(list.value("PERMANENT"), QVariant(list.permanent()));
 }
 
 QTEST_MAIN(TestData)

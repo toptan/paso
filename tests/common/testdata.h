@@ -14,6 +14,7 @@ private slots:
     void testSystemRoleSerialization();
     void testCourseSerialization();
     void testStudentSerialization();
+    void testListSerialization();
     void testConversionToVariantMap();
     void testPropertyValues();
 };

@@ -34,7 +34,7 @@ public:
     /// \brief operator == The equality operator. Two courses are equal if all
     /// their properties are equal.
     /// \param other The course to compare to.
-    /// \return \code true if courses are equal.
+    /// \return \c true if courses are equal.
     ///
     bool operator==(const Course &other) const;
 

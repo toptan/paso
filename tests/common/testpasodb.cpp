@@ -79,7 +79,7 @@ void TestPasoDB::testGetAllSystemUsers() {
     auto systemUsers = manager.getAllSystemUsers(error);
     QVERIFY(error.type() == QSqlError::NoError);
     QVERIFY(!systemUsers->empty());
-    QVERIFY(systemUsers->size() == 5);
+    QCOMPARE(systemUsers->size(), size_t(5));
     for (const auto &user : *systemUsers) {
         users.removeOne(user.username());
     }
