@@ -140,7 +140,12 @@ void TestWidgets::testRecordValidator() {
         QMessageBox *msgBox =
             editor->findChild<QMessageBox *>("", Qt::FindDirectChildrenOnly);
         QVERIFY(editor->property("error").toBool());
-        QCOMPARE(msgBox->windowTitle(), QString("AAA"));
+        QString title = "AAA";
+        if (QSysInfo::kernelType() == "darwin") {
+            // Required by OS X HIG.
+            title = "";
+        }
+        QCOMPARE(msgBox->windowTitle(), title);
         QCOMPARE(msgBox->text(), QString("BBB"));
         QCOMPARE(msgBox->detailedText(), QString("CCC"));
         QTest::keyClick(msgBox, Qt::Key_Enter);
@@ -396,7 +401,12 @@ void TestWidgets::testRecordEditorWidget() {
     auto timerCallback = []() {
         QMessageBox *msgBox =
             dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
-        QCOMPARE(msgBox->windowTitle(), QString("Invalid data entered"));
+        QString title = "Invalid data entered";
+        if (QSysInfo::kernelType() == "darwin") {
+            // Required by OS X HIG.
+            title = "";
+        }
+        QCOMPARE(msgBox->windowTitle(), title);
         QCOMPARE(msgBox->text(), QString("Nothing will ever be valid."));
         QCOMPARE(msgBox->detailedText(), QString("Just give up!"));
         QTest::keyClick(msgBox, Qt::Key_Enter);
