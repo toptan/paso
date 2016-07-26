@@ -84,8 +84,45 @@ void TestCourseAdministration::testCourseValidator() {
     QCOMPARE(
         result->text,
         QString("The course with entered code already exists in the system."));
-
-
+    codeLineEdit->setText("XXXXX");
+    result = validator.validate(notEmptyRecord);
+    QCOMPARE(result->editor, codeLineEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(
+        result->text,
+        QString("The course with entered code already exists in the system."));
+    notEmptyRecord.setValue("code", "XXXXX");
+    nameLineEdit->setText("Course name x");
+    result = validator.validate(notEmptyRecord);
+    QVERIFY(!(bool)result);
+    notEmptyRecord.setValue("code", "YYYYY");
+    result = validator.validate(notEmptyRecord);
+    QCOMPARE(result->editor, codeLineEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(
+        result->text,
+        QString("The course with entered code already exists in the system."));
+    codeLineEdit->setText("ZZZZZ");
+    nameLineEdit->setText("");
+    result = validator.validate(notEmptyRecord);
+    QCOMPARE(result->editor, nameLineEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(result->text,
+             QString("The name of the course cannot be left empty."));
+    nameLineEdit->setText(
+        "12345678901234567890123456789012345678901234567890123456789012345");
+    result = validator.validate(notEmptyRecord);
+    QCOMPARE(result->editor, nameLineEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(result->text,
+             QString("The name of the course cannot exceed 64 characters."));
+    db.close();
+    result = validator.validate(notEmptyRecord);
+    QVERIFY(result->editor == nullptr);
+    QCOMPARE(result->title, QString("Critical error"));
+    QCOMPARE(result->text,
+             QString("There was an error working with the database."));
+    QCOMPARE(result->icon, QMessageBox::Critical);
 }
 
 void TestCourseAdministration::testCourseEditorWidget() {}

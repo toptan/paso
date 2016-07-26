@@ -22,4 +22,5 @@ add_custom_target(check
     testforms
     testwidgets
     testlistadministration
+    testcourseadministration
     )

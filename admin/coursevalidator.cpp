@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QVariant>
+#include <QDebug>
 
 using namespace std;
 using namespace paso::widget;
@@ -70,7 +71,7 @@ shared_ptr<ValidationError> CourseValidator::validateName() const {
     if (text.isEmpty()) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
-            tr("The name of the course cannot be left emtpy."));
+            tr("The name of the course cannot be left empty."));
     }
     if (text.size() > 64) {
         return make_shared<ValidationError>(
