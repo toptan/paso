@@ -84,6 +84,8 @@ void TestCourseAdministration::testCourseValidator() {
     QCOMPARE(
         result->text,
         QString("The course with entered code already exists in the system."));
+
+
 }
 
 void TestCourseAdministration::testCourseEditorWidget() {}
