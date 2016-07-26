@@ -144,6 +144,8 @@ void RecordEditorWidget::onDisplayRecord(const QSqlRecord &record) {
                 ->setValue(record.value(fieldName).toLongLong());
             break;
         case FieldType::CheckBox:
+            dynamic_cast<QCheckBox *>(mFieldEditors[fieldName])
+                ->setChecked(record.value(fieldName).toBool());
             break;
         }
     }
@@ -173,14 +175,16 @@ void RecordEditorWidget::clearData() {
             break;
         case FieldType::LineEdit:
         case FieldType::PasswordEdit:
-        case FieldType::MaskedLineEdit: {
+        case FieldType::MaskedLineEdit:
             dynamic_cast<QLineEdit *>(mFieldEditors[key])->clear();
-
-        } break;
-        case FieldType::NumberEdit: {
+            break;
+        case FieldType::NumberEdit:
             dynamic_cast<QSpinBox *>(mFieldEditors[key])->setValue(0);
             dynamic_cast<QSpinBox *>(mFieldEditors[key])->clear();
-        }
+            break;
+        case FieldType::CheckBox:
+            dynamic_cast<QCheckBox *>(mFieldEditors[key])->setChecked(false);
+            break;
         }
     }
 }
@@ -228,6 +232,9 @@ void RecordEditorWidget::accepted() {
         case FieldType::NumberEdit:
             value = dynamic_cast<QSpinBox *>(field)->text().trimmed();
             break;
+        case FieldType::CheckBox:
+            value = dynamic_cast<QCheckBox *>(field)->isChecked();
+            break;
         }
 
         mRecord.setValue(key, value);
@@ -256,6 +263,7 @@ void RecordEditorWidget::setFieldsEditable() {
         auto readOnly = fieldReadOnly(key);
         switch (fieldType) {
         case FieldType::ComboBox:
+        case FieldType::CheckBox:
         case FieldType::NumberEdit:
             field->setEnabled(!readOnly);
             break;
@@ -283,6 +291,7 @@ void RecordEditorWidget::setFieldsReadOnly() {
         auto fieldType = mFieldTypes[key];
         switch (fieldType) {
         case FieldType::ComboBox:
+        case FieldType::CheckBox:
         case FieldType::NumberEdit:
             field->setEnabled(false);
             break;
@@ -316,6 +325,11 @@ void RecordEditorWidget::focusFirstEditable() {
         auto spinBox = dynamic_cast<QSpinBox *>(child);
         if (spinBox != nullptr && spinBox->isEnabled()) {
             spinBox->setFocus();
+            return;
+        }
+        auto checkBox = dynamic_cast<QCheckBox *>(child);
+        if (checkBox != nullptr && checkBox->isEnabled()) {
+            checkBox->setFocus();
             return;
         }
     }

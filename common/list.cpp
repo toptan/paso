@@ -63,6 +63,14 @@ void List::write(QJsonObject &jsonObject) const {
     jsonObject["SYSTEM"] = mSystem;
     jsonObject["PERMANENT"] = mPermanent;
 }
+
+QSqlQuery List::findByNameQuery(const QSqlDatabase &database, const QString &name) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM LIST WHERE NAME = :name");
+    query.bindValue(":name", name);
+
+    return query;
+}
 }
 }
 }

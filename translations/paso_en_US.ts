@@ -445,6 +445,41 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::ListValidator</name>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="28"/>
+        <location filename="../admin/listvalidator.cpp" line="34"/>
+        <location filename="../admin/listvalidator.cpp" line="49"/>
+        <source>Invalid data entered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="29"/>
+        <source>The list name has to be provided.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="35"/>
+        <source>The list name cannot exceed 64 characters.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="43"/>
+        <source>Critical error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="44"/>
+        <source>There was an error working with the database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="50"/>
+        <source>The list with entered name already exists in the system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::LogDialog</name>
     <message>
         <location filename="../admin/logdialog.cpp" line="17"/>
@@ -887,7 +922,7 @@
     </message>
     <message>
         <location filename="../ui/abstractform.cpp" line="185"/>
-        <location filename="../ui/abstractform.cpp" line="210"/>
+        <location filename="../ui/abstractform.cpp" line="209"/>
         <source>There was an error while saving data.</source>
         <translation type="unfinished"></translation>
     </message>

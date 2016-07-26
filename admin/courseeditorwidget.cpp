@@ -18,10 +18,6 @@ bool CourseEditorWidget::fieldReadOnly(const QString &) {
     return false;
 }
 
-void CourseEditorWidget::saveError() {
-    // No action needed.
-}
-
 QLineEdit *CourseEditorWidget::createLineEdit(const QString &field) {
     auto retVal = RecordEditorWidget::createLineEdit(field);
     if (field == "code") {

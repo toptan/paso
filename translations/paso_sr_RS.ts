@@ -484,6 +484,53 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::ListValidator</name>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="28"/>
+        <location filename="../admin/listvalidator.cpp" line="34"/>
+        <location filename="../admin/listvalidator.cpp" line="49"/>
+        <source>Invalid data entered</source>
+        <translation>Унешени су неисправни подаци</translation>
+    </message>
+    <message>
+        <source>The course code has to be provided.</source>
+        <translation type="obsolete">Морате унети шифру предмета.</translation>
+    </message>
+    <message>
+        <source>The course code cannot exceed 8 characters.</source>
+        <translation type="obsolete">Шифра предмета не може бити дужа од осам знакова.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="29"/>
+        <source>The list name has to be provided.</source>
+        <translation>Морате унети име листе.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="35"/>
+        <source>The list name cannot exceed 64 characters.</source>
+        <translation>Име листе не може бити дуже од 64 знака.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="43"/>
+        <source>Critical error</source>
+        <translation>Критична грешка</translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="44"/>
+        <source>There was an error working with the database.</source>
+        <translation>Дошло је до грешке при раду са базом података.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="50"/>
+        <source>The list with entered name already exists in the system.</source>
+        <translation>Листа са унетим именом већ постоји у систему.</translation>
+    </message>
+    <message>
+        <source>The course with entered code already exists in the system.</source>
+        <translation type="obsolete">Шифра предмета коју сте унеки већ постоји у систему.</translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::LogDialog</name>
     <message>
         <location filename="../admin/logdialog.cpp" line="17"/>
@@ -926,7 +973,7 @@
     </message>
     <message>
         <location filename="../ui/abstractform.cpp" line="185"/>
-        <location filename="../ui/abstractform.cpp" line="210"/>
+        <location filename="../ui/abstractform.cpp" line="209"/>
         <source>There was an error while saving data.</source>
         <translation>Дошло је до грешке приликом снимања података.</translation>
     </message>

@@ -94,6 +94,16 @@ public:
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 
+    ///
+    /// \brief findByNameQuery Returns find by list name query with bound name
+    /// value.
+    /// \param database The database to use.
+    /// \param name The list name.
+    /// \return The query.
+    ///
+    static QSqlQuery findByNameQuery(const QSqlDatabase &database,
+                                     const QString &name);
+
 private:
     QString mName;   //!< The list name.
     bool mSystem;    //!< Whether this is a system list.

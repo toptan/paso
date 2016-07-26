@@ -42,7 +42,6 @@ public slots:
     void onEditNewRecord(QSqlRecord record);
     void clearData();
     void saveSuccessfull();
-    virtual void saveError() = 0;
 
 protected:
     virtual void prepareEdit(QSqlRecord &record) = 0;

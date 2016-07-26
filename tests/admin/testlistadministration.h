@@ -16,6 +16,7 @@ private slots:
     void cleanup();
 
     void testListValidator();
+    void testListEditorWidget();
 
 private:
     const QString dbName;

@@ -11,6 +11,7 @@
 #include "mocks/mocktableform.h"
 
 #include <QAbstractTableModel>
+#include <QCheckBox>
 #include <QDebug>
 #include <QPushButton>
 #include <QSignalSpy>
@@ -177,7 +178,8 @@ void TestWidgets::testRecordEditorWidget() {
                           {"MASKED_LINE_EDIT", FieldType::MaskedLineEdit},
                           {"PASSWORD_EDIT", FieldType::PasswordEdit},
                           {"NUMBER_EDIT", FieldType::NumberEdit},
-                          {"COMBO_BOX", FieldType::ComboBox}};
+                          {"COMBO_BOX", FieldType::ComboBox},
+                          {"CHECK_BOX", FieldType::CheckBox}};
     QSqlRecord record;
     record.append(QSqlField("LINE_EDIT", QVariant::String));
     record.append(QSqlField("MASKED_LINE_EDIT", QVariant::String));
@@ -185,11 +187,13 @@ void TestWidgets::testRecordEditorWidget() {
     record.append(QSqlField("ID", QVariant::LongLong));
     record.append(QSqlField("NUMBER_EDIT", QVariant::Int));
     record.append(QSqlField("COMBO_BOX", QVariant::Int));
+    record.append(QSqlField("CHECK_BOX", QVariant::Bool));
     QVariantMap columnLabels{{"LINE_EDIT", "LineEdit"},
                              {"MASKED_LINE_EDIT", "MaskedLineEdit"},
                              {"PASSWORD_EDIT", "PasswordEdit"},
                              {"NUMBER_EDIT", "NumberEdit"},
-                             {"COMBO_BOX", "ComboBox"}};
+                             {"COMBO_BOX", "ComboBox"},
+                             {"CHECK_BOX", "CheckBox"}};
     MockAlwaysValidRecordValidator alwaysValidValidator;
     MockAlwaysInvalidRecordValidator alwaysInvalidValidator;
     MockRecordEditorWidget w(fieldTypes);
@@ -197,7 +201,7 @@ void TestWidgets::testRecordEditorWidget() {
     w.setValidator(&alwaysValidValidator);
     w.show();
     // Form layout, button box + 2 x (columns - ID column)
-    QCOMPARE(w.children().size(), 12);
+    QCOMPARE(w.children().size(), 14);
     QCOMPARE(w.fieldTypes(), fieldTypes);
     QCOMPARE(w.fieldEditors().keys(), fieldTypes.keys());
     record.setValue("ID", 42);
@@ -206,6 +210,7 @@ void TestWidgets::testRecordEditorWidget() {
     record.setValue("PASSWORD_EDIT", "Password Edit");
     record.setValue("NUMBER_EDIT", 9);
     record.setValue("COMBO_BOX", 2);
+    record.setValue("CHECK_BOX", true);
 
     QVariantList stringValues{"Line Edit", "Masked/Line/Edit", "Password Edit"};
     w.onDisplayRecord(record);
@@ -243,6 +248,9 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(comboBox->currentText(), QString("Dva"));
     QCOMPARE(comboBox->currentData(), QVariant(2));
     QVERIFY(!comboBox->isEnabled());
+    auto checkBox = w.findChild<QCheckBox *>();
+    QVERIFY(checkBox->isChecked());
+    QVERIFY(!checkBox->isEnabled());
     auto buttonBox = w.findChild<QDialogButtonBox *>();
     QVERIFY(!buttonBox->isVisible());
     QCOMPARE(w.fieldEditors().value("LINE_EDIT"), lineEdit);
@@ -250,6 +258,7 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(w.fieldEditors().value("PASSWORD_EDIT"), passwordEdit);
     QCOMPARE(w.fieldEditors().value("NUMBER_EDIT"), spinBox);
     QCOMPARE(w.fieldEditors().value("COMBO_BOX"), comboBox);
+    QCOMPARE(w.fieldEditors().value("CHECK_BOX"), checkBox);
     auto saveButton = buttonBox->button(QDialogButtonBox::Save);
     auto cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     QApplication::processEvents();
@@ -261,6 +270,7 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(spinBox->value(), spinBox->minimum());
     QVERIFY(spinBox->text().isEmpty());
     QCOMPARE(comboBox->currentIndex(), -1);
+    QVERIFY(!checkBox->isChecked());
 
     w.clearData();
     w.onEditExistingRecord(record);
@@ -277,6 +287,8 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(comboBox->currentText(), QString("Dva"));
     QCOMPARE(comboBox->currentData(), QVariant(2));
     QVERIFY(comboBox->isEnabled());
+    QVERIFY(checkBox->isChecked());
+    QVERIFY(checkBox->isEnabled());
     QVERIFY(buttonBox->isVisible());
 
     QTest::mouseClick(saveButton, Qt::LeftButton);
@@ -294,6 +306,8 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(comboBox->currentText(), QString("Dva"));
     QCOMPARE(comboBox->currentData(), QVariant(2));
     QVERIFY(!comboBox->isEnabled());
+    QVERIFY(checkBox->isChecked());
+    QVERIFY(!checkBox->isEnabled());
     QVERIFY(!buttonBox->isVisible());
 
     w.onEditExistingRecord(record);
@@ -303,6 +317,8 @@ void TestWidgets::testRecordEditorWidget() {
     passwordEdit->setText("BAR");
     spinBox->setValue(10);
     comboBox->setCurrentIndex(2);
+    checkBox->toggle();
+    QApplication::processEvents();
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
     QCOMPARE(lineEdit->text(), QString("Line Edit"));
@@ -317,6 +333,8 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(comboBox->currentText(), QString("Dva"));
     QCOMPARE(comboBox->currentData(), QVariant(2));
     QVERIFY(!comboBox->isEnabled());
+    QVERIFY(checkBox->isChecked());
+    QVERIFY(!checkBox->isEnabled());
     QVERIFY(!buttonBox->isVisible());
 
     w.clearData();
@@ -335,6 +353,8 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(comboBox->currentText(), QString("Jedan"));
     QCOMPARE(comboBox->currentData(), QVariant(1));
     QVERIFY(comboBox->isEnabled());
+    QVERIFY(!checkBox->isChecked());
+    QVERIFY(checkBox->isEnabled());
     QVERIFY(buttonBox->isVisible());
     QVERIFY(lineEdit->hasFocus());
 
@@ -343,6 +363,7 @@ void TestWidgets::testRecordEditorWidget() {
     passwordEdit->setText("BAR");
     spinBox->setValue(10);
     comboBox->setCurrentIndex(2);
+    checkBox->toggle();
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
     QVERIFY(lineEdit->text().isEmpty());
@@ -355,6 +376,8 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(!spinBox->isEnabled());
     QCOMPARE(comboBox->currentIndex(), -1);
     QVERIFY(!comboBox->isEnabled());
+    QVERIFY(!checkBox->isChecked());
+    QVERIFY(!checkBox->isEnabled());
     QVERIFY(!buttonBox->isVisible());
 
     lineEdit->setText("FOO");
@@ -362,6 +385,7 @@ void TestWidgets::testRecordEditorWidget() {
     passwordEdit->setText("BAR");
     spinBox->setValue(10);
     comboBox->setCurrentIndex(2);
+    checkBox->setChecked(true);
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
     w.saveSuccessfull();
@@ -375,6 +399,8 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(!spinBox->isEnabled());
     QCOMPARE(comboBox->currentIndex(), 2);
     QVERIFY(!comboBox->isEnabled());
+    QVERIFY(checkBox->isChecked());
+    QVERIFY(!checkBox->isEnabled());
     QVERIFY(!buttonBox->isVisible());
 
     // Focus checks
@@ -400,6 +426,12 @@ void TestWidgets::testRecordEditorWidget() {
     w.onEditExistingRecord(record);
     QApplication::processEvents();
     QVERIFY(comboBox->hasFocus());
+    QTest::mouseClick(cancelButton, Qt::LeftButton);
+    QApplication::processEvents();
+    w.writableField = "CHECK_BOX";
+    w.onEditExistingRecord(record);
+    QApplication::processEvents();
+    QVERIFY(checkBox->hasFocus());
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
     w.writableField = "";

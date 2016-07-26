@@ -10,9 +10,6 @@ public:
     explicit MockRecordEditorWidget(const FieldTypes &fieldTypes,
                                     QWidget *parent = nullptr);
 
-public slots:
-    virtual void saveError() override;
-
 protected:
     virtual void prepareEdit(QSqlRecord &) override;
     virtual bool fieldReadOnly(const QString &field) override;

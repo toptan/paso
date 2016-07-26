@@ -1,14 +1,14 @@
-#ifndef ROOMEDITORWIDGET_H
-#define ROOMEDITORWIDGET_H
+#ifndef LISTEDITORWIDGET_H
+#define LISTEDITORWIDGET_H
 
 #include "recordeditorwidget.h"
 
 namespace paso {
 namespace admin {
 
-class RoomEditorWidget : public widget::RecordEditorWidget {
+class ListEditorWidget : public widget::RecordEditorWidget {
 public:
-    RoomEditorWidget(const widget::FieldTypes &fieldTypes,
+    ListEditorWidget(const widget::FieldTypes &fieldTypes,
                      QWidget *parent = nullptr);
 
 protected:
@@ -20,4 +20,4 @@ protected:
 }
 }
 
-#endif // ROOMEDITORWIDGET_H
+#endif // LISTEDITORWIDGET_H

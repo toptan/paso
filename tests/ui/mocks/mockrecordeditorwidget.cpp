@@ -18,8 +18,6 @@ bool MockRecordEditorWidget::fieldReadOnly(const QString &field) {
     }
 }
 
-void MockRecordEditorWidget::saveError() {}
-
 QLineEdit *MockRecordEditorWidget::createMaskedLineEdit(const QString &field) {
     auto retVal = RecordEditorWidget::createMaskedLineEdit(field);
     retVal->setInputMask("AAAAAA/AAAA/AAAA");

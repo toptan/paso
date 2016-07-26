@@ -36,6 +36,7 @@ private slots:
     void testRoomNumberUnique();
     void testCourseCodeUnique();
     void testIndexNumberUnique();
+    void testListNameUnique();
 
     void testSaveStudent();
     void testGetStudent();

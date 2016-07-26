@@ -24,10 +24,6 @@ bool SystemUserEditorWidget::fieldReadOnly(const QString &key) {
     return key == "username" && mEditingRootSystemUser;
 }
 
-void SystemUserEditorWidget::saveError() {
-    // No action needed.
-}
-
 QComboBox *SystemUserEditorWidget::createComboBox(const QString &field) {
     auto retVal = RecordEditorWidget::createComboBox(field);
     for (const auto &role : enumeratedRoles.keys()) {

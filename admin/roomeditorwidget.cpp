@@ -22,10 +22,6 @@ bool RoomEditorWidget::fieldReadOnly(const QString &key) {
     return key == "room_uuid";
 }
 
-void RoomEditorWidget::saveError() {
-    // No action needed.
-}
-
 QLineEdit *RoomEditorWidget::createLineEdit(const QString &field) {
     auto retVal = RecordEditorWidget::createLineEdit(field);
     if (field == "name") {

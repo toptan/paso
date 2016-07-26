@@ -188,7 +188,6 @@ void AbstractForm::onRequestSave(QSqlRecord record) {
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
         refreshModel();
-        mRecordEditor->saveError();
         return;
     }
 
@@ -214,7 +213,6 @@ void AbstractForm::onRequestUpdate(QSqlRecord record) {
         msgBox.exec();
         refreshModel();
         mTableView->selectRow(index.row());
-        mRecordEditor->saveError();
         return;
     }
 
@@ -251,20 +249,12 @@ QSqlRecord AbstractForm::selectedRecord() const {
     return mModel->record(mapRowToModel(index.row()));
 }
 
-int AbstractForm::mapRowToModel(int proxyRow) const {
-    if (mProxyModel != nullptr) {
-        return mProxyModel->mapToSource(mProxyModel->index(proxyRow, 0)).row();
-    } else {
-        return proxyRow;
-    }
+inline int AbstractForm::mapRowToModel(int proxyRow) const {
+    return mProxyModel->mapToSource(mProxyModel->index(proxyRow, 0)).row();
 }
 
-int AbstractForm::mapRowToProxy(int modelRow) const {
-    if (mProxyModel != nullptr) {
-        return mProxyModel->mapFromSource(mModel->index(modelRow, 0)).row();
-    } else {
-        return modelRow;
-    }
+inline int AbstractForm::mapRowToProxy(int modelRow) const {
+    return mProxyModel->mapFromSource(mModel->index(modelRow, 0)).row();
 }
 
 int AbstractForm::findRecord(const QSqlRecord &record) const {

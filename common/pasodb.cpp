@@ -234,6 +234,16 @@ bool DBManager::indexNumberUnique(const QString &indexNumber,
     return true;
 }
 
+bool DBManager::listNameUnique(const QString &listName, QSqlError &error) const {
+    auto query = List::findByNameQuery(QSqlDatabase::database(mDbName), listName);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError || query.next()) {
+        return false;
+    }
+    return true;
+}
+
 shared_ptr<Student>
 DBManager::getStudentByIndexNumber(const QString &indexNumber,
                                    QSqlError &error) const {

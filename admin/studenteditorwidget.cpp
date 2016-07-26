@@ -18,10 +18,6 @@ bool StudentEditorWidget::fieldReadOnly(const QString &key) {
     return false;
 }
 
-void StudentEditorWidget::saveError() {
-    // No action needed.
-}
-
 QLineEdit *StudentEditorWidget::createLineEdit(const QString &field) {
     auto retVal = RecordEditorWidget::createLineEdit(field);
     if (field == "first_name") {

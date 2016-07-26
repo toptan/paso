@@ -304,6 +304,15 @@ void TestPasoDB::testIndexNumberUnique() {
     QVERIFY(manager.indexNumberUnique("111/11", error));
 }
 
+void TestPasoDB::testListNameUnique() {
+    DBManager manager(dbName);
+    QSqlError error;
+    auto db = QSqlDatabase::database(dbName);
+    db.exec("INSERT INTO LIST (NAME) VALUES ('List name 1')");
+    QVERIFY(!manager.listNameUnique("List name 1", error));
+    QVERIFY(manager.listNameUnique("List name 2", error));
+}
+
 void TestPasoDB::testSaveStudent() {
     DBManager manager(dbName);
     QSqlError error;

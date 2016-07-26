@@ -4,6 +4,7 @@
 #include "course.h"
 #include "data.h"
 #include "entity.h"
+#include "list.h"
 #include "room.h"
 #include "student.h"
 #include "systemuser.h"
@@ -228,9 +229,17 @@ public:
     /// \brief indexNumberUnique checks if given index number is unique.
     /// \param indexNumber The index number to check.
     /// \param error The SQL error if any.
-    /// \return \c true if the index number does not exist int the database.
+    /// \return \c true if the index number does not exist in the database.
     ///
     bool indexNumberUnique(const QString &indexNumber, QSqlError &error) const;
+
+    ///
+    /// \brief listNameUnique check is given list name is unique.
+    /// \param listName The list name to check.
+    /// \param error The SQL error if any.
+    /// \return \c true if the list name does not exist in the database.
+    ///
+    bool listNameUnique(const QString &listName, QSqlError &error) const;
 
     ///
     /// \brief importCourse imports course from given CSV line.
