@@ -71,12 +71,21 @@ void TestCourseAdministration::testCourseValidator() {
     QCOMPARE(result->editor, codeLineEdit);
     QCOMPARE(result->title, title);
     QCOMPARE(result->text, QString("The course code has to be provided."));
-
-
+    codeLineEdit->setText("1234567890");
+    result = validator.validate(emptyRecord);
+    QCOMPARE(result->editor, codeLineEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(result->text,
+             QString("The course code cannot exceed 8 characters."));
+    codeLineEdit->setText("XXXXX");
+    result = validator.validate(emptyRecord);
+    QCOMPARE(result->editor, codeLineEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(
+        result->text,
+        QString("The course with entered code already exists in the system."));
 }
 
-void TestCourseAdministration::testCourseEditorWidget() {
-
-}
+void TestCourseAdministration::testCourseEditorWidget() {}
 
 QTEST_MAIN(TestCourseAdministration)
