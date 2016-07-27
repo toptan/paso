@@ -38,6 +38,9 @@ void TestPasoDB::init() {
     QStringList commands = sqlString.split(";");
     for (const auto &command : commands) {
         db.exec(command);
+        if (db.lastError().type() != QSqlError::NoError) {
+            qDebug() << db.lastError();
+        }
     }
     in_memory_sql.close();
 }
