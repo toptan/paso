@@ -4,6 +4,7 @@
 #include "recordvalidator.h"
 
 #include <QComboBox>
+#include <QDateEdit>
 #include <QDialogButtonBox>
 #include <QLineEdit>
 #include <QMap>
@@ -53,6 +54,7 @@ protected:
     virtual QComboBox *createComboBox(const QString &field);
     virtual QSpinBox *createSpinBox(const QString &field);
     virtual QCheckBox *createCheckBox(const QString &field);
+    virtual QDateEdit *createDateEdit(const QString &field);
 
 private:
     const FieldTypes mFieldTypes;

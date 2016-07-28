@@ -6,7 +6,7 @@
 class TestCourseAdministration : public QObject {
     Q_OBJECT
 public:
-    explicit TestCourseAdministration();
+    TestCourseAdministration();
 
 private slots:
 

@@ -2,10 +2,10 @@
 
 #include "course.h"
 #include "data.h"
+#include "list.h"
 #include "room.h"
 #include "student.h"
 #include "systemuser.h"
-#include "list.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -121,12 +121,16 @@ void TestData::testConversionToVariantMap() {
     QStringList systemUserKeys{"ID",         "USERNAME",  "PASSWORD",
                                "FIRST_NAME", "LAST_NAME", "EMAIL",
                                "ROLE"};
+
     QStringList studentKeys{"ID",    "FIRST_NAME",   "LAST_NAME",
                             "EMAIL", "INDEX_NUMBER", "YEAR_OF_STUDY",
                             "RFID"};
+
     QStringList courseKeys{"ID", "CODE", "NAME"};
+
     QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER"};
-    QStringList listKeys{"ID", "NAME", "SYSTEM", "PERMANENT"};
+
+    QStringList listKeys{"ID", "NAME", "SYSTEM", "PERMANENT", "EXPIRY_DATE"};
 
     QCOMPARE(systemUser.toVariantMap().keys().size(), systemUserKeys.size());
     QCOMPARE(student.toVariantMap().keys().size(), studentKeys.size());
@@ -202,6 +206,7 @@ void TestData::testPropertyValues() {
     QCOMPARE(list.value("NAME"), QVariant(list.name()));
     QCOMPARE(list.value("SYSTEM"), QVariant(list.system()));
     QCOMPARE(list.value("PERMANENT"), QVariant(list.permanent()));
+    QCOMPARE(list.value("EXPIRY_DATE"), QVariant::fromValue(QDate()));
 }
 
 QTEST_MAIN(TestData)

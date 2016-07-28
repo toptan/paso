@@ -14,6 +14,9 @@ class DemoServer;
 class TestCommManager : public QObject {
     Q_OBJECT
 
+public:
+    TestCommManager();
+
 public slots:
     void loginSuccessfull(const LoginResponse &resonse);
     void loginFailed();
@@ -25,11 +28,13 @@ private slots:
 
     void initTestCase();
     void init();
+    void cleanup();
 
     void testSuccessfullLogin();
     void testUnsuccessfullLogin();
 
 private:
+    const QString dbName;
     std::shared_ptr<CommManager> manager;
     DemoServer *demoServer;
     bool loginSuccess;

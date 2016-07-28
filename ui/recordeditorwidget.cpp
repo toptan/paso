@@ -91,6 +91,12 @@ QCheckBox *RecordEditorWidget::createCheckBox(const QString &field) {
     return retVal;
 }
 
+QDateEdit *RecordEditorWidget::createDateEdit(const QString &field) {
+    auto retVal = new QDateEdit(this);
+    retVal->setReadOnly(true);
+    return retVal;
+}
+
 QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
                                                   int index) {
     auto fieldName = record.fieldName(index);
@@ -114,6 +120,9 @@ QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
         break;
     case FieldType::CheckBox:
         fieldEditor = createCheckBox(fieldName);
+        break;
+    case FieldType::DateEdit:
+        fieldEditor = createDateEdit(fieldName);
         break;
     }
     fieldEditor->setSizePolicy(QSizePolicy::Policy::Expanding,
@@ -146,6 +155,10 @@ void RecordEditorWidget::onDisplayRecord(const QSqlRecord &record) {
         case FieldType::CheckBox:
             dynamic_cast<QCheckBox *>(mFieldEditors[fieldName])
                 ->setChecked(record.value(fieldName).toBool());
+            break;
+        case FieldType::DateEdit:
+            dynamic_cast<QDateEdit *>(mFieldEditors[fieldName])
+                ->setDate(record.value(fieldName).toDate());
             break;
         }
     }
@@ -185,6 +198,10 @@ void RecordEditorWidget::clearData() {
         case FieldType::CheckBox:
             dynamic_cast<QCheckBox *>(mFieldEditors[key])->setChecked(false);
             break;
+        case FieldType::DateEdit:
+            dynamic_cast<QDateEdit *>(mFieldEditors[key])
+                ->setDate(QDate::currentDate());
+            break;
         }
     }
 }
@@ -219,7 +236,7 @@ void RecordEditorWidget::accepted() {
     for (const auto &key : mFieldEditors.keys()) {
         auto field = mFieldEditors[key];
         auto fieldType = mFieldTypes[key];
-        QString value;
+        QVariant value;
         switch (fieldType) {
         case FieldType::ComboBox:
             value = dynamic_cast<QComboBox *>(field)->currentData().toString();
@@ -234,6 +251,9 @@ void RecordEditorWidget::accepted() {
             break;
         case FieldType::CheckBox:
             value = dynamic_cast<QCheckBox *>(field)->isChecked();
+            break;
+        case FieldType::DateEdit:
+            value = dynamic_cast<QDateEdit *>(field)->date();
             break;
         }
 
@@ -278,6 +298,9 @@ void RecordEditorWidget::setFieldsEditable() {
             pwdEdit->setReadOnly(readOnly);
             pwdEdit->setEchoMode(QLineEdit::Normal);
         } break;
+        case FieldType::DateEdit:
+            dynamic_cast<QDateEdit *>(field)->setReadOnly(readOnly);
+            break;
         }
     }
     mButtonBox->setVisible(true);
@@ -305,6 +328,9 @@ void RecordEditorWidget::setFieldsReadOnly() {
             pwdEdit->setReadOnly(true);
             pwdEdit->setEchoMode(QLineEdit::PasswordEchoOnEdit);
         } break;
+        case FieldType::DateEdit:
+            dynamic_cast<QDateEdit *>(field)->setReadOnly(true);
+            break;
         }
     }
     mButtonBox->setVisible(false);
@@ -330,6 +356,11 @@ void RecordEditorWidget::focusFirstEditable() {
         auto checkBox = dynamic_cast<QCheckBox *>(child);
         if (checkBox != nullptr && checkBox->isEnabled()) {
             checkBox->setFocus();
+            return;
+        }
+        auto dateEdit = dynamic_cast<QDateEdit *>(child);
+        if (dateEdit != nullptr && !dateEdit->isReadOnly()) {
+            dateEdit->setFocus();
             return;
         }
     }

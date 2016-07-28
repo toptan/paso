@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "jsonserializable.h"
 
+#include <QDate>
 #include <QJsonDocument>
 #include <QString>
 
@@ -21,9 +22,11 @@ public:
     ///
     /// \param name The list name.
     /// \param permanent Whether list is permanent.
+    /// \param expiryDate The date of list expiration.
     /// \param id The list id.
     ///
-    List(const QString &name = "", bool permanent = false, uint64_t id = 0);
+    List(const QString &name = "", bool permanent = false, uint64_t id = 0,
+         const QDate &expiryDate = QDate());
 
     ///
     /// Constructs list from the data given in the map.
@@ -75,6 +78,20 @@ public:
     void setPermanent(bool permanent);
 
     ///
+    /// \brief expiryDate Returns the date when this list expires.
+    ///
+    /// \return The date when this list expires.
+    ///
+    QDate expiryDate() const;
+
+    ///
+    /// \brief setExpiryDate Sets the date when this list expires.
+    ///
+    /// \param expiryDate The date when this list expires.
+    ///
+    void setExpiryDate(const QDate &expityDate);
+
+    ///
     /// \ref Entity::toVariantMap();
     ///
     virtual QVariantMap toVariantMap() const override;
@@ -105,9 +122,10 @@ public:
                                      const QString &name);
 
 private:
-    QString mName;   //!< The list name.
-    bool mSystem;    //!< Whether this is a system list.
-    bool mPermanent; //!< Whether this list is permanent.
+    QString mName;     //!< The list name.
+    bool mSystem;      //!< Whether this is a system list.
+    bool mPermanent;   //!< Whether this list is permanent.
+    QDate mExpiryDate; //!< The date when this list will be expired.
 };
 }
 }

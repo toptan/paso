@@ -7,6 +7,7 @@
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QSqlField>
+#include <QSqlError>
 
 using namespace paso::data::entity;
 using namespace paso::widget;
@@ -26,10 +27,16 @@ void TestListAdministration::init() {
     in_memory_sql.open(QIODevice::ReadOnly);
     QTextStream in(&in_memory_sql);
     QString sqlString = in.readAll();
-    sqlString.replace("\n", "");
-    QStringList commands = sqlString.split(";");
+    sqlString.replace("\n", " ");
+    QStringList commands = sqlString.split("--");
     for (const auto &command : commands) {
+        if (command.trimmed().isEmpty()) {
+            continue;
+        }
         db.exec(command);
+        if (db.lastError().type() != QSqlError::NoError) {
+            qDebug() << db.lastError() << ": " << command;
+        }
     }
     in_memory_sql.close();
 }
