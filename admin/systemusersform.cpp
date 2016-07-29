@@ -37,20 +37,20 @@ SystemUsersForm::~SystemUsersForm() { delete ui; }
 
 pair<QSqlTableModel *, RecordEditorWidget *>
 SystemUsersForm::createModelAndEditor() {
-    QVariantMap columnLabels = {{"username", QObject::tr("Username")},
-                                {"password", QObject::tr("Password")},
-                                {"first_name", QObject::tr("First Name")},
-                                {"last_name", QObject::tr("Last Name")},
-                                {"email", QObject::tr("Email")},
-                                {"role", QObject::tr("Role")}};
+    const QVariantMap columnLabels{{"username", QObject::tr("Username")},
+                                   {"password", QObject::tr("Password")},
+                                   {"first_name", QObject::tr("First Name")},
+                                   {"last_name", QObject::tr("Last Name")},
+                                   {"email", QObject::tr("Email")},
+                                   {"role", QObject::tr("Role")}};
     auto model = new SystemUserTableModel(
         columnLabels, QSqlDatabase::database(DEFAULT_DB_NAME));
-    FieldTypes fieldTypes = {{"username", FieldType::LineEdit},
-                             {"password", FieldType::PasswordEdit},
-                             {"first_name", FieldType::LineEdit},
-                             {"last_name", FieldType::LineEdit},
-                             {"email", FieldType::LineEdit},
-                             {"role", FieldType::ComboBox}};
+    const FieldTypes fieldTypes{{"username", FieldType::LineEdit},
+                                {"password", FieldType::PasswordEdit},
+                                {"first_name", FieldType::LineEdit},
+                                {"last_name", FieldType::LineEdit},
+                                {"email", FieldType::LineEdit},
+                                {"role", FieldType::ComboBox}};
 
     auto editor = new SystemUserEditorWidget(fieldTypes);
     editor->setupUi(columnLabels, model->record());

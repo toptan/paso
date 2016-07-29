@@ -648,7 +648,7 @@
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="68"/>
-        <source>The name of the room cannot be left emtpy.</source>
+        <source>The name of the room cannot be left empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

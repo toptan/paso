@@ -1,24 +1,18 @@
 #ifndef TESTFORMS_H
 #define TESTFORMS_H
 
+#include "testbase.h"
 #include <QTest>
 
-class TestForms : public QObject {
+class TestForms : public TestBase {
     Q_OBJECT
 
 public:
     TestForms();
 
 private slots:
-    void initTestCase();
-    void init();
-    void cleanup();
-
     void testTableForm();
     void testQueryForm();
-
-private:
-    const QString dbName;
 };
 
 #endif // TESTFORMS_H

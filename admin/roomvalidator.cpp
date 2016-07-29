@@ -46,7 +46,7 @@ RoomValidator::validateRoomUuid(const QString &original) const {
         const auto unique = dbManager().roomUuidUnique(text, error);
         if (error.type() != QSqlError::NoError) {
             return make_shared<ValidationError>(
-                nullptr, tr("Critical error"),
+                editor, tr("Critical error"),
                 tr("There was an error working with the database."),
                 error.text(), QMessageBox::Critical);
         }
@@ -65,7 +65,7 @@ shared_ptr<ValidationError> RoomValidator::validateName() const {
     if (text.isEmpty()) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
-            tr("The name of the room cannot be left emtpy."));
+            tr("The name of the room cannot be left empty."));
     }
     if (text.size() > 64) {
         return make_shared<ValidationError>(
@@ -97,7 +97,7 @@ RoomValidator::validateRoomNumber(const QString &original) const {
         const auto unique = dbManager().roomNumberUnique(text, error);
         if (error.type() != QSqlError::NoError) {
             return make_shared<ValidationError>(
-                nullptr, tr("Critical error"),
+                editor, tr("Critical error"),
                 tr("There was an error working with the database."),
                 error.text(), QMessageBox::Critical);
         }

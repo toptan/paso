@@ -1,25 +1,19 @@
 #ifndef TESTWIDGETS_H
 #define TESTWIDGETS_H
 
+#include "testbase.h"
 #include <QTest>
 
-class TestWidgets : public QObject {
+class TestWidgets : public TestBase {
     Q_OBJECT
 
 public:
     TestWidgets();
 
 private slots:
-    void initTestCase();
-    void init();
-    void cleanup();
-
     void testAddRemoveEntityWidget();
     void testRecordEditorWidget();
     void testRecordValidator();
-
-private:
-    const QString dbName;
 };
 
 #endif // TESTWIDGETS_H

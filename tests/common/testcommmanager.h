@@ -1,9 +1,11 @@
 #ifndef TESTCOMMMANAGER_H
 #define TESTCOMMMANAGER_H
 
-#include <QTest>
-#include <QTcpServer>
 #include "commmanager.h"
+#include "testbase.h"
+
+#include <QTcpServer>
+#include <QTest>
 
 #include <memory>
 
@@ -11,7 +13,7 @@ using namespace paso::comm;
 
 class DemoServer;
 
-class TestCommManager : public QObject {
+class TestCommManager : public TestBase {
     Q_OBJECT
 
 public:
@@ -24,17 +26,16 @@ public slots:
 signals:
     void quitLocalEventLoop();
 
+protected slots:
+
+    virtual void initTestCase() override;
+    virtual void init() override;
+
 private slots:
-
-    void initTestCase();
-    void init();
-    void cleanup();
-
     void testSuccessfullLogin();
     void testUnsuccessfullLogin();
 
 private:
-    const QString dbName;
     std::shared_ptr<CommManager> manager;
     DemoServer *demoServer;
     bool loginSuccess;

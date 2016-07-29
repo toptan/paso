@@ -1,11 +1,11 @@
 #include "systemuservalidator.h"
 
 #include <QLineEdit>
-#include <QVariant>
-#include <QSqlError>
 #include <QMessageBox>
 #include <QRegExp>
 #include <QRegExpValidator>
+#include <QSqlError>
+#include <QVariant>
 
 using namespace std;
 using namespace paso::widget;
@@ -44,7 +44,7 @@ shared_ptr<ValidationError>
 SystemUserValidator::validateUsername(const QString &original) const {
     auto editor = dynamic_cast<QLineEdit *>(mFieldEditors["username"]);
     auto text = editor->text().trimmed();
-    if (text.isEmpty() || text.size() < 4 || text.size() > 16) {
+    if (text.size() < 4 || text.size() > 16) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
             tr("The username has to be at least four characters "
@@ -73,7 +73,7 @@ SystemUserValidator::validateUsername(const QString &original) const {
 shared_ptr<ValidationError> SystemUserValidator::validatePassword() const {
     auto editor = dynamic_cast<QLineEdit *>(mFieldEditors["password"]);
     auto text = editor->text().trimmed();
-    if (text.isEmpty() || text.size() < 8 || text.size() > 16) {
+    if (text.size() < 8 || text.size() > 16) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
             tr("The password has to be at least eight characters "

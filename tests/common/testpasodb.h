@@ -1,20 +1,19 @@
 #ifndef TESTPASODB_H
 #define TESTPASODB_H
 
+#include "testbase.h"
 #include <QTest>
 
-class TestPasoDB : public QObject {
+class TestPasoDB : public TestBase {
     Q_OBJECT
 
 public:
     TestPasoDB();
 
+protected slots:
+    virtual void initTestCase() override;
+
 private slots:
-
-    void initTestCase();
-    void init();
-    void cleanup();
-
     void testOperationsShouldFailOnDatabaseErrors();
 
     void testGetAllSystemUsers();
@@ -52,7 +51,6 @@ private slots:
     void testUpdatingCourseStudents();
 
 private:
-    const QString dbName;
     QStringList usernames;
     QStringList roomUUIDs;
 };

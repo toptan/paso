@@ -3,7 +3,7 @@
 MockRecordEditorWidget::MockRecordEditorWidget(const FieldTypes &fieldTypes,
                                                QWidget *parent)
     : RecordEditorWidget(fieldTypes, parent), preparedEditCalled(false),
-      fieldReadOnlyCalledCount(0) {}
+      fieldReadOnlyCalledCount(0), writableField("") {}
 
 void MockRecordEditorWidget::prepareEdit(QSqlRecord &) {
     preparedEditCalled = true;

@@ -1,10 +1,14 @@
 #ifndef TESTDATA_H
 #define TESTDATA_H
 
+#include "testbase.h"
 #include <QTest>
 
-class TestData : public QObject {
+class TestData : public TestBase {
     Q_OBJECT
+
+public:
+    TestData();
 
 private slots:
     void testComparingObjectWithItselfIsAlwaysTrue();

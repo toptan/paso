@@ -1,25 +1,18 @@
 #ifndef TESTCOURSEADMINISTRATION_H
 #define TESTCOURSEADMINISTRATION_H
 
+#include "testbase.h"
 #include <QTest>
 
-class TestCourseAdministration : public QObject {
+class TestCourseAdministration : public TestBase {
     Q_OBJECT
 public:
     TestCourseAdministration();
 
 private slots:
-
-    void initTestCase();
-    void init();
-    void cleanup();
-
     void testCourseValidator();
     void testCourseEditorWidget();
     void testCourseTableModel();
-
-private:
-    const QString dbName;
 };
 
 #endif // TESTCOURSEADMINISTRATION_H

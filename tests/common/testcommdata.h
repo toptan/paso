@@ -1,13 +1,16 @@
 #ifndef TESTCOMMDATA_H
 #define TESTCOMMDATA_H
 
+#include "testbase.h"
 #include <QTest>
 
-class TestCommData : public QObject {
+class TestCommData : public TestBase {
     Q_OBJECT
 
-private slots:
+public:
+    TestCommData();
 
+private slots:
     void testBaseSerialization();
     void testLoginRequestCreation();
     void testLoginRequestSerialization();

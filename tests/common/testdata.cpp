@@ -16,6 +16,8 @@ using namespace std;
 using namespace paso::data;
 using namespace paso::data::entity;
 
+TestData::TestData() : TestBase() {}
+
 void TestData::testComparingObjectWithItselfIsAlwaysTrue() {
     SystemUser user("user", "user_pass", "John", "Doe", "john.doe@internet.com",
                     SystemRole::MANAGER);

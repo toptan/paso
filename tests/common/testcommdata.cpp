@@ -9,6 +9,8 @@ using namespace paso::comm;
 using namespace paso::data;
 using namespace paso::data::entity;
 
+TestCommData::TestCommData() : TestBase() {}
+
 void TestCommData::testBaseSerialization() {
     Base expected(QUuid::createUuid(), Operation::UNKNOWN_OPERATION);
     Base deserialized("{00000000-0000-0000-0000-000000000000}",
