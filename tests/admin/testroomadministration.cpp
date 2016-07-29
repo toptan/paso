@@ -104,5 +104,3 @@ void TestRoomAdministration::testRoomValidator() {
 void TestRoomAdministration::testRoomEditorWidget() {}
 
 void TestRoomAdministration::testRoomTableModel() {}
-
-QTEST_MAIN(TestRoomAdministration)

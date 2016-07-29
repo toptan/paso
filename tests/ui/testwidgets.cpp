@@ -498,5 +498,3 @@ void TestWidgets::testRecordEditorWidget() {
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
 }
-
-QTEST_MAIN(TestWidgets)

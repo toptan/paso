@@ -160,5 +160,3 @@ void TestCommManager::testUnsuccessfullLogin() {
     loop.exec();
     QVERIFY(!loginSuccess && loginFailure);
 }
-
-QTEST_MAIN(TestCommManager)

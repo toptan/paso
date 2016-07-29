@@ -208,5 +208,3 @@ void TestData::testPropertyValues() {
     QCOMPARE(list.value("PERMANENT"), QVariant(list.permanent()));
     QCOMPARE(list.value("EXPIRY_DATE"), QVariant::fromValue(QDate()));
 }
-
-QTEST_MAIN(TestData)

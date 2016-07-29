@@ -65,5 +65,3 @@ void TestCommData::testLoginResponseSerialization() {
     QVERIFY(deserialized.dbPassword() == expected.dbPassword());
     QVERIFY(deserialized.dbPort() == expected.dbPort());
 }
-
-QTEST_MAIN(TestCommData)

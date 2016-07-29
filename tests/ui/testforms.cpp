@@ -212,5 +212,3 @@ void TestForms::testQueryForm() {
     QApplication::processEvents();
     QCOMPARE(form.model()->rowCount(), 1);
 }
-
-QTEST_MAIN(TestForms)

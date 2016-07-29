@@ -655,5 +655,3 @@ void TestPasoDB::testUpdatingCourseStudents() {
     }
     QVERIFY(temp.empty());
 }
-
-QTEST_MAIN(TestPasoDB)

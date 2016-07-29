@@ -199,5 +199,3 @@ void TestModels::testEntityModelDataUpdates() {
     QCOMPARE(model.data(index), QVariant("IR3BP1"));
     QCOMPARE(model.data(index, Qt::EditRole), QVariant());
 }
-
-QTEST_MAIN(TestModels)

@@ -174,5 +174,3 @@ void TestCourseAdministration::testCourseTableModel() {
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Code"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(), QString("Course"));
 }
-
-QTEST_MAIN(TestCourseAdministration)

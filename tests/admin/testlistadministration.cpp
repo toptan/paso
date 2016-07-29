@@ -169,5 +169,3 @@ void TestListAdministration::testListTableModel() {
     QCOMPARE(model.headerData(5, Qt::Horizontal).toString(),
              QString("Expiry Date"));
 }
-
-QTEST_MAIN(TestListAdministration)
