@@ -2,12 +2,13 @@
 
 #include "list.h"
 #include "listeditorwidget.h"
+#include "listtablemodel.h"
 #include "listvalidator.h"
 
 #include <QCheckBox>
 #include <QLineEdit>
-#include <QSqlField>
 #include <QSqlError>
+#include <QSqlField>
 
 using namespace paso::data::entity;
 using namespace paso::widget;
@@ -48,6 +49,7 @@ void TestListAdministration::cleanup() {
     db.exec("DROP TABLE SYSTEM_USER");
     db.exec("DROP TABLE ENLISTED");
     db.exec("DROP TABLE MEMBER");
+    db.exec("DROP TABLE LIST");
     db.exec("DROP TABLE COURSE");
     db.exec("DROP TABLE ROOM");
     db.exec("DROP TABLE STUDENT");
@@ -120,6 +122,8 @@ void TestListAdministration::testListValidator() {
     QCOMPARE(result->text,
              QString("There was an error working with the database."));
     QCOMPARE(result->icon, QMessageBox::Critical);
+
+    delete nameLineEdit;
 }
 
 void TestListAdministration::testListEditorWidget() {
@@ -146,6 +150,24 @@ void TestListAdministration::testListEditorWidget() {
     QCOMPARE(nameEdit->maxLength(), 64);
     QVERIFY(permanentCheck->isEnabled());
     QVERIFY(!systemCheck->isEnabled());
+}
+
+void TestListAdministration::testListTableModel() {
+    QVariantMap columnLabels{{"NAME", "Name"},
+                             {"PERMANENT", "Permanent"},
+                             {"SYSTEM", "System"},
+                             {"EXPIRY_DATE", "Expiry Date"}};
+    ListTableModel model(columnLabels, QSqlDatabase::database(dbName));
+    QCOMPARE(model.columnCount(), 6);
+    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("ID"));
+    QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
+    QCOMPARE(model.headerData(2, Qt::Horizontal).toString(),
+             QString("ID_COURSE"));
+    QCOMPARE(model.headerData(3, Qt::Horizontal).toString(), QString("System"));
+    QCOMPARE(model.headerData(4, Qt::Horizontal).toString(),
+             QString("Permanent"));
+    QCOMPARE(model.headerData(5, Qt::Horizontal).toString(),
+             QString("Expiry Date"));
 }
 
 QTEST_MAIN(TestListAdministration)

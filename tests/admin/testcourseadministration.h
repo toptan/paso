@@ -16,6 +16,7 @@ private slots:
 
     void testCourseValidator();
     void testCourseEditorWidget();
+    void testCourseTableModel();
 
 private:
     const QString dbName;

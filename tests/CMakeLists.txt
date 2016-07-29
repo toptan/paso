@@ -23,4 +23,5 @@ add_custom_target(check
     testwidgets
     testlistadministration
     testcourseadministration
+    testroomadministration
     )

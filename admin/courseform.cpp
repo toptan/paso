@@ -58,9 +58,8 @@ CourseForm::~CourseForm() { delete ui; }
 
 pair<QSqlTableModel *, RecordEditorWidget *>
 CourseForm::createModelAndEditor() {
-    QVariantMap columnLabels = {
-        {"code", QObject::tr("Code")}, {"name", QObject::tr("Course")},
-    };
+    QVariantMap columnLabels = {{"code", QObject::tr("Code")},
+                                {"name", QObject::tr("Course")}};
 
     auto model = new CourseTableModel(columnLabels,
                                       QSqlDatabase::database(DEFAULT_DB_NAME));

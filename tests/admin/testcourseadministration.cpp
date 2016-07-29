@@ -2,6 +2,7 @@
 
 #include "course.h"
 #include "courseeditorwidget.h"
+#include "coursetablemodel.h"
 #include "coursevalidator.h"
 
 #include <QCheckBox>
@@ -131,8 +132,39 @@ void TestCourseAdministration::testCourseValidator() {
     QCOMPARE(result->text,
              QString("There was an error working with the database."));
     QCOMPARE(result->icon, QMessageBox::Critical);
+
+    for (auto editor : fieldEditors.values()) {
+        delete editor;
+    }
 }
 
-void TestCourseAdministration::testCourseEditorWidget() {}
+void TestCourseAdministration::testCourseEditorWidget() {
+    FieldTypes fieldTypes{{"code", FieldType::LineEdit},
+                          {"name", FieldType::LineEdit}};
+    QVariantMap columnLabels{{"code", "Code"}, {"name", "Course"}};
+    QSqlRecord record;
+    record.append(QSqlField("id", QVariant::ULongLong));
+    record.append(QSqlField("code", QVariant::String));
+    record.append(QSqlField("name", QVariant::String));
+    CourseEditorWidget editor(fieldTypes);
+    editor.setupUi(columnLabels, record);
+    editor.onEditNewRecord(record);
+    QApplication::processEvents();
+    auto codeEdit = dynamic_cast<QLineEdit *>(editor.fieldEditors()["code"]);
+    auto nameEdit = dynamic_cast<QLineEdit *>(editor.fieldEditors()["name"]);
+    QVERIFY(!codeEdit->isReadOnly());
+    QCOMPARE(codeEdit->maxLength(), 8);
+    QVERIFY(!nameEdit->isReadOnly());
+    QCOMPARE(nameEdit->maxLength(), 64);
+}
+
+void TestCourseAdministration::testCourseTableModel() {
+    QVariantMap columnLabels{{"CODE", "Code"}, {"NAME", "Course"}};
+    CourseTableModel model(columnLabels, QSqlDatabase::database(dbName));
+    QCOMPARE(model.columnCount(), 3);
+    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("ID"));
+    QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Code"));
+    QCOMPARE(model.headerData(2, Qt::Horizontal).toString(), QString("Course"));
+}
 
 QTEST_MAIN(TestCourseAdministration)
