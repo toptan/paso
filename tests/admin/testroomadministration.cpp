@@ -66,6 +66,35 @@ void TestRoomAdministration::testRoomValidator() {
                               {"name", nameLineEdit},
                               {"room_number", numberLineEdit}};
     const QString title = "Invalid data entered";
+    const QSqlRecord emptyRecord;
+    QSqlRecord notEmptyRecord;
+    notEmptyRecord.append(QSqlField("id", QVariant::ULongLong));
+    notEmptyRecord.append(QSqlField("room_uuid", QVariant::String));
+    notEmptyRecord.append(QSqlField("name", QVariant::String));
+    notEmptyRecord.append(QSqlField("room_number", QVariant::String));
+
+    RoomValidator validator(fieldTypes, fieldEditors, this);
+
+    auto result = validator.validate(emptyRecord);
+    QVERIFY((bool)result);
+    QCOMPARE(result->editor, uuidLineEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(result->text, QString("Room UUID has to be provided."));
+
+    uuidLineEdit->setText("{d23a502b-a567-4929-ba99-9f93f36bf4e3}");
+    result = validator.validate(emptyRecord);
+    QCOMPARE(result->editor, uuidLineEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(result->text, QString("The room UUID you entered is not unique."));
+
+    notEmptyRecord.setValue("room_uuid", QUuid::createUuid().toString());
+    uuidLineEdit->setText("{d23a502b-a567-4929-ba99-9f93f36bf4e3}");
+    result = validator.validate(notEmptyRecord);
+    QCOMPARE(result->editor, uuidLineEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(result->text, QString("The room UUID you entered is not unique."));
+
+
 
     for (auto editor : fieldEditors.values()) {
         delete editor;
