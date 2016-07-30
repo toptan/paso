@@ -11,6 +11,8 @@ public:
 
 private slots:
     void testSystemUserValidator();
+    void testSystemUserEditorWidget();
+    void testSystemUserTableModel();
 };
 
 #endif // TESTSYSTEMUSERADMINISTRATION_H

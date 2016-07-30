@@ -9,7 +9,7 @@ using namespace std;
 
 class MockAlwaysValidRecordValidator : public RecordValidator {
 public:
-    MockAlwaysValidRecordValidator(QObject *parent = nullptr);
+    explicit MockAlwaysValidRecordValidator(QObject *parent = nullptr);
 
     virtual shared_ptr<ValidationError>
     validate(const QSqlRecord &original) const override;

@@ -878,13 +878,17 @@
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="96"/>
-        <location filename="../admin/systemuservalidator.cpp" line="112"/>
         <source>The first name cannot be longer than 32 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="107"/>
         <source>You need to specify user&apos;s last name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/systemuservalidator.cpp" line="112"/>
+        <source>The last name cannot be longer than 32 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

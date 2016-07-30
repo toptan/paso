@@ -56,7 +56,7 @@ SystemUserValidator::validateUsername(const QString &original) const {
         const auto unique = dbManager().usernameUnique(text, error);
         if (error.type() != QSqlError::NoError) {
             return make_shared<ValidationError>(
-                nullptr, tr("Critical error"),
+                editor, tr("Critical error"),
                 tr("There was an error working with the database."),
                 error.text(), QMessageBox::Critical);
         }
@@ -109,7 +109,7 @@ shared_ptr<ValidationError> SystemUserValidator::validateLastName() const {
     if (text.size() > 32) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
-            tr("The first name cannot be longer than 32 characters."));
+            tr("The last name cannot be longer than 32 characters."));
     }
     return nullptr;
 }

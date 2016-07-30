@@ -50,6 +50,14 @@
     </message>
 </context>
 <context>
+    <name>ListForm</name>
+    <message>
+        <location filename="../admin/listform.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LogDialog</name>
     <message>
         <location filename="../admin/logdialog.ui" line="14"/>
@@ -91,7 +99,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../admin/courseform.cpp" line="62"/>
+        <location filename="../admin/courseform.cpp" line="61"/>
         <source>Code</source>
         <translation>Шифра</translation>
     </message>
@@ -366,72 +374,72 @@
         <translation>Детаљи</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="103"/>
+        <location filename="../admin/courseform.cpp" line="102"/>
         <source>Do you want to delete selected course from the system?</source>
         <translation>Да ли стварно желите да обришете одабрани предмет из система?</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="115"/>
+        <location filename="../admin/courseform.cpp" line="114"/>
         <source>Open courses import file</source>
         <translation>Отвори датотеку за увоз предмета</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="122"/>
+        <location filename="../admin/courseform.cpp" line="121"/>
         <source>The file %1 cannot be opened.</source>
         <translation>Датотека %1 не може да се отвори.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="132"/>
+        <location filename="../admin/courseform.cpp" line="131"/>
         <source>Importing course data...</source>
         <translation>Увожење података о предметима...</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="149"/>
+        <location filename="../admin/courseform.cpp" line="148"/>
         <source>Importing line %1... %2</source>
         <translation>Увожење линије %1... %2</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="151"/>
+        <location filename="../admin/courseform.cpp" line="150"/>
         <source>Importing course data from %1</source>
         <translation>Увожење података о предметима из %1</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="160"/>
+        <location filename="../admin/courseform.cpp" line="159"/>
         <source>OK.</source>
         <translation>ОК.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="164"/>
+        <location filename="../admin/courseform.cpp" line="163"/>
         <source>The course code and name must be comma separated.</source>
         <translation>Шифра предмета и предмет морају да буду одвојени зарезом.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="169"/>
+        <location filename="../admin/courseform.cpp" line="168"/>
         <source>The course code is missing.</source>
         <translation>Недостаје шифра предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="174"/>
+        <location filename="../admin/courseform.cpp" line="173"/>
         <source>The course code exceeds 8 characters.</source>
         <translation>Шифра предмета је дужа од осам знакова.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="179"/>
+        <location filename="../admin/courseform.cpp" line="178"/>
         <source>The course name is missing.</source>
         <translation>Недостаје име предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="184"/>
+        <location filename="../admin/courseform.cpp" line="183"/>
         <source>The course name exceeds 64 characters.</source>
         <translation>Име предмета је дуже од 64 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="198"/>
+        <location filename="../admin/courseform.cpp" line="197"/>
         <source>Import finished without errors.</source>
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="201"/>
+        <location filename="../admin/courseform.cpp" line="200"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
@@ -695,8 +703,12 @@
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="68"/>
+        <source>The name of the room cannot be left empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>The name of the room cannot be left emtpy.</source>
-        <translation>Морате унети име просторије.</translation>
+        <translation type="vanished">Морате унети име просторије.</translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="73"/>
@@ -925,7 +937,6 @@
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="96"/>
-        <location filename="../admin/systemuservalidator.cpp" line="112"/>
         <source>The first name cannot be longer than 32 characters.</source>
         <translation>Име корисника не може да буде дуже од 32 знака.</translation>
     </message>
@@ -933,6 +944,11 @@
         <location filename="../admin/systemuservalidator.cpp" line="107"/>
         <source>You need to specify user&apos;s last name.</source>
         <translation>Морате унети презиме корисника.</translation>
+    </message>
+    <message>
+        <location filename="../admin/systemuservalidator.cpp" line="112"/>
+        <source>The last name cannot be longer than 32 characters.</source>
+        <translation type="unfinished">Презиме не може да буде дуже од 32 знака.</translation>
     </message>
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="127"/>

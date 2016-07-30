@@ -178,7 +178,8 @@ void TestWidgets::testRecordEditorWidget() {
     w.setupUi(columnLabels, record);
     w.setValidator(&alwaysValidValidator);
     w.show();
-    QTest::qWaitForWindowExposed(&w);
+    QVERIFY(QTest::qWaitForWindowActive(&w, 10000));
+    QVERIFY(QTest::qWaitForWindowExposed(&w, 10000));
     // Form layout, button box + 2 x (columns - ID column)
     QCOMPARE(w.children().size(), 16);
     QCOMPARE(w.fieldTypes(), fieldTypes);
@@ -193,6 +194,7 @@ void TestWidgets::testRecordEditorWidget() {
     record.setValue("DATE_EDIT", testDate);
     QVariantList stringValues{"Line Edit", "Masked/Line/Edit", "Password Edit"};
     w.onDisplayRecord(record);
+    QApplication::processEvents();
     QLineEdit *lineEdit = nullptr;
     QLineEdit *maskedLineEdit = nullptr;
     QLineEdit *passwordEdit = nullptr;
@@ -247,6 +249,7 @@ void TestWidgets::testRecordEditorWidget() {
     QApplication::processEvents();
 
     w.clearData();
+    QApplication::processEvents();
     QVERIFY(lineEdit->text().isEmpty());
     QCOMPARE(maskedLineEdit->text(), QString("//"));
     QVERIFY(passwordEdit->text().isEmpty());
@@ -257,6 +260,7 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(dateEdit->date(), QDate::currentDate());
 
     w.clearData();
+    QApplication::processEvents();
     w.onEditExistingRecord(record);
     QApplication::processEvents();
     QCOMPARE(lineEdit->text(), QString("Line Edit"));
@@ -280,6 +284,7 @@ void TestWidgets::testRecordEditorWidget() {
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
     w.saveSuccessfull();
+    QApplication::processEvents();
     QCOMPARE(lineEdit->text(), QString("Line Edit"));
     QVERIFY(lineEdit->isReadOnly());
     QCOMPARE(maskedLineEdit->text(), QString("Masked/Line/Edit"));
@@ -330,6 +335,7 @@ void TestWidgets::testRecordEditorWidget() {
 
     w.clearData();
     record.clearValues();
+    QApplication::processEvents();
     w.onEditNewRecord(record);
     QApplication::processEvents();
     QVERIFY(lineEdit->text().isEmpty());
@@ -357,6 +363,7 @@ void TestWidgets::testRecordEditorWidget() {
     spinBox->setValue(10);
     comboBox->setCurrentIndex(2);
     checkBox->toggle();
+    QApplication::processEvents();
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
     QVERIFY(lineEdit->text().isEmpty());
@@ -380,9 +387,11 @@ void TestWidgets::testRecordEditorWidget() {
     comboBox->setCurrentIndex(2);
     checkBox->setChecked(true);
     dateEdit->setDate(testDate.addDays(2));
+    QApplication::processEvents();
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
     w.saveSuccessfull();
+    QApplication::processEvents();
     QCOMPARE(lineEdit->text(), QString("FOO"));
     QVERIFY(lineEdit->isReadOnly());
     QCOMPARE(maskedLineEdit->text(), QString("BBBBBB/CCCC/DDDD"));
