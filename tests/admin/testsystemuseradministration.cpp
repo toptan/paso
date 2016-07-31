@@ -18,16 +18,12 @@ using namespace paso::admin;
 TestSystemUserAdministration::TestSystemUserAdministration() : TestBase() {}
 
 void TestSystemUserAdministration::testSystemUserValidator() {
-    const FieldTypes fieldTypes = {{"username", FieldType::LineEdit},
-                                   {"password", FieldType::PasswordEdit},
-                                   {"first_name", FieldType::LineEdit},
-                                   {"last_name", FieldType::LineEdit},
-                                   {"email", FieldType::LineEdit},
-                                   {"role", FieldType::ComboBox}};
-    const QVariantMap columnLabels{
-        {"username", "Username"},     {"password", "Password"},
-        {"first_name", "First Name"}, {"last_name", "Last Name"},
-        {"email", "Email"},           {"role", "Role"}};
+    const FieldTypes fieldTypes{{"username", FieldType::LineEdit},
+                                {"password", FieldType::PasswordEdit},
+                                {"first_name", FieldType::LineEdit},
+                                {"last_name", FieldType::LineEdit},
+                                {"email", FieldType::LineEdit},
+                                {"role", FieldType::ComboBox}};
     const QString title = "Invalid data entered";
     QSqlRecord emptyRecord;
     QSqlRecord nonEmptyRecord;
@@ -131,7 +127,14 @@ void TestSystemUserAdministration::testSystemUserValidator() {
         result->text,
         QString("You need to provide a valid email address for the user."));
 
-    // TODO: Email lenght < 64
+    emailEdit->setText("petar@petrovic.petrovic.petrovic.petrovic.petrovic."
+                       "petrovic.petrovic.petrovic.com");
+    result = validator.validate(emptyRecord);
+    QCOMPARE(result->editor, emailEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(result->text,
+             QString("The email cannot be longer than 64 characters."));
+
     emailEdit->setText("petar@pera.com");
     result = validator.validate(emptyRecord);
     QVERIFY(!(bool)result);
@@ -228,7 +231,7 @@ void TestSystemUserAdministration::testSystemUserTableModel() {
     index = model.index(0, 6);
     auto role = model.data(index).toString();
     bool found = false;
-    for (auto temp: stringEnumeratedRoles) {
+    for (auto temp : stringEnumeratedRoles) {
         if (role == temp) {
             found = true;
             break;

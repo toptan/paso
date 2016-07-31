@@ -117,6 +117,13 @@ shared_ptr<ValidationError> SystemUserValidator::validateLastName() const {
 shared_ptr<ValidationError> SystemUserValidator::validateEmail() const {
     auto editor = dynamic_cast<QLineEdit *>(mFieldEditors["email"]);
     auto text = editor->text().trimmed();
+
+    if (text.size() > 64) {
+        return make_shared<ValidationError>(
+            editor, tr("Invalid data entered"),
+            tr("The email cannot be longer than 64 characters."));
+    }
+
     QRegExp regExp("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b",
                    Qt::CaseInsensitive);
     QRegExpValidator validator(regExp);

@@ -96,6 +96,7 @@ function(enable_coverage TARGET)
   list(APPEND COVERAGE_FLAGS -fprofile-arcs)
   list(APPEND COVERAGE_FLAGS -ftest-coverage)
   list(APPEND COVERAGE_FLAGS -fPIC)
+  list(APPEND COVERAGE_FLAGS -O0)
 
   # Create a string version of coverage flags
   string(REPLACE ";" " " COVERAGE_FLAGS_STR "${COVERAGE_FLAGS}")

@@ -11,6 +11,7 @@
 #include "testmodels.h"
 #include "testpasodb.h"
 #include "testroomadministration.h"
+#include "teststudentadministration.h"
 #include "testsystemuseradministration.h"
 #include "testwidgets.h"
 
@@ -37,6 +38,7 @@ int main(int argc, char **argv) {
     testCases.push_back(new TestListAdministration);
     testCases.push_back(new TestRoomAdministration);
     testCases.push_back(new TestSystemUserAdministration);
+    testCases.push_back(new TestStudentAdministration);
 
     for (auto testCase : testCases) {
         ASSERT_TEST(testCase);

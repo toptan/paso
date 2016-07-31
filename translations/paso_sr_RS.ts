@@ -628,14 +628,14 @@
         <location filename="../admin/personvalidator.cpp" line="45"/>
         <location filename="../admin/personvalidator.cpp" line="57"/>
         <location filename="../admin/personvalidator.cpp" line="62"/>
-        <location filename="../admin/personvalidator.cpp" line="82"/>
+        <location filename="../admin/personvalidator.cpp" line="78"/>
+        <location filename="../admin/personvalidator.cpp" line="88"/>
         <source>Invalid data entered</source>
         <translation>Унешени су неисправни подаци</translation>
     </message>
     <message>
-        <location filename="../admin/personvalidator.cpp" line="41"/>
         <source>You need to specifiy person&apos;s first name.</source>
-        <translation>Морате да унесете име особе.</translation>
+        <translation type="vanished">Морате да унесете име особе.</translation>
     </message>
     <message>
         <location filename="../admin/personvalidator.cpp" line="46"/>
@@ -643,8 +643,17 @@
         <translation>Име не може да буде дуже од 32 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/personvalidator.cpp" line="58"/>
         <source>You need to specifiy person&apos;s last name.</source>
+        <translation type="vanished">Морате да унесете презиме особе.</translation>
+    </message>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="41"/>
+        <source>You need to specify person&apos;s first name.</source>
+        <translation>Морате да унесете име особе.</translation>
+    </message>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="58"/>
+        <source>You need to specify person&apos;s last name.</source>
         <translation>Морате да унесете презиме особе.</translation>
     </message>
     <message>
@@ -653,7 +662,12 @@
         <translation>Презиме не може да буде дуже од 32 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/personvalidator.cpp" line="83"/>
+        <location filename="../admin/personvalidator.cpp" line="79"/>
+        <source>The email cannot be longer than 64 characters.</source>
+        <translation>Адреса е-поште не може да буде дужа од 64 знака.</translation>
+    </message>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="89"/>
         <source>You need to provide a valid person&apos;s email address.</source>
         <translation>Морате да унесете исправну адресу електронске поште особе.</translation>
     </message>
@@ -704,7 +718,7 @@
     <message>
         <location filename="../admin/roomvalidator.cpp" line="68"/>
         <source>The name of the room cannot be left empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Морате унети име просторије.</translation>
     </message>
     <message>
         <source>The name of the room cannot be left emtpy.</source>
@@ -901,7 +915,8 @@
         <location filename="../admin/systemuservalidator.cpp" line="95"/>
         <location filename="../admin/systemuservalidator.cpp" line="106"/>
         <location filename="../admin/systemuservalidator.cpp" line="111"/>
-        <location filename="../admin/systemuservalidator.cpp" line="126"/>
+        <location filename="../admin/systemuservalidator.cpp" line="123"/>
+        <location filename="../admin/systemuservalidator.cpp" line="133"/>
         <source>Invalid data entered</source>
         <translation>Унешени су неисправни подаци</translation>
     </message>
@@ -948,10 +963,15 @@
     <message>
         <location filename="../admin/systemuservalidator.cpp" line="112"/>
         <source>The last name cannot be longer than 32 characters.</source>
-        <translation type="unfinished">Презиме не може да буде дуже од 32 знака.</translation>
+        <translation>Презиме не може да буде дуже од 32 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="127"/>
+        <location filename="../admin/systemuservalidator.cpp" line="124"/>
+        <source>The email cannot be longer than 64 characters.</source>
+        <translation>Адреса е-поште не може да буде дужа од 64 знака.</translation>
+    </message>
+    <message>
+        <location filename="../admin/systemuservalidator.cpp" line="134"/>
         <source>You need to provide a valid email address for the user.</source>
         <translation>Морате унети исправно адресу е-поште корисника.</translation>
     </message>

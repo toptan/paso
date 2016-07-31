@@ -38,7 +38,7 @@ shared_ptr<ValidationError> PersonValidator::validateFirstName() const {
     if (text.isEmpty()) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
-            tr("You need to specifiy person's first name."));
+            tr("You need to specify person's first name."));
     }
     if (text.size() > 32) {
         return make_shared<ValidationError>(
@@ -55,7 +55,7 @@ shared_ptr<ValidationError> PersonValidator::validateLastName() const {
     if (text.isEmpty()) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
-            tr("You need to specifiy person's last name."));
+            tr("You need to specify person's last name."));
     }
     if (text.size() > 32) {
         return make_shared<ValidationError>(
@@ -71,6 +71,12 @@ shared_ptr<ValidationError> PersonValidator::validateEmail() const {
     auto text = editor->text().trimmed();
     if (text.isEmpty()) {
         return nullptr;
+    }
+
+    if (text.size() > 64) {
+        return make_shared<ValidationError>(
+            editor, tr("Invalid data entered"),
+            tr("The email cannot be longer than 64 characters."));
     }
 
     QRegExp regExp("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b",

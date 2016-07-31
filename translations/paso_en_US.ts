@@ -573,13 +573,9 @@
         <location filename="../admin/personvalidator.cpp" line="45"/>
         <location filename="../admin/personvalidator.cpp" line="57"/>
         <location filename="../admin/personvalidator.cpp" line="62"/>
-        <location filename="../admin/personvalidator.cpp" line="82"/>
+        <location filename="../admin/personvalidator.cpp" line="78"/>
+        <location filename="../admin/personvalidator.cpp" line="88"/>
         <source>Invalid data entered</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/personvalidator.cpp" line="41"/>
-        <source>You need to specifiy person&apos;s first name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -588,8 +584,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../admin/personvalidator.cpp" line="41"/>
+        <source>You need to specify person&apos;s first name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../admin/personvalidator.cpp" line="58"/>
-        <source>You need to specifiy person&apos;s last name.</source>
+        <source>You need to specify person&apos;s last name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -598,7 +599,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/personvalidator.cpp" line="83"/>
+        <location filename="../admin/personvalidator.cpp" line="79"/>
+        <source>The email cannot be longer than 64 characters.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/personvalidator.cpp" line="89"/>
         <source>You need to provide a valid person&apos;s email address.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -842,7 +848,8 @@
         <location filename="../admin/systemuservalidator.cpp" line="95"/>
         <location filename="../admin/systemuservalidator.cpp" line="106"/>
         <location filename="../admin/systemuservalidator.cpp" line="111"/>
-        <location filename="../admin/systemuservalidator.cpp" line="126"/>
+        <location filename="../admin/systemuservalidator.cpp" line="123"/>
+        <location filename="../admin/systemuservalidator.cpp" line="133"/>
         <source>Invalid data entered</source>
         <translation type="unfinished"></translation>
     </message>
@@ -892,7 +899,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemuservalidator.cpp" line="127"/>
+        <location filename="../admin/systemuservalidator.cpp" line="124"/>
+        <source>The email cannot be longer than 64 characters.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/systemuservalidator.cpp" line="134"/>
         <source>You need to provide a valid email address for the user.</source>
         <translation type="unfinished"></translation>
     </message>
