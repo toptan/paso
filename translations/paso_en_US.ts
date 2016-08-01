@@ -345,62 +345,62 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="120"/>
+        <location filename="../admin/courseform.cpp" line="123"/>
         <source>The file %1 cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="130"/>
+        <location filename="../admin/courseform.cpp" line="133"/>
         <source>Importing course data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="147"/>
+        <location filename="../admin/courseform.cpp" line="150"/>
         <source>Importing line %1... %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="149"/>
+        <location filename="../admin/courseform.cpp" line="152"/>
         <source>Importing course data from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="158"/>
+        <location filename="../admin/courseform.cpp" line="161"/>
         <source>OK.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="162"/>
+        <location filename="../admin/courseform.cpp" line="165"/>
         <source>The course code and name must be comma separated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="167"/>
+        <location filename="../admin/courseform.cpp" line="170"/>
         <source>The course code is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="172"/>
+        <location filename="../admin/courseform.cpp" line="175"/>
         <source>The course code exceeds 8 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="177"/>
+        <location filename="../admin/courseform.cpp" line="180"/>
         <source>The course name is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="182"/>
+        <location filename="../admin/courseform.cpp" line="185"/>
         <source>The course name exceeds 64 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="196"/>
+        <location filename="../admin/courseform.cpp" line="199"/>
         <source>Import finished without errors.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="199"/>
+        <location filename="../admin/courseform.cpp" line="202"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation type="unfinished"></translation>
     </message>

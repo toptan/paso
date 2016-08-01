@@ -9,6 +9,7 @@
 
 #include <QCheckBox>
 #include <QDialogButtonBox>
+#include <QFileDialog>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QSqlError>
@@ -220,4 +221,37 @@ void TestCourseAdministration::testCourseForm() {
     detailsAction->trigger();
     QApplication::processEvents();
     QVERIFY(detailsDialogShown);
+}
+
+void TestCourseAdministration::testCourseFormImportCourses() {
+    CourseForm form;
+    form.show();
+    QTest::qWaitForWindowExposed(&form);
+    auto tableView = form.findChild<QTableView *>();
+
+    QAction *importAction = nullptr;
+    for (auto action : form.toolBarActions()) {
+        if (action->objectName() == "IMPORT_ACTION") {
+            importAction = action;
+            break;
+        }
+    }
+
+    bool openFileDialogShown = false;
+    auto openFileDialogCallback = [&openFileDialogShown]() {
+        auto dialog = dynamic_cast<QFileDialog *>(QApplication::activeModalWidget());
+        dialog->setDirectory("./files");
+        QApplication::processEvents();
+        dialog->selectFile("ispiti.csv");
+        QApplication::processEvents();\
+        QTest::keyClick(dialog, Qt::Key_Escape);
+        QApplication::processEvents();
+        openFileDialogShown = true;
+    };
+
+    QTimer::singleShot(200, openFileDialogCallback);
+    importAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(openFileDialogShown);
+
 }

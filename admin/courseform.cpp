@@ -111,6 +111,9 @@ void CourseForm::updateActions(const QSqlRecord &record) {
 void CourseForm::onImport() {
     auto fileName = QFileDialog::getOpenFileName(
         this, tr("Open courses import file"), "", "*.csv");
+    if (fileName.isNull()) {
+        return;
+    }
     auto file = new QFile(fileName);
     if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox msgBox(this);

@@ -14,6 +14,7 @@ private slots:
     void testCourseEditorWidget();
     void testCourseTableModel();
     void testCourseForm();
+    void testCourseFormImportCourses();
 };
 
 #endif // TESTCOURSEADMINISTRATION_H
