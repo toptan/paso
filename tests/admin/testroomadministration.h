@@ -13,6 +13,7 @@ private slots:
     void testRoomValidator();
     void testRoomEditorWidget();
     void testRoomTableModel();
+    void testRoomForm();
 };
 
 #endif // TESTROOMADMINISTRATION_H

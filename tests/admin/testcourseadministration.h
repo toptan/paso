@@ -13,6 +13,7 @@ private slots:
     void testCourseValidator();
     void testCourseEditorWidget();
     void testCourseTableModel();
+    void testCourseForm();
 };
 
 #endif // TESTCOURSEADMINISTRATION_H

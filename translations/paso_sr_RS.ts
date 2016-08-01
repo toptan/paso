@@ -99,12 +99,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../admin/courseform.cpp" line="61"/>
+        <location filename="../admin/courseform.cpp" line="63"/>
         <source>Code</source>
         <translation>Шифра</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="62"/>
+        <location filename="../admin/courseform.cpp" line="64"/>
         <source>Course</source>
         <translation>Предмет</translation>
     </message>
@@ -369,77 +369,77 @@
         <translation>Увоз</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="48"/>
+        <location filename="../admin/courseform.cpp" line="49"/>
         <source>Details</source>
         <translation>Детаљи</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="102"/>
+        <location filename="../admin/courseform.cpp" line="101"/>
         <source>Do you want to delete selected course from the system?</source>
         <translation>Да ли стварно желите да обришете одабрани предмет из система?</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="114"/>
+        <location filename="../admin/courseform.cpp" line="113"/>
         <source>Open courses import file</source>
         <translation>Отвори датотеку за увоз предмета</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="121"/>
+        <location filename="../admin/courseform.cpp" line="120"/>
         <source>The file %1 cannot be opened.</source>
         <translation>Датотека %1 не може да се отвори.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="131"/>
+        <location filename="../admin/courseform.cpp" line="130"/>
         <source>Importing course data...</source>
         <translation>Увожење података о предметима...</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="148"/>
+        <location filename="../admin/courseform.cpp" line="147"/>
         <source>Importing line %1... %2</source>
         <translation>Увожење линије %1... %2</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="150"/>
+        <location filename="../admin/courseform.cpp" line="149"/>
         <source>Importing course data from %1</source>
         <translation>Увожење података о предметима из %1</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="159"/>
+        <location filename="../admin/courseform.cpp" line="158"/>
         <source>OK.</source>
         <translation>ОК.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="163"/>
+        <location filename="../admin/courseform.cpp" line="162"/>
         <source>The course code and name must be comma separated.</source>
         <translation>Шифра предмета и предмет морају да буду одвојени зарезом.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="168"/>
+        <location filename="../admin/courseform.cpp" line="167"/>
         <source>The course code is missing.</source>
         <translation>Недостаје шифра предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="173"/>
+        <location filename="../admin/courseform.cpp" line="172"/>
         <source>The course code exceeds 8 characters.</source>
         <translation>Шифра предмета је дужа од осам знакова.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="178"/>
+        <location filename="../admin/courseform.cpp" line="177"/>
         <source>The course name is missing.</source>
         <translation>Недостаје име предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="183"/>
+        <location filename="../admin/courseform.cpp" line="182"/>
         <source>The course name exceeds 64 characters.</source>
         <translation>Име предмета је дуже од 64 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="197"/>
+        <location filename="../admin/courseform.cpp" line="196"/>
         <source>Import finished without errors.</source>
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="200"/>
+        <location filename="../admin/courseform.cpp" line="199"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
@@ -675,7 +675,7 @@
 <context>
     <name>paso::admin::RoomForm</name>
     <message>
-        <location filename="../admin/roomform.cpp" line="77"/>
+        <location filename="../admin/roomform.cpp" line="74"/>
         <source>Do you want to delete selected room from the system?</source>
         <translation>Да ли стварно желите да обришете одабрану просторију из система?</translation>
     </message>
@@ -867,13 +867,21 @@
         <translation>Број индекса мора да буде у формату ГГГГ/ББББ.</translation>
     </message>
     <message>
-        <location filename="../admin/studentvalidator.cpp" line="54"/>
         <source>Enrollment year must be between 1990 and %1.</source>
+        <translation type="vanished">Година уписа мора да буде између 1990 и %1.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="54"/>
+        <source>Enrolment year must be between 1990 and %1.</source>
         <translation>Година уписа мора да буде између 1990 и %1.</translation>
     </message>
     <message>
-        <location filename="../admin/studentvalidator.cpp" line="60"/>
         <source>The index number must be greater than zero.</source>
+        <translation type="vanished">Број идекса мора да буде већи од нуле.</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentvalidator.cpp" line="60"/>
+        <source>The index number has to be greater than zero.</source>
         <translation>Број идекса мора да буде већи од нуле.</translation>
     </message>
     <message>

@@ -11,6 +11,6 @@ if [ "$1" = "centos" ]; then
     docker logs $DOCKER_CONTAINER_ID
     docker exec -ti $DOCKER_CONTAINER_ID /bin/bash -c "bash -xe /paso/tests/test_inside_docker_centos.sh ${el_version}"
     docker ps -a
-    docker stop $DOCKER_CONTAINER_ID
-    docker rm -v $DOCKER_CONTAINER_ID
+#    docker stop $DOCKER_CONTAINER_ID
+#    docker rm -v $DOCKER_CONTAINER_ID
 fi

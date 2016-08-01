@@ -42,7 +42,7 @@ make -j $CPU_COUNT
 xvfb-run -n 77 -s "-screen 0 1024x768x24 -ac" mwm &
 # Give some time to X server to start
 sleep 5
-DISPLAY=:77 make check
+DISPLAY=:77 make coverage
 
 killall mwm
 

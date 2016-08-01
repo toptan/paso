@@ -25,10 +25,10 @@ MockTableForm::createModelAndEditor() {
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     model->select();
     RecordEditorWidget *editor =
-        new MockRecordEditorWidget(FieldTypes{{"CODE", FieldType::LineEdit},
-                                              {"NAME", FieldType::LineEdit}},
+        new MockRecordEditorWidget(FieldTypes{{"code", FieldType::LineEdit},
+                                              {"name", FieldType::LineEdit}},
                                    nullptr);
-    editor->setupUi({{"CODE", "Code"}, {"NAME", "Name"}}, model->record());
+    editor->setupUi({{"code", "Code"}, {"name", "Name"}}, model->record());
     pair<QSqlTableModel *, RecordEditorWidget *> retVal;
     retVal.first = model;
     retVal.second = editor;
@@ -42,7 +42,7 @@ QSqlRecord MockTableForm::getSelectedRecord() const { return selectedRecord(); }
 void MockTableForm::prepareRecordForSaving(QSqlRecord &record) {
     // If value of the ID field is null, we need to remove it to let database
     // assign a value.
-    auto index = record.indexOf("ID");
+    auto index = record.indexOf("id");
     if (index == -1) {
         return;
     }

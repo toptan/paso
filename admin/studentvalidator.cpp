@@ -51,13 +51,13 @@ StudentValidator::validateIndexNumber(const QString &original) const {
         split[0].toInt() > QDate::currentDate().year()) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
-            QString(tr("Enrollment year must be between 1990 and %1."))
+            QString(tr("Enrolment year must be between 1990 and %1."))
                 .arg(QDate::currentDate().year()));
     }
     if (split[1].toInt() < 1) {
         return make_shared<ValidationError>(
             editor, tr("Invalid data entered"),
-            tr("The index number must be greater than zero."));
+            tr("The index number has to be greater than zero."));
     }
 
     if (original.isEmpty() || text != original) {
@@ -65,7 +65,7 @@ StudentValidator::validateIndexNumber(const QString &original) const {
         const auto unique = dbManager().indexNumberUnique(text, error);
         if (error.type() != QSqlError::NoError) {
             return make_shared<ValidationError>(
-                nullptr, tr("Critical error"),
+                editor, tr("Critical error"),
                 tr("There was an error working with the database."),
                 error.text(), QMessageBox::Critical);
         }

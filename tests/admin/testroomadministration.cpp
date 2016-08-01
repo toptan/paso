@@ -2,12 +2,18 @@
 
 #include "room.h"
 #include "roomeditorwidget.h"
+#include "roomform.h"
 #include "roomtablemodel.h"
 #include "roomvalidator.h"
 
+#include <QDebug>
 #include <QLineEdit>
+#include <QPushButton>
 #include <QSqlError>
 #include <QSqlField>
+#include <QTableView>
+#include <QTimer>
+#include <QUuid>
 
 using namespace paso::data::entity;
 using namespace paso::widget;
@@ -164,13 +170,76 @@ void TestRoomAdministration::testRoomEditorWidget() {
 }
 
 void TestRoomAdministration::testRoomTableModel() {
-    QVariantMap columnLabels{{"ROOM_UUID", "Room UUID"},
-                             {"NAME", "Name"},
-                             {"ROOM_NUMBER", "Room Number"}};
+    QVariantMap columnLabels{{"room_uuid", "Room UUID"},
+                             {"name", "Name"},
+                             {"room_number", "Room Number"}};
     RoomTableModel model(columnLabels, QSqlDatabase::database(dbName));
     QCOMPARE(model.columnCount(), 4);
-    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("ID"));
-    QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Room UUID"));
+    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
+    QCOMPARE(model.headerData(1, Qt::Horizontal).toString(),
+             QString("Room UUID"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(), QString("Name"));
-    QCOMPARE(model.headerData(3, Qt::Horizontal).toString(), QString("Room Number"));
+    QCOMPARE(model.headerData(3, Qt::Horizontal).toString(),
+             QString("Room Number"));
+}
+
+void TestRoomAdministration::testRoomForm() {
+    RoomForm form;
+    form.show();
+    QTest::qWaitForWindowExposed(&form);
+    auto tableView = form.findChild<QTableView *>();
+    auto roomEditorWidget = form.findChild<RoomEditorWidget *>();
+
+    QVERIFY(tableView != nullptr);
+    QVERIFY(roomEditorWidget != nullptr);
+
+    tableView->selectRow(0);
+    QApplication::processEvents();
+    QAction *newAction = nullptr;
+    QAction *deleteAction = nullptr;
+    for (auto action : form.toolBarActions()) {
+        QVERIFY(action->isEnabled());
+        if (action->objectName() == "NEW_RECORD_ACTION") {
+            newAction = action;
+            continue;
+        }
+        if (action->objectName() == "DELETE_RECORD_ACTION") {
+            deleteAction = action;
+            continue;
+        }
+    }
+    QVERIFY(newAction != nullptr);
+    QVERIFY(deleteAction != nullptr);
+
+    bool deleteMessageBoxShown = false;
+    auto timerCallback = [&deleteMessageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Escape);
+        deleteMessageBoxShown = true;
+    };
+
+    QTimer::singleShot(200, timerCallback);
+    deleteAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(deleteMessageBoxShown);
+
+    auto oldRowCount = tableView->model()->rowCount();
+    newAction->trigger();
+    QApplication::processEvents();
+    auto uuidEdit = dynamic_cast<QLineEdit *>(
+        roomEditorWidget->fieldEditors()["room_uuid"]);
+    auto nameEdit =
+        dynamic_cast<QLineEdit *>(roomEditorWidget->fieldEditors()["name"]);
+    auto numberEdit = dynamic_cast<QLineEdit *>(
+        roomEditorWidget->fieldEditors()["room_number"]);
+    auto saveButton = dynamic_cast<QDialogButtonBox *>(
+                          roomEditorWidget->findChild<QDialogButtonBox *>())
+                          ->button(QDialogButtonBox::Save);
+    uuidEdit->setText(QUuid::createUuid().toString());
+    nameEdit->setText("XXXXX");
+    numberEdit->setText("YYYYY");
+    saveButton->click();
+    QApplication::processEvents();
+    QCOMPARE(tableView->model()->rowCount(), oldRowCount + 1);
 }

@@ -1,14 +1,20 @@
 #include "testcourseadministration.h"
 
 #include "course.h"
+#include "coursedetailsdialog.h"
 #include "courseeditorwidget.h"
+#include "courseform.h"
 #include "coursetablemodel.h"
 #include "coursevalidator.h"
 
 #include <QCheckBox>
+#include <QDialogButtonBox>
 #include <QLineEdit>
+#include <QPushButton>
 #include <QSqlError>
 #include <QSqlField>
+#include <QTableView>
+#include <QTimer>
 
 using namespace paso::data::entity;
 using namespace paso::widget;
@@ -126,10 +132,92 @@ void TestCourseAdministration::testCourseEditorWidget() {
 }
 
 void TestCourseAdministration::testCourseTableModel() {
-    QVariantMap columnLabels{{"CODE", "Code"}, {"NAME", "Course"}};
+    QVariantMap columnLabels{{"code", "Code"}, {"name", "Course"}};
     CourseTableModel model(columnLabels, QSqlDatabase::database(dbName));
     QCOMPARE(model.columnCount(), 3);
-    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("ID"));
+    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Code"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(), QString("Course"));
+}
+
+void TestCourseAdministration::testCourseForm() {
+    CourseForm form;
+    form.show();
+    QTest::qWaitForWindowExposed(&form);
+    auto tableView = form.findChild<QTableView *>();
+    auto courseEditorWidget = form.findChild<CourseEditorWidget *>();
+
+    QVERIFY(tableView != nullptr);
+    QVERIFY(courseEditorWidget != nullptr);
+
+    tableView->selectRow(0);
+    QApplication::processEvents();
+    QAction *newAction = nullptr;
+    QAction *deleteAction = nullptr;
+    QAction *importAction = nullptr;
+    QAction *detailsAction = nullptr;
+    for (auto action : form.toolBarActions()) {
+        QVERIFY(action->isEnabled());
+        if (action->objectName() == "NEW_RECORD_ACTION") {
+            newAction = action;
+            continue;
+        }
+        if (action->objectName() == "DELETE_RECORD_ACTION") {
+            deleteAction = action;
+            continue;
+        }
+        if (action->objectName() == "IMPORT_ACTION") {
+            importAction = action;
+            continue;
+        }
+        if (action->objectName() == "DETAILS_ACTION") {
+            detailsAction = action;
+            continue;
+        }
+    }
+    QVERIFY(newAction != nullptr);
+    QVERIFY(deleteAction != nullptr);
+    QVERIFY(importAction != nullptr);
+    QVERIFY(detailsAction != nullptr);
+
+    bool deleteMessageBoxShown = false;
+    auto deleteMessageCallback = [&deleteMessageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Escape);
+        deleteMessageBoxShown = true;
+    };
+    QTimer::singleShot(200, deleteMessageCallback);
+    deleteAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(deleteMessageBoxShown);
+
+    auto oldRowCount = tableView->model()->rowCount();
+    newAction->trigger();
+    QApplication::processEvents();
+    auto codeEdit =
+        dynamic_cast<QLineEdit *>(courseEditorWidget->fieldEditors()["code"]);
+    auto nameEdit =
+        dynamic_cast<QLineEdit *>(courseEditorWidget->fieldEditors()["name"]);
+    auto saveButton = dynamic_cast<QDialogButtonBox *>(
+                          courseEditorWidget->findChild<QDialogButtonBox *>())
+                          ->button(QDialogButtonBox::Save);
+    codeEdit->setText("XXXXX");
+    nameEdit->setText("YYYYY");
+    saveButton->click();
+    QApplication::processEvents();
+    QCOMPARE(tableView->model()->rowCount(), oldRowCount + 1);
+
+    bool detailsDialogShown = false;
+    auto detailsDialogCallback = [&detailsDialogShown]() {
+        auto detailsDialog = dynamic_cast<CourseDetailsDialog *>(
+            QApplication::activeModalWidget());
+        QTest::keyClick(detailsDialog, Qt::Key_Escape);
+        detailsDialogShown = true;
+    };
+
+    QTimer::singleShot(200, detailsDialogCallback);
+    detailsAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(detailsDialogShown);
 }

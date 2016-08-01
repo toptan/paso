@@ -42,9 +42,9 @@ void TestForms::testTableForm() {
     QCOMPARE(tableView->model()->columnCount(), 3);
     QCOMPARE(tableView->model()->rowCount(), 1);
     auto codeEdit =
-        dynamic_cast<QLineEdit *>(form.recordEditor()->fieldEditors()["CODE"]);
+        dynamic_cast<QLineEdit *>(form.recordEditor()->fieldEditors()["code"]);
     auto nameEdit =
-        dynamic_cast<QLineEdit *>(form.recordEditor()->fieldEditors()["NAME"]);
+        dynamic_cast<QLineEdit *>(form.recordEditor()->fieldEditors()["name"]);
     auto buttonBox = form.findChild<QDialogButtonBox *>();
     auto saveButton = buttonBox->button(QDialogButtonBox::Save);
     newRecordAction->trigger();
@@ -89,7 +89,7 @@ void TestForms::testTableForm() {
     QTimer::singleShot(200, timerCallback);
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
-    QCOMPARE(form.model()->record(0).value("CODE").toString(),
+    QCOMPARE(form.model()->record(0).value("code").toString(),
              QString("AAAAA"));
 
     tableView->selectRow(1);
@@ -120,9 +120,9 @@ void TestForms::testTableForm() {
     refreshAction->trigger();
     QApplication::processEvents();
     QCOMPARE(tableView->selectionModel()->currentIndex().row(), 1);
-    QCOMPARE(form.getSelectedRecord().value("CODE").toString(),
+    QCOMPARE(form.getSelectedRecord().value("code").toString(),
              codeEdit->text());
-    QCOMPARE(form.getSelectedRecord().value("NAME").toString(),
+    QCOMPARE(form.getSelectedRecord().value("name").toString(),
              nameEdit->text());
     tableView->clearSelection();
     tableView->selectionModel()->clearSelection();

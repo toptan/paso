@@ -41,11 +41,13 @@ CourseForm::CourseForm(QWidget *parent)
     auto separator = new QAction(this);
     separator->setSeparator(true);
     mImportAction = new QAction(tr("Import"), this);
+    mImportAction->setObjectName("IMPORT_ACTION");
     toolBarActions().append(separator);
     toolBarActions().append(mImportAction);
     separator = new QAction(this);
     separator->setSeparator(true);
     mDetailsAction = new QAction(tr("Details"), this);
+    mDetailsAction->setObjectName("DETAILS_ACTION");
     toolBarActions().append(separator);
     toolBarActions().append(mDetailsAction);
     mDetailsAction->setEnabled(false);
@@ -77,10 +79,7 @@ CourseForm::createModelAndEditor() {
 void CourseForm::prepareRecordForSaving(QSqlRecord &record) {
     // If value of the ID field is null, we need to remove it to let database
     // assign a value.
-    auto index = record.indexOf("ID");
-    if (index == -1) {
-        return;
-    }
+    auto index = record.indexOf("id");
     if (record.field(index).isNull()) {
         record.remove(index);
     }

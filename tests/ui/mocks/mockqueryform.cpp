@@ -16,14 +16,14 @@ MockQueryForm::~MockQueryForm() {}
 
 pair<QSqlQueryModel *, RecordEditorWidget *>
 MockQueryForm::createModelAndEditor() {
-    QVariantMap columnLabels{{"CODE", "Code"}, {"NAME", "Name"}};
+    QVariantMap columnLabels{{"code", "Code"}, {"name", "Name"}};
     auto model = new RefreshableSqlQueryModel("SELECT * FROM COURSE", "paso");
     model->select();
     RecordEditorWidget *editor =
-        new MockRecordEditorWidget(FieldTypes{{"CODE", FieldType::LineEdit},
-                                              {"NAME", FieldType::LineEdit}},
+        new MockRecordEditorWidget(FieldTypes{{"code", FieldType::LineEdit},
+                                              {"name", FieldType::LineEdit}},
                                    nullptr);
-    editor->setupUi({{"CODE", "Code"}, {"NAME", "Name"}}, model->record());
+    editor->setupUi({{"code", "Code"}, {"name", "Name"}}, model->record());
 
     pair<QSqlQueryModel *, RecordEditorWidget *> retVal;
     retVal.first = model;

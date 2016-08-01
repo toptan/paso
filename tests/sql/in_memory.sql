@@ -1,113 +1,113 @@
-CREATE TABLE SYSTEM_USER (
-        ID         INTEGER PRIMARY KEY AUTOINCREMENT,
-        USERNAME   TEXT UNIQUE NOT NULL,
-        PASSWORD   TEXT NOT NULL,
-        FIRST_NAME TEXT NOT NULL,
-        LAST_NAME  TEXT NOT NULL,
-        EMAIL      TEXT NOT NULL,
-        ROLE       TEXT NOT NULL);
+create table system_user (
+        id         integer primary key autoincrement,
+        username   text unique not null,
+        password   text not null,
+        first_name text not null,
+        last_name  text not null,
+        email      text not null,
+        role       text not null);
 --
-CREATE TABLE COURSE (
-        ID   INTEGER PRIMARY KEY AUTOINCREMENT,
-        CODE TEXT UNIQUE NOT NULL,
-        NAME TEXT NOT NULL);
+create table course (
+        id   integer primary key autoincrement,
+        code text unique not null,
+        name text not null);
 --
-CREATE TABLE ROOM (
-        ID          INTEGER PRIMARY KEY AUTOINCREMENT,
-        ROOM_UUID   TEXT UNIQUE NOT NULL,
-        NAME        TEXT NOT NULL,
-        ROOM_NUMBER TEXT UNIQUE NOT NULL);
+create table room (
+        id          integer primary key autoincrement,
+        room_uuid   text unique not null,
+        name        text not null,
+        room_number text unique not null);
 --
-CREATE TABLE PERSON (
-        ID          INTEGER PRIMARY KEY AUTOINCREMENT,
-        FIRST_NAME  TEXT NOT NULL,
-        LAST_NAME   TEXT NOT NULL,
-        EMAIL       TEXT UNIQUE,
-        RFID        TEXT);
+create table person (
+        id          integer primary key autoincrement,
+        first_name  text not null,
+        last_name   text not null,
+        email       text unique,
+        rfid        text);
 --
-CREATE TABLE STUDENT (
-        ID              INTEGER PRIMARY KEY,
-        INDEX_NUMBER    TEXT UNIQUE NOT NULL,
-        YEAR_OF_STUDY   INTEGER NOT NULL,
-        FOREIGN KEY(ID) REFERENCES PERSON(ID) ON DELETE CASCADE ON UPDATE CASCADE);
+create table student (
+        id              integer primary key,
+        index_number    text unique not null,
+        year_of_study   integer not null,
+        foreign key(id) references person(id) on delete cascade on update cascade);
 --
-CREATE TABLE LIST (
-        ID          INTEGER   PRIMARY KEY AUTOINCREMENT,
-        NAME        TEXT      UNIQUE NOT NULL,
-        ID_COURSE   INTEGER   UNIQUE,
-        SYSTEM      BOOLEAN   NOT NULL DEFAULT FALSE,
-        PERMANENT   BOOLEAN   NOT NULL DEFAULT FALSE,
-        EXPIRY_DATE DATE,
-        FOREIGN KEY(ID_COURSE) REFERENCES COURSE(ID) ON DELETE CASCADE ON UPDATE CASCADE);
+create table list (
+        id          integer   primary key autoincrement,
+        name        text      unique not null,
+        id_course   integer   unique,
+        system      boolean   not null default false,
+        permanent   boolean   not null default false,
+        expiry_date date,
+        foreign key(id_course) references course(id) on delete cascade on update cascade);
 --
-CREATE TABLE ENLISTED (
-        ID_STUDENT      INTEGER NOT NULL,
-        ID_COURSE       INTEGER NOT NULL,
-        PRIMARY KEY(ID_STUDENT, ID_COURSE),
-        FOREIGN KEY(ID_STUDENT) REFERENCES STUDENT(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY(ID_COURSE) REFERENCES COURSE(ID) ON DELETE CASCADE ON UPDATE CASCADE);
+create table enlisted (
+        id_student      integer not null,
+        id_course       integer not null,
+        primary key(id_student, id_course),
+        foreign key(id_student) references student(id) on delete cascade on update cascade,
+        foreign key(id_course) references course(id) on delete cascade on update cascade);
 --
-CREATE TABLE MEMBER (
-        ID_STUDENT      INTEGER NOT NULL,
-        ID_LIST         INTEGER NOT NULL,
-        PRIMARY KEY(ID_STUDENT, ID_LIST),
-        FOREIGN KEY(ID_STUDENT) REFERENCES STUDENT(ID) ON DELETE CASCADE ON UPDATE CASCADE,
-        FOREIGN KEY(ID_LIST) REFERENCES LIST(ID) ON DELETE CASCADE ON UPDATE CASCADE);
+create table member (
+        id_student      integer not null,
+        id_list         integer not null,
+        primary key(id_student, id_list),
+        foreign key(id_student) references student(id) on delete cascade on update cascade,
+        foreign key(id_list) references list(id) on delete cascade on update cascade);
 --
-CREATE VIEW ENLISTED_STUDENTS AS
-    SELECT DISTINCT P.ID, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, S.INDEX_NUMBER, S.YEAR_OF_STUDY, C.CODE
-      FROM PERSON P
-      JOIN STUDENT S USING(ID)
-      LEFT OUTER JOIN ENLISTED E ON E.ID_STUDENT = S.ID
-      LEFT OUTER JOIN COURSE C ON E.ID_COURSE = C.ID;
+create view enlisted_students as
+    select distinct p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, c.code
+      from person p
+      join student s using(id)
+      left outer join enlisted e on e.id_student = s.id
+      left outer join course c on e.id_course = c.id;
 --
-CREATE VIEW LIST_MEMBERS AS
-    SELECT P.ID, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, S.INDEX_NUMBER, S.YEAR_OF_STUDY, L.ID
-      FROM PERSON P
-      JOIN STUDENT S USING(ID)
-      JOIN MEMBER M ON M.ID_STUDENT = S.ID
-      JOIN LIST L ON L.ID = M.ID_LIST
-    UNION
-    SELECT P.ID, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, S.INDEX_NUMBER, S.YEAR_OF_STUDY, 1
-      FROM PERSON P
-      JOIN STUDENT S USING(ID)
-     WHERE S.YEAR_OF_STUDY = 1
-    UNION
-    SELECT P.ID, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, S.INDEX_NUMBER, S.YEAR_OF_STUDY, 2
-      FROM PERSON P
-      JOIN STUDENT S USING(ID)
-     WHERE S.YEAR_OF_STUDY = 2
-    UNION
-    SELECT P.ID, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, S.INDEX_NUMBER, S.YEAR_OF_STUDY, 3
-      FROM PERSON P
-      JOIN STUDENT S USING(ID)
-     WHERE S.YEAR_OF_STUDY = 3
-    UNION
-    SELECT P.ID, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, S.INDEX_NUMBER, S.YEAR_OF_STUDY, 4
-      FROM PERSON P
-      JOIN STUDENT S USING(ID)
-     WHERE S.YEAR_OF_STUDY = 4
-    UNION
-    SELECT P.ID, P.LAST_NAME, P.FIRST_NAME, P.EMAIL, P.RFID, S.INDEX_NUMBER, S.YEAR_OF_STUDY, 5
-      FROM PERSON P
-      JOIN STUDENT S USING(ID)
-     WHERE S.YEAR_OF_STUDY = 5;
+create view list_members as
+    select p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, l.id
+      from person p
+      join student s using(id)
+      join member m on m.id_student = s.id
+      join list l on l.id = m.id_list
+    union
+    select p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, 1
+      from person p
+      join student s using(id)
+     where s.year_of_study = 1
+    union
+    select p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, 2
+      from person p
+      join student s using(id)
+     where s.year_of_study = 2
+    union
+    select p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, 3
+      from person p
+      join student s using(id)
+     where s.year_of_study = 3
+    union
+    select p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, 4
+      from person p
+      join student s using(id)
+     where s.year_of_study = 4
+    union
+    select p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, 5
+      from person p
+      join student s using(id)
+     where s.year_of_study = 5;
 --
-CREATE TRIGGER A_I_COURSE AFTER INSERT ON COURSE
-BEGIN
-    INSERT INTO LIST(NAME, SYSTEM, PERMANENT, ID_COURSE)
-              VALUES(NEW.CODE || ' студенти', 1, 1, NEW.ID);
-END;
+create trigger a_i_course after insert on course
+begin
+    insert into list(name, system, permanent, id_course)
+              values(new.code || ' студенти', 1, 1, new.id);
+end;
 --
-CREATE TRIGGER A_U_COURSE
-         AFTER UPDATE
-            ON COURSE
-          WHEN OLD.CODE <> NEW.CODE
-BEGIN
-    UPDATE LIST
-       SET NAME = NEW.CODE || ' студенти'
-     WHERE ID_COURSE = NEW.ID;
-END;
+create trigger a_u_course
+         after update
+            on course
+          when old.code <> new.code
+begin
+    update list
+       set name = new.code || ' студенти'
+     where id_course = new.id;
+end;
 --
 INSERT INTO SYSTEM_USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE)
        VALUES (

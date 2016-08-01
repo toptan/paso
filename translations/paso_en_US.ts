@@ -158,12 +158,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="61"/>
+        <location filename="../admin/courseform.cpp" line="63"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="62"/>
+        <location filename="../admin/courseform.cpp" line="64"/>
         <source>Course</source>
         <translation type="unfinished"></translation>
     </message>
@@ -330,77 +330,77 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="48"/>
+        <location filename="../admin/courseform.cpp" line="49"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="102"/>
+        <location filename="../admin/courseform.cpp" line="101"/>
         <source>Do you want to delete selected course from the system?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="114"/>
+        <location filename="../admin/courseform.cpp" line="113"/>
         <source>Open courses import file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="121"/>
+        <location filename="../admin/courseform.cpp" line="120"/>
         <source>The file %1 cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="131"/>
+        <location filename="../admin/courseform.cpp" line="130"/>
         <source>Importing course data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="148"/>
+        <location filename="../admin/courseform.cpp" line="147"/>
         <source>Importing line %1... %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="150"/>
+        <location filename="../admin/courseform.cpp" line="149"/>
         <source>Importing course data from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="159"/>
+        <location filename="../admin/courseform.cpp" line="158"/>
         <source>OK.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="163"/>
+        <location filename="../admin/courseform.cpp" line="162"/>
         <source>The course code and name must be comma separated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="168"/>
+        <location filename="../admin/courseform.cpp" line="167"/>
         <source>The course code is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="173"/>
+        <location filename="../admin/courseform.cpp" line="172"/>
         <source>The course code exceeds 8 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="178"/>
+        <location filename="../admin/courseform.cpp" line="177"/>
         <source>The course name is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="183"/>
+        <location filename="../admin/courseform.cpp" line="182"/>
         <source>The course name exceeds 64 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="197"/>
+        <location filename="../admin/courseform.cpp" line="196"/>
         <source>Import finished without errors.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="200"/>
+        <location filename="../admin/courseform.cpp" line="199"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -612,7 +612,7 @@
 <context>
     <name>paso::admin::RoomForm</name>
     <message>
-        <location filename="../admin/roomform.cpp" line="77"/>
+        <location filename="../admin/roomform.cpp" line="74"/>
         <source>Do you want to delete selected room from the system?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -801,12 +801,12 @@
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="54"/>
-        <source>Enrollment year must be between 1990 and %1.</source>
+        <source>Enrolment year must be between 1990 and %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="60"/>
-        <source>The index number must be greater than zero.</source>
+        <source>The index number has to be greater than zero.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

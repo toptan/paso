@@ -206,12 +206,12 @@ void TestSystemUserAdministration::testSystemUserEditorWidget() {
 
 void TestSystemUserAdministration::testSystemUserTableModel() {
     const QVariantMap columnLabels{
-        {"USERNAME", "Username"},     {"PASSWORD", "Password"},
-        {"FIRST_NAME", "First Name"}, {"LAST_NAME", "Last Name"},
-        {"EMAIL", "Email"},           {"ROLE", "Role"}};
+        {"username", "Username"},     {"password", "Password"},
+        {"first_name", "First Name"}, {"last_name", "Last Name"},
+        {"email", "Email"},           {"role", "Role"}};
     SystemUserTableModel model(columnLabels, QSqlDatabase::database(dbName));
     QCOMPARE(model.columnCount(), 7);
-    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("ID"));
+    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(),
              QString("Username"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(),
@@ -238,4 +238,7 @@ void TestSystemUserAdministration::testSystemUserTableModel() {
         }
     }
     QVERIFY(found);
+
+    index = model.index(0, 0);
+    QVERIFY(model.data(index) != QVariant());
 }

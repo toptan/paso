@@ -31,8 +31,8 @@ TestWidgets::TestWidgets() : TestBase() {}
 
 void TestWidgets::testAddRemoveEntityWidget() {
     AddRemoveEntitiesForm form;
-    QStringList columns{"NAME", "CODE"};
-    QMap<QString, QString> columnNames{{"NAME", "Predmet"}, {"CODE", "Šifra"}};
+    QStringList columns{"name", "code"};
+    QMap<QString, QString> columnNames{{"name", "Predmet"}, {"code", "Šifra"}};
 
     EntityVector sourceData{
         make_shared<Course>("IR3SP", "Sistemsko programiranje", 3),
@@ -143,31 +143,31 @@ void TestWidgets::testRecordValidator() {
 }
 
 void TestWidgets::testRecordEditorWidget() {
-    FieldTypes fieldTypes{{"LINE_EDIT", FieldType::LineEdit},
-                          {"MASKED_LINE_EDIT", FieldType::MaskedLineEdit},
-                          {"PASSWORD_EDIT", FieldType::PasswordEdit},
-                          {"NUMBER_EDIT", FieldType::NumberEdit},
-                          {"COMBO_BOX", FieldType::ComboBox},
-                          {"CHECK_BOX", FieldType::CheckBox},
-                          {"DATE_EDIT", FieldType::DateEdit}};
+    FieldTypes fieldTypes{{"line_edit", FieldType::LineEdit},
+                          {"masked_line_edit", FieldType::MaskedLineEdit},
+                          {"password_edit", FieldType::PasswordEdit},
+                          {"number_edit", FieldType::NumberEdit},
+                          {"combo_box", FieldType::ComboBox},
+                          {"check_box", FieldType::CheckBox},
+                          {"date_edit", FieldType::DateEdit}};
 
     QSqlRecord record;
-    record.append(QSqlField("LINE_EDIT", QVariant::String));
-    record.append(QSqlField("MASKED_LINE_EDIT", QVariant::String));
-    record.append(QSqlField("PASSWORD_EDIT", QVariant::String));
-    record.append(QSqlField("ID", QVariant::LongLong));
-    record.append(QSqlField("NUMBER_EDIT", QVariant::Int));
-    record.append(QSqlField("COMBO_BOX", QVariant::Int));
-    record.append(QSqlField("CHECK_BOX", QVariant::Bool));
-    record.append(QSqlField("DATE_EDIT", QVariant::Date));
+    record.append(QSqlField("line_edit", QVariant::String));
+    record.append(QSqlField("masked_line_edit", QVariant::String));
+    record.append(QSqlField("password_edit", QVariant::String));
+    record.append(QSqlField("id", QVariant::LongLong));
+    record.append(QSqlField("number_edit", QVariant::Int));
+    record.append(QSqlField("combo_box", QVariant::Int));
+    record.append(QSqlField("check_box", QVariant::Bool));
+    record.append(QSqlField("date_edit", QVariant::Date));
 
-    QVariantMap columnLabels{{"LINE_EDIT", "LineEdit"},
-                             {"MASKED_LINE_EDIT", "MaskedLineEdit"},
-                             {"PASSWORD_EDIT", "PasswordEdit"},
-                             {"NUMBER_EDIT", "NumberEdit"},
-                             {"COMBO_BOX", "ComboBox"},
-                             {"CHECK_BOX", "CheckBox"},
-                             {"DATE_EDIT", "DateEdit"}};
+    QVariantMap columnLabels{{"line_edit", "LineEdit"},
+                             {"masked_line_edit", "MaskedLineEdit"},
+                             {"password_edit", "PasswordEdit"},
+                             {"number_edit", "NumberEdit"},
+                             {"combo_box", "ComboBox"},
+                             {"check_box", "CheckBox"},
+                             {"date_edit", "DateEdit"}};
 
     const QDate testDate = QDate::currentDate().addMonths(6);
 
@@ -184,14 +184,14 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(w.children().size(), 16);
     QCOMPARE(w.fieldTypes(), fieldTypes);
     QCOMPARE(w.fieldEditors().keys(), fieldTypes.keys());
-    record.setValue("ID", 42);
-    record.setValue("LINE_EDIT", "Line Edit");
-    record.setValue("MASKED_LINE_EDIT", "Masked/Line/Edit");
-    record.setValue("PASSWORD_EDIT", "Password Edit");
-    record.setValue("NUMBER_EDIT", 9);
-    record.setValue("COMBO_BOX", 2);
-    record.setValue("CHECK_BOX", true);
-    record.setValue("DATE_EDIT", testDate);
+    record.setValue("id", 42);
+    record.setValue("line_edit", "Line Edit");
+    record.setValue("masked_line_edit", "Masked/Line/Edit");
+    record.setValue("password_edit", "Password Edit");
+    record.setValue("number_edit", 9);
+    record.setValue("combo_box", 2);
+    record.setValue("check_box", true);
+    record.setValue("date_edit", testDate);
     QVariantList stringValues{"Line Edit", "Masked/Line/Edit", "Password Edit"};
     w.onDisplayRecord(record);
     QApplication::processEvents();
@@ -237,13 +237,13 @@ void TestWidgets::testRecordEditorWidget() {
 
     auto buttonBox = w.findChild<QDialogButtonBox *>();
     QVERIFY(!buttonBox->isVisible());
-    QCOMPARE(w.fieldEditors().value("LINE_EDIT"), lineEdit);
-    QCOMPARE(w.fieldEditors().value("MASKED_LINE_EDIT"), maskedLineEdit);
-    QCOMPARE(w.fieldEditors().value("PASSWORD_EDIT"), passwordEdit);
-    QCOMPARE(w.fieldEditors().value("NUMBER_EDIT"), spinBox);
-    QCOMPARE(w.fieldEditors().value("COMBO_BOX"), comboBox);
-    QCOMPARE(w.fieldEditors().value("CHECK_BOX"), checkBox);
-    QCOMPARE(w.fieldEditors().value("DATE_EDIT"), dateEdit);
+    QCOMPARE(w.fieldEditors().value("line_edit"), lineEdit);
+    QCOMPARE(w.fieldEditors().value("masked_line_edit"), maskedLineEdit);
+    QCOMPARE(w.fieldEditors().value("password_edit"), passwordEdit);
+    QCOMPARE(w.fieldEditors().value("number_edit"), spinBox);
+    QCOMPARE(w.fieldEditors().value("combo_box"), comboBox);
+    QCOMPARE(w.fieldEditors().value("check_box"), checkBox);
+    QCOMPARE(w.fieldEditors().value("date_edit"), dateEdit);
     auto saveButton = buttonBox->button(QDialogButtonBox::Save);
     auto cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     QApplication::processEvents();
@@ -409,37 +409,37 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(!buttonBox->isVisible());
 
     // Focus checks
-    w.writableField = "MASKED_LINE_EDIT";
+    w.writableField = "masked_line_edit";
     w.onEditExistingRecord(record);
     QApplication::processEvents();
     QVERIFY(maskedLineEdit->hasFocus());
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
-    w.writableField = "PASSWORD_EDIT";
+    w.writableField = "password_edit";
     w.onEditExistingRecord(record);
     QApplication::processEvents();
     QVERIFY(passwordEdit->hasFocus());
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
-    w.writableField = "NUMBER_EDIT";
+    w.writableField = "number_edit";
     w.onEditExistingRecord(record);
     QApplication::processEvents();
     QVERIFY(spinBox->hasFocus());
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
-    w.writableField = "COMBO_BOX";
+    w.writableField = "combo_box";
     w.onEditExistingRecord(record);
     QApplication::processEvents();
     QVERIFY(comboBox->hasFocus());
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
-    w.writableField = "CHECK_BOX";
+    w.writableField = "check_box";
     w.onEditExistingRecord(record);
     QApplication::processEvents();
     QVERIFY(checkBox->hasFocus());
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
-    w.writableField = "DATE_EDIT";
+    w.writableField = "date_edit";
     w.onEditExistingRecord(record);
     QApplication::processEvents();
     QVERIFY(dateEdit->hasFocus());

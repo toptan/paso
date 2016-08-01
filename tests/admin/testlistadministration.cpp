@@ -113,16 +113,16 @@ void TestListAdministration::testListEditorWidget() {
 }
 
 void TestListAdministration::testListTableModel() {
-    QVariantMap columnLabels{{"NAME", "Name"},
-                             {"PERMANENT", "Permanent"},
-                             {"SYSTEM", "System"},
-                             {"EXPIRY_DATE", "Expiry Date"}};
+    QVariantMap columnLabels{{"name", "Name"},
+                             {"permanent", "Permanent"},
+                             {"system", "System"},
+                             {"expiry_date", "Expiry Date"}};
     ListTableModel model(columnLabels, QSqlDatabase::database(dbName));
     QCOMPARE(model.columnCount(), 6);
-    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("ID"));
+    QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(),
-             QString("ID_COURSE"));
+             QString("id_course"));
     QCOMPARE(model.headerData(3, Qt::Horizontal).toString(), QString("System"));
     QCOMPARE(model.headerData(4, Qt::Horizontal).toString(),
              QString("Permanent"));

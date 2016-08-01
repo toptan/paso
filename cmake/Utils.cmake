@@ -89,13 +89,14 @@ function(enable_coverage TARGET)
   endforeach ()
   # Setting coverage compiler and linker flags
   if (USING_GCC)
-    list(APPEND COVERAGE_FLAGS --coverage)
+#    list(APPEND COVERAGE_FLAGS --coverage)
     list(APPEND TARGET_LINK_LIBRARIES gcov)
   endif ()
 
-  list(APPEND COVERAGE_FLAGS -fprofile-arcs)
-  list(APPEND COVERAGE_FLAGS -ftest-coverage)
-  list(APPEND COVERAGE_FLAGS -fPIC)
+#  list(APPEND COVERAGE_FLAGS -fprofile-arcs)
+#  list(APPEND COVERAGE_FLAGS -ftest-coverage)
+#  list(APPEND COVERAGE_FLAGS -fPIC)
+  list(APPEND COVERAGE_FLAGS --coverage)
   list(APPEND COVERAGE_FLAGS -O0)
 
   # Create a string version of coverage flags

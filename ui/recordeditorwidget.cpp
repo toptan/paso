@@ -30,7 +30,7 @@ void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
     auto l = dynamic_cast<QFormLayout *>(layout());
     l->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for (int i = 0; i < record.count(); i++) {
-        if (record.fieldName(i).toUpper() == "ID") {
+        if (record.fieldName(i) == "id") {
             continue;
         }
         QLabel *label =
