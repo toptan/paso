@@ -224,6 +224,8 @@ void TestCourseAdministration::testCourseForm() {
 }
 
 void TestCourseAdministration::testCourseFormImportCourses() {
+    auto db = QSqlDatabase::database(dbName);
+    db.exec("DELETE FROM COURSE");
     CourseForm form;
     form.show();
     QTest::qWaitForWindowExposed(&form);
@@ -237,21 +239,34 @@ void TestCourseAdministration::testCourseFormImportCourses() {
         }
     }
 
-    bool openFileDialogShown = false;
-    auto openFileDialogCallback = [&openFileDialogShown]() {
-        auto dialog = dynamic_cast<QFileDialog *>(QApplication::activeModalWidget());
-        dialog->setDirectory("./files");
-        QApplication::processEvents();
-        dialog->selectFile("ispiti.csv");
-        QApplication::processEvents();\
-        QTest::keyClick(dialog, Qt::Key_Escape);
-        QApplication::processEvents();
-        openFileDialogShown = true;
-    };
-
-    QTimer::singleShot(200, openFileDialogCallback);
     importAction->trigger();
     QApplication::processEvents();
-    QVERIFY(openFileDialogShown);
+    QFileDialog *dialog = nullptr;
+    int attempt = 0;
+    while ((dialog = dynamic_cast<QFileDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+    // Is file open dialog shown?
+    QVERIFY(dialog != nullptr);
+    QTest::keyClick(dialog, Qt::Key_Escape);
+    QApplication::processEvents();
+    auto importWithNonExistingFileCallback = [&form]() {
+        form.onImportFileSelected("non_existing_file");
+    };
+    bool errorMessageBoxShown = false;
+    auto errorMessageBoxShownCallback = [&errorMessageBoxShown]() {
+        qDebug() << "AHA!";
+        auto msgBox = dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Return);
+        errorMessageBoxShown = true;
+    };
 
+    QTimer::singleShot(0, importWithNonExistingFileCallback);
+    QTimer::singleShot(0, errorMessageBoxShownCallback);
+    QApplication::processEvents();
+    QVERIFY(errorMessageBoxShown);
+    QCOMPARE(form.model()->rowCount(), 0);
 }

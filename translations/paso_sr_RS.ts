@@ -384,62 +384,62 @@
         <translation>Отвори датотеку за увоз предмета</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="123"/>
+        <location filename="../admin/courseform.cpp" line="132"/>
         <source>The file %1 cannot be opened.</source>
         <translation>Датотека %1 не може да се отвори.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="133"/>
+        <location filename="../admin/courseform.cpp" line="142"/>
         <source>Importing course data...</source>
         <translation>Увожење података о предметима...</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="150"/>
+        <location filename="../admin/courseform.cpp" line="159"/>
         <source>Importing line %1... %2</source>
         <translation>Увожење линије %1... %2</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="152"/>
+        <location filename="../admin/courseform.cpp" line="161"/>
         <source>Importing course data from %1</source>
         <translation>Увожење података о предметима из %1</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="161"/>
+        <location filename="../admin/courseform.cpp" line="170"/>
         <source>OK.</source>
         <translation>ОК.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="165"/>
+        <location filename="../admin/courseform.cpp" line="174"/>
         <source>The course code and name must be comma separated.</source>
         <translation>Шифра предмета и предмет морају да буду одвојени зарезом.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="170"/>
+        <location filename="../admin/courseform.cpp" line="179"/>
         <source>The course code is missing.</source>
         <translation>Недостаје шифра предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="175"/>
+        <location filename="../admin/courseform.cpp" line="184"/>
         <source>The course code exceeds 8 characters.</source>
         <translation>Шифра предмета је дужа од осам знакова.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="180"/>
+        <location filename="../admin/courseform.cpp" line="189"/>
         <source>The course name is missing.</source>
         <translation>Недостаје име предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="185"/>
+        <location filename="../admin/courseform.cpp" line="194"/>
         <source>The course name exceeds 64 characters.</source>
         <translation>Име предмета је дуже од 64 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="199"/>
+        <location filename="../admin/courseform.cpp" line="208"/>
         <source>Import finished without errors.</source>
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="202"/>
+        <location filename="../admin/courseform.cpp" line="211"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
