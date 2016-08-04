@@ -6,6 +6,7 @@
 #include "courseform.h"
 #include "coursetablemodel.h"
 #include "coursevalidator.h"
+#include "logdialog.h"
 
 #include <QCheckBox>
 #include <QDialogButtonBox>
@@ -232,34 +233,39 @@ void TestCourseAdministration::testCourseFormImportCourses() {
     auto tableView = form.findChild<QTableView *>();
 
     QAction *importAction = nullptr;
+    QAction *refreshAction = nullptr;
     for (auto action : form.toolBarActions()) {
         if (action->objectName() == "IMPORT_ACTION") {
             importAction = action;
-            break;
+            continue;
+        }
+        if (action->objectName() == "REFRESH_ACTION") {
+            refreshAction = action;
+            continue;
         }
     }
 
     importAction->trigger();
     QApplication::processEvents();
-    QFileDialog *dialog = nullptr;
+    QFileDialog *fileOpenDialog = nullptr;
     int attempt = 0;
-    while ((dialog = dynamic_cast<QFileDialog *>(
+    while ((fileOpenDialog = dynamic_cast<QFileDialog *>(
                 QApplication::activeModalWidget())) == nullptr &&
            attempt < 10) {
         QTest::qWait(200);
         attempt++;
     }
     // Is file open dialog shown?
-    QVERIFY(dialog != nullptr);
-    QTest::keyClick(dialog, Qt::Key_Escape);
+    QVERIFY(fileOpenDialog != nullptr);
+    QTest::keyClick(fileOpenDialog, Qt::Key_Escape);
     QApplication::processEvents();
     auto importWithNonExistingFileCallback = [&form]() {
         form.onImportFileSelected("non_existing_file");
     };
     bool errorMessageBoxShown = false;
     auto errorMessageBoxShownCallback = [&errorMessageBoxShown]() {
-        qDebug() << "AHA!";
-        auto msgBox = dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
         QTest::keyClick(msgBox, Qt::Key_Return);
         errorMessageBoxShown = true;
     };
@@ -268,5 +274,67 @@ void TestCourseAdministration::testCourseFormImportCourses() {
     QTimer::singleShot(0, errorMessageBoxShownCallback);
     QApplication::processEvents();
     QVERIFY(errorMessageBoxShown);
+    QCOMPARE(form.model()->rowCount(), 0);
+
+    LogDialog *logDialog = nullptr;
+    form.onImportFileSelected(QDir::currentPath() +
+                              "/files/courses_with_errors.csv");
+    attempt = 0;
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    bool importDone = false;
+    auto importDoneCallback = [&importDone]() { importDone = true; };
+    connect(&form, &CourseForm::importDone, importDoneCallback);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    delete logDialog;
+    QCOMPARE(form.model()->rowCount(), 1);
+
+    db.exec("DELETE FROM COURSE");
+    logDialog = nullptr;
+    form.onImportFileSelected(QDir::currentPath() + "/files/ispiti.csv");
+    attempt = 0;
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    importDone = false;
+    connect(&form, &CourseForm::importDone, importDoneCallback);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    delete logDialog;
+    QCOMPARE(form.model()->rowCount(), 77);
+
+    db.exec("DELETE FROM COURSE");
+    refreshAction->trigger();
+    QApplication::processEvents();
+    db.exec("DROP TABLE COURSE");
+    logDialog = nullptr;
+    attempt = 0;
+    form.onImportFileSelected(QDir::currentPath() +
+                              "/files/courses_with_errors.csv");
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    importDone = false;
+    connect(&form, &CourseForm::importDone, importDoneCallback);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    delete logDialog;
     QCOMPARE(form.model()->rowCount(), 0);
 }

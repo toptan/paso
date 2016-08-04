@@ -1,6 +1,6 @@
 #!/bin/sh -xe
 
-# This script starts docker and systemd (if el7)
+# This script starts docker and runs tests.
 
 if [ "$1" = "centos" ]; then
     # Version of CentOS/RHEL
@@ -11,6 +11,6 @@ if [ "$1" = "centos" ]; then
     docker logs $DOCKER_CONTAINER_ID
     docker exec -ti $DOCKER_CONTAINER_ID /bin/bash -c "bash -xe /paso/tests/test_inside_docker_centos.sh ${el_version}"
     docker ps -a
-#    docker stop $DOCKER_CONTAINER_ID
-#    docker rm -v $DOCKER_CONTAINER_ID
+    docker stop $DOCKER_CONTAINER_ID
+    docker rm -v $DOCKER_CONTAINER_ID
 fi
