@@ -228,6 +228,11 @@ void TestCourseAdministration::testCourseFormImportCourses() {
     auto db = QSqlDatabase::database(dbName);
     db.exec("DELETE FROM COURSE");
     CourseForm form;
+    bool importDone = false;
+    auto importDoneCallback = [&importDone]() {
+        importDone = true;
+    };
+    connect(&form, &CourseForm::importDone, importDoneCallback);
     form.show();
     QTest::qWaitForWindowExposed(&form);
     auto tableView = form.findChild<QTableView *>();
@@ -287,17 +292,18 @@ void TestCourseAdministration::testCourseFormImportCourses() {
         attempt++;
     }
     QVERIFY(logDialog != nullptr);
-    bool importDone = false;
-    auto importDoneCallback = [&importDone]() { importDone = true; };
-    connect(&form, &CourseForm::importDone, importDoneCallback);
     while (!importDone) {
         QTest::qWait(100);
     }
+    auto buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
     delete logDialog;
     QCOMPARE(form.model()->rowCount(), 1);
 
     db.exec("DELETE FROM COURSE");
     logDialog = nullptr;
+    importDone = false;
     form.onImportFileSelected(QDir::currentPath() + "/files/ispiti.csv");
     attempt = 0;
     while ((logDialog = dynamic_cast<LogDialog *>(
@@ -307,11 +313,12 @@ void TestCourseAdministration::testCourseFormImportCourses() {
         attempt++;
     }
     QVERIFY(logDialog != nullptr);
-    importDone = false;
-    connect(&form, &CourseForm::importDone, importDoneCallback);
     while (!importDone) {
         QTest::qWait(100);
     }
+    buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
     delete logDialog;
     QCOMPARE(form.model()->rowCount(), 77);
 
@@ -320,6 +327,7 @@ void TestCourseAdministration::testCourseFormImportCourses() {
     QApplication::processEvents();
     db.exec("DROP TABLE COURSE");
     logDialog = nullptr;
+    importDone = false;
     attempt = 0;
     form.onImportFileSelected(QDir::currentPath() +
                               "/files/courses_with_errors.csv");
@@ -330,11 +338,12 @@ void TestCourseAdministration::testCourseFormImportCourses() {
         attempt++;
     }
     QVERIFY(logDialog != nullptr);
-    importDone = false;
-    connect(&form, &CourseForm::importDone, importDoneCallback);
     while (!importDone) {
         QTest::qWait(100);
     }
+    buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
     delete logDialog;
     QCOMPARE(form.model()->rowCount(), 0);
 }

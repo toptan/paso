@@ -13,6 +13,7 @@ private slots:
     void testSystemUserValidator();
     void testSystemUserEditorWidget();
     void testSystemUserTableModel();
+    void testSystemUsersForm();
 };
 
 #endif // TESTSYSTEMUSERADMINISTRATION_H

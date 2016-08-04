@@ -22,6 +22,8 @@ RecordEditorWidget::RecordEditorWidget(const FieldTypes &fieldTypes,
     : QWidget(parent), mFieldTypes(fieldTypes), mButtonBox(nullptr),
       mValidator(nullptr), mNewRecord(false) {}
 
+RecordEditorWidget::~RecordEditorWidget() {}
+
 void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
                                  const QSqlRecord &record) {
     setLayout(new QFormLayout(this));

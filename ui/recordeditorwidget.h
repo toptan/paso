@@ -23,7 +23,7 @@ class RecordEditorWidget : public QWidget {
 public:
     explicit RecordEditorWidget(const FieldTypes &fieldTypes,
                                 QWidget *parent = nullptr);
-    virtual ~RecordEditorWidget() {}
+    virtual ~RecordEditorWidget();
 
     void setupUi(const QVariantMap &columnLabels, const QSqlRecord &record);
 

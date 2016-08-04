@@ -34,15 +34,18 @@ StudentForm::StudentForm(QWidget *parent)
     auto separator = new QAction(this);
     separator->setSeparator(true);
     mImportAction = new QAction(tr("Import"), this);
+    mImportAction->setObjectName("IMPORT_ACTION");
     toolBarActions().append(separator);
     toolBarActions().append(mImportAction);
     separator = new QAction(this);
     separator->setSeparator(true);
     mDetailsAction = new QAction(tr("Details"), this);
+    mDetailsAction->setObjectName("DETAILS_ACTION");
     toolBarActions().append(separator);
     toolBarActions().append(mDetailsAction);
     mDetailsAction->setEnabled(false);
     connect(mImportAction, &QAction::triggered, this, &StudentForm::onImport);
+    // TODO: Add student details
 }
 
 StudentForm::~StudentForm() { delete ui; }
@@ -103,32 +106,32 @@ bool StudentForm::insertRecord(QSqlRecord &record, QSqlError &error) {
     auto map = DBManager::recordToVariantMap(record);
     map.remove("id");
     Student student(map);
-    if (manager().saveStudent(student, error)) {
+    auto success = manager().saveStudent(student, error);
+    if (success) {
         refreshModel();
         record.setValue("id", static_cast<quint64>(student.id()));
-        return true;
     }
-    return false;
+    return success;
 }
 
 bool StudentForm::updateRecord(int, const QSqlRecord &record,
                                QSqlError &error) {
     auto map = DBManager::recordToVariantMap(record);
     Student student(map);
-    if (manager().saveStudent(student, error)) {
+    auto success = manager().saveStudent(student, error);
+    if (success) {
         refreshModel();
-        return true;
     }
-    return false;
+    return success;
 }
 
 bool StudentForm::removeRow(int row, QSqlError &error) {
     auto indexNumber = model()->record(row).value("index_number").toString();
-    if (manager().deleteStudent(indexNumber, error)) {
+    auto success = manager().deleteStudent(indexNumber, error);
+    if (success) {
         refreshModel();
-        return true;
     }
-    return false;
+    return success;
 }
 
 void StudentForm::onImport() {

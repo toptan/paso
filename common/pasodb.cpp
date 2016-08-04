@@ -30,7 +30,7 @@ DBManager::DBManager(const QString &dbName)
     if (!root) {
         root =
             make_shared<SystemUser>("root", "root_password", "Root", "Rootovic",
-                                    "root@paso.system", SystemRole::SUPER_USER);
+                                    "root@paso.com", SystemRole::SUPER_USER);
         saveSystemUser(*root, error);
     }
 }

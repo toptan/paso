@@ -65,9 +65,6 @@ void SystemUsersForm::prepareRecordForSaving(QSqlRecord &record) {
     // If value of the ID field is null, we need to remove it to let database
     // assign a value.
     auto index = record.indexOf("ID");
-    if (index == -1) {
-        return;
-    }
     if (record.field(index).isNull()) {
         record.remove(index);
     }

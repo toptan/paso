@@ -5,13 +5,19 @@
 #include "personvalidator.h"
 #include "student.h"
 #include "studenteditorwidget.h"
+#include "studentform.h"
 #include "studentquerymodel.h"
 #include "studentvalidator.h"
 
+#include <QCheckBox>
+#include <QDialogButtonBox>
+#include <QFileDialog>
 #include <QLineEdit>
-#include <QSpinBox>
+#include <QPushButton>
 #include <QSqlError>
 #include <QSqlField>
+#include <QTableView>
+#include <QTimer>
 
 using namespace paso::data;
 using namespace paso::data::entity;
@@ -288,4 +294,117 @@ void TestStudentAdministration::testStudentQueryModel() {
     QCOMPARE(model.headerData(5, Qt::Horizontal).toString(), QString("RFID"));
     QCOMPARE(model.headerData(6, Qt::Horizontal).toString(),
              QString("Year of Study"));
+}
+
+void TestStudentAdministration::testStudentForm() {
+    DBManager manager(dbName);
+    QSqlError error;
+    manager.importStudent("1996/0164, Tanaskovic,Toplica,toplica@gmail.com,4",
+                          error);
+
+    StudentForm form;
+    form.show();
+    QTest::qWaitForWindowExposed(&form);
+    auto tableView = form.findChild<QTableView *>();
+    auto editor = form.findChild<StudentEditorWidget *>();
+
+    QVERIFY(tableView != nullptr);
+    QVERIFY(editor != nullptr);
+
+    tableView->selectRow(0);
+    QApplication::processEvents();
+    QAction *newAction = nullptr;
+    QAction *editAction = nullptr;
+    QAction *deleteAction = nullptr;
+    QAction *refreshAction = nullptr;
+    QAction *importAction = nullptr;
+    QAction *detailsAction = nullptr;
+    for (auto action : form.toolBarActions()) {
+        QVERIFY(action->isEnabled());
+        if (action->objectName() == "NEW_RECORD_ACTION") {
+            newAction = action;
+            continue;
+        }
+        if (action->objectName() == "EDIT_RECORD_ACTION") {
+            editAction = action;
+            continue;
+        }
+        if (action->objectName() == "DELETE_RECORD_ACTION") {
+            deleteAction = action;
+            continue;
+        }
+        if (action->objectName() == "REFRESH_ACTION") {
+            refreshAction = action;
+            continue;
+        }
+        if (action->objectName() == "IMPORT_ACTION") {
+            importAction = action;
+            continue;
+        }
+        if (action->objectName() == "DETAILS_ACTION") {
+            detailsAction = action;
+            continue;
+        }
+    }
+    QVERIFY(newAction != nullptr);
+    QVERIFY(editAction != nullptr);
+    QVERIFY(refreshAction != nullptr);
+    QVERIFY(deleteAction != nullptr);
+    QVERIFY(importAction != nullptr);
+    QVERIFY(detailsAction != nullptr);
+
+    bool deleteMessageBoxShown = false;
+    auto deleteMessageCallback = [&deleteMessageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::mouseClick(msgBox->button(QMessageBox::Yes), Qt::LeftButton);
+        deleteMessageBoxShown = true;
+    };
+    QTimer::singleShot(200, deleteMessageCallback);
+    deleteAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(deleteMessageBoxShown);
+
+    manager.importStudent("2002/2002, Jankovic,Janko,janko@gmail.com,4",
+                          error);
+    qDebug() << error;
+    refreshAction->trigger();
+    QApplication::processEvents();
+    tableView->selectRow(0);
+    QApplication::processEvents();
+    editAction->trigger();
+    QApplication::processEvents();
+    auto firstNameEdit =
+        dynamic_cast<QLineEdit *>(editor->fieldEditors()["first_name"]);
+    auto lastNameEdit =
+        dynamic_cast<QLineEdit *>(editor->fieldEditors()["last_name"]);
+    auto emailEdit = dynamic_cast<QLineEdit *>(editor->fieldEditors()["email"]);
+    auto rfidEdit = dynamic_cast<QLineEdit *>(editor->fieldEditors()["rfid"]);
+    auto indexNumberEdit =
+        dynamic_cast<QLineEdit *>(editor->fieldEditors()["index_number"]);
+    auto yearOfStudyEdit =
+        dynamic_cast<QSpinBox *>(editor->fieldEditors()["year_of_study"]);
+    auto saveButton = dynamic_cast<QDialogButtonBox *>(
+                          editor->findChild<QDialogButtonBox *>())
+                          ->button(QDialogButtonBox::Save);
+    lastNameEdit->setText("Janković");
+    saveButton->click();
+    QApplication::processEvents();
+    auto student = manager.getStudentByIndexNumber("2002/2002", error);
+    QCOMPARE(student->lastName(), QString("Janković"));
+
+    auto oldRowCount = tableView->model()->rowCount();
+    newAction->trigger();
+    QApplication::processEvents();
+    firstNameEdit->setText("Petar");
+    lastNameEdit->setText("Petrovic");
+    emailEdit->setText("pera@petar.com");
+    rfidEdit->setText("RRFFIIDD");
+    indexNumberEdit->setText("2003/2003");
+    yearOfStudyEdit->setValue(2);
+    saveButton->click();
+    QApplication::processEvents();
+    QCOMPARE(tableView->model()->rowCount(), oldRowCount + 1);
+
+    // TODO: Details tests.
 }

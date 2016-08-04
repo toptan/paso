@@ -69,7 +69,7 @@ void TestPasoDB::testGetSystemUser() {
     QVERIFY(systemUser->password() == "root_password");
     QVERIFY(systemUser->firstName() == "Root");
     QVERIFY(systemUser->lastName() == "Rootovic");
-    QVERIFY(systemUser->email() == "root@paso.system");
+    QVERIFY(systemUser->email() == "root@paso.com");
     QVERIFY(systemUser->role() == SystemRole::SUPER_USER);
 
     auto nonExistingUser = manager.getSystemUser("qrgerbeb", error);

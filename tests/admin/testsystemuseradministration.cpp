@@ -1,15 +1,23 @@
 #include "testsystemuseradministration.h"
 
+#include "pasodb.h"
 #include "systemuser.h"
 #include "systemusereditorwidget.h"
+#include "systemusersform.h"
 #include "systemusertablemodel.h"
 #include "systemuservalidator.h"
 
-#include <QComboBox>
+#include <QCheckBox>
+#include <QDialogButtonBox>
+#include <QFileDialog>
 #include <QLineEdit>
+#include <QPushButton>
 #include <QSqlError>
 #include <QSqlField>
+#include <QTableView>
+#include <QTimer>
 
+using namespace paso::db;
 using namespace paso::data;
 using namespace paso::data::entity;
 using namespace paso::widget;
@@ -241,4 +249,106 @@ void TestSystemUserAdministration::testSystemUserTableModel() {
 
     index = model.index(0, 0);
     QVERIFY(model.data(index) != QVariant());
+}
+
+void TestSystemUserAdministration::testSystemUsersForm() {
+    auto db = QSqlDatabase::database(dbName);
+    db.exec("DELETE FROM SYSTEM_USER");
+    DBManager manager(dbName);
+
+    SystemUsersForm form;
+    form.show();
+    QTest::qWaitForWindowExposed(&form);
+    auto tableView = form.findChild<QTableView *>();
+    auto editor = form.findChild<SystemUserEditorWidget *>();
+
+    QVERIFY(tableView != nullptr);
+    QVERIFY(editor != nullptr);
+
+    tableView->selectRow(0);
+    QApplication::processEvents();
+    QAction *newAction = nullptr;
+    QAction *editAction = nullptr;
+    QAction *deleteAction = nullptr;
+    QAction *refreshAction = nullptr;
+    for (auto action : form.toolBarActions()) {
+        if (action->objectName() == "NEW_RECORD_ACTION") {
+            newAction = action;
+            continue;
+        }
+        if (action->objectName() == "EDIT_RECORD_ACTION") {
+            editAction = action;
+            continue;
+        }
+        if (action->objectName() == "DELETE_RECORD_ACTION") {
+            deleteAction = action;
+            continue;
+        }
+        if (action->objectName() == "REFRESH_ACTION") {
+            refreshAction = action;
+            continue;
+        }
+    }
+    QVERIFY(newAction != nullptr);
+    QVERIFY(editAction != nullptr);
+    QVERIFY(deleteAction != nullptr);
+    QVERIFY(refreshAction != nullptr);
+    QVERIFY(newAction->isEnabled());
+    QVERIFY(editAction->isEnabled());
+    QVERIFY(!deleteAction->isEnabled());
+    QVERIFY(refreshAction->isEnabled());
+
+    editAction->trigger();
+    QApplication::processEvents();
+
+    auto usernameEdit =
+        dynamic_cast<QLineEdit *>(editor->fieldEditors()["username"]);
+    auto passwordEdit =
+        dynamic_cast<QLineEdit *>(editor->fieldEditors()["password"]);
+    auto firstNameEdit =
+        dynamic_cast<QLineEdit *>(editor->fieldEditors()["first_name"]);
+    auto lastNameEdit =
+        dynamic_cast<QLineEdit *>(editor->fieldEditors()["last_name"]);
+    auto emailEdit = dynamic_cast<QLineEdit *>(editor->fieldEditors()["email"]);
+    auto roleCombo = dynamic_cast<QComboBox *>(editor->fieldEditors()["role"]);
+    auto saveButton = dynamic_cast<QDialogButtonBox *>(
+                          editor->findChild<QDialogButtonBox *>())
+                          ->button(QDialogButtonBox::Save);
+    int newIndex = roleCombo->currentIndex() + 1;
+    if (newIndex == roleCombo->count()) {
+        newIndex = 0;
+    }
+    roleCombo->setCurrentIndex(newIndex);
+    saveButton->click();
+    QApplication::processEvents();
+    QSqlError error;
+    auto user = manager.getSystemUser("root", error);
+    QCOMPARE(user->role(), SystemRole::SUPER_USER);
+
+    db.exec("DELETE FROM SYSTEM_USER");
+    newAction->trigger();
+    QApplication::processEvents();
+    usernameEdit->setText("toptan");
+    passwordEdit->setText("toptan_password");
+    firstNameEdit->setText("Toplica");
+    lastNameEdit->setText("Tanasković");
+    emailEdit->setText("toptan@paso.com");
+    roleCombo->setCurrentIndex(0);
+    saveButton->click();
+    QApplication::processEvents();
+    refreshAction->trigger();
+    QApplication::processEvents();
+    tableView->selectRow(0);
+    QApplication::processEvents();
+    bool deleteMessageBoxShown = false;
+    auto deleteMessageCallback = [&deleteMessageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Escape);
+        deleteMessageBoxShown = true;
+    };
+    QTimer::singleShot(200, deleteMessageCallback);
+    deleteAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(deleteMessageBoxShown);
 }
