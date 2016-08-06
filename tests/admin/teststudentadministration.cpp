@@ -367,7 +367,6 @@ void TestStudentAdministration::testStudentForm() {
 
     manager.importStudent("2002/2002, Jankovic,Janko,janko@gmail.com,4",
                           error);
-    qDebug() << error;
     refreshAction->trigger();
     QApplication::processEvents();
     tableView->selectRow(0);
