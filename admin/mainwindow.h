@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "data.h"
-#include "commdata.h"
 #include "abstractform.h"
+#include "commdata.h"
+#include "data.h"
 
 #include <QMainWindow>
 #include <QMap>
@@ -27,6 +27,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
 
+    void createDbConnection(const QString &connectionName,
+                            const comm::LoginResponse &response);
+
 public slots:
     void show();
     void loginFinished(const comm::LoginResponse &response);
@@ -47,7 +50,6 @@ private:
     void setupAdministratorUI();
     void setupRoomManagerUI();
     void setupManagerUI();
-    void setupStudentUI();
 };
 }
 }

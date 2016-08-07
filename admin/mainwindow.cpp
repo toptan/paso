@@ -45,26 +45,35 @@ void MainWindow::show() {
     mLoginDialog->show();
 }
 
+void MainWindow::createDbConnection(const QString &connectionName,
+                                    const LoginResponse &response) {
+    if (!QSqlDatabase::contains(connectionName)) {
+        auto db = QSqlDatabase::addDatabase(response.dbType(), connectionName);
+        db.setDatabaseName(response.dbName());
+        db.setHostName(response.dbServer());
+        db.setUserName(response.dbUsername());
+        db.setPassword(response.dbPassword());
+        db.setPort(response.dbPort());
+        if (!db.open()) {
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setWindowTitle(tr("Critical error"));
+            msgBox.setText(tr("Could not establish database connection."));
+            msgBox.setDetailedText(db.lastError().text());
+            msgBox.exec();
+            QApplication::instance()->quit();
+        }
+    }
+}
+
 void MainWindow::loginFinished(const LoginResponse &response) {
     mRole = response.systemUser().role();
-    auto db = QSqlDatabase::addDatabase("QPSQL", DEFAULT_DB_NAME);
-    db.setDatabaseName(response.dbName());
-    db.setHostName(response.dbServer());
-    db.setUserName(response.dbUsername());
-    db.setPassword(response.dbPassword());
-    db.setPort(response.dbPort());
-    if (!db.open()) {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle(tr("Critical error"));
-        msgBox.setText(tr("Could not establish database connection."));
-        msgBox.setDetailedText(db.lastError().text());
-        msgBox.exec();
-        QApplication::instance()->quit();
-    }
+    createDbConnection(DEFAULT_DB_NAME, response);
     createMenus();
     createWidgets();
-    onWidgetChooserCurrentIndexChanged(0);
+    if (mMainWidget->count() > 0) {
+        onWidgetChooserCurrentIndexChanged(0);
+    }
 }
 
 void MainWindow::createMenus() {}
@@ -83,10 +92,6 @@ void MainWindow::createWidgets() {
 
     mWidgetChooserComboBox = new QComboBox(this);
     toolBar->addWidget(mWidgetChooserComboBox);
-    mWidgetChooserComboBox->setCurrentIndex(0);
-    connect(mWidgetChooserComboBox, static_cast<void (QComboBox::*)(int)>(
-                                        &QComboBox::currentIndexChanged),
-            this, &MainWindow::onWidgetChooserCurrentIndexChanged);
     addToolBar(toolBar);
 
     switch (mRole) {
@@ -94,7 +99,6 @@ void MainWindow::createWidgets() {
         setupAdministratorUI();
         setupRoomManagerUI();
         setupManagerUI();
-        setupStudentUI();
         break;
     case SystemRole::ADMINISTRATOR:
         setupAdministratorUI();
@@ -108,13 +112,17 @@ void MainWindow::createWidgets() {
     default:
         break;
     }
-
+    if (mMainWidget->count() > 0) {
+        mWidgetChooserComboBox->setCurrentIndex(0);
+        connect(mWidgetChooserComboBox, static_cast<void (QComboBox::*)(int)>(
+                                            &QComboBox::currentIndexChanged),
+                this, &MainWindow::onWidgetChooserCurrentIndexChanged);
+    }
     for (auto i = 0; i < mWidgetChooserComboBox->count(); i++) {
         auto action = new QAction(this);
         action->setShortcut(Qt::CTRL | (Qt::Key_1 + i));
-        connect(action, &QAction::triggered, [this, i]() {
-            mWidgetChooserComboBox->setCurrentIndex(i);
-        });
+        connect(action, &QAction::triggered,
+                [this, i]() { mWidgetChooserComboBox->setCurrentIndex(i); });
         addAction(action);
     }
 }
@@ -132,14 +140,11 @@ void MainWindow::setupRoomManagerUI() {
 }
 
 void MainWindow::setupManagerUI() {
-    auto form = new CourseForm(this);
-    mMainWidget->addWidget(form);
+    auto courseForm = new CourseForm(this);
+    mMainWidget->addWidget(courseForm);
     mWidgetChooserComboBox->addItem(tr("Course administration"));
-}
-
-void MainWindow::setupStudentUI() {
-    auto form = new StudentForm(this);
-    mMainWidget->addWidget(form);
+    auto studentForm = new StudentForm(this);
+    mMainWidget->addWidget(studentForm);
     mWidgetChooserComboBox->addItem(tr("Student administration"));
 }
 

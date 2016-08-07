@@ -584,37 +584,37 @@
 <context>
     <name>paso::admin::MainWindow</name>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="59"/>
+        <location filename="../admin/mainwindow.cpp" line="60"/>
         <source>Critical error</source>
         <translation>Критична грешка</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="60"/>
+        <location filename="../admin/mainwindow.cpp" line="61"/>
         <source>Could not establish database connection.</source>
         <translation>Није могуће успоставити везу са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="73"/>
+        <location filename="../admin/mainwindow.cpp" line="82"/>
         <source>Main Toolbar</source>
         <translation>Главна трака са алаткама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="125"/>
+        <location filename="../admin/mainwindow.cpp" line="133"/>
         <source>System users administration</source>
         <translation>Управљање системским корисницима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="131"/>
+        <location filename="../admin/mainwindow.cpp" line="139"/>
         <source>Room administration</source>
         <translation>Управљање просторијама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="137"/>
+        <location filename="../admin/mainwindow.cpp" line="145"/>
         <source>Course administration</source>
         <translation>Управљање предметима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="143"/>
+        <location filename="../admin/mainwindow.cpp" line="148"/>
         <source>Student administration</source>
         <translation>Управљање студентима</translation>
     </message>

@@ -30,7 +30,6 @@ public:
 
 public slots:
     virtual void reject() override;
-    virtual void accept() override;
 
 private slots:
     virtual void onButtonBoxButtonClicked(QAbstractButton *button);

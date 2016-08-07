@@ -18,7 +18,7 @@ void CommManager::login(const QString &username, const QString &password) {
         QTcpSocket socket;
         socket.connectToHost(mServer, mPort);
         if (!socket.waitForConnected(mTimeout)) {
-            emit loginFailed();
+            emit communicationError(socket.errorString());
             return;
         }
         QByteArray block;

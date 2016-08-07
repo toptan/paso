@@ -139,6 +139,7 @@ public:
     ///
     /// \brief LoginResponse constructs new login response.
     /// \param systemUser data about system user that logged in.
+    /// \param dbType database type.
     /// \param dbName database name.
     /// \param dbServer database server.
     /// \param dbUsername database user name.
@@ -146,15 +147,21 @@ public:
     /// \param dbPort database port.
     ///
     LoginResponse(const data::entity::SystemUser &systemUser,
-                  const QString &dbName, const QString &dbServer,
-                  const QString &dbUsername, const QString &dbPassword,
-                  uint16_t dbPort);
+                  const QString &dbType, const QString &dbName,
+                  const QString &dbServer, const QString &dbUsername,
+                  const QString &dbPassword, uint16_t dbPort);
 
     ///
     /// \brief systemUser returns system user.
     /// \return system user.
     ///
     const data::entity::SystemUser &systemUser() const;
+
+    ///
+    /// \brief dbType returnd database type to use.
+    /// \return database type.
+    ///
+    QString dbType() const;
 
     ///
     /// \brief dbName returns database name to use.
@@ -198,6 +205,7 @@ public:
 
 private:
     data::entity::SystemUser mSystemUser; //!< The system user.
+    QString mDbType;                      //!< The database type.
     QString mDbName;                      //!< The database name.
     QString mDbServer;                    //!< The database server.
     QString mDbUsername;                  //!< The database username.

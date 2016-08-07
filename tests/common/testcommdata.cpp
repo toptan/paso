@@ -42,9 +42,11 @@ void TestCommData::testLoginRequestSerialization() {
 void TestCommData::testLoginResponseCreation() {
     SystemUser sysUser("user", "user_pass", "John", "Doe",
                        "john.doe@internet.com", SystemRole::ADMINISTRATOR);
-    LoginResponse *response = new LoginResponse(sysUser, "A", "B", "C", "D", 1);
+    LoginResponse *response =
+        new LoginResponse(sysUser, "QSQLITE", "A", "B", "C", "D", 1);
     QVERIFY(response->operation() == Operation::LOGIN);
     QCOMPARE(response->systemUser(), sysUser);
+    QVERIFY(response->dbType() == "QSQLITE");
     QVERIFY(response->dbName() == "A");
     QVERIFY(response->dbServer() == "B");
     QVERIFY(response->dbUsername() == "C");
@@ -56,11 +58,12 @@ void TestCommData::testLoginResponseCreation() {
 void TestCommData::testLoginResponseSerialization() {
     SystemUser sysUser("user", "user_pass", "John", "Doe",
                        "john.doe@internet.com", SystemRole::ADMINISTRATOR);
-    LoginResponse expected(sysUser, "A", "B", "C", "D", 1);
+    LoginResponse expected(sysUser, "QSQLITE", "A", "B", "C", "D", 1);
     LoginResponse deserialized;
     QString jsonString = expected.toJsonString();
     deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized.systemUser(), expected.systemUser());
+    QVERIFY(deserialized.dbType() == expected.dbType());
     QVERIFY(deserialized.dbName() == expected.dbName());
     QVERIFY(deserialized.dbServer() == expected.dbServer());
     QVERIFY(deserialized.dbUsername() == expected.dbUsername());

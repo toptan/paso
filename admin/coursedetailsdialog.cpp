@@ -67,13 +67,13 @@ void CourseDetailsDialog::reject() {
     }
 }
 
-void CourseDetailsDialog::accept() { saveData(); }
-
 void CourseDetailsDialog::onButtonBoxButtonClicked(QAbstractButton *button) {
     auto role = ui->buttonBox->buttonRole(button);
     if (role == QDialogButtonBox::AcceptRole &&
         ui->addRemoveEntitiesForm->dirty()) {
-        saveData();
+        if (!saveData()) {
+            return;
+        }
         loadData();
     } else if (role == QDialogButtonBox::RejectRole) {
         reject();
@@ -164,7 +164,7 @@ bool CourseDetailsDialog::saveData() {
         return false;
     }
 
-    return true;
+    return retVal;
 }
 }
 }

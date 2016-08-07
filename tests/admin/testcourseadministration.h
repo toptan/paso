@@ -2,6 +2,7 @@
 #define TESTCOURSEADMINISTRATION_H
 
 #include "testbase.h"
+
 #include <QTest>
 
 class TestCourseAdministration : public TestBase {

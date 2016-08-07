@@ -80,14 +80,17 @@ LoginResponse::LoginResponse()
       mSystemUser(""), mDbPort(0) {}
 
 LoginResponse::LoginResponse(const SystemUser &systemUser,
-                             const QString &dbName, const QString &dbServer,
-                             const QString &dbUsername,
+                             const QString &dbType, const QString &dbName,
+                             const QString &dbServer, const QString &dbUsername,
                              const QString &dbPassword, uint16_t dbPort)
     : Base("{00000000-0000-0000-0000-000000000000}", Operation::LOGIN),
-      mSystemUser(systemUser), mDbName(dbName), mDbServer(dbServer),
-      mDbUsername(dbUsername), mDbPassword(dbPassword), mDbPort(dbPort) {}
+      mSystemUser(systemUser), mDbType(dbType), mDbName(dbName),
+      mDbServer(dbServer), mDbUsername(dbUsername), mDbPassword(dbPassword),
+      mDbPort(dbPort) {}
 
 const SystemUser &LoginResponse::systemUser() const { return mSystemUser; }
+
+QString LoginResponse::dbType() const { return mDbType; }
 
 QString LoginResponse::dbName() const { return mDbName; }
 
@@ -101,6 +104,7 @@ uint16_t LoginResponse::dbPort() const { return mDbPort; }
 
 void LoginResponse::read(const QJsonObject &jsonObject) {
     Base::read(jsonObject);
+    mDbType = jsonObject["DB_TYPE"].toString();
     mDbName = jsonObject["DB_NAME"].toString();
     mDbServer = jsonObject["DB_SERVER"].toString();
     mDbUsername = jsonObject["DB_USERNAME"].toString();
@@ -111,6 +115,7 @@ void LoginResponse::read(const QJsonObject &jsonObject) {
 
 void LoginResponse::write(QJsonObject &jsonObject) const {
     Base::write(jsonObject);
+    jsonObject["DB_TYPE"] = mDbType;
     jsonObject["DB_NAME"] = mDbName;
     jsonObject["DB_SERVER"] = mDbServer;
     jsonObject["DB_USERNAME"] = mDbUsername;

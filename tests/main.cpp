@@ -5,16 +5,18 @@
 #include "testcommdata.h"
 #include "testcommmanager.h"
 #include "testcourseadministration.h"
+#include "testcoursedetailsdialog.h"
 #include "testdata.h"
 #include "testforms.h"
 #include "testlistadministration.h"
+#include "testlogindialog.h"
+#include "testmainwindow.h"
 #include "testmodels.h"
 #include "testpasodb.h"
 #include "testroomadministration.h"
 #include "teststudentadministration.h"
 #include "testsystemuseradministration.h"
 #include "testwidgets.h"
-#include "testcoursedetailsdialog.h"
 
 using namespace std;
 
@@ -49,6 +51,8 @@ int main(int argc, char **argv) {
     testCases.push_back(new TestSystemUserAdministration);
     testCases.push_back(new TestStudentAdministration);
     testCases.push_back(new TestCourseDetailsDialog);
+    testCases.push_back(new TestMainWindow);
+    testCases.push_back(new TestLoginDialog);
 
     for (auto testCase : testCases) {
         ASSERT_TEST(testCase);

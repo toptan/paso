@@ -417,7 +417,6 @@ void TestStudentAdministration::testStudentFormImportStudents() {
     connect(&form, &StudentForm::importDone, importDoneCallback);
     form.show();
     QTest::qWaitForWindowExposed(&form);
-    auto tableView = form.findChild<QTableView *>();
 
     QAction *importAction = nullptr;
     QAction *refreshAction = nullptr;

@@ -3,9 +3,9 @@
 
 #include <QDialog>
 
-#include "data.h"
 #include "commdata.h"
 #include "commmanager.h"
+#include "data.h"
 
 #include <memory>
 
@@ -25,6 +25,9 @@ public:
 
 public slots:
     virtual void accept() override;
+    void loginSuccessfull(const comm::LoginResponse &loginResponse);
+    void loginFailed();
+    void communicationError(const QString &reason);
 
 signals:
     void loginFinished(const comm::LoginResponse &loginResponse);
@@ -34,11 +37,6 @@ private:
     std::shared_ptr<paso::comm::CommManager> commManager;
 
     void performLogin();
-
-private slots:
-    void loginSuccessfull(const comm::LoginResponse &loginResponse);
-    void loginFailed();
-    void communicationError(const QString &reason);
 };
 }
 }

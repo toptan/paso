@@ -94,8 +94,8 @@ void PasoServer::handleLoginRequest(QTcpSocket *clientSocket,
     QSqlError error;
     auto sysUser = mDbManager->getSystemUser(loginRequest.username(), error);
     if (sysUser && sysUser->password() == loginRequest.password()) {
-        LoginResponse response(*sysUser, mDbName, mDbServer, mDbUsername,
-                               mDbPassword, mDbPort);
+        LoginResponse response(*sysUser, "QPSQL", mDbName, mDbServer,
+                               mDbUsername, mDbPassword, mDbPort);
         responseData = response.toJsonString();
     } else {
         LoginResponse response;
