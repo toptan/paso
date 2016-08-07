@@ -135,8 +135,20 @@ bool StudentForm::removeRow(int row, QSqlError &error) {
 }
 
 void StudentForm::onImport() {
-    auto fileName = QFileDialog::getOpenFileName(
-        this, tr("Open students import file"), "", "*.csv");
+    auto dialog =
+        new QFileDialog(this, tr("Open students import file"), "", "*.csv");
+    dialog->setOption(QFileDialog::DontUseNativeDialog, true);
+    dialog->setOption(QFileDialog::ReadOnly, true);
+    dialog->setFileMode(QFileDialog::ExistingFile);
+    dialog->setModal(true);
+    connect(dialog, &QFileDialog::fileSelected, this,
+            &StudentForm::onImportFileSelected);
+    connect(dialog, &QDialog::rejected, dialog, &QObject::deleteLater);
+    dialog->setWindowModality(Qt::ApplicationModal);
+    dialog->show();
+}
+
+void StudentForm::onImportFileSelected(const QString &fileName) {
     auto file = new QFile(fileName);
     if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox msgBox(this);

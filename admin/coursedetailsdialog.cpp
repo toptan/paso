@@ -34,17 +34,15 @@ CourseDetailsDialog::CourseDetailsDialog(const Course &course, QWidget *parent)
     ui->buttonBox->buttons();
     ui->buttonBox->button(QDialogButtonBox::Save)->setText(tr("Save"));
     ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
-    ui->buttonBox->addButton(new QPushButton(tr("Refresh"), ui->buttonBox),
-                             QDialogButtonBox::DestructiveRole);
+    auto refreshButton = new QPushButton(tr("Refresh"), ui->buttonBox);
+    refreshButton->setObjectName("REFRESH_BUTTON");
+    ui->buttonBox->addButton(refreshButton, QDialogButtonBox::DestructiveRole);
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this,
             &CourseDetailsDialog::onButtonBoxButtonClicked);
+    loadData();
 }
 
 CourseDetailsDialog::~CourseDetailsDialog() { delete ui; }
-
-int CourseDetailsDialog::exec() {
-    return loadData() ? QDialog::exec() : QDialog::Rejected;
-}
 
 void CourseDetailsDialog::reject() {
     if (!ui->addRemoveEntitiesForm->dirty()) {
@@ -66,29 +64,21 @@ void CourseDetailsDialog::reject() {
     }
     if (saveData()) {
         QDialog::accept();
-    } else {
-        QDialog::reject();
     }
 }
 
 void CourseDetailsDialog::accept() { saveData(); }
 
 void CourseDetailsDialog::onButtonBoxButtonClicked(QAbstractButton *button) {
-    switch (ui->buttonBox->buttonRole(button)) {
-    case QDialogButtonBox::AcceptRole:
-        if (ui->addRemoveEntitiesForm->dirty()) {
-            saveData();
-            loadData();
-        }
-        break;
-    case QDialogButtonBox::RejectRole:
+    auto role = ui->buttonBox->buttonRole(button);
+    if (role == QDialogButtonBox::AcceptRole &&
+        ui->addRemoveEntitiesForm->dirty()) {
+        saveData();
+        loadData();
+    } else if (role == QDialogButtonBox::RejectRole) {
         reject();
-        break;
-    case QDialogButtonBox::DestructiveRole:
+    } else if (role == QDialogButtonBox::DestructiveRole) {
         refresh();
-        break;
-    default:
-        break;
     }
 }
 
@@ -112,33 +102,27 @@ void CourseDetailsDialog::refresh() {
 }
 
 bool CourseDetailsDialog::loadData() {
-    QSqlError error;
+    QSqlError eErr;
+    QSqlError nErr;
     auto enlistedStudents = mPrivate->manager.studentsEnlistedToCourse(
-        mPrivate->course.code(), error);
-    if (error.type() != QSqlError::NoError) {
-        QMessageBox msgBox(this);
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle(tr("Critical error"));
-        msgBox.setText(tr("There was an error working with the database."));
-        msgBox.setDetailedText(error.text());
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setDefaultButton(QMessageBox::Ok);
-        msgBox.exec();
-        return false;
-    }
+        mPrivate->course.code(), eErr);
     auto notEnlistedStudents = mPrivate->manager.studentsNotEnlistedToCourse(
-        mPrivate->course.code(), error);
-    if (error.type() != QSqlError::NoError) {
+        mPrivate->course.code(), nErr);
+
+    if (eErr.type() != QSqlError::NoError ||
+        nErr.type() != QSqlError::NoError) {
+        auto t = eErr.type() != QSqlError::NoError ? eErr.text() : nErr.text();
         QMessageBox msgBox(this);
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.setWindowTitle(tr("Critical error"));
         msgBox.setText(tr("There was an error working with the database."));
-        msgBox.setDetailedText(error.text());
+        msgBox.setDetailedText(t);
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
         return false;
     }
+
     QStringList columns{"INDEX_NUMBER", "LAST_NAME", "FIRST_NAME"};
     QMap<QString, QString> columnNames{{"INDEX_NUMBER", tr("Index Number")},
                                        {"LAST_NAME", tr("Last Name")},

@@ -29,7 +29,6 @@ public:
     ~CourseDetailsDialog();
 
 public slots:
-    virtual int exec() override;
     virtual void reject() override;
     virtual void accept() override;
 

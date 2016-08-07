@@ -1,5 +1,6 @@
 #include "teststudentadministration.h"
 
+#include "logdialog.h"
 #include "pasodb.h"
 #include "person.h"
 #include "personvalidator.h"
@@ -365,8 +366,7 @@ void TestStudentAdministration::testStudentForm() {
     QApplication::processEvents();
     QVERIFY(deleteMessageBoxShown);
 
-    manager.importStudent("2002/2002, Jankovic,Janko,janko@gmail.com,4",
-                          error);
+    manager.importStudent("2002/2002, Jankovic,Janko,janko@gmail.com,4", error);
     refreshAction->trigger();
     QApplication::processEvents();
     tableView->selectRow(0);
@@ -406,4 +406,126 @@ void TestStudentAdministration::testStudentForm() {
     QCOMPARE(tableView->model()->rowCount(), oldRowCount + 1);
 
     // TODO: Details tests.
+}
+
+void TestStudentAdministration::testStudentFormImportStudents() {
+    auto db = QSqlDatabase::database(dbName);
+    db.exec("DELETE FROM PERSON");
+    StudentForm form;
+    bool importDone = false;
+    auto importDoneCallback = [&importDone]() { importDone = true; };
+    connect(&form, &StudentForm::importDone, importDoneCallback);
+    form.show();
+    QTest::qWaitForWindowExposed(&form);
+    auto tableView = form.findChild<QTableView *>();
+
+    QAction *importAction = nullptr;
+    QAction *refreshAction = nullptr;
+    for (auto action : form.toolBarActions()) {
+        if (action->objectName() == "IMPORT_ACTION") {
+            importAction = action;
+            continue;
+        }
+        if (action->objectName() == "REFRESH_ACTION") {
+            refreshAction = action;
+            continue;
+        }
+    }
+
+    importAction->trigger();
+    QApplication::processEvents();
+    QFileDialog *fileOpenDialog = nullptr;
+    int attempt = 0;
+    while ((fileOpenDialog = dynamic_cast<QFileDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+    // Is file open dialog shown?
+    QVERIFY(fileOpenDialog != nullptr);
+    QTest::keyClick(fileOpenDialog, Qt::Key_Escape);
+    QApplication::processEvents();
+    auto importWithNonExistingFileCallback = [&form]() {
+        form.onImportFileSelected("non_existing_file");
+    };
+    bool errorMessageBoxShown = false;
+    auto errorMessageBoxShownCallback = [&errorMessageBoxShown]() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Return);
+        errorMessageBoxShown = true;
+    };
+
+    QTimer::singleShot(0, importWithNonExistingFileCallback);
+    QTimer::singleShot(0, errorMessageBoxShownCallback);
+    QApplication::processEvents();
+    QVERIFY(errorMessageBoxShown);
+    QCOMPARE(form.model()->rowCount(), 0);
+
+    LogDialog *logDialog = nullptr;
+    form.onImportFileSelected(QDir::currentPath() +
+                              "/files/students_with_errors.csv");
+    attempt = 0;
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    auto buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
+    delete logDialog;
+    QCOMPARE(form.model()->rowCount(), 1);
+
+    db.exec("DELETE FROM PERSON");
+    logDialog = nullptr;
+    importDone = false;
+    form.onImportFileSelected(QDir::currentPath() + "/files/students.csv");
+    attempt = 0;
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
+    delete logDialog;
+    QCOMPARE(form.model()->rowCount(), 13);
+
+    db.exec("DELETE FROM PERSON");
+    refreshAction->trigger();
+    QApplication::processEvents();
+    db.exec("DROP TABLE STUDENT");
+    logDialog = nullptr;
+    importDone = false;
+    attempt = 0;
+    form.onImportFileSelected(QDir::currentPath() +
+                              "/files/students_with_errors.csv");
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
+    delete logDialog;
+    QCOMPARE(form.model()->rowCount(), 0);
 }

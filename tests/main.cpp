@@ -14,6 +14,7 @@
 #include "teststudentadministration.h"
 #include "testsystemuseradministration.h"
 #include "testwidgets.h"
+#include "testcoursedetailsdialog.h"
 
 using namespace std;
 
@@ -47,6 +48,7 @@ int main(int argc, char **argv) {
     testCases.push_back(new TestRoomAdministration);
     testCases.push_back(new TestSystemUserAdministration);
     testCases.push_back(new TestStudentAdministration);
+    testCases.push_back(new TestCourseDetailsDialog);
 
     for (auto testCase : testCases) {
         ASSERT_TEST(testCase);

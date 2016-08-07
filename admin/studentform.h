@@ -23,6 +23,9 @@ public:
     explicit StudentForm(QWidget *parent = 0);
     virtual ~StudentForm();
 
+public slots:
+    void onImportFileSelected(const QString &fileName);
+
 signals:
     void newLogLine(const QString &line);
     void importDone();

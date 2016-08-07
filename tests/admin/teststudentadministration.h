@@ -15,6 +15,7 @@ private slots:
     void testStudentEditorWidget();
     void testStudentQueryModel();
     void testStudentForm();
+    void testStudentFormImportStudents();
 };
 
 #endif // TESTSTUDENTADMINISTRATION_H

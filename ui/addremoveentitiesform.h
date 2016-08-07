@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "entitytablemodel.h"
 #include "stablerownumbersortfilterproxymodel.h"
+
 #include <QMap>
 #include <QStringList>
 #include <QWidget>
