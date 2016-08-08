@@ -15,6 +15,8 @@ RoomValidator::RoomValidator(const FieldTypes &fieldTypes,
                              const FieldEditors &fieldEditors, QObject *parent)
     : RecordValidator(fieldTypes, fieldEditors, parent) {}
 
+RoomValidator::~RoomValidator() {}
+
 shared_ptr<ValidationError>
 RoomValidator::validate(const QSqlRecord &original) const {
     auto retVal = validateRoomUuid(original.value("room_uuid").toString());

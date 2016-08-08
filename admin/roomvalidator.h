@@ -14,7 +14,7 @@ class RoomValidator : public widget::RecordValidator {
 public:
     RoomValidator(const widget::FieldTypes &fieldTypes,
                   const widget::FieldEditors &fieldEditors, QObject *parent = nullptr);
-    virtual ~RoomValidator() {}
+    virtual ~RoomValidator();
 
     virtual std::shared_ptr<widget::ValidationError>
     validate(const QSqlRecord &original) const override;

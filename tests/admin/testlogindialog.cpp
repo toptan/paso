@@ -131,7 +131,7 @@ void TestLoginDialog::testLogin() {
     passwordEdit->setText("password");
     serverEdit->setText("localhost");
     dialog.accept();
-    QApplication::processEvents();
+    loop.exec();
     QVERIFY(!messageLabel->text().isEmpty());
     MockServer mockServer;
     dialog.accept();

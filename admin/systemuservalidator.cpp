@@ -18,6 +18,8 @@ SystemUserValidator::SystemUserValidator(const FieldTypes &fieldTypes,
                                          QObject *parent)
     : RecordValidator(fieldTypes, fieldEditors, parent) {}
 
+SystemUserValidator::~SystemUserValidator() {}
+
 shared_ptr<ValidationError>
 SystemUserValidator::validate(const QSqlRecord &original) const {
     auto retVal = validateUsername(original.value("username").toString());

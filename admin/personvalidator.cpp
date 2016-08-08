@@ -16,6 +16,8 @@ PersonValidator::PersonValidator(const FieldTypes &fieldTypes,
                                  QObject *parent)
     : RecordValidator(fieldTypes, fieldEditors, parent) {}
 
+PersonValidator::~PersonValidator() {}
+
 shared_ptr<ValidationError>
 PersonValidator::validate(const QSqlRecord &original) const {
     auto retVal = validateFirstName();

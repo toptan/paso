@@ -15,7 +15,7 @@ public:
     SystemUserValidator(const widget::FieldTypes &fieldTypes,
                         const widget::FieldEditors &fieldEditors,
                         QObject *parent = nullptr);
-    virtual ~SystemUserValidator() {}
+    virtual ~SystemUserValidator();
 
     virtual std::shared_ptr<widget::ValidationError>
     validate(const QSqlRecord &original) const override;

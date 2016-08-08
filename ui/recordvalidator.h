@@ -59,12 +59,10 @@ struct ValidationError {
 ///
 class RecordValidator : public QObject {
 public:
-    explicit RecordValidator(const FieldTypes &fieldTypes,
-                             const FieldEditors &fieldEditors,
-                             QObject *parent = nullptr)
-        : QObject(parent), mFieldTypes(fieldTypes), mFieldEditors(fieldEditors),
-          mDbManager() {}
-    virtual ~RecordValidator() {}
+    RecordValidator(const FieldTypes &fieldTypes,
+                    const FieldEditors &fieldEditors,
+                    QObject *parent = nullptr);
+    virtual ~RecordValidator();
 
     ///
     /// \brief validate Validates entered data.
@@ -80,39 +78,15 @@ protected:
     const FieldTypes &mFieldTypes;
     const FieldEditors &mFieldEditors;
 
-    const db::DBManager &dbManager() const { return mDbManager; }
+    const db::DBManager &dbManager() const;
 
 private:
     db::DBManager mDbManager;
 };
 
-static void showEntryError(QWidget *editor, const QString &title,
-                           const QString &text,
-                           const QString &detailedText = "",
-                           QMessageBox::Icon icon = QMessageBox::NoIcon) {
-    if (editor != nullptr) {
-        editor->setProperty("error", true);
-        editor->style()->unpolish(editor);
-        editor->style()->polish(editor);
-    }
-    QMessageBox msgBox(editor);
-    msgBox.setIcon(icon);
-    msgBox.setWindowTitle(title);
-    msgBox.setText(text);
-    msgBox.setWindowModality(Qt::WindowModal);
-    if (!detailedText.isEmpty()) {
-        msgBox.setDetailedText(detailedText);
-    }
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    msgBox.setDefaultButton(QMessageBox::Ok);
-    msgBox.exec();
-    if (editor != nullptr) {
-        editor->setProperty("error", false);
-        editor->style()->unpolish(editor);
-        editor->style()->polish(editor);
-        editor->setFocus();
-    }
-}
+void showEntryError(QWidget *editor, const QString &title, const QString &text,
+                    const QString &detailedText = "",
+                    QMessageBox::Icon icon = QMessageBox::NoIcon);
 }
 }
 

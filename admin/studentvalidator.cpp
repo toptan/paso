@@ -16,6 +16,8 @@ StudentValidator::StudentValidator(const FieldTypes &fieldTypes,
                                    QObject *parent)
     : PersonValidator(fieldTypes, fieldEditors, parent) {}
 
+StudentValidator::~StudentValidator() {}
+
 shared_ptr<ValidationError>
 StudentValidator::validate(const QSqlRecord &original) const {
     auto retVal = PersonValidator::validate(original);
