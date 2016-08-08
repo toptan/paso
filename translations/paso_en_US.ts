@@ -522,6 +522,7 @@
     </message>
     <message>
         <location filename="../admin/logindialog.cpp" line="70"/>
+        <location filename="../admin/logindialog.cpp" line="74"/>
         <source>Login failed.</source>
         <translation type="unfinished"></translation>
     </message>

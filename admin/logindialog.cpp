@@ -71,6 +71,7 @@ void LoginDialog::loginFailed() {
     ui->usernameLineEdit->setEnabled(true);
     ui->passwordLineEdit->setEnabled(true);
     ui->serverLineEdit->setEnabled(true);
+    emit loginAttemptFailed(tr("Login failed."));
 }
 
 void LoginDialog::communicationError(const QString &reason) {
@@ -78,6 +79,7 @@ void LoginDialog::communicationError(const QString &reason) {
     ui->usernameLineEdit->setEnabled(true);
     ui->passwordLineEdit->setEnabled(true);
     ui->serverLineEdit->setEnabled(true);
+    emit loginAttemptFailed(reason);
 }
 }
 }

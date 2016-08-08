@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
         delete obj;
     };
 
+    testCases.push_back(new TestLoginDialog);
     testCases.push_back(new TestCommData);
     testCases.push_back(new TestCommManager);
     testCases.push_back(new TestData);
@@ -52,7 +53,6 @@ int main(int argc, char **argv) {
     testCases.push_back(new TestStudentAdministration);
     testCases.push_back(new TestCourseDetailsDialog);
     testCases.push_back(new TestMainWindow);
-    testCases.push_back(new TestLoginDialog);
 
     for (auto testCase : testCases) {
         ASSERT_TEST(testCase);

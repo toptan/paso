@@ -31,6 +31,7 @@ public slots:
 
 signals:
     void loginFinished(const comm::LoginResponse &loginResponse);
+    void loginAttemptFailed(const QString &reason);
 
 private:
     Ui::LoginDialog *ui;
