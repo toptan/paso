@@ -12,6 +12,9 @@
 #include <QSqlField>
 #include <QTableView>
 
+#include <memory>
+
+using namespace std;
 using namespace paso::data::entity;
 using namespace paso::widget;
 using namespace paso::admin;
@@ -27,17 +30,23 @@ void TestListAdministration::testListValidator() {
                           {"permanent", FieldType::CheckBox},
                           {"expiry_date", FieldType::DateEdit}};
     auto nameLineEdit = new QLineEdit();
+    auto systemCheckBox = new QCheckBox();
+    auto permanentCheckBox = new QCheckBox();
     auto dateEdit = new QDateEdit();
     FieldEditors fieldEditors{{"name", nameLineEdit},
-                              {"system", new QCheckBox()},
-                              {"permanent", new QCheckBox()},
+                              {"system", systemCheckBox},
+                              {"permanent", permanentCheckBox},
                               {"expiry_date", dateEdit}};
     const QString title = "Invalid data entered";
     const QSqlRecord emptyRecord;
     QSqlRecord notEmptyRecord;
     notEmptyRecord.append(QSqlField("name", QVariant::String));
+    notEmptyRecord.append(QSqlField("system", QVariant::Bool));
+    notEmptyRecord.append(QSqlField("permanent", QVariant::Bool));
+    notEmptyRecord.append(QSqlField("expiry_date", QVariant::Date));
 
     ListValidator validator(fieldTypes, fieldEditors, this);
+    permanentCheckBox->setChecked(true);
 
     auto result = validator.validate(emptyRecord);
     QVERIFY((bool)result);
@@ -90,21 +99,25 @@ void TestListAdministration::testListValidator() {
 
     notEmptyRecord.setValue("expiry_date", QDate::currentDate().addDays(-1));
     result = validator.validate(notEmptyRecord);
-    QVERIFY((bool)result);
+    QVERIFY(!(bool)result);
+
+    permanentCheckBox->setChecked(false);
+    result = validator.validate(notEmptyRecord);
     QCOMPARE(result->editor, dateEdit);
     QCOMPARE(result->title, title);
     QCOMPARE(result->text,
-             QString("The list expiration date cannot be in the past."));
+             QString("List expiry date cannot be in the past."));
 
     db.close();
     result = validator.validate(notEmptyRecord);
-    QVERIFY(result->editor == nullptr);
+    QCOMPARE(result->editor, nameLineEdit);
     QCOMPARE(result->title, QString("Critical error"));
     QCOMPARE(result->text,
              QString("There was an error working with the database."));
     QCOMPARE(result->icon, QMessageBox::Critical);
-
-    delete nameLineEdit;
+    for (auto editor : fieldEditors.values()) {
+        delete editor;
+    }
 }
 
 void TestListAdministration::testListEditorWidget() {

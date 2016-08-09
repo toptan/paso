@@ -105,20 +105,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="56"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="57"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="58"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -469,46 +469,40 @@
 <context>
     <name>paso::admin::ListValidator</name>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="38"/>
-        <location filename="../admin/listvalidator.cpp" line="44"/>
-        <location filename="../admin/listvalidator.cpp" line="59"/>
-        <location filename="../admin/listvalidator.cpp" line="75"/>
-        <location filename="../admin/listvalidator.cpp" line="81"/>
+        <location filename="../admin/listvalidator.cpp" line="48"/>
+        <location filename="../admin/listvalidator.cpp" line="54"/>
+        <location filename="../admin/listvalidator.cpp" line="69"/>
+        <location filename="../admin/listvalidator.cpp" line="85"/>
         <source>Invalid data entered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="39"/>
+        <location filename="../admin/listvalidator.cpp" line="49"/>
         <source>The list name has to be provided.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="45"/>
+        <location filename="../admin/listvalidator.cpp" line="55"/>
         <source>The list name cannot exceed 64 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="53"/>
+        <location filename="../admin/listvalidator.cpp" line="63"/>
         <source>Critical error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="54"/>
+        <location filename="../admin/listvalidator.cpp" line="64"/>
         <source>There was an error working with the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="60"/>
+        <location filename="../admin/listvalidator.cpp" line="70"/>
         <source>The list with entered name already exists in the system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="76"/>
-        <source>List expiry date has to be provided.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/listvalidator.cpp" line="82"/>
+        <location filename="../admin/listvalidator.cpp" line="86"/>
         <source>List expiry date cannot be in the past.</source>
         <translation type="unfinished"></translation>
     </message>

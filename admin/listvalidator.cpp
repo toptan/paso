@@ -2,6 +2,7 @@
 
 #include <QCheckBox>
 #include <QDateEdit>
+#include <QDebug>
 #include <QLineEdit>
 #include <QSqlError>
 
@@ -20,9 +21,18 @@ ListValidator::~ListValidator() {}
 
 shared_ptr<ValidationError>
 ListValidator::validate(const QSqlRecord &original) const {
+    auto system =
+        dynamic_cast<QCheckBox *>(mFieldEditors["system"])->isChecked();
+    auto permanent =
+        dynamic_cast<QCheckBox *>(mFieldEditors["permanent"])->isChecked();
     auto retVal = validateName(original.value("name").toString());
+
     if (retVal) {
         return retVal;
+    }
+
+    if (permanent || system) {
+        return nullptr;
     }
 
     return validateExpiryDate(original.value("expiry_date").toDate());
@@ -69,12 +79,6 @@ shared_ptr<ValidationError>
 ListValidator::validateExpiryDate(const QDate &original) const {
     auto editor = dynamic_cast<QDateEdit *>(mFieldEditors["expiry_date"]);
     auto date = editor->date();
-
-    if (date.isNull()) {
-        return make_shared<ValidationError>(
-            editor, tr("Invalid data entered"),
-            tr("List expiry date has to be provided."));
-    }
 
     if (date < QDate::currentDate()) {
         return make_shared<ValidationError>(
