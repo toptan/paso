@@ -2,6 +2,7 @@
 
 #include "list.h"
 #include "listeditorwidget.h"
+#include "listform.h"
 #include "listtablemodel.h"
 #include "listvalidator.h"
 
@@ -9,6 +10,7 @@
 #include <QLineEdit>
 #include <QSqlError>
 #include <QSqlField>
+#include <QTableView>
 
 using namespace paso::data::entity;
 using namespace paso::widget;
@@ -21,12 +23,15 @@ void TestListAdministration::testListValidator() {
     db.exec("INSERT INTO LIST(NAME) VALUES('List name 1')");
 
     FieldTypes fieldTypes{{"name", FieldType::LineEdit},
-                          {"system", FieldType::ComboBox},
-                          {"permanent", FieldType::ComboBox}};
+                          {"system", FieldType::CheckBox},
+                          {"permanent", FieldType::CheckBox},
+                          {"expiry_date", FieldType::DateEdit}};
     auto nameLineEdit = new QLineEdit();
+    auto dateEdit = new QDateEdit();
     FieldEditors fieldEditors{{"name", nameLineEdit},
                               {"system", new QCheckBox()},
-                              {"permanent", new QCheckBox()}};
+                              {"permanent", new QCheckBox()},
+                              {"expiry_date", dateEdit}};
     const QString title = "Invalid data entered";
     const QSqlRecord emptyRecord;
     QSqlRecord notEmptyRecord;
@@ -39,13 +44,15 @@ void TestListAdministration::testListValidator() {
     QCOMPARE(result->editor, nameLineEdit);
     QCOMPARE(result->title, title);
     QCOMPARE(result->text, QString("The list name has to be provided."));
-    nameLineEdit->setText(
-        "12345678901234567890123456789012345678901234567890123456789012345");
+
+    nameLineEdit->setText("123456789012345678901234567890123456789012345678"
+                          "90123456789012345");
     result = validator.validate(emptyRecord);
     QCOMPARE(result->editor, nameLineEdit);
     QCOMPARE(result->title, title);
     QCOMPARE(result->text,
              QString("The list name cannot exceed 64 characters."));
+
     nameLineEdit->setText("List name 1");
     result = validator.validate(emptyRecord);
     QCOMPARE(result->editor, nameLineEdit);
@@ -53,15 +60,18 @@ void TestListAdministration::testListValidator() {
     QCOMPARE(
         result->text,
         QString("The list with entered name already exists in the system."));
+
     result = validator.validate(notEmptyRecord);
     QCOMPARE(result->editor, nameLineEdit);
     QCOMPARE(result->title, title);
     QCOMPARE(
         result->text,
         QString("The list with entered name already exists in the system."));
+
     notEmptyRecord.setValue("name", "List name 1");
     result = validator.validate(notEmptyRecord);
     QVERIFY(!(bool)result);
+
     notEmptyRecord.setValue("name", "Old list name");
     result = validator.validate(notEmptyRecord);
     QCOMPARE(result->editor, nameLineEdit);
@@ -69,12 +79,23 @@ void TestListAdministration::testListValidator() {
     QCOMPARE(
         result->text,
         QString("The list with entered name already exists in the system."));
+
     nameLineEdit->setText("List name 2");
     result = validator.validate(notEmptyRecord);
     QVERIFY(!(bool)result);
+
     notEmptyRecord.setValue("name", "List name 1");
     result = validator.validate(notEmptyRecord);
     QVERIFY(!(bool)result);
+
+    notEmptyRecord.setValue("expiry_date", QDate::currentDate().addDays(-1));
+    result = validator.validate(notEmptyRecord);
+    QVERIFY((bool)result);
+    QCOMPARE(result->editor, dateEdit);
+    QCOMPARE(result->title, title);
+    QCOMPARE(result->text,
+             QString("The list expiration date cannot be in the past."));
+
     db.close();
     result = validator.validate(notEmptyRecord);
     QVERIFY(result->editor == nullptr);
@@ -128,4 +149,15 @@ void TestListAdministration::testListTableModel() {
              QString("Permanent"));
     QCOMPARE(model.headerData(5, Qt::Horizontal).toString(),
              QString("Expiry Date"));
+}
+
+void TestListAdministration::testListForm() {
+    ListForm form;
+    form.show();
+    QTest::qWaitForWindowExposed(&form);
+    auto tableView = form.findChild<QTableView *>();
+    auto listEditorWidget = form.findChild<ListEditorWidget *>();
+
+    QVERIFY(tableView != nullptr);
+    QVERIFY(listEditorWidget);
 }

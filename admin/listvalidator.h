@@ -19,6 +19,13 @@ public:
 
     virtual std::shared_ptr<widget::ValidationError>
     validate(const QSqlRecord &original) const override;
+
+private:
+    std::shared_ptr<widget::ValidationError>
+    validateName(const QString &original) const;
+
+    std::shared_ptr<widget::ValidationError>
+    validateExpiryDate(const QDate &original) const;
 };
 }
 }

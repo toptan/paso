@@ -148,6 +148,7 @@
     </message>
     <message>
         <location filename="../admin/roomform.cpp" line="35"/>
+        <location filename="../admin/listform.cpp" line="29"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
@@ -204,6 +205,21 @@
     <message>
         <source>Enlisted students: %1</source>
         <translation type="vanished">Пријављени студенти: %1</translation>
+    </message>
+    <message>
+        <location filename="../admin/listform.cpp" line="30"/>
+        <source>System list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/listform.cpp" line="31"/>
+        <source>Permanent list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/listform.cpp" line="32"/>
+        <source>Expiry date</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -496,9 +512,11 @@
 <context>
     <name>paso::admin::ListValidator</name>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="28"/>
-        <location filename="../admin/listvalidator.cpp" line="34"/>
-        <location filename="../admin/listvalidator.cpp" line="49"/>
+        <location filename="../admin/listvalidator.cpp" line="38"/>
+        <location filename="../admin/listvalidator.cpp" line="44"/>
+        <location filename="../admin/listvalidator.cpp" line="59"/>
+        <location filename="../admin/listvalidator.cpp" line="75"/>
+        <location filename="../admin/listvalidator.cpp" line="81"/>
         <source>Invalid data entered</source>
         <translation>Унешени су неисправни подаци</translation>
     </message>
@@ -511,29 +529,39 @@
         <translation type="obsolete">Шифра предмета не може бити дужа од осам знакова.</translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="29"/>
+        <location filename="../admin/listvalidator.cpp" line="39"/>
         <source>The list name has to be provided.</source>
         <translation>Морате унети име листе.</translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="35"/>
+        <location filename="../admin/listvalidator.cpp" line="45"/>
         <source>The list name cannot exceed 64 characters.</source>
         <translation>Име листе не може бити дуже од 64 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="43"/>
+        <location filename="../admin/listvalidator.cpp" line="53"/>
         <source>Critical error</source>
         <translation>Критична грешка</translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="44"/>
+        <location filename="../admin/listvalidator.cpp" line="54"/>
         <source>There was an error working with the database.</source>
         <translation>Дошло је до грешке при раду са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/listvalidator.cpp" line="50"/>
+        <location filename="../admin/listvalidator.cpp" line="60"/>
         <source>The list with entered name already exists in the system.</source>
         <translation>Листа са унетим именом већ постоји у систему.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="76"/>
+        <source>List expiry date has to be provided.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/listvalidator.cpp" line="82"/>
+        <source>List expiry date cannot be in the past.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The course with entered code already exists in the system.</source>

@@ -14,6 +14,7 @@ private slots:
     void testListValidator();
     void testListEditorWidget();
     void testListTableModel();
+    void testListForm();
 };
 
 #endif // TESTLISTADMINISTRATION_H

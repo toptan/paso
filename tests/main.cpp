@@ -38,21 +38,21 @@ int main(int argc, char **argv) {
         delete obj;
     };
 
-    testCases.push_back(new TestLoginDialog);
-    testCases.push_back(new TestCommData);
-    testCases.push_back(new TestCommManager);
-    testCases.push_back(new TestData);
-    testCases.push_back(new TestModels);
-    testCases.push_back(new TestPasoDB);
-    testCases.push_back(new TestForms);
-    testCases.push_back(new TestWidgets);
-    testCases.push_back(new TestCourseAdministration);
+//    testCases.push_back(new TestLoginDialog);
+//    testCases.push_back(new TestCommData);
+//    testCases.push_back(new TestCommManager);
+//    testCases.push_back(new TestData);
+//    testCases.push_back(new TestModels);
+//    testCases.push_back(new TestPasoDB);
+//    testCases.push_back(new TestForms);
+//    testCases.push_back(new TestWidgets);
+//    testCases.push_back(new TestCourseAdministration);
     testCases.push_back(new TestListAdministration);
-    testCases.push_back(new TestRoomAdministration);
-    testCases.push_back(new TestSystemUserAdministration);
-    testCases.push_back(new TestStudentAdministration);
-    testCases.push_back(new TestCourseDetailsDialog);
-    testCases.push_back(new TestMainWindow);
+//    testCases.push_back(new TestRoomAdministration);
+//    testCases.push_back(new TestSystemUserAdministration);
+//    testCases.push_back(new TestStudentAdministration);
+//    testCases.push_back(new TestCourseDetailsDialog);
+//    testCases.push_back(new TestMainWindow);
 
     for (auto testCase : testCases) {
         ASSERT_TEST(testCase);

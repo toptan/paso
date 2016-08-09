@@ -60,13 +60,13 @@ CourseForm::~CourseForm() { delete ui; }
 
 pair<QSqlTableModel *, RecordEditorWidget *>
 CourseForm::createModelAndEditor() {
-    QVariantMap columnLabels = {{"code", QObject::tr("Code")},
-                                {"name", QObject::tr("Course")}};
+    const QVariantMap columnLabels = {{"code", QObject::tr("Code")},
+                                      {"name", QObject::tr("Course")}};
 
     auto model = new CourseTableModel(columnLabels,
                                       QSqlDatabase::database(DEFAULT_DB_NAME));
-    FieldTypes fieldTypes = {{"code", FieldType::LineEdit},
-                             {"name", FieldType::LineEdit}};
+    const FieldTypes fieldTypes = {{"code", FieldType::LineEdit},
+                                   {"name", FieldType::LineEdit}};
     auto editor = new CourseEditorWidget(fieldTypes);
     editor->setupUi(columnLabels, model->record());
     editor->setValidator(new CourseValidator(editor->fieldTypes(),

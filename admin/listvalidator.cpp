@@ -1,6 +1,7 @@
 #include "listvalidator.h"
 
 #include <QCheckBox>
+#include <QDateEdit>
 #include <QLineEdit>
 #include <QSqlError>
 
@@ -19,9 +20,18 @@ ListValidator::~ListValidator() {}
 
 shared_ptr<ValidationError>
 ListValidator::validate(const QSqlRecord &original) const {
+    auto retVal = validateName(original.value("name").toString());
+    if (retVal) {
+        return retVal;
+    }
+
+    return validateExpiryDate(original.value("expiry_date").toDate());
+}
+
+shared_ptr<ValidationError>
+ListValidator::validateName(const QString &original) const {
     auto editor = dynamic_cast<QLineEdit *>(mFieldEditors["name"]);
     auto text = editor->text().trimmed();
-    auto originalText = original.value("name").toString();
 
     if (text.isEmpty()) {
         return make_shared<ValidationError>(
@@ -35,12 +45,12 @@ ListValidator::validate(const QSqlRecord &original) const {
             tr("The list name cannot exceed 64 characters."));
     }
 
-    if (originalText.isEmpty() || text != originalText) {
+    if (original.isEmpty() || text != original) {
         QSqlError error;
         const auto unique = dbManager().listNameUnique(text, error);
         if (error.type() != QSqlError::NoError) {
             return make_shared<ValidationError>(
-                nullptr, tr("Critical error"),
+                editor, tr("Critical error"),
                 tr("There was an error working with the database."),
                 error.text(), QMessageBox::Critical);
         }
@@ -51,6 +61,27 @@ ListValidator::validate(const QSqlRecord &original) const {
                    "system."));
         }
     }
+
+    return nullptr;
+}
+
+shared_ptr<ValidationError>
+ListValidator::validateExpiryDate(const QDate &original) const {
+    auto editor = dynamic_cast<QDateEdit *>(mFieldEditors["expiry_date"]);
+    auto date = editor->date();
+
+    if (date.isNull()) {
+        return make_shared<ValidationError>(
+            editor, tr("Invalid data entered"),
+            tr("List expiry date has to be provided."));
+    }
+
+    if (date < QDate::currentDate()) {
+        return make_shared<ValidationError>(
+            editor, tr("Invalid data entered"),
+            tr("List expiry date cannot be in the past."));
+    }
+
     return nullptr;
 }
 }
