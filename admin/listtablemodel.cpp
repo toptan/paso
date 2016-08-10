@@ -18,5 +18,13 @@ ListTableModel::ListTableModel(const QVariantMap &columnLabels, QSqlDatabase db,
         setHeaderData(i, Qt::Horizontal, columnLabels[rec.fieldName(i)]);
     }
 }
+
+QVariant ListTableModel::data(const QModelIndex &idx, int role) const {
+    if (role == Qt::DisplayRole && (idx.column() == 2 || idx.column() == 3)) {
+        return QSqlTableModel::data(idx, role).toBool() ? tr("Yes") : tr("No");
+    }
+
+    return QSqlTableModel::data(idx, role);
+}
 }
 }

@@ -148,7 +148,7 @@
     </message>
     <message>
         <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="29"/>
+        <location filename="../admin/listform.cpp" line="41"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
@@ -207,17 +207,17 @@
         <translation type="vanished">Пријављени студенти: %1</translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="30"/>
+        <location filename="../admin/listform.cpp" line="42"/>
         <source>System list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="31"/>
+        <location filename="../admin/listform.cpp" line="43"/>
         <source>Permanent list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="32"/>
+        <location filename="../admin/listform.cpp" line="44"/>
         <source>Expiry date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -507,6 +507,32 @@
         <location filename="../admin/coursevalidator.cpp" line="79"/>
         <source>The name of the course cannot exceed 64 characters.</source>
         <translation>Име предмета не може да буде дуже од 64 знака.</translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::ListForm</name>
+    <message>
+        <location filename="../admin/listform.cpp" line="28"/>
+        <source>Details</source>
+        <translation type="unfinished">Детаљи</translation>
+    </message>
+    <message>
+        <location filename="../admin/listform.cpp" line="88"/>
+        <source>Do you want to delete selected list from the system?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::ListTableModel</name>
+    <message>
+        <location filename="../admin/listtablemodel.cpp" line="24"/>
+        <source>Yes</source>
+        <translation type="unfinished">Да</translation>
+    </message>
+    <message>
+        <location filename="../admin/listtablemodel.cpp" line="24"/>
+        <source>No</source>
+        <translation type="unfinished">Не</translation>
     </message>
 </context>
 <context>

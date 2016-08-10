@@ -16,6 +16,8 @@ protected:
     virtual bool fieldReadOnly(const QString &key) override;
 
     virtual QLineEdit *createLineEdit(const QString &field) override;
+    virtual QCheckBox *createCheckBox(const QString &field) override;
+    virtual QDateEdit *createDateEdit(const QString &field) override;
 };
 }
 }

@@ -34,10 +34,10 @@ create table student (
 create table list (
         id          integer   primary key autoincrement,
         name        text      unique not null,
-        id_course   integer   unique,
         system      boolean   not null default false,
         permanent   boolean   not null default false,
         expiry_date date,
+        id_course   integer   unique,
         foreign key(id_course) references course(id) on delete cascade on update cascade);
 --
 create table enlisted (
@@ -107,6 +107,22 @@ begin
     update list
        set name = new.code || ' студенти'
      where id_course = new.id;
+end;
+--
+create trigger a_i_list
+         after insert
+            on list
+          when new.system = 1 or new.permanent = 1
+begin
+    update list set expiry_date = null where id = new.id;
+end;
+--
+create trigger a_u_list
+         after update
+            on list
+          when new.system = 1 or new.permanent = 1
+begin
+    update list set expiry_date = null where id = new.id;
 end;
 --
 INSERT INTO SYSTEM_USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE)

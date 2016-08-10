@@ -14,6 +14,9 @@ public:
     explicit ListTableModel(const QVariantMap &columnLabels,
                             QSqlDatabase db = QSqlDatabase(),
                             QObject *parent = nullptr);
+
+    virtual QVariant data(const QModelIndex &idx,
+                          int role = Qt::DisplayRole) const override;
 };
 }
 }

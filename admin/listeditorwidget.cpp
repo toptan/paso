@@ -1,5 +1,7 @@
 #include "listeditorwidget.h"
 
+#include <QCheckBox>
+
 using namespace paso::widget;
 
 namespace paso {
@@ -14,7 +16,18 @@ void ListEditorWidget::prepareEdit(QSqlRecord &record) {
 }
 
 bool ListEditorWidget::fieldReadOnly(const QString &key) {
-    return key == "system";
+    if (key == "system") {
+        return true;
+    }
+    if (key == "expiry_date") {
+        auto permanentEdit =
+            dynamic_cast<QCheckBox *>(fieldEditors()["permanent"]);
+        auto systemEdit = dynamic_cast<QCheckBox *>(fieldEditors()["system"]);
+        if (permanentEdit->isChecked() || systemEdit->isChecked()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 QLineEdit *ListEditorWidget::createLineEdit(const QString &field) {
@@ -26,5 +39,26 @@ QLineEdit *ListEditorWidget::createLineEdit(const QString &field) {
     return retVal;
 }
 
+QCheckBox *ListEditorWidget::createCheckBox(const QString &field) {
+    auto retVal = RecordEditorWidget::createCheckBox(field);
+    if (field == "permanent") {
+        connect(retVal, &QCheckBox::toggled, [this](bool checked) {
+            auto expiryEdit =
+                dynamic_cast<QDateEdit *>(fieldEditors()["expiry_date"]);
+            expiryEdit->setReadOnly(checked);
+        });
+    }
+
+    return retVal;
+}
+
+QDateEdit *ListEditorWidget::createDateEdit(const QString &field) {
+    auto retVal = RecordEditorWidget::createDateEdit(field);
+    if (field == "expiry_date") {
+        retVal->setMinimumDate(QDate::currentDate());
+    }
+
+    return retVal;
+}
 }
 }

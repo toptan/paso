@@ -30,8 +30,12 @@ protected:
 
     virtual void updateActions(const QSqlRecord &record) override;
 
+private slots:
+    void onDetails();
+
 private:
     Ui::ListForm *ui;
+    QAction *mDetailsAction;
 
     static std::pair<QSqlTableModel *, widget::RecordEditorWidget *>
     createModelAndEditor();
