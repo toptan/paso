@@ -49,7 +49,7 @@
     <name>ListForm</name>
     <message>
         <location filename="../admin/listform.ui" line="14"/>
-        <source>Form</source>
+        <source>Lists</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -105,20 +105,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="56"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="57"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="58"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -482,12 +482,12 @@
 <context>
     <name>paso::admin::ListTableModel</name>
     <message>
-        <location filename="../admin/listtablemodel.cpp" line="24"/>
+        <location filename="../admin/listtablemodel.cpp" line="26"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listtablemodel.cpp" line="24"/>
+        <location filename="../admin/listtablemodel.cpp" line="27"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
@@ -972,33 +972,33 @@
 <context>
     <name>paso::widget::AbstractForm</name>
     <message>
-        <location filename="../ui/abstractform.cpp" line="66"/>
+        <location filename="../ui/abstractform.cpp" line="68"/>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="72"/>
+        <location filename="../ui/abstractform.cpp" line="74"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="79"/>
+        <location filename="../ui/abstractform.cpp" line="81"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="90"/>
+        <location filename="../ui/abstractform.cpp" line="92"/>
         <source>Refresh data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="133"/>
+        <location filename="../ui/abstractform.cpp" line="135"/>
         <source>There was an error while deleting record from the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="185"/>
-        <location filename="../ui/abstractform.cpp" line="209"/>
+        <location filename="../ui/abstractform.cpp" line="187"/>
+        <location filename="../ui/abstractform.cpp" line="211"/>
         <source>There was an error while saving data.</source>
         <translation type="unfinished"></translation>
     </message>

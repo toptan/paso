@@ -10,6 +10,7 @@
 #include <QVariantMap>
 
 #include "data.h"
+#include "pdateedit.h"
 
 namespace paso {
 namespace widget {
@@ -94,7 +95,7 @@ QCheckBox *RecordEditorWidget::createCheckBox(const QString &field) {
 }
 
 QDateEdit *RecordEditorWidget::createDateEdit(const QString &field) {
-    auto retVal = new QDateEdit(this);
+    auto retVal = new PDateEdit(this);
     retVal->setReadOnly(true);
     return retVal;
 }

@@ -21,6 +21,8 @@ public:
     explicit StudentQueryModel(const QVariantMap &columnLabels, QSqlDatabase db,
                                QObject *parent = nullptr);
 
+    virtual QVariant data(const QModelIndex &item, int role) const override;
+
 private:
     static const QString QUERY;
 };

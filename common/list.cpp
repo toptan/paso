@@ -10,7 +10,8 @@ List::List(const QString &name, bool permanent, uint64_t id,
 
 List::List(const QVariantMap &map)
     : Entity(map["ID"].toULongLong()), mName(map["NAME"].toString()),
-      mSystem(map["SYSTEM"].toBool()), mPermanent(map["PERMANENT"].toBool()) {}
+      mSystem(map["SYSTEM"].toBool()), mPermanent(map["PERMANENT"].toBool()),
+      mExpiryDate(map["EXPIRY_DATE"].toDate()) {}
 
 bool List::operator==(const List &other) const {
     if (this == &other) {

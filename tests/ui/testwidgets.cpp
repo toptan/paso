@@ -3,6 +3,7 @@
 #include "addremoveentitiesform.h"
 #include "course.h"
 #include "entity.h"
+#include "pdateedit.h"
 #include "recordeditorwidget.h"
 
 #include "mocks/mockalwaysinvalidrecordvalidator.h"
@@ -467,4 +468,32 @@ void TestWidgets::testRecordEditorWidget() {
     QApplication::processEvents();
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
+}
+
+void TestWidgets::testDateEditWidget() {
+    PDateEdit dateEditWithoutDate;
+    dateEditWithoutDate.show();
+    QTest::qWaitForWindowExposed(&dateEditWithoutDate);
+    QDate date(1977, 1, 5);
+    dateEditWithoutDate.setDate(date);
+    QApplication::processEvents();
+    QCOMPARE(dateEditWithoutDate.text(), date.toString("M/d/yy"));
+    QDate invalidDate(-1, -1, -1);
+    dateEditWithoutDate.setDate(invalidDate);
+    QApplication::processEvents();
+    dateEditWithoutDate.setDate(date);
+    QApplication::processEvents();
+    QCOMPARE(dateEditWithoutDate.text(), date.toString("M/d/yy"));
+
+    PDateEdit dateEditWithDate(invalidDate);
+    dateEditWithDate.show();
+    QTest::qWaitForWindowExposed(&dateEditWithDate);
+    QCOMPARE(dateEditWithDate.text(), QString(""));
+    dateEditWithDate.setDate(invalidDate);
+    QApplication::processEvents();
+    QCOMPARE(dateEditWithDate.text(), QString(""));
+    dateEditWithDate.setDate(date);
+    QApplication::processEvents();
+    QCOMPARE(dateEditWithDate.text(), date.toString("M/d/yy"));
+
 }

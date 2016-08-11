@@ -1,5 +1,7 @@
 #include "stablerownumbersortfilterproxymodel.h"
 
+#include <QDebug>
+
 namespace paso {
 namespace model {
 

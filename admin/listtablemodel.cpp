@@ -1,5 +1,6 @@
 #include "listtablemodel.h"
 
+#include <QDate>
 #include <QDebug>
 #include <QSqlRecord>
 
@@ -20,10 +21,21 @@ ListTableModel::ListTableModel(const QVariantMap &columnLabels, QSqlDatabase db,
 }
 
 QVariant ListTableModel::data(const QModelIndex &idx, int role) const {
-    if (role == Qt::DisplayRole && (idx.column() == 2 || idx.column() == 3)) {
-        return QSqlTableModel::data(idx, role).toBool() ? tr("Yes") : tr("No");
+    if (role == Qt::DisplayRole) {
+        if (idx.column() == 2 || idx.column() == 3) {
+            return QSqlTableModel::data(idx, role).toBool() ? tr("Yes")
+                                                            : tr("No");
+        }
+        if (idx.column() == 4) {
+            return QSqlTableModel::data(idx, role).toDate().toString(
+                "dd.MM.yyyy.");
+        }
     }
-
+    if (role == Qt::TextAlignmentRole) {
+        if (idx.column() == 2 || idx.column() == 3) {
+            return Qt::AlignCenter;
+        }
+    }
     return QSqlTableModel::data(idx, role);
 }
 }

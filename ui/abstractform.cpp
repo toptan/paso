@@ -39,13 +39,15 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
     mTableView = tableView;
 
     mProxyModel = new StableRowNumberSortFilterProxyModel(this);
-    mProxyModel->setSortLocaleAware(false);
-    mProxyModel->setDynamicSortFilter(false);
     mProxyModel->setSourceModel(mModel);
+    mProxyModel->setSortLocaleAware(true);
+    mProxyModel->setDynamicSortFilter(false);
 
     mTableView->setModel(mProxyModel);
     mTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    mTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    mTableView->horizontalHeader()->setCascadingSectionResizes(true);
+    mTableView->horizontalHeader()->setStretchLastSection(true);
     mTableView->sortByColumn(1, Qt::SortOrder::AscendingOrder);
 
     connect(mTableView->selectionModel(),

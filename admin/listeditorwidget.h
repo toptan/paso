@@ -11,6 +11,9 @@ public:
     ListEditorWidget(const widget::FieldTypes &fieldTypes,
                      QWidget *parent = nullptr);
 
+    virtual void setupUi(const QVariantMap &columnLabels,
+                         const QSqlRecord &record) override;
+
 protected:
     virtual void prepareEdit(QSqlRecord &record) override;
     virtual bool fieldReadOnly(const QString &key) override;

@@ -25,7 +25,8 @@ public:
                                 QWidget *parent = nullptr);
     virtual ~RecordEditorWidget();
 
-    void setupUi(const QVariantMap &columnLabels, const QSqlRecord &record);
+    virtual void setupUi(const QVariantMap &columnLabels,
+                         const QSqlRecord &record);
 
     const FieldTypes &fieldTypes() const;
     const FieldEditors &fieldEditors() const;

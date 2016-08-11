@@ -14,6 +14,7 @@ private slots:
     void testAddRemoveEntityWidget();
     void testRecordEditorWidget();
     void testRecordValidator();
+    void testDateEditWidget();
 };
 
 #endif // TESTWIDGETS_H

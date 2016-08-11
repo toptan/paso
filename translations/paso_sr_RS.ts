@@ -53,8 +53,8 @@
     <name>ListForm</name>
     <message>
         <location filename="../admin/listform.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
+        <source>Lists</source>
+        <translation>Листе</translation>
     </message>
 </context>
 <context>
@@ -119,20 +119,20 @@
         <translation>Лозинка</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="56"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="57"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="58"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>
@@ -209,17 +209,17 @@
     <message>
         <location filename="../admin/listform.cpp" line="43"/>
         <source>System list</source>
-        <translation type="unfinished"></translation>
+        <translation>Системска листа</translation>
     </message>
     <message>
         <location filename="../admin/listform.cpp" line="44"/>
         <source>Permanent list</source>
-        <translation type="unfinished"></translation>
+        <translation>Трајна листа</translation>
     </message>
     <message>
         <location filename="../admin/listform.cpp" line="45"/>
         <source>Expiry date</source>
-        <translation type="unfinished"></translation>
+        <translation>Датум истека</translation>
     </message>
 </context>
 <context>
@@ -514,25 +514,25 @@
     <message>
         <location filename="../admin/listform.cpp" line="29"/>
         <source>Details</source>
-        <translation type="unfinished">Детаљи</translation>
+        <translation>Детаљи</translation>
     </message>
     <message>
         <location filename="../admin/listform.cpp" line="89"/>
         <source>Do you want to delete selected list from the system?</source>
-        <translation type="unfinished"></translation>
+        <translation>Да ли стварно желите да обришете одабрану листу из система?</translation>
     </message>
 </context>
 <context>
     <name>paso::admin::ListTableModel</name>
     <message>
-        <location filename="../admin/listtablemodel.cpp" line="24"/>
+        <location filename="../admin/listtablemodel.cpp" line="26"/>
         <source>Yes</source>
-        <translation type="unfinished">Да</translation>
+        <translation>Да</translation>
     </message>
     <message>
-        <location filename="../admin/listtablemodel.cpp" line="24"/>
+        <location filename="../admin/listtablemodel.cpp" line="27"/>
         <source>No</source>
-        <translation type="unfinished">Не</translation>
+        <translation>Не</translation>
     </message>
 </context>
 <context>
@@ -581,7 +581,7 @@
     <message>
         <location filename="../admin/listvalidator.cpp" line="86"/>
         <source>List expiry date cannot be in the past.</source>
-        <translation type="unfinished"></translation>
+        <translation>Датум истека листе не може да буде у прошлости.</translation>
     </message>
     <message>
         <source>The course with entered code already exists in the system.</source>
@@ -670,7 +670,7 @@
     <message>
         <location filename="../admin/mainwindow.cpp" line="152"/>
         <source>List administration</source>
-        <translation type="unfinished"></translation>
+        <translation>Управљање листама</translation>
     </message>
 </context>
 <context>
@@ -962,7 +962,7 @@
     <message>
         <location filename="../admin/systemusertablemodel.cpp" line="28"/>
         <source>&lt;hidden&gt;</source>
-        <translation>&lt;скривено&gt;</translation>
+        <translation type="unfinished">&lt;скривена&gt;</translation>
     </message>
 </context>
 <context>
@@ -1047,33 +1047,33 @@
 <context>
     <name>paso::widget::AbstractForm</name>
     <message>
-        <location filename="../ui/abstractform.cpp" line="66"/>
+        <location filename="../ui/abstractform.cpp" line="68"/>
         <source>New</source>
         <translation>Нов запис</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="72"/>
+        <location filename="../ui/abstractform.cpp" line="74"/>
         <source>Edit</source>
         <translation>Уреди</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="79"/>
+        <location filename="../ui/abstractform.cpp" line="81"/>
         <source>Delete</source>
         <translation>Обриши</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="90"/>
+        <location filename="../ui/abstractform.cpp" line="92"/>
         <source>Refresh data</source>
         <translation>Освежи податке</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="133"/>
+        <location filename="../ui/abstractform.cpp" line="135"/>
         <source>There was an error while deleting record from the database.</source>
         <translation>Дошло је то грешке приликом брисања записа из базе.</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="185"/>
-        <location filename="../ui/abstractform.cpp" line="209"/>
+        <location filename="../ui/abstractform.cpp" line="187"/>
+        <location filename="../ui/abstractform.cpp" line="211"/>
         <source>There was an error while saving data.</source>
         <translation>Дошло је до грешке приликом снимања података.</translation>
     </message>

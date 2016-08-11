@@ -1,6 +1,7 @@
 #include "listeditorwidget.h"
 
 #include <QCheckBox>
+#include <QLabel>
 
 using namespace paso::widget;
 
@@ -10,6 +11,19 @@ namespace admin {
 ListEditorWidget::ListEditorWidget(const widget::FieldTypes &fieldTypes,
                                    QWidget *parent)
     : RecordEditorWidget(fieldTypes, parent) {}
+
+void ListEditorWidget::setupUi(const QVariantMap &columnLabels,
+                               const QSqlRecord &record) {
+    RecordEditorWidget::setupUi(columnLabels, record);
+    auto expiryEdit = dynamic_cast<QDateEdit *>(fieldEditors()["expiry_date"]);
+    for (auto &label : findChildren<QLabel *>()) {
+        if (label->buddy() == expiryEdit) {
+            label->setHidden(true);
+            break;
+        }
+    }
+    expiryEdit->setHidden(true);
+}
 
 void ListEditorWidget::prepareEdit(QSqlRecord &record) {
     // Nothing to do.
@@ -45,7 +59,15 @@ QCheckBox *ListEditorWidget::createCheckBox(const QString &field) {
         connect(retVal, &QCheckBox::toggled, [this](bool checked) {
             auto expiryEdit =
                 dynamic_cast<QDateEdit *>(fieldEditors()["expiry_date"]);
+            for (auto &label : findChildren<QLabel *>()) {
+                if (label->buddy() == expiryEdit) {
+                    label->setHidden(checked);
+                    break;
+                }
+            }
+
             expiryEdit->setReadOnly(checked);
+            expiryEdit->setHidden(checked);
         });
     }
 
