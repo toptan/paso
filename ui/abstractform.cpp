@@ -39,7 +39,7 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
     mTableView = tableView;
 
     mProxyModel = new StableRowNumberSortFilterProxyModel(this);
-    mProxyModel->setSortLocaleAware(true);
+    mProxyModel->setSortLocaleAware(false);
     mProxyModel->setDynamicSortFilter(false);
     mProxyModel->setSourceModel(mModel);
 

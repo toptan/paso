@@ -32,7 +32,7 @@ void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
     auto l = dynamic_cast<QFormLayout *>(layout());
     l->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for (int i = 0; i < record.count(); i++) {
-        if (record.fieldName(i) == "id") {
+        if (record.fieldName(i) == "id" || record.fieldName(i) == "id_course") {
             continue;
         }
         QLabel *label =
@@ -135,7 +135,7 @@ QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
 void RecordEditorWidget::onDisplayRecord(const QSqlRecord &record) {
     for (int i = 0; i < record.count(); i++) {
         auto fieldName = record.fieldName(i);
-        if (fieldName.toUpper() == "ID") {
+        if (fieldName.toUpper() == "ID" || fieldName.toUpper() == "ID_COURSE") {
             continue;
         }
         switch (mFieldTypes[fieldName]) {

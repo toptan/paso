@@ -3,6 +3,7 @@
 
 #include "courseform.h"
 #include "data.h"
+#include "listform.h"
 #include "logindialog.h"
 #include "pasodb.h"
 #include "roomform.h"
@@ -146,6 +147,9 @@ void MainWindow::setupManagerUI() {
     auto studentForm = new StudentForm(this);
     mMainWidget->addWidget(studentForm);
     mWidgetChooserComboBox->addItem(tr("Student administration"));
+    auto listForm = new ListForm(this);
+    mMainWidget->addWidget(listForm);
+    mWidgetChooserComboBox->addItem(tr("List administration"));
 }
 
 void MainWindow::onWidgetChooserCurrentIndexChanged(int index) {

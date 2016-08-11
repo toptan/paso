@@ -25,6 +25,7 @@ ListForm::ListForm(QWidget *parent)
     ui->horizontalLayout->setStretch(1, 1);
 
     auto separator = new QAction(this);
+    separator->setSeparator(true);
     mDetailsAction = new QAction(tr("Details"), this);
     mDetailsAction->setObjectName("DETAILS_ACTION");
     toolBarActions().append(separator);

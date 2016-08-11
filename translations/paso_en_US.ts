@@ -105,20 +105,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="56"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="56"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="57"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="57"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="58"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="58"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -149,7 +149,7 @@
     </message>
     <message>
         <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="41"/>
+        <location filename="../admin/listform.cpp" line="42"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -199,17 +199,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="42"/>
+        <location filename="../admin/listform.cpp" line="43"/>
         <source>System list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="43"/>
+        <location filename="../admin/listform.cpp" line="44"/>
         <source>Permanent list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="44"/>
+        <location filename="../admin/listform.cpp" line="45"/>
         <source>Expiry date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -469,12 +469,12 @@
 <context>
     <name>paso::admin::ListForm</name>
     <message>
-        <location filename="../admin/listform.cpp" line="28"/>
+        <location filename="../admin/listform.cpp" line="29"/>
         <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="88"/>
+        <location filename="../admin/listform.cpp" line="89"/>
         <source>Do you want to delete selected list from the system?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -578,38 +578,43 @@
 <context>
     <name>paso::admin::MainWindow</name>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="60"/>
+        <location filename="../admin/mainwindow.cpp" line="61"/>
         <source>Critical error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="61"/>
+        <location filename="../admin/mainwindow.cpp" line="62"/>
         <source>Could not establish database connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="82"/>
+        <location filename="../admin/mainwindow.cpp" line="83"/>
         <source>Main Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="133"/>
+        <location filename="../admin/mainwindow.cpp" line="134"/>
         <source>System users administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="139"/>
+        <location filename="../admin/mainwindow.cpp" line="140"/>
         <source>Room administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="145"/>
+        <location filename="../admin/mainwindow.cpp" line="146"/>
         <source>Course administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="148"/>
+        <location filename="../admin/mainwindow.cpp" line="149"/>
         <source>Student administration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/mainwindow.cpp" line="152"/>
+        <source>List administration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

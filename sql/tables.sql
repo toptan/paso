@@ -38,7 +38,7 @@ CREATE TABLE STUDENT (
 );
 
 CREATE TABLE LIST (
-    ID		BIGINT PRIMARY KEY,
+    ID		BIGSERIAL PRIMARY KEY,
     NAME	VARCHAR(64) UNIQUE NOT NULL,
     SYSTEM	BOOLEAN NOT NULL DEFAULT FALSE,
     PERMANENT	BOOLEAN NOT NULL DEFAULT FALSE,
@@ -112,8 +112,7 @@ BEGIN
 
         RETURN NEW;
 END;
-$BODY$
-
+$BODY$;
 
 CREATE TRIGGER a_i_course AFTER INSERT ON COURSE FOR EACH ROW
         EXECUTE PROCEDURE a_i_course_function();
@@ -131,8 +130,7 @@ BEGIN
 
         RETURN NEW;
 END;
-$BODY$
-
+$BODY$;
 
 CREATE TRIGGER A_U_COURSE AFTER UPDATE ON COURSE FOR EACH ROW
         EXECUTE PROCEDURE A_U_COURSE_FUNCTION();
@@ -148,7 +146,7 @@ BEGIN
 
         RETURN NEW;
 END;
-$BODY$
+$BODY$;
 
 CREATE TRIGGER B_IU_LIST BEFORE INSERT OR UPDATE ON LIST FOR EACH ROW
         EXECUTE PROCEDURE B_IU_LIST_FUNCTION();
@@ -156,3 +154,29 @@ CREATE TRIGGER B_IU_LIST BEFORE INSERT OR UPDATE ON LIST FOR EACH ROW
 -- INSERTING INITIAL DATA --
 INSERT INTO SYSTEM_USER(USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE)
 VALUES ('root', 'root', 'System', 'Administrator', 'root@paso.system', 'SUPER_USER');
+
+INSERT INTO LIST(NAME, SYSTEM, PERMANENT) VALUES (
+        'Студенти прве године',
+        'true',
+        'true');
+
+INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
+        'Студенти друге године',
+        'true',
+        'true');
+
+INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
+        'Студенти треће године',
+        'true',
+        'true');
+
+INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
+        'Студенти четврте године',
+        'true',
+        'true');
+
+INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
+        'Студенти пете године',
+        'true',
+        'true');
+
