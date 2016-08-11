@@ -211,7 +211,7 @@ void TestListAdministration::testListTableModel() {
     index = model.index(3, 3);
     QCOMPARE(model.data(index).toString(), QString("Yes"));
     index = model.index(0, 4);
-    QCOMPARE(model.data(index).toDate(), QDate(1977, 1, 5));
+    QCOMPARE(model.data(index).toString(), QString("05.01.1977."));
     index = model.index(1, 4);
     QVERIFY(model.data(index).isNull());
     index = model.index(2, 4);
@@ -241,7 +241,6 @@ void TestListAdministration::testListForm() {
         dynamic_cast<QDateEdit *>(editor->fieldEditors()["expiry_date"]);
     auto buttonBox = editor->findChild<QDialogButtonBox *>();
     auto saveButton = buttonBox->button(QDialogButtonBox::Save);
-    auto cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     QAction *newAction = nullptr;
     QAction *editAction = nullptr;
     QAction *deleteAction = nullptr;

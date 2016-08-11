@@ -256,82 +256,87 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="54"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="89"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="40"/>
+        <source>Import Students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="58"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="93"/>
         <source>Unsaved changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="55"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="59"/>
         <source>You have changes that are not saved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="56"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="60"/>
         <source>Do you want to save them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="59"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="95"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="63"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="99"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="60"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="64"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="100"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="90"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="94"/>
         <source>You have changes that are not saved. If you reload data all unsaved changes will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="92"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
         <source>Do you still want to reload data?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="117"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="158"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="121"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="162"/>
         <source>Critical error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="118"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="159"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="122"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="163"/>
         <source>There was an error working with the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="127"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="131"/>
         <source>Index Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="128"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="132"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="129"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="133"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="132"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="136"/>
         <source>Enlisted students: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="134"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="138"/>
         <source>Not enlisted students</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="135"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="139"/>
         <source>Enlisted students</source>
         <translation type="unfinished"></translation>
     </message>

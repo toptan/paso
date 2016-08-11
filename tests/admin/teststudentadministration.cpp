@@ -292,9 +292,9 @@ void TestStudentAdministration::testStudentQueryModel() {
     QCOMPARE(model.headerData(3, Qt::Horizontal).toString(),
              QString("First Name"));
     QCOMPARE(model.headerData(4, Qt::Horizontal).toString(), QString("Email"));
-    QCOMPARE(model.headerData(5, Qt::Horizontal).toString(), QString("RFID"));
-    QCOMPARE(model.headerData(6, Qt::Horizontal).toString(),
+    QCOMPARE(model.headerData(5, Qt::Horizontal).toString(),
              QString("Year of Study"));
+    QCOMPARE(model.headerData(6, Qt::Horizontal).toString(), QString("RFID"));
 }
 
 void TestStudentAdministration::testStudentForm() {

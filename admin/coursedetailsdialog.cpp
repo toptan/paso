@@ -36,7 +36,11 @@ CourseDetailsDialog::CourseDetailsDialog(const Course &course, QWidget *parent)
     ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
     auto refreshButton = new QPushButton(tr("Refresh"), ui->buttonBox);
     refreshButton->setObjectName("REFRESH_BUTTON");
-    ui->buttonBox->addButton(refreshButton, QDialogButtonBox::DestructiveRole);
+    ui->buttonBox->addButton(refreshButton, QDialogButtonBox::ResetRole);
+    auto importButton = new QPushButton(tr("Import Students"), ui->buttonBox);
+    importButton->setObjectName("IMPORT_BUTTON");
+    ui->buttonBox->addButton(importButton, QDialogButtonBox::DestructiveRole);
+
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this,
             &CourseDetailsDialog::onButtonBoxButtonClicked);
     loadData();
@@ -77,7 +81,7 @@ void CourseDetailsDialog::onButtonBoxButtonClicked(QAbstractButton *button) {
         loadData();
     } else if (role == QDialogButtonBox::RejectRole) {
         reject();
-    } else if (role == QDialogButtonBox::DestructiveRole) {
+    } else if (role == QDialogButtonBox::ResetRole) {
         refresh();
     }
 }
