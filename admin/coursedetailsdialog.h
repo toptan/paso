@@ -26,10 +26,11 @@ class CourseDetailsDialog : public QDialog {
 public:
     explicit CourseDetailsDialog(const paso::data::entity::Course &course,
                                  QWidget *parent = nullptr);
-    ~CourseDetailsDialog();
+    virtual ~CourseDetailsDialog();
 
 public slots:
     virtual void reject() override;
+    void onImportFileSelected(const QString &fileName);
 
 private slots:
     virtual void onButtonBoxButtonClicked(QAbstractButton *button);
@@ -43,6 +44,7 @@ private:
     void refresh();
     bool loadData();
     bool saveData();
+    void importCourseStudents();
 };
 }
 }

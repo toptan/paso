@@ -418,6 +418,65 @@ void TestPasoDB::testStudentImport() {
     QCOMPARE(student->yearOfStudy(), 5);
 }
 
+void TestPasoDB::testImportCourseStudent() {
+    auto db = QSqlDatabase::database(dbName);
+    db.exec("DELETE FROM PERSON");
+    DBManager manager(dbName);
+    QSqlError error;
+    manager.importStudent("1996/0164, Tanaskovic,Toplica,toplica@gmail.com,4",
+                          error);
+    manager.importStudent("2001/2001, Petrovic,petar,pera@gmail.com,2", error);
+    const QString courseCode = "IR3SP";
+    QString csvLine = ",Tanaskovic, Toplica,,";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "164/96 Toplica Tanaskovic";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "164/96,,Toplica,,";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "164/96,Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "11996/164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "1986/0164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "2986/0164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "1996/0000, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "1996/0164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::NO_ERROR);
+    csvLine = "2001/2001";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::NO_ERROR);
+    csvLine = "2002/2002";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::NON_EXISTING_STUDENT);
+
+    auto courseStudents = manager.getCourseStudents(courseCode, error);
+    QCOMPARE(courseStudents->size(), size_t(2));
+    QStringList indexNumbers{"1996/0164", "2001/2001"};
+    for (auto student : *courseStudents) {
+        indexNumbers.removeOne(student.indexNumber());
+    }
+    QVERIFY(indexNumbers.empty());
+    db.exec("DROP TABLE ENLISTED");
+    csvLine = "2001/2001";
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::DB_ERROR);
+    db.exec("DROP TABLE STUDENT");
+    QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
+             ListStudentImportError::DB_ERROR);
+}
+
 void TestPasoDB::testEnlistingStudentsToCourse() {
     DBManager manager(dbName);
     QStringList indexeNumbers{"2001/2001", "2002/2002"};

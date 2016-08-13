@@ -26,6 +26,9 @@ namespace db {
 ///
 const static QString DEFAULT_DB_NAME = "paso";
 
+///
+/// \brief The CourseImportError enum defines error codes for importing courses.
+///
 enum class CourseImportError {
     NO_ERROR,      //!< All fine, no error.
     INVALID_LINE,  //!< The CSV line is illformed.
@@ -36,6 +39,10 @@ enum class CourseImportError {
     DB_ERROR       //!< Generic database error.
 };
 
+///
+/// \brief The StudentImportError enum defines error codes for importing
+/// students.
+///
 enum class StudentImportError {
     NO_ERROR,            //!< All fine, no error.
     INVALID_LINE,        //!< The CSV line is illformed.
@@ -49,6 +56,18 @@ enum class StudentImportError {
     NO_YEAR_OF_STUDY,    //!< Year of study missing.
     BAD_YEAR_OF_STUDY,   //<! The year of study is bad.
     DB_ERROR             //!< Generic database error.
+};
+
+///
+/// \brief The ListStudentImportError enum defines error codes for importing
+/// list or course students.
+///
+enum class ListStudentImportError {
+    NO_ERROR,             //!< All fine, no error.
+    BAD_INDEX_NUMBER,     //!< The index number is in wrong format or missing.
+    NON_EXISTING_STUDENT, //!< The student with given index number does not
+                          //! exist in the database.
+    DB_ERROR              //!< Generic database error.
 };
 
 ///
@@ -258,6 +277,19 @@ public:
     ///
     StudentImportError importStudent(const QString &csvLine,
                                      QSqlError &error) const;
+
+    ///
+    /// \brief importCourseStudent imports index number from the csv line and
+    /// enlists that student to the given course.
+    /// \param courseCode The course code.
+    /// \param csvLine The CVS line with student data. Index number must be
+    /// first.
+    /// \param error The SQL error if any.
+    /// \return The import error.
+    ///
+    ListStudentImportError importCourseStudent(const QString &courseCode,
+                                               const QString &csvLine,
+                                               QSqlError &error) const;
 
     ///
     /// \brief getCourseStudents Returns all students that are enrolled to a

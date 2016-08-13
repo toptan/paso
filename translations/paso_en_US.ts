@@ -95,13 +95,19 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="40"/>
-        <source>Username</source>
+        <location filename="../admin/roomform.cpp" line="34"/>
+        <source>Room UUID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="41"/>
-        <source>Password</source>
+        <location filename="../admin/roomform.cpp" line="35"/>
+        <location filename="../admin/listform.cpp" line="42"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomform.cpp" line="36"/>
+        <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -123,11 +129,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="45"/>
-        <source>Role</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../admin/studentform.cpp" line="59"/>
         <source>RFID</source>
         <translation type="unfinished"></translation>
@@ -143,29 +144,43 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="34"/>
-        <source>Room UUID</source>
+        <location filename="../admin/listform.cpp" line="43"/>
+        <source>System list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="42"/>
-        <source>Name</source>
+        <location filename="../admin/listform.cpp" line="44"/>
+        <source>Permanent list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="36"/>
-        <source>Number</source>
+        <location filename="../admin/listform.cpp" line="45"/>
+        <source>Expiry date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="63"/>
+        <location filename="../admin/courseform.cpp" line="66"/>
         <source>Code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="64"/>
+        <location filename="../admin/courseform.cpp" line="67"/>
         <source>Course</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/systemusersform.cpp" line="40"/>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/systemusersform.cpp" line="41"/>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/systemusersform.cpp" line="45"/>
+        <source>Role</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -198,21 +213,6 @@
         <source>Super user</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../admin/listform.cpp" line="43"/>
-        <source>System list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/listform.cpp" line="44"/>
-        <source>Permanent list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/listform.cpp" line="45"/>
-        <source>Expiry date</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RoomForm</name>
@@ -241,103 +241,118 @@
 <context>
     <name>paso::admin::CourseDetailsDialog</name>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="35"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="36"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="36"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="37"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="37"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="38"/>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="40"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="41"/>
         <source>Import Students</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="58"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="93"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="59"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
         <source>Unsaved changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="59"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="60"/>
         <source>You have changes that are not saved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="60"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="61"/>
         <source>Do you want to save them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="63"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="99"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="64"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="102"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="64"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="100"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="65"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="103"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="94"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="97"/>
         <source>You have changes that are not saved. If you reload data all unsaved changes will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="99"/>
         <source>Do you still want to reload data?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="121"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="162"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="124"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="165"/>
         <source>Critical error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="122"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="163"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="125"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="166"/>
         <source>There was an error working with the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="131"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="134"/>
         <source>Index Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="132"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="135"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="133"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="136"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="136"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="139"/>
         <source>Enlisted students: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="138"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="141"/>
         <source>Not enlisted students</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="139"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="142"/>
         <source>Enlisted students</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="179"/>
+        <source>Importing course students will overwire currend data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="181"/>
+        <source>Do you still want to import course stundets?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="186"/>
+        <source>Open course students import file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -354,72 +369,72 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="101"/>
+        <location filename="../admin/courseform.cpp" line="104"/>
         <source>Do you want to delete selected course from the system?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="113"/>
+        <location filename="../admin/courseform.cpp" line="116"/>
         <source>Open courses import file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="132"/>
+        <location filename="../admin/courseform.cpp" line="136"/>
         <source>The file %1 cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="142"/>
+        <location filename="../admin/courseform.cpp" line="146"/>
         <source>Importing course data...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="159"/>
+        <location filename="../admin/courseform.cpp" line="163"/>
         <source>Importing line %1... %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="161"/>
+        <location filename="../admin/courseform.cpp" line="165"/>
         <source>Importing course data from %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="170"/>
+        <location filename="../admin/courseform.cpp" line="174"/>
         <source>OK.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="174"/>
+        <location filename="../admin/courseform.cpp" line="178"/>
         <source>The course code and name must be comma separated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="179"/>
+        <location filename="../admin/courseform.cpp" line="183"/>
         <source>The course code is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="184"/>
+        <location filename="../admin/courseform.cpp" line="188"/>
         <source>The course code exceeds 8 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="189"/>
+        <location filename="../admin/courseform.cpp" line="193"/>
         <source>The course name is missing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="194"/>
+        <location filename="../admin/courseform.cpp" line="198"/>
         <source>The course name exceeds 64 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="208"/>
+        <location filename="../admin/courseform.cpp" line="212"/>
         <source>Import finished without errors.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="211"/>
+        <location filename="../admin/courseform.cpp" line="215"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -636,13 +651,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/personvalidator.cpp" line="48"/>
-        <source>The first name cannot be longer than 32 characters.</source>
+        <location filename="../admin/personvalidator.cpp" line="43"/>
+        <source>You need to specify person&apos;s first name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/personvalidator.cpp" line="43"/>
-        <source>You need to specify person&apos;s first name.</source>
+        <location filename="../admin/personvalidator.cpp" line="48"/>
+        <source>The first name cannot be longer than 32 characters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

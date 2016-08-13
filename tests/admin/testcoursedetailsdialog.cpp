@@ -2,6 +2,7 @@
 
 #include "addremoveentitiesform.h"
 #include "coursedetailsdialog.h"
+#include "logdialog.h"
 #include "pasodb.h"
 
 #include <QDebug>
@@ -209,4 +210,29 @@ void TestCourseDetailsDialog::testSavingData() {
     QApplication::processEvents();
     QVERIFY(messageShown);
     QVERIFY(dialog.isVisible());
+}
+
+void TestCourseDetailsDialog::testImportCourseStudents() {
+    DBManager manager(dbName);
+    QSqlError error;
+    auto course = manager.getCourse("IR3SP", error);
+    CourseDetailsDialog dialog(*course);
+    dialog.show();
+    QTest::qWaitForWindowExposed(&dialog);
+
+    auto buttonBox = dialog.findChild<QDialogButtonBox *>();
+    auto importButton = buttonBox->findChild<QPushButton *>("IMPORT_BUTTON");
+    QVERIFY(importButton != nullptr);
+
+    bool warningShown = false;
+    auto warningCallback = [&warningShown]() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Escape);
+        warningShown = true;
+    };
+    QTimer::singleShot(200, warningCallback);
+    importButton->click();
+    QApplication::processEvents();
+    QVERIFY(warningShown);
 }

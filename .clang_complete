@@ -1,0 +1,32 @@
+-DQT_CONCURRENT_LIB
+-DQT_CORE_LIB
+-DQT_GUI_LIB
+-DQT_NETWORK_LIB
+-DQT_SQL_LIB
+-DQT_WIDGETS_LIB
+-I/home/toptan/Documents/Work/diplomski/git/paso/admin
+-I/home/toptan/Documents/Work/diplomski/git/paso/common
+-I/home/toptan/Documents/Work/diplomski/git/paso/server
+-I/home/toptan/Documents/Work/diplomski/git/paso/ui
+-I/home/toptan/Documents/Work/diplomski/git/paso/tests/admin
+-I/home/toptan/Documents/Work/diplomski/git/paso/tests/common
+-I/home/toptan/Documents/Work/diplomski/git/paso/ui
+-I/home/toptan/Documents/Work/diplomski/git/paso/ui/mocks
+-I/home/toptan/Documents/Work/diplomski/git/paso/build/Debug/admin
+-I/home/toptan/Documents/Work/diplomski/git/paso/build/Debug/common
+-I/home/toptan/Documents/Work/diplomski/git/paso/build/Debug/server
+-I/home/toptan/Documents/Work/diplomski/git/paso/build/Debug/ui
+-isystem /usr/include/x86_64-linux-gnu/qt5
+-isystem /usr/include/x86_64-linux-gnu/qt5/QtCore
+-isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
+-isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets
+-isystem /usr/include/x86_64-linux-gnu/qt5/QtGui
+-isystem /usr/include/x86_64-linux-gnu/qt5/QtConcurrent
+-isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork
+-isystem /usr/include/x86_64-linux-gnu/qt5/QtSql
+-Wall
+-Werror
+-Wno-unused
+-std=c++11
+-g
+-fPIC

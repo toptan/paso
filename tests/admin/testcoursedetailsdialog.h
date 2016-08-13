@@ -14,6 +14,7 @@ private slots:
     void testDataRefresh();
     void testWarningWhenDataIsDirty();
     void testSavingData();
+    void testImportCourseStudents();
 };
 
 #endif // TESTCOURSEDETAILSDIALOG_H

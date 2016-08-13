@@ -36,10 +36,6 @@
         <source>Enlisted students: %1</source>
         <translation>Студенти који слушају предмет: %1</translation>
     </message>
-    <message>
-        <source>Not enlisted students</source>
-        <translation type="vanished">Студенти који не слушају предмет</translation>
-    </message>
 </context>
 <context>
     <name>CourseForm</name>
@@ -99,12 +95,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../admin/courseform.cpp" line="63"/>
+        <location filename="../admin/courseform.cpp" line="66"/>
         <source>Code</source>
         <translation>Шифра</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="64"/>
+        <location filename="../admin/courseform.cpp" line="67"/>
         <source>Course</source>
         <translation>Предмет</translation>
     </message>
@@ -203,10 +199,6 @@
         <translation>Супер корисник</translation>
     </message>
     <message>
-        <source>Enlisted students: %1</source>
-        <translation type="vanished">Пријављени студенти: %1</translation>
-    </message>
-    <message>
         <location filename="../admin/listform.cpp" line="43"/>
         <source>System list</source>
         <translation>Системска листа</translation>
@@ -247,135 +239,119 @@
     </message>
 </context>
 <context>
-    <name>paso::admin::AbstractForm</name>
-    <message>
-        <source>New</source>
-        <translation type="vanished">Нов запис</translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation type="vanished">Уреди</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="vanished">Обриши</translation>
-    </message>
-    <message>
-        <source>Refresh data</source>
-        <translation type="vanished">Освежи податке</translation>
-    </message>
-    <message>
-        <source>There was an error while deleting record from the database.</source>
-        <translation type="vanished">Дошло је то грешке приликом брисања записа из базе.</translation>
-    </message>
-    <message>
-        <source>There was an error while saving data.</source>
-        <translation type="vanished">Дошло је до грешке приликом снимања подата.</translation>
-    </message>
-</context>
-<context>
     <name>paso::admin::CourseDetailsDialog</name>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="35"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="36"/>
         <source>Save</source>
         <translation>Сними</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="36"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="37"/>
         <source>Close</source>
         <translation>Затвори</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="37"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="38"/>
         <source>Refresh</source>
         <translation>Освежи</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="40"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="41"/>
         <source>Import Students</source>
         <translation>Увези студенте</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="58"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="93"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="59"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
         <source>Unsaved changes</source>
         <translation>Неснимљене промене</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="59"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="60"/>
         <source>You have changes that are not saved.</source>
         <translation>Имате промене које нису снимњене.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="60"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="61"/>
         <source>Do you want to save them?</source>
         <translation>Да ли желите да их снимите?</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="63"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="99"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="64"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="102"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="64"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="100"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="65"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="103"/>
         <source>No</source>
         <translation>Не</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="94"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="97"/>
         <source>You have changes that are not saved. If you reload data all unsaved changes will be lost.</source>
         <translation>Имате промене које нису снимњене. Ако освежите податке изгубићете све неснимњене промене.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="96"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="99"/>
         <source>Do you still want to reload data?</source>
         <translation>Да ли још увек желите да освежите податке?</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="121"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="162"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="124"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="165"/>
         <source>Critical error</source>
         <translation>Критична грешка</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="122"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="163"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="125"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="166"/>
         <source>There was an error working with the database.</source>
         <translation>Дошло је до грешке при раду са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="131"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="134"/>
         <source>Index Number</source>
         <translation>Број индекса</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="132"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="135"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="133"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="136"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="138"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="141"/>
         <source>Not enlisted students</source>
         <translation>Студенти који не слушају предмет</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="139"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="142"/>
         <source>Enlisted students</source>
         <translation>Студенти који слушају предмет</translation>
     </message>
     <message>
-        <source>Index number</source>
-        <translation type="vanished">Број индекса</translation>
+        <location filename="../admin/coursedetailsdialog.cpp" line="179"/>
+        <source>Importing course students will overwire currend data.</source>
+        <translation>Увоз студената који похађају курс ће пребрисати све постојеће податке.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="136"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="181"/>
+        <source>Do you still want to import course stundets?</source>
+        <translation>Да ли још увек желите да увезете студенте који похађају курс?</translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="186"/>
+        <source>Open course students import file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="139"/>
         <source>Enlisted students: %1</source>
         <translation>Студенти који слушају предмет: %1</translation>
     </message>
@@ -393,72 +369,72 @@
         <translation>Детаљи</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="101"/>
+        <location filename="../admin/courseform.cpp" line="104"/>
         <source>Do you want to delete selected course from the system?</source>
         <translation>Да ли стварно желите да обришете одабрани предмет из система?</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="113"/>
+        <location filename="../admin/courseform.cpp" line="116"/>
         <source>Open courses import file</source>
         <translation>Отвори датотеку за увоз предмета</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="132"/>
+        <location filename="../admin/courseform.cpp" line="136"/>
         <source>The file %1 cannot be opened.</source>
         <translation>Датотека %1 не може да се отвори.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="142"/>
+        <location filename="../admin/courseform.cpp" line="146"/>
         <source>Importing course data...</source>
         <translation>Увожење података о предметима...</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="159"/>
+        <location filename="../admin/courseform.cpp" line="163"/>
         <source>Importing line %1... %2</source>
         <translation>Увожење линије %1... %2</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="161"/>
+        <location filename="../admin/courseform.cpp" line="165"/>
         <source>Importing course data from %1</source>
         <translation>Увожење података о предметима из %1</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="170"/>
+        <location filename="../admin/courseform.cpp" line="174"/>
         <source>OK.</source>
         <translation>ОК.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="174"/>
+        <location filename="../admin/courseform.cpp" line="178"/>
         <source>The course code and name must be comma separated.</source>
         <translation>Шифра предмета и предмет морају да буду одвојени зарезом.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="179"/>
+        <location filename="../admin/courseform.cpp" line="183"/>
         <source>The course code is missing.</source>
         <translation>Недостаје шифра предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="184"/>
+        <location filename="../admin/courseform.cpp" line="188"/>
         <source>The course code exceeds 8 characters.</source>
         <translation>Шифра предмета је дужа од осам знакова.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="189"/>
+        <location filename="../admin/courseform.cpp" line="193"/>
         <source>The course name is missing.</source>
         <translation>Недостаје име предмета.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="194"/>
+        <location filename="../admin/courseform.cpp" line="198"/>
         <source>The course name exceeds 64 characters.</source>
         <translation>Име предмета је дуже од 64 знака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="208"/>
+        <location filename="../admin/courseform.cpp" line="212"/>
         <source>Import finished without errors.</source>
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/courseform.cpp" line="211"/>
+        <location filename="../admin/courseform.cpp" line="215"/>
         <source>Not all lines could be imported. Please see messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
@@ -503,10 +479,6 @@
         <location filename="../admin/coursevalidator.cpp" line="74"/>
         <source>The name of the course cannot be left empty.</source>
         <translation>Мора постојати име предмета.</translation>
-    </message>
-    <message>
-        <source>The name of the course cannot be left emtpy.</source>
-        <translation type="vanished">Мора постојати име предмета.</translation>
     </message>
     <message>
         <location filename="../admin/coursevalidator.cpp" line="79"/>
@@ -691,17 +663,9 @@
         <translation>Унешени су неисправни подаци</translation>
     </message>
     <message>
-        <source>You need to specifiy person&apos;s first name.</source>
-        <translation type="vanished">Морате да унесете име особе.</translation>
-    </message>
-    <message>
         <location filename="../admin/personvalidator.cpp" line="48"/>
         <source>The first name cannot be longer than 32 characters.</source>
         <translation>Име не може да буде дуже од 32 знака.</translation>
-    </message>
-    <message>
-        <source>You need to specifiy person&apos;s last name.</source>
-        <translation type="vanished">Морате да унесете презиме особе.</translation>
     </message>
     <message>
         <location filename="../admin/personvalidator.cpp" line="43"/>
@@ -776,10 +740,6 @@
         <location filename="../admin/roomvalidator.cpp" line="70"/>
         <source>The name of the room cannot be left empty.</source>
         <translation>Морате унети име просторије.</translation>
-    </message>
-    <message>
-        <source>The name of the room cannot be left emtpy.</source>
-        <translation type="vanished">Морате унети име просторије.</translation>
     </message>
     <message>
         <location filename="../admin/roomvalidator.cpp" line="75"/>
@@ -924,17 +884,9 @@
         <translation>Број индекса мора да буде у формату ГГГГ/ББББ.</translation>
     </message>
     <message>
-        <source>Enrollment year must be between 1990 and %1.</source>
-        <translation type="vanished">Година уписа мора да буде између 1990 и %1.</translation>
-    </message>
-    <message>
         <location filename="../admin/studentvalidator.cpp" line="56"/>
         <source>Enrolment year must be between 1990 and %1.</source>
         <translation>Година уписа мора да буде између 1990 и %1.</translation>
-    </message>
-    <message>
-        <source>The index number must be greater than zero.</source>
-        <translation type="vanished">Број идекса мора да буде већи од нуле.</translation>
     </message>
     <message>
         <location filename="../admin/studentvalidator.cpp" line="62"/>

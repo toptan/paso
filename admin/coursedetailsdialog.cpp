@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <QDialogButtonBox>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSqlError>
@@ -83,6 +84,8 @@ void CourseDetailsDialog::onButtonBoxButtonClicked(QAbstractButton *button) {
         reject();
     } else if (role == QDialogButtonBox::ResetRole) {
         refresh();
+    } else if (role == QDialogButtonBox::DestructiveRole) {
+        importCourseStudents();
     }
 }
 
@@ -169,6 +172,35 @@ bool CourseDetailsDialog::saveData() {
     }
 
     return retVal;
+}
+
+void CourseDetailsDialog::importCourseStudents() {
+    QMessageBox msgBox(this);
+    msgBox.setText(tr("Importing course students will overwire currend data."));
+    msgBox.setInformativeText(
+        tr("Do you still want to import course stundets?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    if (msgBox.exec() != QMessageBox::Yes) {
+        return;
+    }
+
+    auto dialog = new QFileDialog(this, tr("Open course students import file"),
+                                  "", "*.csv");
+    dialog->setOption(QFileDialog::DontUseNativeDialog, this);
+    dialog->setOption(QFileDialog::ReadOnly, true);
+    dialog->setFileMode(QFileDialog::ExistingFile);
+    dialog->setModal(true);
+    connect(dialog, &QFileDialog::fileSelected, this,
+            &CourseDetailsDialog::onImportFileSelected);
+    connect(dialog, &QFileDialog::rejected, dialog, &QObject::deleteLater);
+    connect(dialog, &QFileDialog::accepted, dialog, &QObject::deleteLater);
+    dialog->setWindowModality(Qt::ApplicationModal);
+    dialog->show();
+}
+
+void CourseDetailsDialog::onImportFileSelected(const QString &fileName) {
+    qDebug() << fileName;
 }
 }
 }

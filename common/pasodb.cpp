@@ -234,8 +234,10 @@ bool DBManager::indexNumberUnique(const QString &indexNumber,
     return true;
 }
 
-bool DBManager::listNameUnique(const QString &listName, QSqlError &error) const {
-    auto query = List::findByNameQuery(QSqlDatabase::database(mDbName), listName);
+bool DBManager::listNameUnique(const QString &listName,
+                               QSqlError &error) const {
+    auto query =
+        List::findByNameQuery(QSqlDatabase::database(mDbName), listName);
     query.exec();
     error = query.lastError();
     if (error.type() != QSqlError::NoError || query.next()) {
@@ -563,6 +565,44 @@ StudentImportError DBManager::importStudent(const QString &csvLine,
     }
 
     return StudentImportError::NO_ERROR;
+}
+
+ListStudentImportError DBManager::importCourseStudent(const QString &courseCode,
+                                                      const QString &csvLine,
+                                                      QSqlError &error) const {
+    QString noQuotes = csvLine;
+    noQuotes.replace("\"", "");
+    auto segments = noQuotes.split(",");
+    auto indexNumber = segments[0].trimmed();
+    if (indexNumber.isEmpty()) {
+        return ListStudentImportError::BAD_INDEX_NUMBER;
+    }
+    if (indexNumber.size() != 9 || indexNumber.count("/") != 1) {
+        return ListStudentImportError::BAD_INDEX_NUMBER;
+    }
+    auto indexSegments = indexNumber.split("/");
+    if (indexSegments[0].size() != 4 || indexSegments[1].size() != 4) {
+        return ListStudentImportError::BAD_INDEX_NUMBER;
+    }
+    if (indexSegments[0].toInt() < 1990 ||
+        indexSegments[0].toInt() > QDate::currentDate().year() ||
+        indexSegments[1].toInt() < 1) {
+        return ListStudentImportError::BAD_INDEX_NUMBER;
+    }
+
+    auto student = getStudentByIndexNumber(indexNumber, error);
+    if (error.type() != QSqlError::NoError) {
+        return ListStudentImportError::DB_ERROR;
+    }
+    if (!student) {
+        return ListStudentImportError::NON_EXISTING_STUDENT;
+    }
+
+    if (!enlistStudentsToCourse(courseCode, {indexNumber}, error)) {
+        return ListStudentImportError::DB_ERROR;
+    }
+
+    return ListStudentImportError::NO_ERROR;
 }
 
 EntityVector DBManager::studentsEnlistedToCourse(const QString &courseCode,

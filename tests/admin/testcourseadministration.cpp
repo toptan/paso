@@ -12,6 +12,7 @@
 #include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QLineEdit>
+#include <QPoint>
 #include <QPushButton>
 #include <QSqlError>
 #include <QSqlField>
@@ -222,6 +223,16 @@ void TestCourseAdministration::testCourseForm() {
     detailsAction->trigger();
     QApplication::processEvents();
     QVERIFY(detailsDialogShown);
+    detailsDialogShown = false;
+    QTimer::singleShot(200, detailsDialogCallback);
+    QPoint point(tableView->columnViewportPosition(0) + 5,
+                 tableView->rowViewportPosition(0) + 10);
+    auto pViewport = tableView->viewport();
+
+    QTest::mouseClick(pViewport, Qt::LeftButton, 0, point);
+    QTest::mouseDClick(pViewport, Qt::LeftButton, 0, point);
+    QApplication::processEvents();
+    QVERIFY(detailsDialogShown);
 }
 
 void TestCourseAdministration::testCourseFormImportCourses() {
@@ -229,9 +240,7 @@ void TestCourseAdministration::testCourseFormImportCourses() {
     db.exec("DELETE FROM COURSE");
     CourseForm form;
     bool importDone = false;
-    auto importDoneCallback = [&importDone]() {
-        importDone = true;
-    };
+    auto importDoneCallback = [&importDone]() { importDone = true; };
     connect(&form, &CourseForm::importDone, importDoneCallback);
     form.show();
     QTest::qWaitForWindowExposed(&form);

@@ -43,6 +43,7 @@ private slots:
 
     void testCourseImport();
     void testStudentImport();
+    void testImportCourseStudent();
 
     void testEnlistingStudentToCourses();
     void testEnlistingStudentsToCourse();

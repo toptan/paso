@@ -54,6 +54,9 @@ CourseForm::CourseForm(QWidget *parent)
 
     connect(mImportAction, &QAction::triggered, this, &CourseForm::onImport);
     connect(mDetailsAction, &QAction::triggered, this, &CourseForm::onDetails);
+    connect(ui->tableView, &QTableView::doubleClicked, [this]() {
+       onDetails();
+    });
 }
 
 CourseForm::~CourseForm() { delete ui; }
@@ -118,6 +121,7 @@ void CourseForm::onImport() {
     connect(dialog, &QFileDialog::fileSelected, this,
             &CourseForm::onImportFileSelected);
     connect(dialog, &QDialog::rejected, dialog, &QObject::deleteLater);
+    connect(dialog, &QDialog::accepted, dialog, &QObject::deleteLater);
     dialog->setWindowModality(Qt::ApplicationModal);
     dialog->show();
 }
