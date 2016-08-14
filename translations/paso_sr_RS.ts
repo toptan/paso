@@ -346,9 +346,14 @@
         <translation>Да ли још увек желите да увезете студенте који похађају курс?</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="186"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="188"/>
         <source>Open course students import file</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/coursedetailsdialog.cpp" line="209"/>
+        <source>The file %1 cannot be opened.</source>
+        <translation type="unfinished">Датотека %1 не може да се отвори.</translation>
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="139"/>

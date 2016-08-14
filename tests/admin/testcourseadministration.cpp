@@ -265,7 +265,7 @@ void TestCourseAdministration::testCourseFormImportCourses() {
     while ((fileOpenDialog = dynamic_cast<QFileDialog *>(
                 QApplication::activeModalWidget())) == nullptr &&
            attempt < 10) {
-        QTest::qWait(200);
+        QTest::qWait(100);
         attempt++;
     }
     // Is file open dialog shown?
@@ -296,7 +296,7 @@ void TestCourseAdministration::testCourseFormImportCourses() {
     while ((logDialog = dynamic_cast<LogDialog *>(
                 QApplication::activeModalWidget())) == nullptr &&
            attempt < 10) {
-        QTest::qWait(200);
+        QTest::qWait(100);
         attempt++;
     }
     QVERIFY(logDialog != nullptr);

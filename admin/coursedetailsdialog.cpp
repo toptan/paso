@@ -200,7 +200,21 @@ void CourseDetailsDialog::importCourseStudents() {
 }
 
 void CourseDetailsDialog::onImportFileSelected(const QString &fileName) {
-    qDebug() << fileName;
+    auto file = new QFile(fileName);
+    if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox msgBox(this);
+        msgBox.setWindowModality(Qt::WindowModal);
+        msgBox.setIcon(QMessageBox::Critical);
+        QString text =
+            QString(tr("The file %1 cannot be opened.")).arg(fileName);
+        msgBox.setText(text);
+        msgBox.setDetailedText(file->errorString());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        delete file;
+        return;
+    }
 }
 }
 }

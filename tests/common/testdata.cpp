@@ -106,7 +106,7 @@ void TestData::testStudentSerialization() {
 void TestData::testListSerialization() {
     List expected("Demo lista", true, 4);
     QString jsonString = expected.toJsonString();
-    List deserialized;
+    List deserialized((QVariantMap()));
     deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized, expected);
 }

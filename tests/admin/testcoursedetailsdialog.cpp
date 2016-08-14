@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QDialogButtonBox>
 #include <QMessageBox>
+#include <QFileDialog>
 #include <QPushButton>
 #include <QSqlDatabase>
 #include <QSqlError>
@@ -225,14 +226,51 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     QVERIFY(importButton != nullptr);
 
     bool warningShown = false;
-    auto warningCallback = [&warningShown]() {
+    auto warningCallbackNo = [&warningShown]() {
         auto msgBox =
             dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
         QTest::keyClick(msgBox, Qt::Key_Escape);
         warningShown = true;
     };
-    QTimer::singleShot(200, warningCallback);
+    QTimer::singleShot(200, warningCallbackNo);
     importButton->click();
     QApplication::processEvents();
     QVERIFY(warningShown);
+
+    auto warningCallbackYes = []() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        auto yesButton = msgBox->button(QMessageBox::Yes);
+        QTest::mouseClick(yesButton, Qt::LeftButton);
+    };
+    QTimer::singleShot(200, warningCallbackYes);
+    importButton->click();
+    QApplication::processEvents();
+    QFileDialog *fileOpenDialog = nullptr;
+    int attempt = 0;
+    while ((fileOpenDialog = dynamic_cast<QFileDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+    // Is file open dialog shown?
+    QVERIFY(fileOpenDialog != nullptr);
+    QTest::keyClick(fileOpenDialog, Qt::Key_Escape);
+    QApplication::processEvents();
+    auto importWithNonExistingFileCallback = [&dialog]() {
+        dialog.onImportFileSelected("non_existing_file");
+    };
+    bool errorMessageBoxShown = false;
+    auto errorMessageBoxShownCallback = [&errorMessageBoxShown]() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Return);
+        errorMessageBoxShown = true;
+    };
+
+    QTimer::singleShot(0, importWithNonExistingFileCallback);
+    QTimer::singleShot(0, errorMessageBoxShownCallback);
+    QApplication::processEvents();
+    QVERIFY(errorMessageBoxShown);
 }
