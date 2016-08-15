@@ -148,6 +148,18 @@ QSqlQuery Course::removeStudentFromCourseQuery(const QSqlDatabase &database,
     return query;
 }
 
+QSqlQuery Course::removeAllStudentsFromCourseQuery(const QSqlDatabase &database,
+                                                   const QString &code) {
+    QSqlQuery query(database);
+    query.prepare(
+        "DELETE FROM ENLISTED"
+        " WHERE ID_COURSE = (SELECT ID"
+        "					     FROM COURSE"
+        "						WHERE CODE = :code)");
+    query.bindValue(":code", code);
+    return query;
+}
+
 QSqlQuery Course::enlistedStudents(const QSqlDatabase &database,
                                    const QString &code) {
     QSqlQuery query(database);
@@ -160,10 +172,10 @@ QSqlQuery Course::enlistedStudents(const QSqlDatabase &database,
 QSqlQuery Course::notEnlistedStudents(const QSqlDatabase &database,
                                       const QString &code) {
     QSqlQuery query(database);
-    query.prepare(
-        "SELECT * FROM ENLISTED_STUDENTS "
-        " WHERE COALESCE(CODE, 'X') <> :code_1 "
-        "  AND ID NOT IN (SELECT ID FROM ENLISTED_STUDENTS WHERE CODE = :code_2)");
+    query.prepare("SELECT * FROM ENLISTED_STUDENTS "
+                  " WHERE COALESCE(CODE, 'X') <> :code_1 "
+                  "  AND ID NOT IN (SELECT ID FROM ENLISTED_STUDENTS WHERE "
+                  "CODE = :code_2)");
     query.bindValue(":code_1", code);
     query.bindValue(":code_2", code);
 

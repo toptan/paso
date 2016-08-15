@@ -35,6 +35,18 @@ DBManager::DBManager(const QString &dbName)
     }
 }
 
+void DBManager::beginTransaction() const {
+    QSqlDatabase::database(mDbName).transaction();
+}
+
+QSqlError DBManager::commit() const {
+    auto db = QSqlDatabase::database(mDbName);
+    db.commit();
+    return db.lastError();
+}
+
+void DBManager::rollback() const { QSqlDatabase::database(mDbName).rollback(); }
+
 shared_ptr<vector<SystemUser>>
 DBManager::getAllSystemUsers(QSqlError &error) const {
     auto query = SystemUser::findAllQuery(QSqlDatabase::database(mDbName));
@@ -64,16 +76,22 @@ shared_ptr<SystemUser> DBManager::getSystemUser(const QString &username,
 }
 
 bool DBManager::saveSystemUser(SystemUser &user, QSqlError &error) const {
+    beginTransaction();
     auto query =
         user.id() == 0
             ? SystemUser::insertQuery(QSqlDatabase::database(mDbName), user)
             : SystemUser::updateQuery(QSqlDatabase::database(mDbName), user);
     query.exec();
     error = query.lastError();
-    if (error.type() == QSqlError::NoError && user.id() == 0) {
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+    if (user.id() == 0) {
         user.setId(query.lastInsertId().toULongLong());
     }
 
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -82,11 +100,16 @@ bool DBManager::deleteSystemUser(const QString &username,
     if (username == "root") {
         return false;
     }
-
+    beginTransaction();
     auto query = SystemUser::deleteByUsernameQuery(
         QSqlDatabase::database(mDbName), username);
     query.exec();
     error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -121,20 +144,31 @@ bool DBManager::saveRoom(Room &room, QSqlError &error) const {
     auto query = room.id() == 0
                      ? Room::insertQuery(QSqlDatabase::database(mDbName), room)
                      : Room::updateQuery(QSqlDatabase::database(mDbName), room);
+    beginTransaction();
     query.exec();
     error = query.lastError();
-    if (error.type() == QSqlError::NoError && room.id() == 0) {
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+    if (room.id() == 0) {
         room.setId(query.lastInsertId().toULongLong());
     }
-
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
 bool DBManager::deleteRoom(const QUuid &roomUUID, QSqlError &error) const {
     auto query =
         Room::deleteByUuidQuery(QSqlDatabase::database(mDbName), roomUUID);
+    beginTransaction();
     query.exec();
     error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -157,11 +191,18 @@ bool DBManager::saveCourse(Course &course, QSqlError &error) const {
         course.id() == 0
             ? Course::insertQuery(QSqlDatabase::database(mDbName), course)
             : Course::updateQuery(QSqlDatabase::database(mDbName), course);
+    beginTransaction();
     query.exec();
     error = query.lastError();
-    if (error.type() == QSqlError::NoError && course.id() == 0) {
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+    if (course.id() == 0) {
         course.setId(query.lastInsertId().toULongLong());
     }
+
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -169,8 +210,15 @@ bool DBManager::deleteCourse(const QString &courseCode,
                              QSqlError &error) const {
     auto query =
         Course::deleteByCodeQuery(QSqlDatabase::database(mDbName), courseCode);
+    beginTransaction();
     query.exec();
     error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -263,14 +311,14 @@ DBManager::getStudentByIndexNumber(const QString &indexNumber,
 
 bool DBManager::saveStudent(Student &student, QSqlError &error) const {
     auto db = QSqlDatabase::database(mDbName);
-    db.transaction();
     auto newStudent = student.id() == 0;
     auto query = newStudent ? Person::insertQuery(db, student)
                             : Person::updateQuery(db, student);
+    beginTransaction();
     query.exec();
     error = query.lastError();
     if (error.type() != QSqlError::NoError) {
-        db.rollback();
+        rollback();
         return false;
     }
     if (newStudent) {
@@ -284,10 +332,10 @@ bool DBManager::saveStudent(Student &student, QSqlError &error) const {
         if (newStudent) {
             student.setId(0);
         }
-        db.rollback();
+        rollback();
         return false;
     }
-    db.commit();
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -303,8 +351,14 @@ bool DBManager::deleteStudent(const QString &indexNumber,
 
     auto query =
         Person::deleteQuery(QSqlDatabase::database(mDbName), student->id());
+    beginTransaction();
     query.exec();
     error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -344,40 +398,39 @@ bool DBManager::enlistStudentsToCourse(const QString &courseCode,
                                        const QStringList &indexNumbers,
                                        QSqlError &error) const {
     auto db = QSqlDatabase::database(mDbName);
-    db.transaction();
+    beginTransaction();
     for (const auto &indexNumber : indexNumbers) {
         auto query =
             Course::enlistStudentToCourseQuery(db, courseCode, indexNumber);
         query.exec();
         error = query.lastError();
         if (error.type() != QSqlError::NoError) {
-            db.rollback();
+            rollback();
             return false;
         }
     }
-    db.commit();
 
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
 bool DBManager::enlistStudentToCourses(const QString &indexNumber,
                                        const QStringList &courseCodes,
                                        QSqlError &error) const {
-
     auto db = QSqlDatabase::database(mDbName);
-    db.transaction();
+    beginTransaction();
     for (const auto &courseCode : courseCodes) {
         auto query =
             Course::enlistStudentToCourseQuery(db, courseCode, indexNumber);
         query.exec();
         error = query.lastError();
         if (error.type() != QSqlError::NoError) {
-            db.rollback();
+            rollback();
             return false;
         }
     }
-    db.commit();
 
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -386,14 +439,14 @@ bool DBManager::updateCourseStudents(const QString &courseCode,
                                      const QStringList &removeIndexNumbers,
                                      QSqlError &error) const {
     auto db = QSqlDatabase::database(mDbName);
-    db.transaction();
+    beginTransaction();
     for (const auto &indexNumber : addIndexNumbers) {
         auto query =
             Course::enlistStudentToCourseQuery(db, courseCode, indexNumber);
         query.exec();
         error = query.lastError();
         if (error.type() != QSqlError::NoError) {
-            db.rollback();
+            rollback();
             return false;
         }
     }
@@ -404,12 +457,12 @@ bool DBManager::updateCourseStudents(const QString &courseCode,
         query.exec();
         error = query.lastError();
         if (error.type() != QSqlError::NoError) {
-            db.rollback();
+            rollback();
             return false;
         }
     }
-    db.commit();
 
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -417,19 +470,19 @@ bool DBManager::removeStudentFromCourses(const QString &indexNumber,
                                          const QStringList &courseCodes,
                                          QSqlError &error) const {
     auto db = QSqlDatabase::database(mDbName);
-    db.transaction();
+    beginTransaction();
     for (const auto &courseCode : courseCodes) {
         auto query =
             Course::removeStudentFromCourseQuery(db, courseCode, indexNumber);
         query.exec();
         error = query.lastError();
         if (error.type() != QSqlError::NoError) {
-            db.rollback();
+            rollback();
             return false;
         }
     }
-    db.commit();
 
+    error = commit();
     return error.type() == QSqlError::NoError;
 }
 
@@ -437,19 +490,28 @@ bool DBManager::removeStudentsFromCourse(const QString &courseCode,
                                          const QStringList &indexNumbers,
                                          QSqlError &error) const {
     auto db = QSqlDatabase::database(mDbName);
-    db.transaction();
+    beginTransaction();
     for (const auto &indexNumber : indexNumbers) {
         auto query =
             Course::removeStudentFromCourseQuery(db, courseCode, indexNumber);
         query.exec();
         error = query.lastError();
         if (error.type() != QSqlError::NoError) {
-            db.rollback();
+            rollback();
             return false;
         }
     }
-    db.commit();
 
+    error = commit();
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::removeAllStudentsFromCourse(const QString &courseCode,
+                                            QSqlError &error) {
+    auto db = QSqlDatabase::database(mDbName);
+    auto query = Course::removeAllStudentsFromCourseQuery(db, courseCode);
+    query.exec();
+    error = query.lastError();
     return error.type() == QSqlError::NoError;
 }
 
@@ -598,7 +660,12 @@ ListStudentImportError DBManager::importCourseStudent(const QString &courseCode,
         return ListStudentImportError::NON_EXISTING_STUDENT;
     }
 
-    if (!enlistStudentsToCourse(courseCode, {indexNumber}, error)) {
+    auto db = QSqlDatabase::database(mDbName);
+    auto query =
+        Course::enlistStudentToCourseQuery(db, courseCode, indexNumber);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
         return ListStudentImportError::DB_ERROR;
     }
 

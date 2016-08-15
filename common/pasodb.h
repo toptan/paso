@@ -27,50 +27,6 @@ namespace db {
 const static QString DEFAULT_DB_NAME = "paso";
 
 ///
-/// \brief The CourseImportError enum defines error codes for importing courses.
-///
-enum class CourseImportError {
-    NO_ERROR,      //!< All fine, no error.
-    INVALID_LINE,  //!< The CSV line is illformed.
-    NO_CODE,       //!< Missing course code.
-    CODE_TOO_LONG, //!< Course code too long.
-    NO_NAME,       //!< Missing course name.
-    NAME_TOO_LONG, //!< Course name too long.
-    DB_ERROR       //!< Generic database error.
-};
-
-///
-/// \brief The StudentImportError enum defines error codes for importing
-/// students.
-///
-enum class StudentImportError {
-    NO_ERROR,            //!< All fine, no error.
-    INVALID_LINE,        //!< The CSV line is illformed.
-    NO_INDEX_NUMBER,     //!< Missing index number.
-    BAD_INDEX_NUMBER,    //!< The index number is wrong.
-    NO_FIRST_NAME,       //!< Missing first name.
-    FIRST_NAME_TOO_LONG, //!< First name is too long.
-    NO_LAST_NAME,        //!< Missing last name.
-    LAST_NAME_TOO_LONG,  //!< Last name is too long.
-    BAD_EMAIL,           //!< The email is bad.
-    NO_YEAR_OF_STUDY,    //!< Year of study missing.
-    BAD_YEAR_OF_STUDY,   //<! The year of study is bad.
-    DB_ERROR             //!< Generic database error.
-};
-
-///
-/// \brief The ListStudentImportError enum defines error codes for importing
-/// list or course students.
-///
-enum class ListStudentImportError {
-    NO_ERROR,             //!< All fine, no error.
-    BAD_INDEX_NUMBER,     //!< The index number is in wrong format or missing.
-    NON_EXISTING_STUDENT, //!< The student with given index number does not
-                          //! exist in the database.
-    DB_ERROR              //!< Generic database error.
-};
-
-///
 /// \brief The DBManager class is responsible for all database operations.
 ///
 class DBManager : public QObject {
@@ -89,6 +45,23 @@ public:
     /// \param dbName the name of database to use.
     ///
     explicit DBManager(const QString &dbName = DEFAULT_DB_NAME);
+
+    ///
+    /// \brief beginTransaction Starts database transaction.
+    ///
+    void beginTransaction() const;
+
+    ///
+    /// \brief commit Commits started transaction.
+    /// \return The SQL error if any.
+    ///
+    QSqlError commit() const;
+
+    ///
+    /// \brief rollback Rollsback started transaction.
+    /// \return The SQL error if any.
+    ///
+    void rollback() const;
 
     ///
     /// \brief getAllSystemUsers Returns a vector of all system users.
@@ -266,8 +239,8 @@ public:
     /// \param error The SQL error if any.
     /// \return The course import error.
     ///
-    CourseImportError importCourse(const QString &csvLine,
-                                   QSqlError &error) const;
+    data::CourseImportError importCourse(const QString &csvLine,
+                                         QSqlError &error) const;
 
     ///
     /// \brief importStudent imports student from given CSV line.
@@ -275,21 +248,23 @@ public:
     /// \param error The SQL error if any.
     /// \return The student import error.
     ///
-    StudentImportError importStudent(const QString &csvLine,
-                                     QSqlError &error) const;
+    data::StudentImportError importStudent(const QString &csvLine,
+                                           QSqlError &error) const;
 
     ///
     /// \brief importCourseStudent imports index number from the csv line and
     /// enlists that student to the given course.
+    /// \note This method has no transaction of its own and should not be used
+    /// without enclosing transaction, which must be initiated by the caller.
     /// \param courseCode The course code.
     /// \param csvLine The CVS line with student data. Index number must be
     /// first.
     /// \param error The SQL error if any.
     /// \return The import error.
     ///
-    ListStudentImportError importCourseStudent(const QString &courseCode,
-                                               const QString &csvLine,
-                                               QSqlError &error) const;
+    data::ListStudentImportError importCourseStudent(const QString &courseCode,
+                                                     const QString &csvLine,
+                                                     QSqlError &error) const;
 
     ///
     /// \brief getCourseStudents Returns all students that are enrolled to a
@@ -343,6 +318,19 @@ public:
     bool removeStudentsFromCourse(const QString &courseCode,
                                   const QStringList &indexNumbers,
                                   QSqlError &error) const;
+
+    ///
+    /// \brief removeAllStudentsFromCourse Removes all students from given
+    /// course.
+    /// \note This method has no transaction of its own and should not be used
+    /// without enclosing transaction, which must be initiated by the caller.
+    /// \param courseCode The course code.
+    /// \param error The SQL error if any.
+    /// \return \c true if all students are successfully removed from the
+    /// course.
+    ///
+    bool removeAllStudentsFromCourse(const QString &courseCode,
+                                     QSqlError &error);
 
     ///
     /// \brief removeStudentFromCourses Removes student from given courses.

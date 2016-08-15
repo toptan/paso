@@ -32,6 +32,10 @@ public slots:
     virtual void reject() override;
     void onImportFileSelected(const QString &fileName);
 
+signals:
+    void newLogLine(const QString &line);
+    void importDone();
+
 private slots:
     virtual void onButtonBoxButtonClicked(QAbstractButton *button);
 

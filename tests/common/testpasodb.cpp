@@ -576,7 +576,7 @@ void TestPasoDB::testRemovingStudentFromCourses() {
 
 void TestPasoDB::testRemovingStudentsFromCourse() {
     DBManager manager(dbName);
-    QStringList indexeNumbers{"2001/2001", "2002/2002"};
+    QStringList indexNumbers{"2001/2001", "2002/2002"};
     QSqlError error;
     manager.importStudent("2001/2001,Jovan, Jovanovic,,2", error);
     manager.importStudent("2002/2002,Milan,Milanovic,,2", error);
@@ -584,8 +584,25 @@ void TestPasoDB::testRemovingStudentsFromCourse() {
     manager.importCourse("IR3AA, AA course", error);
     manager.importCourse("IR3AB, AB course", error);
     manager.importCourse("IR3AC, AC course", error);
-    manager.enlistStudentsToCourse("IR3AB", indexeNumbers, error);
-    QVERIFY(manager.removeStudentsFromCourse("IR3AB", indexeNumbers, error));
+    manager.enlistStudentsToCourse("IR3AB", indexNumbers, error);
+    QVERIFY(manager.removeStudentsFromCourse("IR3AB", indexNumbers, error));
+    QVERIFY(manager.getCourseStudents("IR3AB", error)->empty());
+}
+
+void TestPasoDB::testRemovingAllStudentsFromCourse() {
+    DBManager manager(dbName);
+    QStringList indexNumbers{"2001/2001", "2002/2002"};
+    QSqlError error;
+    manager.importStudent("2001/2001,Jovan, Jovanovic,,2", error);
+    manager.importStudent("2002/2002,Milan,Milanovic,,2", error);
+    manager.importStudent("2003/2003,Ivana, Ivanovic,,2", error);
+    manager.importCourse("IR3AA, AA course", error);
+    manager.importCourse("IR3AB, AB course", error);
+    manager.importCourse("IR3AC, AC course", error);
+    manager.enlistStudentsToCourse("IR3AB", indexNumbers, error);
+    manager.beginTransaction();
+    QVERIFY(manager.removeAllStudentsFromCourse("IR3AB", error));
+    manager.commit();
     QVERIFY(manager.getCourseStudents("IR3AB", error)->empty());
 }
 

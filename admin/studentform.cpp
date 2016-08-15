@@ -14,6 +14,7 @@
 #include <QTextStream>
 #include <QtConcurrent>
 
+using namespace paso::data;
 using namespace paso::db;
 using namespace paso::model;
 using namespace paso::widget;

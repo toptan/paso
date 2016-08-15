@@ -24,6 +24,50 @@ enum class SystemRole {
 };
 
 ///
+/// \brief The CourseImportError enum defines error codes for importing courses.
+///
+enum class CourseImportError {
+    NO_ERROR,      //!< All fine, no error.
+    INVALID_LINE,  //!< The CSV line is illformed.
+    NO_CODE,       //!< Missing course code.
+    CODE_TOO_LONG, //!< Course code too long.
+    NO_NAME,       //!< Missing course name.
+    NAME_TOO_LONG, //!< Course name too long.
+    DB_ERROR       //!< Generic database error.
+};
+
+///
+/// \brief The StudentImportError enum defines error codes for importing
+/// students.
+///
+enum class StudentImportError {
+    NO_ERROR,            //!< All fine, no error.
+    INVALID_LINE,        //!< The CSV line is illformed.
+    NO_INDEX_NUMBER,     //!< Missing index number.
+    BAD_INDEX_NUMBER,    //!< The index number is wrong.
+    NO_FIRST_NAME,       //!< Missing first name.
+    FIRST_NAME_TOO_LONG, //!< First name is too long.
+    NO_LAST_NAME,        //!< Missing last name.
+    LAST_NAME_TOO_LONG,  //!< Last name is too long.
+    BAD_EMAIL,           //!< The email is bad.
+    NO_YEAR_OF_STUDY,    //!< Year of study missing.
+    BAD_YEAR_OF_STUDY,   //<! The year of study is bad.
+    DB_ERROR             //!< Generic database error.
+};
+
+///
+/// \brief The ListStudentImportError enum defines error codes for importing
+/// list or course students.
+///
+enum class ListStudentImportError {
+    NO_ERROR,             //!< All fine, no error.
+    BAD_INDEX_NUMBER,     //!< The index number is in wrong format or missing.
+    NON_EXISTING_STUDENT, //!< The student with given index number does not
+                          //! exist in the database.
+    DB_ERROR              //!< Generic database error.
+};
+
+///
 /// \brief The enumeratedRoles provides translatable system roles for displaying
 /// text.
 ///
@@ -58,6 +102,7 @@ const QString roleToString(paso::data::SystemRole role);
 /// \return The role
 ///
 paso::data::SystemRole stringToRole(const QString &role);
+
 }
 }
 

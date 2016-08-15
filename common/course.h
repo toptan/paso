@@ -157,6 +157,16 @@ public:
                                                   const QString &indexNumber);
 
     ///
+    /// \brief removeAllStudentsFromCourseQuery Returns query that removes all
+    /// students from the given course.
+    /// \param database The database to use.
+    /// \param code The course code.
+    /// \return The query.
+    ///
+    static QSqlQuery
+    removeAllStudentsFromCourseQuery(const QSqlDatabase &database,
+                                     const QString &code);
+    ///
     /// \brief enlistedStudents Returns query that selects all students enlisted
     /// to the course.
     /// \param database The database to use.

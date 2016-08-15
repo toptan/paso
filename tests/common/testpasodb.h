@@ -49,6 +49,7 @@ private slots:
     void testEnlistingStudentsToCourse();
     void testRemovingStudentFromCourses();
     void testRemovingStudentsFromCourse();
+    void testRemovingAllStudentsFromCourse();
     void testUpdatingCourseStudents();
 
 private:

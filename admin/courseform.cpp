@@ -158,7 +158,7 @@ void CourseForm::onImportFileSelected(const QString &fileName) {
         QTextStream in(file);
         bool errorOccured = false;
         int lineNo = 1;
-        db::DBManager manager;
+        DBManager manager;
         QSqlError sqlError;
         QString format(tr("Importing line %1... %2"));
         emit newLogLine(

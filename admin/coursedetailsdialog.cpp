@@ -1,15 +1,22 @@
 #include "coursedetailsdialog.h"
 #include "ui_coursedetailsdialog.h"
 
+#include "data.h"
+#include "logdialog.h"
+#include "pasodb.h"
+
 #include <QDebug>
 #include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSqlError>
+#include <QThread>
+#include <QtConcurrent>
 #include <memory>
 
 using namespace std;
+using namespace paso::data;
 using namespace paso::data::entity;
 using namespace paso::db;
 using namespace paso::model;
@@ -176,9 +183,10 @@ bool CourseDetailsDialog::saveData() {
 
 void CourseDetailsDialog::importCourseStudents() {
     QMessageBox msgBox(this);
-    msgBox.setText(tr("Importing course students will overwire currend data."));
+    msgBox.setText(
+        tr("Importing course students will overwrite current data."));
     msgBox.setInformativeText(
-        tr("Do you still want to import course stundets?"));
+        tr("Do you still want to import course students?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     if (msgBox.exec() != QMessageBox::Yes) {
@@ -215,6 +223,85 @@ void CourseDetailsDialog::onImportFileSelected(const QString &fileName) {
         delete file;
         return;
     }
+
+    auto logDialog = new LogDialog(tr("Importing course students..."));
+    logDialog->setModal(true);
+    logDialog->show();
+    connect(logDialog, &LogDialog::accepted, logDialog,
+            &LogDialog::deleteLater);
+    connect(logDialog, &LogDialog::rejected, logDialog,
+            &LogDialog::deleteLater);
+    connect(this, &CourseDetailsDialog::newLogLine, logDialog,
+            &LogDialog::appendLine);
+    connect(this, &CourseDetailsDialog::importDone, logDialog,
+            &LogDialog::processingDone);
+
+    auto work = [this, file, logDialog]() {
+        QTextStream in(file);
+        bool errorOccured = false;
+        int lineNo = 1;
+        DBManager manager;
+        QSqlError sqlError;
+        QString format(tr("Importing line%1... %2"));
+        manager.beginTransaction();
+        if (!manager.removeAllStudentsFromCourse(mPrivate->course.code(),
+                                                 sqlError)) {
+            QString message(tr("Clearing old data has failed... %1"));
+            emit newLogLine(message.arg(sqlError.text()));
+            emit newLogLine("");
+            emit newLogLine(tr("Importing course students has failed."));
+            emit newLogLine(tr("Data remains unchanged."));
+            manager.rollback();
+            emit importDone();
+            delete file;
+            return;
+        }
+        emit newLogLine(tr("Clearing old data... OK."));
+        while (!in.atEnd()) {
+            QString message;
+            QString line = in.readLine();
+            auto error = manager.importCourseStudent(mPrivate->course.code(),
+                                                     line, sqlError);
+            switch (error) {
+            case ListStudentImportError::NO_ERROR:
+                message = format.arg(lineNo).arg(tr("OK."));
+                break;
+            case ListStudentImportError::BAD_INDEX_NUMBER:
+                message = format.arg(lineNo).arg(
+                    tr("Index number is in wrong format or does not exist."));
+                errorOccured = true;
+                break;
+            case ListStudentImportError::NON_EXISTING_STUDENT:
+                message = format.arg(lineNo).arg(
+                    tr("Student with given index does not exist."));
+                errorOccured = true;
+                break;
+            case ListStudentImportError::DB_ERROR:
+                message = format.arg(lineNo).arg(sqlError.text());
+                errorOccured = true;
+                break;
+            }
+
+            emit newLogLine(message);
+            lineNo++;
+        }
+        delete file;
+        emit newLogLine("");
+        if (!errorOccured) {
+            emit newLogLine(tr("Import finished without errors."));
+            loadData();
+            manager.commit();
+        } else {
+            emit newLogLine(tr("Not all lines could be imported. Please see "
+                               "log messages above."));
+            emit newLogLine(tr("Importing course students has failed."));
+            emit newLogLine(tr("Data remains unchanged."));
+            manager.rollback();
+        }
+        emit importDone();
+    };
+
+    QtConcurrent::run(work);
 }
 }
 }
