@@ -1,32 +1,45 @@
 #include <chrono>
+#include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
 #include <random>
 #include <sstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 using namespace std::chrono;
 
 int main(int argc, char *argv[]) {
-    default_random_engine index_year_engine(
-        system_clock::now().time_since_epoch().count());
-    default_random_engine index_number_engine(
+    if (argc != 2) {
+        cout << "Upotreba:" << endl;
+        cout << "\t" << argv[0] << " <csv_datoteka_sa_studentima>" << endl;
+        cout << endl;
+        return 1;
+    }
+    string line;
+    ifstream input_file(argv[1]);
+    if (!input_file.is_open()) {
+        cout << "Nije bilo moguće otvoriti " << argv[1] << endl;
+        return 2;
+    }
+    vector<string> index_numbers;
+
+    while (getline(input_file, line)) {
+        index_numbers.push_back(line.substr(0, 9));
+    }
+    input_file.close();
+
+    default_random_engine engine(
         system_clock::now().time_since_epoch().count());
 
-    uniform_int_distribution<int> index_year_distribution(1996, 2015);
-    uniform_int_distribution<int> index_number_distribution(1, 600);
+    uniform_int_distribution<int> distribution(0, index_numbers.size() - 1);
 
-    auto index_year_dice = bind(index_year_distribution, index_year_engine);
-    auto index_number_dice =
-        bind(index_number_distribution, index_number_engine);
+    auto dice = bind(distribution, engine);
 
     for (auto i = 0; i < 50; i++) {
-        auto index_year = index_year_dice();
-        auto index_number = index_number_dice();
-        cout << index_year << "/" << setfill('0') << setw(4) << index_number
-             << endl;
+        cout << index_numbers[dice()] << endl;
     }
 
     return 0;
