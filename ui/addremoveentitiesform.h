@@ -25,8 +25,22 @@ class AddRemoveEntitiesForm : public QWidget {
     Q_OBJECT
 
 public:
-    explicit AddRemoveEntitiesForm(QWidget *parent = 0);
+    explicit AddRemoveEntitiesForm(QWidget *parent = 0, bool readOnly = false);
     virtual ~AddRemoveEntitiesForm();
+
+    ///
+    /// Returns whether this form is read only.
+    ///
+    /// \return \c true if this form is read only.
+    ///
+    bool readOnly() const;
+
+    ///
+    /// Sets whether this form should be read only.
+    ///
+    /// \param readOnly Whether this form should be read only.
+    ///
+    void setReadOnly(bool readOnly = true);
 
     ///
     /// Returns whether there were changes.
@@ -90,7 +104,8 @@ private slots:
 
 private:
     Ui::AddRemoveEntitiesForm *ui;
-
+    /// Defines whether whis form is read only.
+    bool mReadOnly;
     /// The source data.
     data::entity::EntityVector mSourceData;
     /// The destination data.

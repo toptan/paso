@@ -1,6 +1,7 @@
 #include "testlistadministration.h"
 
 #include "list.h"
+#include "listdetailsdialog.h"
 #include "listeditorwidget.h"
 #include "listform.h"
 #include "listtablemodel.h"
@@ -337,4 +338,27 @@ void TestListAdministration::testListForm() {
     deleteAction->trigger();
     QApplication::processEvents();
     QVERIFY(deleteMessageBoxShown);
+
+    bool detailsDialogShown = false;
+    auto detailsDialogCallback = [&detailsDialogShown]() {
+        auto detailsDialog = dynamic_cast<ListDetailsDialog *>(
+            QApplication::activeModalWidget());
+        QTest::keyClick(detailsDialog, Qt::Key_Escape);
+        detailsDialogShown = true;
+    };
+
+    QTimer::singleShot(200, detailsDialogCallback);
+    detailsAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(detailsDialogShown);
+    detailsDialogShown = false;
+    QTimer::singleShot(200, detailsDialogCallback);
+    QPoint point(tableView->columnViewportPosition(0) + 5,
+                 tableView->rowViewportPosition(0) + 10);
+    auto pViewport = tableView->viewport();
+
+    QTest::mouseClick(pViewport, Qt::LeftButton, 0, point);
+    QTest::mouseDClick(pViewport, Qt::LeftButton, 0, point);
+    QApplication::processEvents();
+    QVERIFY(detailsDialogShown);
 }

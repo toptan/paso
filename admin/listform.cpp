@@ -1,6 +1,8 @@
 #include "listform.h"
 #include "ui_listform.h"
 
+#include "list.h"
+#include "listdetailsdialog.h"
 #include "listtablemodel.h"
 #include "listvalidator.h"
 
@@ -8,6 +10,7 @@
 
 using namespace paso::widget;
 using namespace paso::db;
+using namespace paso::data::entity;
 
 using namespace std;
 
@@ -33,6 +36,8 @@ ListForm::ListForm(QWidget *parent)
     mDetailsAction->setEnabled(false);
 
     connect(mDetailsAction, &QAction::triggered, this, &ListForm::onDetails);
+    connect(ui->tableView, &QTableView::doubleClicked,
+            [this]() { onDetails(); });
 }
 
 ListForm::~ListForm() { delete ui; }
@@ -97,7 +102,9 @@ void ListForm::updateActions(const QSqlRecord &record) {
 }
 
 void ListForm::onDetails() {
-    // TODO: Implement list details.
+    List list(DBManager::recordToVariantMap(selectedRecord()));
+    ListDetailsDialog dlg(list, this);
+    dlg.exec();
 }
 }
 }

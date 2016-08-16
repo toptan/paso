@@ -2,11 +2,6 @@
 #define COURSEDETAILSDIALOG_H
 
 #include "course.h"
-#include "entity.h"
-#include "entitytablemodel.h"
-#include "pasodb.h"
-#include "stablerownumbersortfilterproxymodel.h"
-#include "student.h"
 #include <memory>
 
 #include <QDialog>

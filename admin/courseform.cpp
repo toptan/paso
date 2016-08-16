@@ -54,9 +54,8 @@ CourseForm::CourseForm(QWidget *parent)
 
     connect(mImportAction, &QAction::triggered, this, &CourseForm::onImport);
     connect(mDetailsAction, &QAction::triggered, this, &CourseForm::onDetails);
-    connect(ui->tableView, &QTableView::doubleClicked, [this]() {
-       onDetails();
-    });
+    connect(ui->tableView, &QTableView::doubleClicked,
+            [this]() { onDetails(); });
 }
 
 CourseForm::~CourseForm() { delete ui; }

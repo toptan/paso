@@ -39,7 +39,6 @@ CourseDetailsDialog::CourseDetailsDialog(const Course &course, QWidget *parent)
     ui->setupUi(this);
     ui->codeLabel->setText(mPrivate->course.code());
     ui->nameLabel->setText(mPrivate->course.name());
-    ui->buttonBox->buttons();
     ui->buttonBox->button(QDialogButtonBox::Save)->setText(tr("Save"));
     ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));
     auto refreshButton = new QPushButton(tr("Refresh"), ui->buttonBox);

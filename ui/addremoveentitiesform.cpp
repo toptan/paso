@@ -10,10 +10,10 @@ using namespace paso::model;
 namespace paso {
 namespace widget {
 
-AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent)
-    : QWidget(parent), ui(new Ui::AddRemoveEntitiesForm), mSourceModel(nullptr),
-      mDestinationModel(nullptr), mSourceProxyModel(nullptr),
-      mDestinationProxyModel(nullptr) {
+AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent, bool readOnly)
+    : QWidget(parent), ui(new Ui::AddRemoveEntitiesForm), mReadOnly(readOnly),
+      mSourceModel(nullptr), mDestinationModel(nullptr),
+      mSourceProxyModel(nullptr), mDestinationProxyModel(nullptr) {
     ui->setupUi(this);
     mSourceModel = new EntityTableModel(QStringList(), QMap<QString, QString>(),
                                         EntityVector(), this);
@@ -56,9 +56,22 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent)
             &AddRemoveEntitiesForm::removeButtonClicked);
     connect(ui->resetButton, &QPushButton::clicked, this,
             &AddRemoveEntitiesForm::resetButtonClicked);
+
+    ui->addButton->setEnabled(!mReadOnly);
+    ui->removeButton->setEnabled(!mReadOnly);
+    ui->resetButton->setEnabled(!mReadOnly);
 }
 
 AddRemoveEntitiesForm::~AddRemoveEntitiesForm() { delete ui; }
+
+bool AddRemoveEntitiesForm::readOnly() const { return mReadOnly; }
+
+void AddRemoveEntitiesForm::setReadOnly(bool readOnly) {
+    mReadOnly = readOnly;
+    ui->addButton->setEnabled(!mReadOnly);
+    ui->removeButton->setEnabled(!mReadOnly);
+    ui->resetButton->setEnabled(!mReadOnly);
+}
 
 bool AddRemoveEntitiesForm::dirty() const {
     return !(mAddedEntities.empty() && mRemovedEntities.empty());

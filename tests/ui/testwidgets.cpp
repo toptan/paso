@@ -50,6 +50,18 @@ void TestWidgets::testAddRemoveEntityWidget() {
     auto removeButton = form.findChild<QPushButton *>("removeButton");
     auto resetButton = form.findChild<QPushButton *>("resetButton");
 
+    form.setReadOnly();
+    QVERIFY(form.readOnly());
+    QVERIFY(!addButton->isEnabled());
+    QVERIFY(!removeButton->isEnabled());
+    QVERIFY(!resetButton->isEnabled());
+
+    form.setReadOnly(false);
+    QVERIFY(!form.readOnly());
+    QVERIFY(addButton->isEnabled());
+    QVERIFY(removeButton->isEnabled());
+    QVERIFY(resetButton->isEnabled());
+
     sourceTable->selectRow(0);
     QTest::mouseClick(addButton, Qt::LeftButton);
     QCOMPARE(form.addedEntities().size(), size_t(1));

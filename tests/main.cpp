@@ -9,6 +9,7 @@
 #include "testdata.h"
 #include "testforms.h"
 #include "testlistadministration.h"
+#include "testlistdetailsdialog.h"
 #include "testlogindialog.h"
 #include "testmainwindow.h"
 #include "testmodels.h"
@@ -52,6 +53,7 @@ int main(int argc, char **argv) {
     testCases.push_back(new TestSystemUserAdministration);
     testCases.push_back(new TestStudentAdministration);
     testCases.push_back(new TestCourseDetailsDialog);
+    testCases.push_back(new TestListDetailsDialog);
     testCases.push_back(new TestMainWindow);
 
     for (auto testCase : testCases) {
