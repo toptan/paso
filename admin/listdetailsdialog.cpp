@@ -3,7 +3,10 @@
 
 #include "pasodb.h"
 
+#include <QDebug>
+#include <QMessageBox>
 #include <QPushButton>
+#include <QSqlError>
 
 using namespace std;
 using namespace paso::data;
@@ -58,15 +61,130 @@ ListDetailsDialog::ListDetailsDialog(const List &list, QWidget *parent)
 
 ListDetailsDialog::~ListDetailsDialog() { delete ui; }
 
-void ListDetailsDialog::reject() { QDialog::reject(); }
+void ListDetailsDialog::reject() {
+    if (!ui->addRemoveEntitiesForm->dirty()) {
+        QDialog::reject();
+        return;
+    }
+    QMessageBox msgBox(this);
+    msgBox.setWindowModality(Qt::WindowModal);
+    msgBox.setWindowTitle(tr("Unsaved changes"));
+    msgBox.setText(tr("You have changes that are not saved."));
+    msgBox.setInformativeText(tr("Do you want to save them?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    msgBox.setButtonText(QMessageBox::Yes, tr("Yes"));
+    msgBox.setButtonText(QMessageBox::No, tr("No"));
+    if (msgBox.exec() == QMessageBox::No) {
+        QDialog::reject();
+        return;
+    }
+    if (saveData()) {
+        QDialog::accept();
+    }
+}
 
-void ListDetailsDialog::onButtonBoxButtonClicked(QAbstractButton *button) {}
+void ListDetailsDialog::onButtonBoxButtonClicked(QAbstractButton *button) {
+    auto role = ui->buttonBox->buttonRole(button);
+    if (role == QDialogButtonBox::AcceptRole &&
+        ui->addRemoveEntitiesForm->dirty()) {
+        if (!saveData()) {
+            return;
+        }
+        loadData();
+    } else if (role == QDialogButtonBox::RejectRole) {
+        reject();
+    } else if (role == QDialogButtonBox::ResetRole) {
+        refresh();
+    } else if (role == QDialogButtonBox::DestructiveRole) {
+        importListStudents();
+    }
+}
 
-void ListDetailsDialog::refresh() {}
+void ListDetailsDialog::refresh() {
+    if (ui->addRemoveEntitiesForm->dirty()) {
+        QMessageBox msgBox(this);
+        msgBox.setWindowModality(Qt::WindowModal);
+        msgBox.setWindowTitle(tr("Unsaved changes"));
+        msgBox.setText(tr("You have changes that are not saved. If you reload "
+                          "data all unsaved changes will be lost."));
+        msgBox.setInformativeText(tr("Do you still want to reload data?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        msgBox.setButtonText(QMessageBox::Yes, tr("Yes"));
+        msgBox.setButtonText(QMessageBox::No, tr("No"));
+        if (msgBox.exec() == QMessageBox::No) {
+            return;
+        }
+    }
+    loadData();
+}
 
-void ListDetailsDialog::loadData() {}
+bool ListDetailsDialog::loadData() {
+    QSqlError mErr;
+    QSqlError nErr;
+    auto members =
+        mPrivate->manager.membersOfTheList(mPrivate->list.id(), mErr);
+    auto nonMembers =
+        mPrivate->manager.nonMembersOfTheList(mPrivate->list.id(), nErr);
+    if (mErr.type() != QSqlError::NoError ||
+        nErr.type() != QSqlError::NoError) {
+        auto t = mErr.type() != QSqlError::NoError ? mErr.text() : nErr.text();
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle(tr("Critical error"));
+        msgBox.setText(tr("There was an error working with the database."));
+        msgBox.setDetailedText(t);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        return false;
+    }
 
-void ListDetailsDialog::saveData() {}
+    QStringList columns{"INDEX_NUMBER", "LAST_NAME", "FIRST_NAME"};
+    QMap<QString, QString> columnNames{{"INDEX_NUMBER", tr("Index Number")},
+                                       {"LAST_NAME", tr("Last Name")},
+                                       {"FIRST_NAME", tr("First Name")}};
+
+    ui->totalStudentsLabel->setText(
+        QString(tr("Members: %1")).arg(members.size()));
+    ui->addRemoveEntitiesForm->setData(tr("Non members"), columns, columnNames,
+                                       nonMembers, tr("Members"), columns,
+                                       columnNames, members);
+    return true;
+}
+
+bool ListDetailsDialog::saveData() {
+    auto added = ui->addRemoveEntitiesForm->addedEntities();
+    auto removed = ui->addRemoveEntitiesForm->removedEntities();
+
+    QStringList addedIndexes;
+    QStringList removedIndexes;
+
+    for (const auto &entity : added) {
+        addedIndexes.push_back(entity->value("INDEX_NUMBER").toString());
+    }
+    for (const auto &entity : removed) {
+        removedIndexes.push_back(entity->value("INDEX_NUMBER").toString());
+    }
+    QSqlError error;
+    auto retVal = mPrivate->manager.updateListStudents(
+        mPrivate->list.id(), addedIndexes, removedIndexes, error);
+    if (error.type() != QSqlError::NoError) {
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle(tr("Critical error"));
+        msgBox.setText(tr("There was an error working with the database."));
+        msgBox.setDetailedText(error.text());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        return false;
+    }
+
+    return retVal;
+    //    return true;
+}
 
 void ListDetailsDialog::importListStudents() {}
 

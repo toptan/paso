@@ -62,7 +62,7 @@ create view enlisted_students as
       left outer join course c on e.id_course = c.id;
 --
 create view list_members as
-    select p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, l.id
+    select p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, l.id as list_id
       from person p
       join student s using(id)
       join member m on m.id_student = s.id

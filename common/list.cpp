@@ -83,6 +83,62 @@ QSqlQuery List::findByNameQuery(const QSqlDatabase &database,
 
     return query;
 }
+
+QSqlQuery List::addStudentToListQuery(const QSqlDatabase &database,
+                                      uint64_t listId,
+                                      const QString &indexNumber) {
+    QSqlQuery query(database);
+    query.prepare("INSERT INTO MEMBER(ID_LIST, ID_STUDENT) "
+                  "SELECT L.ID, S.ID "
+                  "  FROM LIST L, STUDENT S "
+                  " WHERE L.ID = :list_id_1 "
+                  "   AND S.INDEX_NUMBER = :index_number_1 "
+                  "   AND (SELECT COUNT(1) "
+                  "          FROM MEMBER M "
+                  "         WHERE M.ID_LIST = L.ID "
+                  "           AND M.ID_STUDENT = S.ID "
+                  "           AND L.ID = :list_id_2 "
+                  "           AND S.INDEX_NUMBER = :index_number_2) = 0");
+    query.bindValue(":list_id_1", listId);
+    query.bindValue(":index_number_1", indexNumber);
+    query.bindValue(":list_id_2", listId);
+    query.bindValue(":index_number_2", indexNumber);
+    return query;
+}
+
+QSqlQuery List::removeStudentFromListQuery(const QSqlDatabase &database,
+                                           uint64_t listId,
+                                           const QString &indexNumber) {
+    QSqlQuery query(database);
+    query.prepare("DELETE FROM MEMBER"
+                  " WHERE ID_LIST = :list_id"
+                  "   AND ID_STUDENT = (SELECT ID"
+                  "                       FROM STUDENT"
+                  "                      WHERE INDEX_NUMBER = :index_number)");
+    query.bindValue(":list_id", listId);
+    query.bindValue(":index_number", indexNumber);
+    return query;
+}
+
+QSqlQuery List::membersQuery(const QSqlDatabase &database, uint64_t listId) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM LIST_MEMBERS WHERE LIST_ID = :list_id");
+    query.bindValue(":list_id", listId);
+
+    return query;
+}
+
+QSqlQuery List::nonMembersQuery(const QSqlDatabase &database, uint64_t listId) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM LIST_MEMBERS "
+                  " WHERE COALESCE(LIST_ID, -1) <> :list_id_1 "
+                  "  AND ID NOT IN (SELECT ID FROM LIST_MEMBERS WHERE "
+                  "LIST_ID = :list_id_2)");
+    query.bindValue(":list_id_1", listId);
+    query.bindValue(":list_id_2", listId);
+
+    return query;
+}
 }
 }
 }

@@ -20,7 +20,7 @@ class ListDetailsDialog : public QDialog {
 
 public:
     explicit ListDetailsDialog(const paso::data::entity::List &list,
-                               QWidget *parent = 0);
+                               QWidget *parent = nullptr);
     virtual ~ListDetailsDialog();
 
 public slots:
@@ -41,8 +41,8 @@ private:
     std::unique_ptr<ListDetailsDialogPrivate> mPrivate;
 
     void refresh();
-    void loadData();
-    void saveData();
+    bool loadData();
+    bool saveData();
     void importListStudents();
 };
 }

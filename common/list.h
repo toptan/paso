@@ -121,6 +121,52 @@ public:
     static QSqlQuery findByNameQuery(const QSqlDatabase &database,
                                      const QString &name);
 
+    ///
+    /// \brief addStudentToListQuery Returns query that adds student to the
+    /// list. If student is already member of the list, the query will do
+    /// nothing.
+    /// \param database The database to use.
+    /// \param listId The list id.
+    /// \param indexNumber The student's index number.
+    /// \return The query.
+    ///
+    static QSqlQuery addStudentToListQuery(const QSqlDatabase &database,
+                                           uint64_t listId,
+                                           const QString &indexNumber);
+
+    ///
+    /// \brief removeStudentFromListQuery Returns query that removes student
+    /// from the list. If student is not a member of the list, the query will do
+    /// nothing.
+    /// \param database The database to use.
+    /// \param listId The list id.
+    /// \param indexNumber The student's index number.
+    /// \return The query.
+    ///
+    static QSqlQuery removeStudentFromListQuery(const QSqlDatabase &database,
+                                                uint64_t listId,
+                                                const QString &indexNumber);
+
+    ///
+    /// \brief membersQuery Returns query that selects all students that are
+    /// members of the list.
+    /// \param database The database to use.
+    /// \param listId The list id.
+    /// \return The query.
+    ///
+    static QSqlQuery membersQuery(const QSqlDatabase &database,
+                                  uint64_t listId);
+
+    ///
+    /// \brief nonMembersQuery Returns query that selects all students that are
+    /// not members of the list.
+    /// \param database The database to use.
+    /// \param listId The list id.
+    /// \return The query.
+    ///
+    static QSqlQuery nonMembersQuery(const QSqlDatabase &database,
+                                     uint64_t listId);
+
 private:
     QString mName;     //!< The list name.
     bool mSystem;      //!< Whether this is a system list.

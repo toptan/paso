@@ -344,8 +344,8 @@ public:
                                   QSqlError &error) const;
 
     ///
-    /// Adds students from \c addIndexNumber to the course and removes ones from
-    /// \c removeIndexNumbers from the course.
+    /// Adds students from \c addIndexNumbers to the course and removes ones
+    /// from \c removeIndexNumbers from the course.
     /// \param courseCode The course code.
     /// \param addIndexNumbers The index numbers of students to add to the
     /// course.
@@ -379,6 +379,67 @@ public:
     data::entity::EntityVector
     studentsNotEnlistedToCourse(const QString &courseCode,
                                 QSqlError &error) const;
+
+    ///
+    /// \brief addStudentsToList Adds students to the list.
+    /// \param listId The list id.
+    /// \param indexNumbers The list of students index numbers.
+    /// \param error The SQL error if any.
+    /// \return \c true if students are successfully added.
+    ///
+    bool addStudentsToList(uint64_t listId, const QStringList &indexNumbers,
+                           QSqlError &error) const;
+
+    ///
+    /// \brief removeStudentsFromList Removes students from the list.
+    /// \param listId The list id.
+    /// \param indexNumbers The list of students index numbers.
+    /// \param error The SQL error if any.
+    /// \return \c true if students are successfully removed.
+    ///
+    bool removeStudentsFromList(uint64_t listId,
+                                const QStringList &indexNumbers,
+                                QSqlError &error) const;
+    ///
+    /// \brief updateListStudents Adds students from \c addIndexNumbers and
+    /// removes ones from \c removeIndexNumbers from the list.
+    /// \param listId The list id.
+    /// \param addIndexNumbers The index numbers of students to add to the list.
+    /// \param removeIndexNumbers The index numbers of the students to remove
+    /// from the list.
+    /// \param error The SQL error if any.
+    /// \return \c true if operation was successful.
+    ///
+    bool updateListStudents(uint64_t listId, const QStringList &addIndexNumbers,
+                            const QStringList &removeIndexNumbers,
+                            QSqlError &error) const;
+    ///
+    /// \brief membersOfTheList Returns all members of the given list.
+    /// \param listId The list id.
+    /// \param error The SQL error if any.
+    /// \return Vector of students that are members of the list.
+    ///
+    data::entity::EntityVector membersOfTheList(uint64_t listId,
+                                                QSqlError &error) const;
+
+    ///
+    /// \brief nonMembersOfTheList Returns all students that are not members of
+    /// the given list.
+    /// \param listId The list id.
+    /// \param error The SQL error if any.
+    /// \return Vector of students that are not members of the list.
+    ///
+    data::entity::EntityVector nonMembersOfTheList(uint64_t listId,
+                                                   QSqlError &error) const;
+
+    ///
+    /// \brief getList Returns list with given name.
+    /// \param name The list name.
+    /// \param error The SQL error if any.
+    /// \return The list or \c nullptr if list with given name does not exist.
+    ///
+    std::shared_ptr<paso::data::entity::List> getList(const QString &name,
+                                                      QSqlError &error) const;
 
 private:
     const QString mDbName;

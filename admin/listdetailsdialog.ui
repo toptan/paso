@@ -45,7 +45,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Member students: %1</string>
+           <string>Members: %1</string>
           </property>
          </widget>
         </item>

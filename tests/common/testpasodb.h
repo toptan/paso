@@ -30,6 +30,8 @@ private slots:
     void testGetCourse();
     void testDeleteCourse();
 
+    void testGetList();
+
     void testUsernameUnique();
     void testRoomUuidUnique();
     void testRoomNumberUnique();
@@ -51,6 +53,10 @@ private slots:
     void testRemovingStudentsFromCourse();
     void testRemovingAllStudentsFromCourse();
     void testUpdatingCourseStudents();
+
+    void testAddingStudentsToTheList();
+    void testRemovingStudentsFromTheList();
+    void testUpdatingListStudents();
 
 private:
     QStringList usernames;

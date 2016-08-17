@@ -703,5 +703,115 @@ EntityVector DBManager::studentsNotEnlistedToCourse(const QString &courseCode,
     }
     return retVal;
 }
+
+bool DBManager::addStudentsToList(uint64_t listId,
+                                  const QStringList &indexNumbers,
+                                  QSqlError &error) const {
+    auto db = QSqlDatabase::database(mDbName);
+    beginTransaction();
+    for (const auto &indexNumber : indexNumbers) {
+        auto query = List::addStudentToListQuery(db, listId, indexNumber);
+        query.exec();
+        error = query.lastError();
+        if (error.type() != QSqlError::NoError) {
+            rollback();
+            return false;
+        }
+    }
+    error = commit();
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::removeStudentsFromList(uint64_t listId,
+                                       const QStringList &indexNumbers,
+                                       QSqlError &error) const {
+    auto db = QSqlDatabase::database(mDbName);
+    beginTransaction();
+    for (const auto &indexNumber : indexNumbers) {
+        auto query = List::removeStudentFromListQuery(db, listId, indexNumber);
+        query.exec();
+        error = query.lastError();
+        if (error.type() != QSqlError::NoError) {
+            rollback();
+            return false;
+        }
+    }
+    error = commit();
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::updateListStudents(uint64_t listId,
+                                   const QStringList &addIndexNumbers,
+                                   const QStringList &removeIndexNumbers,
+                                   QSqlError &error) const {
+    auto db = QSqlDatabase::database(mDbName);
+    beginTransaction();
+    for (const auto& indexNumber: addIndexNumbers) {
+        auto query = List::addStudentToListQuery(db, listId, indexNumber);
+        query.exec();
+        error = query.lastError();
+        if (error.type() != QSqlError::NoError) {
+            rollback();
+            return false;
+        }
+    }
+
+    for (const auto &indexNumber: removeIndexNumbers) {
+        auto query = List::removeStudentFromListQuery(db, listId, indexNumber);
+        query.exec();
+        error = query.lastError();
+        if (error.type() != QSqlError::NoError) {
+            rollback();
+            return false;
+        }
+    }
+
+    error = commit();
+    return error.type() == QSqlError::NoError;
+}
+
+EntityVector DBManager::membersOfTheList(uint64_t listId,
+                                         QSqlError &error) const {
+    auto query = List::membersQuery(QSqlDatabase::database(mDbName), listId);
+    query.exec();
+    error = query.lastError();
+    EntityVector retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal.emplace_back(
+                make_shared<Student>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
+
+EntityVector DBManager::nonMembersOfTheList(uint64_t listId,
+                                            QSqlError &error) const {
+    auto query = List::nonMembersQuery(QSqlDatabase::database(mDbName), listId);
+    query.exec();
+    error = query.lastError();
+    EntityVector retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal.emplace_back(
+                make_shared<Student>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
+
+shared_ptr<List> DBManager::getList(const QString &name,
+                                    QSqlError &error) const {
+    auto query = List::findByNameQuery(QSqlDatabase::database(mDbName), name);
+    query.exec();
+    error = query.lastError();
+    if (error.type() == QSqlError::NoError) {
+        if (query.next()) {
+            return make_shared<List>(recordToVariantMap(query.record()));
+        }
+    }
+
+    return nullptr;
+}
 }
 }

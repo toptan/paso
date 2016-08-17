@@ -151,7 +151,8 @@ void TestCourseDetailsDialog::testWarningWhenDataIsDirty() {
     auto warningNoCallback = [&warningShown]() {
         auto msgBox =
             dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
-        QTest::keyClick(msgBox, Qt::Key_Escape);
+        auto noButton = msgBox->button(QMessageBox::No);
+        QTest::mouseClick(noButton, Qt::LeftButton);
         warningShown = true;
     };
     QTimer::singleShot(200, warningNoCallback);
