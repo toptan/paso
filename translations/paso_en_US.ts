@@ -129,20 +129,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="57"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="57"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="58"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="58"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="59"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="59"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>

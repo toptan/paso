@@ -194,7 +194,7 @@ void CourseDetailsDialog::importCourseStudents() {
 
     auto dialog = new QFileDialog(this, tr("Open course students import file"),
                                   "", "*.csv");
-    dialog->setOption(QFileDialog::DontUseNativeDialog, this);
+    dialog->setOption(QFileDialog::DontUseNativeDialog, true);
     dialog->setOption(QFileDialog::ReadOnly, true);
     dialog->setFileMode(QFileDialog::ExistingFile);
     dialog->setModal(true);

@@ -5,11 +5,15 @@ services:
 
 before_install:
   - sudo apt-get update
+  - gem install coveralls-lcov
   - echo 'DOCKER_OPTS="-H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock -s devicemapper"' | sudo tee /etc/default/docker > /dev/null
   - sudo service docker restart
   - sleep 5
   - sudo docker pull ubuntu:xenial
 
 script:
-# Run tests in the container
-- tests/setup_test.sh
+  # Run tests in the container
+  - tests/setup_test.sh
+
+after_success:
+  - coveralls-lcov combined-coverage.info

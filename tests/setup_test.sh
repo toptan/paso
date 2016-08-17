@@ -6,5 +6,6 @@ DOCKER_CONTAINER_ID=$(docker ps | grep ubuntu | awk '{print $1}')
 docker logs $DOCKER_CONTAINER_ID
 docker exec -ti $DOCKER_CONTAINER_ID /bin/bash -c "bash -xe /paso/tests/test_inside_docker.sh"
 docker ps -a
+cp build/Debug/combined-coverage.info .
 docker stop $DOCKER_CONTAINER_ID
 docker rm -v $DOCKER_CONTAINER_ID

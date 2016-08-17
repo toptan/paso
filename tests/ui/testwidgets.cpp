@@ -489,13 +489,13 @@ void TestWidgets::testDateEditWidget() {
     QDate date(1977, 1, 5);
     dateEditWithoutDate.setDate(date);
     QApplication::processEvents();
-    QCOMPARE(dateEditWithoutDate.text(), date.toString("M/d/yy"));
+    QCOMPARE(dateEditWithoutDate.text(), date.toString(dateEditWithoutDate.displayFormat()));
     QDate invalidDate(-1, -1, -1);
     dateEditWithoutDate.setDate(invalidDate);
     QApplication::processEvents();
     dateEditWithoutDate.setDate(date);
     QApplication::processEvents();
-    QCOMPARE(dateEditWithoutDate.text(), date.toString("M/d/yy"));
+    QCOMPARE(dateEditWithoutDate.text(), date.toString(dateEditWithoutDate.displayFormat()));
 
     PDateEdit dateEditWithDate(invalidDate);
     dateEditWithDate.show();
@@ -506,6 +506,5 @@ void TestWidgets::testDateEditWidget() {
     QCOMPARE(dateEditWithDate.text(), QString(""));
     dateEditWithDate.setDate(date);
     QApplication::processEvents();
-    QCOMPARE(dateEditWithDate.text(), date.toString("M/d/yy"));
-
+    QCOMPARE(dateEditWithDate.text(), date.toString(dateEditWithDate.displayFormat()));
 }
