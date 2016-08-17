@@ -29,8 +29,11 @@ xvfb-run -n 77 -s "-screen 0 1024x768x24 -ac" mwm &
 
 # Give some time to X server to start
 sleep 5
-DISPLAY=:77 make check
+DISPLAY=:77 make coverage
 
 # mvm ignores TERM, that's why we use KILL
 killall -KILL mwm
+
+# Copy coverage report outside
+cp /tmp/build/combined-coverage.info /paso
 
