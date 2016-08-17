@@ -183,7 +183,6 @@ bool ListDetailsDialog::saveData() {
     }
 
     return retVal;
-    //    return true;
 }
 
 void ListDetailsDialog::importListStudents() {}

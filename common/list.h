@@ -131,7 +131,7 @@ public:
     /// \return The query.
     ///
     static QSqlQuery addStudentToListQuery(const QSqlDatabase &database,
-                                           uint64_t listId,
+                                           quint64 listId,
                                            const QString &indexNumber);
 
     ///
@@ -144,7 +144,7 @@ public:
     /// \return The query.
     ///
     static QSqlQuery removeStudentFromListQuery(const QSqlDatabase &database,
-                                                uint64_t listId,
+                                                qint64 listId,
                                                 const QString &indexNumber);
 
     ///
@@ -154,8 +154,7 @@ public:
     /// \param listId The list id.
     /// \return The query.
     ///
-    static QSqlQuery membersQuery(const QSqlDatabase &database,
-                                  uint64_t listId);
+    static QSqlQuery membersQuery(const QSqlDatabase &database, quint64 listId);
 
     ///
     /// \brief nonMembersQuery Returns query that selects all students that are
@@ -165,7 +164,7 @@ public:
     /// \return The query.
     ///
     static QSqlQuery nonMembersQuery(const QSqlDatabase &database,
-                                     uint64_t listId);
+                                     quint64 listId);
 
 private:
     QString mName;     //!< The list name.

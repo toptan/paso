@@ -53,12 +53,12 @@
         <translation>Детаљи листе</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.ui" line="22"/>
+        <location filename="../admin/listdetailsdialog.ui" line="28"/>
         <source>List information</source>
         <translation>Подаци о листи</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.ui" line="48"/>
+        <location filename="../admin/listdetailsdialog.ui" line="54"/>
         <source>Members: %1</source>
         <translation>Чланова: %1</translation>
     </message>
@@ -137,20 +137,20 @@
         <translation>Лозинка</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="57"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="58"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="59"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>

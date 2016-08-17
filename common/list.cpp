@@ -85,7 +85,7 @@ QSqlQuery List::findByNameQuery(const QSqlDatabase &database,
 }
 
 QSqlQuery List::addStudentToListQuery(const QSqlDatabase &database,
-                                      uint64_t listId,
+                                      quint64 listId,
                                       const QString &indexNumber) {
     QSqlQuery query(database);
     query.prepare("INSERT INTO MEMBER(ID_LIST, ID_STUDENT) "
@@ -107,7 +107,7 @@ QSqlQuery List::addStudentToListQuery(const QSqlDatabase &database,
 }
 
 QSqlQuery List::removeStudentFromListQuery(const QSqlDatabase &database,
-                                           uint64_t listId,
+                                           qint64 listId,
                                            const QString &indexNumber) {
     QSqlQuery query(database);
     query.prepare("DELETE FROM MEMBER"
@@ -120,7 +120,7 @@ QSqlQuery List::removeStudentFromListQuery(const QSqlDatabase &database,
     return query;
 }
 
-QSqlQuery List::membersQuery(const QSqlDatabase &database, uint64_t listId) {
+QSqlQuery List::membersQuery(const QSqlDatabase &database, quint64 listId) {
     QSqlQuery query(database);
     query.prepare("SELECT * FROM LIST_MEMBERS WHERE LIST_ID = :list_id");
     query.bindValue(":list_id", listId);
@@ -128,7 +128,7 @@ QSqlQuery List::membersQuery(const QSqlDatabase &database, uint64_t listId) {
     return query;
 }
 
-QSqlQuery List::nonMembersQuery(const QSqlDatabase &database, uint64_t listId) {
+QSqlQuery List::nonMembersQuery(const QSqlDatabase &database, quint64 listId) {
     QSqlQuery query(database);
     query.prepare("SELECT * FROM LIST_MEMBERS "
                   " WHERE COALESCE(LIST_ID, -1) <> :list_id_1 "

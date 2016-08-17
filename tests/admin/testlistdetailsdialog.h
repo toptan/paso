@@ -14,6 +14,7 @@ private slots:
     void testDataLoading();
     void testDataRefresh();
     void testWarningWhenDataIsDirty();
+    void testSavingData();
 };
 
 #endif // TESTLISTDETAILSDIALOG_H

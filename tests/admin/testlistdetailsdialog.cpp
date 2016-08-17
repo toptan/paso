@@ -153,70 +153,121 @@ void TestListDetailsDialog::testDataRefresh() {
 }
 
 void TestListDetailsDialog::testWarningWhenDataIsDirty() {
-//    auto db = QSqlDatabase::database(dbName);
-//    DBManager manager(dbName);
-//    QSqlError error;
-//    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT) "
-//            "          VALUES('L1', 'false', 'true')");
-//    manager.importStudent("2001/2001,Student,1,,3", error);
-//    manager.importStudent("2002/2002,Student,2,,3", error);
-//    manager.importStudent("2003/2003,Student,3,,3", error);
-//    manager.importStudent("2004/2004,Student,4,,3", error);
-//    auto list = manager.getList("L1", error);
-//    manager.addStudentsToList(list->id(), {"2001/2001", "2002/2002"}, error);
-//    ListDetailsDialog dialog(*list);
-//    dialog.show();
-//    QTest::qWaitForWindowExposed(&dialog);
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT) "
+            "          VALUES('L1', 'false', 'true')");
+    manager.importStudent("2001/2001,Student,1,,3", error);
+    manager.importStudent("2002/2002,Student,2,,3", error);
+    manager.importStudent("2003/2003,Student,3,,3", error);
+    manager.importStudent("2004/2004,Student,4,,3", error);
+    auto list = manager.getList("L1", error);
+    manager.addStudentsToList(list->id(), {"2001/2001", "2002/2002"}, error);
+    ListDetailsDialog dialog(*list);
+    dialog.show();
+    QTest::qWaitForWindowExposed(&dialog);
 
-//    auto form = dialog.findChild<AddRemoveEntitiesForm *>();
-//    auto sourceTable = form->findChild<QTableView *>("sourceTableView");
-//    auto destinationTable =
-//        form->findChild<QTableView *>("destinationTableView");
+    auto form = dialog.findChild<AddRemoveEntitiesForm *>();
+    auto sourceTable = form->findChild<QTableView *>("sourceTableView");
+    auto destinationTable =
+        form->findChild<QTableView *>("destinationTableView");
 
-//    auto buttonBox = dialog.findChild<QDialogButtonBox *>();
-//    auto closeButton = buttonBox->button(QDialogButtonBox::Close);
-//    auto addButton = form->findChild<QPushButton *>("addButton");
-//    auto removeButton = form->findChild<QPushButton *>("removeButton");
+    auto buttonBox = dialog.findChild<QDialogButtonBox *>();
+    auto closeButton = buttonBox->button(QDialogButtonBox::Close);
+    auto addButton = form->findChild<QPushButton *>("addButton");
+    auto removeButton = form->findChild<QPushButton *>("removeButton");
 
-//    sourceTable->selectRow(0);
-//    QApplication::processEvents();
-//    addButton->click();
-//    QApplication::processEvents();
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
 
-//    bool warningShown = false;
-//    auto warningYesCallback = [&warningShown]() {
-//        auto msgBox =
-//            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
-//        QTest::keyClick(msgBox, Qt::Key_Return);
-//        qDebug() << "YES CALLBACK";
-//        warningShown = true;
-//    };
-//    QTimer::singleShot(200, warningYesCallback);
-//    closeButton->click();
-//    QApplication::processEvents();
-//    QVERIFY(warningShown);
-//    QVERIFY(!dialog.isVisible());
-//    QCOMPARE(manager.membersOfTheList(list->id(), error).size(), size_t(3));
+    bool warningShown = false;
+    auto warningYesCallback = [&warningShown]() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Return);
+        warningShown = true;
+    };
+    QTimer::singleShot(200, warningYesCallback);
+    closeButton->click();
+    QApplication::processEvents();
+    QVERIFY(warningShown);
+    QVERIFY(!dialog.isVisible());
+    QCOMPARE(manager.membersOfTheList(list->id(), error).size(), size_t(3));
 
-//    dialog.show();
-//    QTest::qWaitForWindowExposed(&dialog);
-//    destinationTable->selectRow(0);
-//    QApplication::processEvents();
-//    removeButton->click();
-//    QApplication::processEvents();
-//    warningShown = false;
-//    auto warningNoCallback = [&warningShown]() {
-//        auto msgBox =
-//            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
-//        auto noButton = msgBox->button(QMessageBox::No);
-//        QTest::mouseClick(noButton, Qt::LeftButton);
-//        qDebug() << "NO CALLBACK";
-//        warningShown = true;
-//    };
-//    QTimer::singleShot(200, warningNoCallback);
-//    closeButton->click();
-//    QApplication::processEvents();
-//    QVERIFY(warningShown);
-//    QVERIFY(!dialog.isVisible());
-//    QCOMPARE(manager.membersOfTheList(list->id(), error).size(), size_t(3));
+    dialog.show();
+    QTest::qWaitForWindowExposed(&dialog);
+    destinationTable->selectRow(0);
+    QApplication::processEvents();
+    removeButton->click();
+    QApplication::processEvents();
+    warningShown = false;
+    auto warningNoCallback = [&warningShown]() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        auto noButton = msgBox->button(QMessageBox::No);
+        QTest::mouseClick(noButton, Qt::LeftButton);
+        warningShown = true;
+    };
+    QTimer::singleShot(200, warningNoCallback);
+    closeButton->click();
+    QApplication::processEvents();
+    QVERIFY(warningShown);
+    QVERIFY(!dialog.isVisible());
+    QCOMPARE(manager.membersOfTheList(list->id(), error).size(), size_t(3));
+}
+
+void TestListDetailsDialog::testSavingData() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT) "
+            "          VALUES('L1', 'false', 'true')");
+    manager.importStudent("2001/2001,Student,1,,3", error);
+    manager.importStudent("2002/2002,Student,2,,3", error);
+    manager.importStudent("2003/2003,Student,3,,3", error);
+    manager.importStudent("2004/2004,Student,4,,3", error);
+    auto list = manager.getList("L1", error);
+    manager.addStudentsToList(list->id(), {"2001/2001", "2002/2002"}, error);
+    ListDetailsDialog dialog(*list);
+    dialog.show();
+    QTest::qWaitForWindowExposed(&dialog);
+
+    auto form = dialog.findChild<AddRemoveEntitiesForm *>();
+    auto buttonBox = dialog.findChild<QDialogButtonBox *>();
+    auto saveButton = buttonBox->button(QDialogButtonBox::Save);
+    auto sourceTable = form->findChild<QTableView *>("sourceTableView");
+    auto destinationTable =
+        form->findChild<QTableView *>("destinationTableView");
+
+    auto addButton = form->findChild<QPushButton *>("addButton");
+    auto removeButton = form->findChild<QPushButton *>("removeButton");
+    destinationTable->selectRow(0);
+    QApplication::processEvents();
+    removeButton->click();
+    QApplication::processEvents();
+    saveButton->click();
+    QApplication::processEvents();
+    QVERIFY(dialog.isVisible());
+    QCOMPARE(manager.membersOfTheList(list->id(), error).size(), size_t(1));
+
+    db.exec("DROP TABLE MEMBERS");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    bool messageShown = false;
+    auto messageCallback = [&messageShown]() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Return);
+        messageShown = true;
+    };
+    QTimer::singleShot(200, messageCallback);
+    saveButton->click();
+    QApplication::processEvents();
+    QVERIFY(messageShown);
+    QVERIFY(dialog.isVisible());
 }
