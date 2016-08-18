@@ -130,14 +130,6 @@ public:
     static QSqlQuery updateQuery(const QSqlDatabase &database,
                                  const Person &person);
 
-    ///
-    /// \brief deleteQuery Returns delete query for person regardless of type.
-    /// \param database The database to use.
-    /// \param id The person id.
-    /// \return The query.
-    ///
-    static QSqlQuery deleteQuery(const QSqlDatabase &database, uint64_t id);
-
 private:
     QString mFirstName; //!< The first name.
     QString mLastName;  //!< The last name.

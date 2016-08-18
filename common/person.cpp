@@ -116,13 +116,6 @@ QSqlQuery Person::updateQuery(const QSqlDatabase &database,
                                  : person.rfid());
     return query;
 }
-
-QSqlQuery Person::deleteQuery(const QSqlDatabase &database, uint64_t id) {
-    QSqlQuery query(database);
-    query.prepare("DELETE FROM PERSON WHERE ID = :id");
-    query.bindValue(":id", static_cast<quint64>(id));
-    return query;
-}
 }
 }
 }

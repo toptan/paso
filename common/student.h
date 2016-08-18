@@ -104,6 +104,15 @@ public:
                                  const Student &student);
 
     ///
+    /// \brief deleteQuery Returns delete query for given student.
+    /// \param database The database to use.
+    /// \param indexNumber The student to delete.
+    /// \return The query.
+    ///
+    static QSqlQuery deleteQuery(const QSqlDatabase &database,
+                                 const QString &indexNumber);
+
+    ///
     /// \brief findByIndexNumberQuery Returns find by index number query with
     /// bound index number value.
     /// \param database The database to use.
@@ -116,12 +125,21 @@ public:
     ///
     /// \brief findStudentCoursesQuery Returns query that finds all courses that
     /// this student is enlisted to.
-    /// \param database The databae to use.
+    /// \param database The database to use.
     /// \param indexNumber The index number.
     /// \return The query.
     ///
     static QSqlQuery findStudentCoursesQuery(const QSqlDatabase &database,
                                              const QString &indexNumber);
+    ///
+    /// \brief findStudentListsQuery Returns query that finds all lists that
+    /// this student is member of.
+    /// \param database The database to use.
+    /// \param indexNumber The index number.
+    /// \return The query.
+    ///
+    static QSqlQuery findStudentListsQuery(const QSqlDatabase &database,
+                                           const QString &indexNumber);
 
 private:
     QString mIndexNumber; //!< The students index number.

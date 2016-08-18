@@ -9,6 +9,14 @@ class StudentDetailsDialog;
 }
 
 namespace paso {
+namespace model {
+class EntityTableModel;
+class StableRowNumberSortFilterProxyModel;
+}
+}
+class QAbstractButton;
+
+namespace paso {
 namespace admin {
 
 class StudentDetailsDialog : public QDialog {
@@ -19,8 +27,15 @@ public:
                                   QWidget *parent = 0);
     virtual ~StudentDetailsDialog();
 
+private slots:
+    void loadData();
+
 private:
     Ui::StudentDetailsDialog *ui;
+    paso::model::EntityTableModel *mCoursesModel;
+    paso::model::EntityTableModel *mListsModel;
+    paso::model::StableRowNumberSortFilterProxyModel *mCoursesProxyModel;
+    paso::model::StableRowNumberSortFilterProxyModel *mListsProxyModel;
 
     struct StudentDetailsDialogPrivate;
     std::unique_ptr<StudentDetailsDialogPrivate> mPrivate;

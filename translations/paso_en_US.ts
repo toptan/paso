@@ -129,20 +129,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="59"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="60"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="61"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -284,7 +284,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentdetailsdialog.ui" line="203"/>
+        <location filename="../admin/studentdetailsdialog.ui" line="219"/>
         <source>Lists</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1077,8 +1077,38 @@
 <context>
     <name>paso::admin::StudentDetailsDialog</name>
     <message>
-        <location filename="../admin/studentdetailsdialog.cpp" line="31"/>
+        <location filename="../admin/studentdetailsdialog.cpp" line="44"/>
         <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="47"/>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="53"/>
+        <source>Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="54"/>
+        <source>Course</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="55"/>
+        <source>List Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="104"/>
+        <source>Critical error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="105"/>
+        <source>There was an error working with the database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

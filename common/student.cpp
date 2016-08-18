@@ -92,6 +92,17 @@ QSqlQuery Student::updateQuery(const QSqlDatabase &database,
     return query;
 }
 
+QSqlQuery Student::deleteQuery(const QSqlDatabase &database,
+                               const QString &indexNumber) {
+    QSqlQuery query(database);
+    query.prepare("DELETE FROM PERSON"
+                  " WHERE ID = (SELECT ID"
+                  "               FROM STUDENT"
+                  "              WHERE INDEX_NUMBER = :index_number)");
+    query.bindValue(":index_number", indexNumber);
+    return query;
+}
+
 QSqlQuery Student::findByIndexNumberQuery(const QSqlDatabase &database,
                                           const QString &indexNumber) {
     QSqlQuery query(database);
@@ -111,6 +122,17 @@ QSqlQuery Student::findStudentCoursesQuery(const QSqlDatabase &database,
                   "  JOIN ENLISTED E ON C.ID = E.ID_COURSE"
                   "  JOIN STUDENT S ON S.ID = E.ID_STUDENT"
                   " WHERE S.INDEX_NUMBER = :index_number");
+    query.bindValue(":index_number", indexNumber);
+    return query;
+}
+
+QSqlQuery Student::findStudentListsQuery(const QSqlDatabase &database,
+                                         const QString &indexNumber) {
+    QSqlQuery query(database);
+    query.prepare("SELECT L.*"
+                  "  FROM LIST L"
+                  "  JOIN LIST_MEMBERS LM ON LM.LIST_ID = L.ID"
+                  " WHERE LM.INDEX_NUMBER = :index_number");
     query.bindValue(":index_number", indexNumber);
     return query;
 }

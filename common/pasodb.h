@@ -297,8 +297,17 @@ public:
     /// \param error The SQL error if any.
     /// \return The courses that student is enrolled to.
     ///
-    std::shared_ptr<std::vector<data::entity::Course>>
-    getStudentCourses(const QString &indexNumber, QSqlError &error) const;
+    data::entity::EntityVector getStudentCourses(const QString &indexNumber,
+                                                 QSqlError &error) const;
+
+    ///
+    /// \brief studentLists Returns all lists that given student is member of.
+    /// \param indexNumber The index number.
+    /// \param error The SQL error if any.
+    /// \return The lists that have given student as member.
+    ///
+    data::entity::EntityVector studentLists(const QString &indexNumber,
+                                            QSqlError &error) const;
 
     ///
     /// \brief enlistStudentsToCourse Enlists students to the course.

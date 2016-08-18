@@ -5,6 +5,7 @@
 #include "person.h"
 #include "personvalidator.h"
 #include "student.h"
+#include "studentdetailsdialog.h"
 #include "studenteditorwidget.h"
 #include "studentform.h"
 #include "studentquerymodel.h"
@@ -405,7 +406,30 @@ void TestStudentAdministration::testStudentForm() {
     QApplication::processEvents();
     QCOMPARE(tableView->model()->rowCount(), oldRowCount + 1);
 
-    // TODO: Details tests.
+    bool detailsDialogShown = false;
+    auto detailsDialogCallback = [&detailsDialogShown]() {
+        auto detailsDialog = dynamic_cast<StudentDetailsDialog *>(
+            QApplication::activeModalWidget());
+        auto buttonBox = detailsDialog->findChild<QDialogButtonBox *>();
+        QTest::mouseClick(buttonBox->button(QDialogButtonBox::Close),
+                          Qt::LeftButton);
+        detailsDialogShown = true;
+    };
+
+    QTimer::singleShot(200, detailsDialogCallback);
+    detailsAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(detailsDialogShown);
+    detailsDialogShown = false;
+    QTimer::singleShot(200, detailsDialogCallback);
+    QPoint point(tableView->columnViewportPosition(0) + 5,
+                 tableView->rowViewportPosition(0) + 10);
+    auto pViewport = tableView->viewport();
+
+    QTest::mouseClick(pViewport, Qt::LeftButton, 0, point);
+    QTest::mouseDClick(pViewport, Qt::LeftButton, 0, point);
+    QApplication::processEvents();
+    QVERIFY(detailsDialogShown);
 }
 
 void TestStudentAdministration::testStudentFormImportStudents() {

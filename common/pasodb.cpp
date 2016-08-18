@@ -341,16 +341,8 @@ bool DBManager::saveStudent(Student &student, QSqlError &error) const {
 
 bool DBManager::deleteStudent(const QString &indexNumber,
                               QSqlError &error) const {
-    auto student = getStudentByIndexNumber(indexNumber, error);
-    if (error.type() != QSqlError::NoError) {
-        return false;
-    }
-    if (!student) {
-        return true;
-    }
-
     auto query =
-        Person::deleteQuery(QSqlDatabase::database(mDbName), student->id());
+        Student::deleteQuery(QSqlDatabase::database(mDbName), indexNumber);
     beginTransaction();
     query.exec();
     error = query.lastError();
@@ -358,6 +350,7 @@ bool DBManager::deleteStudent(const QString &indexNumber,
         rollback();
         return false;
     }
+
     error = commit();
     return error.type() == QSqlError::NoError;
 }
@@ -378,17 +371,33 @@ DBManager::getCourseStudents(const QString &courseCode,
     return retVal;
 }
 
-shared_ptr<vector<Course>>
-DBManager::getStudentCourses(const QString &indexNumber,
-                             QSqlError &error) const {
+EntityVector DBManager::getStudentCourses(const QString &indexNumber,
+                                          QSqlError &error) const {
     auto query = Student::findStudentCoursesQuery(
         QSqlDatabase::database(mDbName), indexNumber);
     query.exec();
     error = query.lastError();
-    auto retVal = make_shared<vector<Course>>();
+    EntityVector retVal;
     if (error.type() == QSqlError::NoError) {
         while (query.next()) {
-            retVal->emplace_back(recordToVariantMap(query.record()));
+            retVal.emplace_back(
+                make_shared<Course>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
+
+EntityVector DBManager::studentLists(const QString &indexNumber,
+                                     QSqlError &error) const {
+    auto query = Student::findStudentListsQuery(QSqlDatabase::database(mDbName),
+                                                indexNumber);
+    query.exec();
+    error = query.lastError();
+    EntityVector retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal.emplace_back(
+                make_shared<List>(recordToVariantMap(query.record())));
         }
     }
     return retVal;

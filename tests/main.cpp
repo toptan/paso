@@ -16,6 +16,7 @@
 #include "testpasodb.h"
 #include "testroomadministration.h"
 #include "teststudentadministration.h"
+#include "teststudentdetailsdialog.h"
 #include "testsystemuseradministration.h"
 #include "testwidgets.h"
 
@@ -57,6 +58,7 @@ int main(int argc, char **argv) {
     testCases.push_back(new TestStudentAdministration);
     testCases.push_back(new TestCourseDetailsDialog);
     testCases.push_back(new TestListDetailsDialog);
+    testCases.push_back(new TestStudentDetailsDialog);
     testCases.push_back(new TestMainWindow);
 
     for (auto testCase : testCases) {

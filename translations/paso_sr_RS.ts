@@ -62,10 +62,6 @@
         <source>Members: %1</source>
         <translation>Чланова: %1</translation>
     </message>
-    <message>
-        <source>Member students: %1</source>
-        <translation type="vanished">Студенти чланови: %1</translation>
-    </message>
 </context>
 <context>
     <name>ListForm</name>
@@ -137,20 +133,20 @@
         <translation>Лозинка</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="59"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="60"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="61"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>
@@ -288,7 +284,7 @@
         <translation>Предмети</translation>
     </message>
     <message>
-        <location filename="../admin/studentdetailsdialog.ui" line="203"/>
+        <location filename="../admin/studentdetailsdialog.ui" line="219"/>
         <source>Lists</source>
         <translation>Листе</translation>
     </message>
@@ -335,7 +331,7 @@
         <location filename="../admin/coursedetailsdialog.cpp" line="65"/>
         <location filename="../admin/coursedetailsdialog.cpp" line="102"/>
         <source>Unsaved changes</source>
-        <translation>Неснимљене промене</translation>
+        <translation>Неснимњене промене</translation>
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="66"/>
@@ -409,17 +405,17 @@
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="186"/>
         <source>Importing course students will overwrite current data.</source>
-        <translation>Увоз студената који слушају курс ће обрисати текуће податке.</translation>
+        <translation>Увоз студената који слушају предмет ће обрисати текуће податке.</translation>
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="188"/>
         <source>Do you still want to import course students?</source>
-        <translation>Да ли још увек желите да увезете студенте који слушају курс?</translation>
+        <translation>Да ли још увек желите да увезете студенте који слушају предмет?</translation>
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="226"/>
         <source>Importing course students...</source>
-        <translation>Увожење студената који слушају курс...</translation>
+        <translation>Увожење студената који слушају предмет...</translation>
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="244"/>
@@ -435,7 +431,7 @@
         <location filename="../admin/coursedetailsdialog.cpp" line="251"/>
         <location filename="../admin/coursedetailsdialog.cpp" line="296"/>
         <source>Importing course students has failed.</source>
-        <translation>Увожење студената који слушају курс није успело.</translation>
+        <translation>Увожење студената који слушају предмет није успело.</translation>
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="252"/>
@@ -474,17 +470,9 @@
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
     <message>
-        <source>Importing course students will overwire currend data.</source>
-        <translation type="vanished">Увоз студената који похађају курс ће пребрисати све постојеће податке.</translation>
-    </message>
-    <message>
-        <source>Do you still want to import course stundets?</source>
-        <translation type="vanished">Да ли још увек желите да увезете студенте који похађају курс?</translation>
-    </message>
-    <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="195"/>
         <source>Open course students import file</source>
-        <translation>Отвори датотеку за увоз студената који слушају курс</translation>
+        <translation>Отвори датотеку за увоз студената који слушају предмет</translation>
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="216"/>
@@ -668,7 +656,7 @@
         <location filename="../admin/listdetailsdialog.cpp" line="74"/>
         <location filename="../admin/listdetailsdialog.cpp" line="111"/>
         <source>Unsaved changes</source>
-        <translation>Неснимљене промене</translation>
+        <translation>Неснимњене промене</translation>
     </message>
     <message>
         <location filename="../admin/listdetailsdialog.cpp" line="75"/>
@@ -1101,9 +1089,39 @@
 <context>
     <name>paso::admin::StudentDetailsDialog</name>
     <message>
-        <location filename="../admin/studentdetailsdialog.cpp" line="31"/>
+        <location filename="../admin/studentdetailsdialog.cpp" line="44"/>
         <source>Close</source>
         <translation>Затвори</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="47"/>
+        <source>Refresh</source>
+        <translation>Освежи</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="53"/>
+        <source>Code</source>
+        <translation>Шифра</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="54"/>
+        <source>Course</source>
+        <translation>Предмет</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="55"/>
+        <source>List Name</source>
+        <translation>Назив листе</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="104"/>
+        <source>Critical error</source>
+        <translation>Критична грешка</translation>
+    </message>
+    <message>
+        <location filename="../admin/studentdetailsdialog.cpp" line="105"/>
+        <source>There was an error working with the database.</source>
+        <translation>Дошло је до грешке при раду са базом података.</translation>
     </message>
 </context>
 <context>
