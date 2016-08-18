@@ -34,7 +34,7 @@ add_dependencies(${PROJECT_NAME} pasoadminlib)
 target_link_libraries(${PROJECT_NAME} pasocommon)
 target_link_libraries(${PROJECT_NAME} pasoui)
 target_link_libraries(${PROJECT_NAME} pasoadminlib)
-enable_coverage(${PROJECT_NAME} pasocommon pasoui pasoadminlib)
+enable_coverage(${PROJECT_NAME} TRUE)
 
 # Enable testing
 enable_testing()
