@@ -51,6 +51,7 @@ protected:
 
 private slots:
     void onImport();
+    void onDetails();
 
 private:
     Ui::StudentForm *ui;

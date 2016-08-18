@@ -2,11 +2,11 @@
 #include "ui_studentform.h"
 
 #include "logdialog.h"
+#include "pasodb.h"
+#include "studentdetailsdialog.h"
 #include "studenteditorwidget.h"
 #include "studentquerymodel.h"
 #include "studentvalidator.h"
-
-#include "pasodb.h"
 
 #include <QFile>
 #include <QFileDialog>
@@ -46,7 +46,9 @@ StudentForm::StudentForm(QWidget *parent)
     toolBarActions().append(mDetailsAction);
     mDetailsAction->setEnabled(false);
     connect(mImportAction, &QAction::triggered, this, &StudentForm::onImport);
-    // TODO: Add student details
+    connect(mDetailsAction, &QAction::triggered, this, &StudentForm::onDetails);
+    connect(ui->tableView, &QTableView::doubleClicked,
+            [this]() { onDetails(); });
 }
 
 StudentForm::~StudentForm() { delete ui; }
@@ -268,6 +270,12 @@ void StudentForm::onImportFileSelected(const QString &fileName) {
     };
 
     QtConcurrent::run(work);
+}
+
+void StudentForm::onDetails() {
+    Student student(DBManager::recordToVariantMap(selectedRecord()));
+    StudentDetailsDialog dlg(student, this);
+    dlg.exec();
 }
 }
 }
