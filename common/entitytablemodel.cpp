@@ -46,7 +46,7 @@ shared_ptr<Entity> EntityTableModel::entity(size_t position) const {
 }
 
 void EntityTableModel::insertEntity(size_t position,
-                                    shared_ptr<Entity> entity) {
+                                    std::shared_ptr<Entity> entity) {
     if (position < mData.size()) {
         emit beginInsertRows(QModelIndex(), position, position);
         mData.insert(mData.begin() + position, entity);
@@ -67,7 +67,7 @@ void EntityTableModel::removeEntity(size_t position) {
     }
 }
 
-void EntityTableModel::removeEntity(const shared_ptr<Entity> entity) {
+void EntityTableModel::removeEntity(const shared_ptr<Entity> &entity) {
     auto position = find(mData.begin(), mData.end(), entity);
     if (position == mData.end()) {
         return;
