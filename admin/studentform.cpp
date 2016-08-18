@@ -112,7 +112,7 @@ bool StudentForm::insertRecord(QSqlRecord &record, QSqlError &error) {
     auto success = manager().saveStudent(student, error);
     if (success) {
         refreshModel();
-        record.setValue("id", static_cast<quint64>(student.id()));
+        record.setValue("id", student.id());
     }
     return success;
 }

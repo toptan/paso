@@ -755,7 +755,7 @@ EntityVector DBManager::studentsNotEnlistedToCourse(const QString &courseCode,
     return retVal;
 }
 
-bool DBManager::addStudentsToList(uint64_t listId,
+bool DBManager::addStudentsToList(quint64 listId,
                                   const QStringList &indexNumbers,
                                   QSqlError &error) const {
     auto db = QSqlDatabase::database(mDbName);
@@ -773,7 +773,7 @@ bool DBManager::addStudentsToList(uint64_t listId,
     return error.type() == QSqlError::NoError;
 }
 
-bool DBManager::removeStudentsFromList(uint64_t listId,
+bool DBManager::removeStudentsFromList(quint64 listId,
                                        const QStringList &indexNumbers,
                                        QSqlError &error) const {
     auto db = QSqlDatabase::database(mDbName);
@@ -791,7 +791,7 @@ bool DBManager::removeStudentsFromList(uint64_t listId,
     return error.type() == QSqlError::NoError;
 }
 
-bool DBManager::updateListStudents(uint64_t listId,
+bool DBManager::updateListStudents(quint64 listId,
                                    const QStringList &addIndexNumbers,
                                    const QStringList &removeIndexNumbers,
                                    QSqlError &error) const {
@@ -821,7 +821,7 @@ bool DBManager::updateListStudents(uint64_t listId,
     return error.type() == QSqlError::NoError;
 }
 
-EntityVector DBManager::membersOfTheList(uint64_t listId,
+EntityVector DBManager::membersOfTheList(quint64 listId,
                                          QSqlError &error) const {
     auto query = List::membersQuery(QSqlDatabase::database(mDbName), listId);
     query.exec();
@@ -836,7 +836,7 @@ EntityVector DBManager::membersOfTheList(uint64_t listId,
     return retVal;
 }
 
-EntityVector DBManager::nonMembersOfTheList(uint64_t listId,
+EntityVector DBManager::nonMembersOfTheList(quint64 listId,
                                             QSqlError &error) const {
     auto query = List::nonMembersQuery(QSqlDatabase::database(mDbName), listId);
     query.exec();

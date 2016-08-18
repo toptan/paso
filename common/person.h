@@ -27,7 +27,7 @@ public:
     /// \param rfid the RFID code.
     ///
     Person(const QString &firstName, const QString &lastName,
-           const QString &email, uint64_t id = 0, const QString &rfid = "");
+           const QString &email, quint64 id = 0, const QString &rfid = "");
 
     ///
     /// \brief Person constructs person from the data given in the map.

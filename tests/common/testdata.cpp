@@ -167,7 +167,7 @@ void TestData::testPropertyValues() {
                           "john.doe@internet.com", SystemRole::MANAGER, 6);
     QCOMPARE(systemUser.value("FOO"), QVariant());
     QCOMPARE(systemUser.value("ID"),
-             QVariant(static_cast<quint64>(systemUser.id())));
+             QVariant(systemUser.id()));
     QCOMPARE(systemUser.value("USERNAME"), QVariant(systemUser.username()));
     QCOMPARE(systemUser.value("PASSWORD"), QVariant(systemUser.password()));
     QCOMPARE(systemUser.value("FIRST_NAME"), QVariant(systemUser.firstName()));
@@ -179,7 +179,7 @@ void TestData::testPropertyValues() {
     Student student("Toplica", "Tanasković", "toptan@foo.com", "164/96", 5, 123,
                     "RRFFIIDD");
     QCOMPARE(student.value("FOO"), QVariant());
-    QCOMPARE(student.value("ID"), QVariant(static_cast<quint64>(student.id())));
+    QCOMPARE(student.value("ID"), QVariant(student.id()));
     QCOMPARE(student.value("FIRST_NAME"), QVariant(student.firstName()));
     QCOMPARE(student.value("LAST_NAME"), QVariant(student.lastName()));
     QCOMPARE(student.value("EMAIL"), QVariant(student.email()));
@@ -189,14 +189,14 @@ void TestData::testPropertyValues() {
 
     Course course("IR3SP", "Sistemsko programiranje", 8);
     QCOMPARE(course.value("FOO"), QVariant());
-    QCOMPARE(course.value("ID"), QVariant(static_cast<quint64>(course.id())));
+    QCOMPARE(course.value("ID"), QVariant(course.id()));
     QCOMPARE(course.value("CODE"), QVariant(course.code()));
     QCOMPARE(course.value("NAME"), QVariant(course.name()));
 
     QString uuid = QUuid::createUuid().toString();
     Room room(uuid, "Room 42", "42");
     QCOMPARE(room.value("FOO"), QVariant());
-    QCOMPARE(room.value("ID"), QVariant(static_cast<quint64>(room.id())));
+    QCOMPARE(room.value("ID"), QVariant(room.id()));
     QCOMPARE(room.value("ROOM_UUID"), QVariant(uuid));
     QCOMPARE(room.value("ROOM_UUID"), QVariant(room.roomUUID()));
     QCOMPARE(room.value("NAME"), QVariant(room.name()));
@@ -208,7 +208,7 @@ void TestData::testPropertyValues() {
     list.setId(4);
     list.setExpiryDate(QDate());
     QCOMPARE(list.value("FOO"), QVariant());
-    QCOMPARE(list.value("ID"), QVariant(static_cast<quint64>(list.id())));
+    QCOMPARE(list.value("ID"), QVariant(list.id()));
     QCOMPARE(list.value("NAME"), QVariant(list.name()));
     QCOMPARE(list.value("SYSTEM"), QVariant(list.system()));
     QCOMPARE(list.value("PERMANENT"), QVariant(list.permanent()));

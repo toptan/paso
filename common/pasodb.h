@@ -410,7 +410,7 @@ public:
     /// \param error The SQL error if any.
     /// \return \c true if students are successfully added.
     ///
-    bool addStudentsToList(uint64_t listId, const QStringList &indexNumbers,
+    bool addStudentsToList(quint64 listId, const QStringList &indexNumbers,
                            QSqlError &error) const;
 
     ///
@@ -420,8 +420,7 @@ public:
     /// \param error The SQL error if any.
     /// \return \c true if students are successfully removed.
     ///
-    bool removeStudentsFromList(uint64_t listId,
-                                const QStringList &indexNumbers,
+    bool removeStudentsFromList(quint64 listId, const QStringList &indexNumbers,
                                 QSqlError &error) const;
     ///
     /// \brief updateListStudents Adds students from \c addIndexNumbers and
@@ -433,7 +432,7 @@ public:
     /// \param error The SQL error if any.
     /// \return \c true if operation was successful.
     ///
-    bool updateListStudents(uint64_t listId, const QStringList &addIndexNumbers,
+    bool updateListStudents(quint64 listId, const QStringList &addIndexNumbers,
                             const QStringList &removeIndexNumbers,
                             QSqlError &error) const;
     ///
@@ -442,7 +441,7 @@ public:
     /// \param error The SQL error if any.
     /// \return Vector of students that are members of the list.
     ///
-    data::entity::EntityVector membersOfTheList(uint64_t listId,
+    data::entity::EntityVector membersOfTheList(quint64 listId,
                                                 QSqlError &error) const;
 
     ///
@@ -452,7 +451,7 @@ public:
     /// \param error The SQL error if any.
     /// \return Vector of students that are not members of the list.
     ///
-    data::entity::EntityVector nonMembersOfTheList(uint64_t listId,
+    data::entity::EntityVector nonMembersOfTheList(quint64 listId,
                                                    QSqlError &error) const;
 
     ///

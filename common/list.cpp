@@ -4,7 +4,7 @@ namespace paso {
 namespace data {
 namespace entity {
 
-List::List(const QString &name, bool permanent, uint64_t id,
+List::List(const QString &name, bool permanent, quint64 id,
            const QDate &expiryDate)
     : Entity(id), mName(name), mSystem(false), mPermanent(permanent) {}
 

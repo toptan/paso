@@ -25,7 +25,7 @@ public:
     /// \param id The room id.
     ///
     Room(const QString &roomUUID, const QString &name, const QString &number,
-         uint64_t id = 0);
+         quint64 id = 0);
 
     ///
     /// \brief Room constructs room from the data given in the map.

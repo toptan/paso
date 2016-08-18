@@ -31,7 +31,7 @@ public:
                         const QString &firstName = "",
                         const QString &lastName = "", const QString &email = "",
                         SystemRole role = SystemRole::INVALID_ROLE,
-                        uint64_t id = 0);
+                        quint64 id = 0);
 
     ///
     /// \brief SystemUser constructs system user instance from the map.

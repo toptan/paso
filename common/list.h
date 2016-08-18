@@ -25,7 +25,7 @@ public:
     /// \param expiryDate The date of list expiration.
     /// \param id The list id.
     ///
-    List(const QString &name = "", bool permanent = false, uint64_t id = 0,
+    List(const QString &name = "", bool permanent = false, quint64 id = 0,
          const QDate &expiryDate = QDate());
 
     ///

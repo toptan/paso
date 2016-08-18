@@ -23,19 +23,19 @@ public:
     /// \param id The id (primary key) of an entity. The value of zero is
     /// considered as indicator that this is a new entity not yet persisted.
     ///
-    explicit Entity(uint64_t id = 0);
+    explicit Entity(quint64 id = 0);
 
     ///
     /// \brief id Returns entity id.
     /// \return The id.
     ///
-    uint64_t id() const;
+    quint64 id() const;
 
     ///
     /// \brief setId Sets entity id.
     /// \param id The id to set.
     ///
-    void setId(const uint64_t id);
+    void setId(const quint64 id);
 
     ///
     /// \brief toVariantMap Returns variant map representation of an entity.
@@ -54,7 +54,7 @@ public:
     virtual QVariant value(const QString &property) const;
 
 private:
-    uint64_t mId;
+    quint64 mId;
 };
 
 using EntityVector = std::vector<std::shared_ptr<paso::data::entity::Entity>>;

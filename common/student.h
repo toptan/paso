@@ -24,7 +24,7 @@ public:
     ///
     Student(const QString &firstName, const QString &lastName,
             const QString &email, const QString &indexNumber,
-            uint8_t yearOfStudy, uint64_t id = 0, const QString &rfid = "");
+            uint8_t yearOfStudy, quint64 id = 0, const QString &rfid = "");
 
     ///
     /// \brief Student constructs student from the data given in the map.

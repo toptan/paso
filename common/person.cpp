@@ -5,7 +5,7 @@ namespace data {
 namespace entity {
 
 Person::Person(const QString &firstName, const QString &lastName,
-               const QString &email, uint64_t id, const QString &rfid)
+               const QString &email, quint64 id, const QString &rfid)
     : Entity(id), mFirstName(firstName), mLastName(lastName), mEmail(email),
       mRFID(rfid) {}
 
@@ -105,7 +105,7 @@ QSqlQuery Person::updateQuery(const QSqlDatabase &database,
                   "EMAIL = :email, "
                   "RFID = :rfid "
                   "WHERE ID = :id");
-    query.bindValue(":id", static_cast<quint64>(person.id()));
+    query.bindValue(":id", person.id());
     query.bindValue(":first_name", person.firstName());
     query.bindValue(":last_name", person.lastName());
     query.bindValue(":email", person.email().isEmpty()

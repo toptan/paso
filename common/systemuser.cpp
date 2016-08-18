@@ -13,7 +13,7 @@ SystemUser::SystemUser(const QVariantMap &map)
 
 SystemUser::SystemUser(const QString &username, const QString &password,
                        const QString &firstName, const QString &lastName,
-                       const QString &email, SystemRole role, uint64_t id)
+                       const QString &email, SystemRole role, quint64 id)
     : Entity(id), mUsername(username), mPassword(password),
       mFirstName(firstName), mLastName(lastName), mEmail(email), mRole(role) {}
 
@@ -128,7 +128,7 @@ QSqlQuery SystemUser::updateQuery(const QSqlDatabase &database,
     query.prepare("UPDATE SYSTEM_USER SET USERNAME = :username, PASSWORD = "
                   ":password, FIRST_NAME = :first_name, LAST_NAME = "
                   ":last_name, EMAIL = :email, ROLE = :role WHERE ID = :id");
-    query.bindValue(":id", static_cast<quint64>(user.id()));
+    query.bindValue(":id", user.id());
     query.bindValue(":username", user.username());
     query.bindValue(":password", user.password());
     query.bindValue(":first_name", user.firstName());

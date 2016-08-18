@@ -7,7 +7,7 @@ namespace data {
 namespace entity {
 
 Room::Room(const QString &roomUUID, const QString &name, const QString &number,
-           uint64_t id)
+           quint64 id)
     : Entity(id), mRoomUUID(roomUUID), mName(name), mNumber(number) {}
 
 Room::Room(const QVariantMap &map)
@@ -81,7 +81,7 @@ QSqlQuery Room::updateQuery(const QSqlDatabase &database, const Room &room) {
     QSqlQuery query(database);
     query.prepare("UPDATE ROOM SET ROOM_UUID = :uuid, NAME = :name, "
                   "ROOM_NUMBER = :number WHERE ID = :id");
-    query.bindValue(":id", static_cast<quint64>(room.id()));
+    query.bindValue(":id", room.id());
     query.bindValue(":uuid", room.roomUUID());
     query.bindValue(":name", room.name());
     query.bindValue(":number", room.number());
