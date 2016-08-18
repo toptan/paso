@@ -5,6 +5,16 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+#include <iostream>
+
+int TestBase::m_executed = 0;
+int TestBase::m_failed = 0;
+
+void TestBase::printTestStats() {
+    std::cout << "Combined totals: " << m_executed - m_failed << " tests passed, "
+              << m_failed << " tests failed." << std::endl;
+}
+
 TestBase::TestBase() : QObject(), dbName("paso") {}
 
 void TestBase::initTestCase() {
@@ -47,4 +57,9 @@ void TestBase::cleanup() {
     db.exec("DROP TABLE ROOM");
     db.exec("DROP TABLE STUDENT");
     db.exec("DROP TABLE PERSON");
+
+    m_executed++;
+    if (QTest::currentTestFailed()) {
+        m_failed++;
+    }
 }

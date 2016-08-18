@@ -60,5 +60,6 @@ int main(int argc, char **argv) {
         ASSERT_TEST(testCase);
     }
 
+    TestBase::printTestStats();
     return status;
 }

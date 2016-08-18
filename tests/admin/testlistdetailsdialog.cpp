@@ -3,6 +3,7 @@
 #include "addremoveentitiesform.h"
 #include "listdetailsdialog.h"
 #include "pasodb.h"
+#include "logdialog.h"
 
 #include <QDebug>
 #include <QDialogButtonBox>
@@ -270,4 +271,166 @@ void TestListDetailsDialog::testSavingData() {
     QApplication::processEvents();
     QVERIFY(messageShown);
     QVERIFY(dialog.isVisible());
+}
+
+void TestListDetailsDialog::testImportListStudents() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT) "
+            "          VALUES('L1', 'false', 'true')");
+    auto list = manager.getList("L1", error);
+    const auto listId = list->id();
+    manager.importStudent("1996/0164, Tanaskovic,Toplica,toplica@gmail.com,4",
+                          error);
+    manager.importStudent("2001/2001, Petrovic,petar,pera@gmail.com,2", error);
+    manager.importStudent("2000/2000, Jovanovic,jova,jova@gmail.com,3", error);
+    manager.addStudentsToList(listId, {"2000/2000"}, error);
+    ListDetailsDialog dialog(*list);
+    bool importDone = false;
+    auto importDoneCallback = [&importDone]() { importDone = true; };
+    connect(&dialog, &ListDetailsDialog::importDone, importDoneCallback);
+    dialog.show();
+    QTest::qWaitForWindowExposed(&dialog);
+
+    auto buttonBox = dialog.findChild<QDialogButtonBox *>();
+    auto importButton = buttonBox->findChild<QPushButton *>("IMPORT_BUTTON");
+    auto refreshButton = buttonBox->findChild<QPushButton *>("REFRESH_BUTTON");
+    auto destinationTable =
+        dialog.findChild<QTableView *>("destinationTableView");
+
+    QVERIFY(importButton != nullptr);
+    QVERIFY(refreshButton != nullptr);
+    QVERIFY(destinationTable != nullptr);
+    QCOMPARE(destinationTable->model()->rowCount(), 1);
+
+    bool warningShown = false;
+    auto warningCallbackNo = [&warningShown]() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Escape);
+        warningShown = true;
+    };
+    QTimer::singleShot(200, warningCallbackNo);
+    importButton->click();
+    QApplication::processEvents();
+    QVERIFY(warningShown);
+
+    auto warningCallbackYes = []() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        auto yesButton = msgBox->button(QMessageBox::Yes);
+        QTest::mouseClick(yesButton, Qt::LeftButton);
+    };
+    QTimer::singleShot(200, warningCallbackYes);
+    importButton->click();
+    QApplication::processEvents();
+    QFileDialog *fileOpenDialog = nullptr;
+    int attempt = 0;
+    while ((fileOpenDialog = dynamic_cast<QFileDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(200);
+        attempt++;
+    }
+
+    // Is file open dialog shown?
+    QVERIFY(fileOpenDialog != nullptr);
+    QTest::keyClick(fileOpenDialog, Qt::Key_Escape);
+    QApplication::processEvents();
+    auto importWithNonExistingFileCallback = [&dialog]() {
+        dialog.onImportFileSelected("non_existing_file");
+    };
+    bool errorMessageBoxShown = false;
+    auto errorMessageBoxShownCallback = [&errorMessageBoxShown]() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Return);
+        errorMessageBoxShown = true;
+    };
+    QTimer::singleShot(0, importWithNonExistingFileCallback);
+    QTimer::singleShot(0, errorMessageBoxShownCallback);
+    QApplication::processEvents();
+    QVERIFY(errorMessageBoxShown);
+
+    LogDialog *logDialog = nullptr;
+    dialog.onImportFileSelected(QDir::currentPath() +
+                                "/files/members_with_errors.csv");
+    attempt = 0;
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
+    delete logDialog;
+    refreshButton->click();
+    QApplication::processEvents();
+    QCOMPARE(destinationTable->model()->rowCount(), 1);
+
+    logDialog = nullptr;
+    attempt = 0;
+    importDone = false;
+    dialog.onImportFileSelected(QDir::currentPath() + "/files/list_members.csv");
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
+    QCOMPARE(destinationTable->model()->rowCount(), 2);
+
+    db.exec("DROP TABLE LIST");
+    logDialog = nullptr;
+    attempt = 0;
+    importDone = false;
+    dialog.onImportFileSelected(QDir::currentPath() + "/files/list_members.csv");
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
+    QCOMPARE(destinationTable->model()->rowCount(), 2);
+
+    db.exec("DROP TABLE MEMBERS");
+    logDialog = nullptr;
+    attempt = 0;
+    importDone = false;
+    dialog.onImportFileSelected(QDir::currentPath() + "/files/list_members.csv");
+    while ((logDialog = dynamic_cast<LogDialog *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(logDialog != nullptr);
+    while (!importDone) {
+        QTest::qWait(100);
+    }
+    buttonBox = logDialog->findChild<QDialogButtonBox *>();
+    buttonBox->button(QDialogButtonBox::Close)->click();
+    QApplication::processEvents();
+    QCOMPARE(destinationTable->model()->rowCount(), 2);
 }

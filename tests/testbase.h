@@ -7,6 +7,8 @@ class TestBase : public QObject {
     Q_OBJECT
 
 public:
+    static void printTestStats();
+
     TestBase();
 
 protected slots:
@@ -17,6 +19,8 @@ protected slots:
 
 protected:
     const QString dbName;
+    static int m_executed;
+    static int m_failed;
 };
 
 #endif // TESTBASE_H

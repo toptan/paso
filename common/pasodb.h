@@ -267,6 +267,20 @@ public:
                                                      QSqlError &error) const;
 
     ///
+    /// \brief importListStudent imports intex number from the csv line and
+    /// enlists that student to the given course.
+    /// \note This method has no transaction of its own and should not be used
+    /// without enclosing transaction, which must be initiated by the caller.
+    /// \param listId The list id.
+    /// \param csvLine The CSV line with student data. Index number must be
+    /// first.
+    /// \param error The SQL error if any.
+    /// \return The import error.
+    ///
+    data::ListStudentImportError
+    importListStudent(quint64 listId, const QString &csvLine, QSqlError &error);
+
+    ///
     /// \brief getCourseStudents Returns all students that are enrolled to a
     /// course.
     /// \param courseCode The course code.
@@ -440,6 +454,16 @@ public:
     ///
     std::shared_ptr<paso::data::entity::List> getList(const QString &name,
                                                       QSqlError &error) const;
+
+    ///
+    /// \brief removeAllStudentsFromList Removes all students from given list.
+    /// \note This method has no transaction of its own and should not be used
+    /// without enclosing transaction, which must be initiated by the caller.
+    /// \param listId The list id.
+    /// \param error The SQL error if any.
+    /// \return \c true if all students are successfully removed from the list.
+    ///
+    bool removeAllStudentsFromList(quint64 listId, QSqlError &error);
 
 private:
     const QString mDbName;

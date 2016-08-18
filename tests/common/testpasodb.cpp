@@ -477,6 +477,67 @@ void TestPasoDB::testImportCourseStudent() {
              ListStudentImportError::DB_ERROR);
 }
 
+void TestPasoDB::testImportListStudent() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    db.exec("DELETE FROM PERSON");
+    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT) "
+            "          VALUES('L1', 'false', 'true')");
+    const auto listId = manager.getList("L1", error)->id();
+    manager.importStudent("1996/0164, Tanaskovic,Toplica,toplica@gmail.com,4",
+                          error);
+    manager.importStudent("2001/2001, Petrovic,petar,pera@gmail.com,2", error);
+    QString csvLine = ",Tanaskovic, Toplica,,";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "164/96 Toplica Tanaskovic";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "164/96,,Toplica,,";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "164/96,Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "11996/164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "1986/0164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "2986/0164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "1996/0000, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::BAD_INDEX_NUMBER);
+    csvLine = "1996/0164, Tanaskovic,Toplica,toplica@gmail.com,4";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::NO_ERROR);
+    csvLine = "2001/2001";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::NO_ERROR);
+    csvLine = "2002/2002";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::NON_EXISTING_STUDENT);
+
+    auto members = manager.membersOfTheList(listId, error);
+    QCOMPARE(members.size(), size_t(2));
+    QStringList indexNumbers{"1996/0164", "2001/2001"};
+    for (auto student : members) {
+        indexNumbers.removeOne(student->value("INDEX_NUMBER").toString());
+    }
+    QVERIFY(indexNumbers.empty());
+    db.exec("DROP TABLE MEMBER");
+    csvLine = "2001/2001";
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::DB_ERROR);
+    db.exec("DROP TABLE STUDENT");
+    QCOMPARE(manager.importListStudent(listId, csvLine, error),
+             ListStudentImportError::DB_ERROR);
+}
+
 void TestPasoDB::testEnlistingStudentsToCourse() {
     DBManager manager(dbName);
     QStringList indexNumbers{"2001/2001", "2002/2002"};
@@ -853,4 +914,22 @@ void TestPasoDB::testUpdatingListStudents() {
         temp.removeOne(student->value("INDEX_NUMBER").toString());
     }
     QVERIFY(temp.empty());
+}
+
+void TestPasoDB::testRemovingAllStudentsFromList() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QStringList indexNumbers{"2001/2001", "2002/2002"};
+    QSqlError error;
+    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT) "
+            "          VALUES('L1', 'false', 'true')");
+    auto list = manager.getList("L1", error);
+    manager.importStudent("2001/2001,Jovan, Jovanovic,,2", error);
+    manager.importStudent("2002/2002,Milan,Milanovic,,2", error);
+    manager.importStudent("2003/2003,Ivana, Ivanovic,,2", error);
+    manager.addStudentsToList(list->id(), indexNumbers, error);
+    manager.beginTransaction();
+    QVERIFY(manager.removeAllStudentsFromList(list->id(), error));
+    manager.commit();
+    QVERIFY(manager.membersOfTheList(list->id(), error).empty());
 }

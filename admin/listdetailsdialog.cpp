@@ -1,12 +1,15 @@
 #include "listdetailsdialog.h"
 #include "ui_listdetailsdialog.h"
 
+#include "logdialog.h"
 #include "pasodb.h"
 
 #include <QDebug>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QSqlError>
+#include <QtConcurrent>
 
 using namespace std;
 using namespace paso::data;
@@ -185,8 +188,124 @@ bool ListDetailsDialog::saveData() {
     return retVal;
 }
 
-void ListDetailsDialog::importListStudents() {}
+void ListDetailsDialog::importListStudents() {
+    QMessageBox msgBox(this);
+    msgBox.setText(tr("Importing list members will overwrite current data."));
+    msgBox.setInformativeText(tr("Do you still want to import list members?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    if (msgBox.exec() != QMessageBox::Yes) {
+        return;
+    }
 
-void ListDetailsDialog::onImportFileSelected(const QString &fileName) {}
+    auto dialog =
+        new QFileDialog(this, tr("Open list members import file"), "", "*.csv");
+    dialog->setOption(QFileDialog::DontUseNativeDialog, true);
+    dialog->setOption(QFileDialog::ReadOnly, true);
+    dialog->setFileMode(QFileDialog::ExistingFile);
+    dialog->setModal(true);
+    connect(dialog, &QFileDialog::fileSelected, this,
+            &ListDetailsDialog::onImportFileSelected);
+    connect(dialog, &QFileDialog::rejected, dialog, &QObject::deleteLater);
+    connect(dialog, &QFileDialog::accepted, dialog, &QObject::deleteLater);
+    dialog->setWindowModality(Qt::ApplicationModal);
+    dialog->show();
+}
+
+void ListDetailsDialog::onImportFileSelected(const QString &fileName) {
+    auto file = new QFile(fileName);
+    if (!file->open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox msgBox(this);
+        msgBox.setWindowModality(Qt::WindowModal);
+        msgBox.setIcon(QMessageBox::Critical);
+        QString text =
+            QString(tr("The file %1 cannot be opened.")).arg(fileName);
+        msgBox.setText(text);
+        msgBox.setDetailedText(file->errorString());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        delete file;
+        return;
+    }
+
+    auto logDialog = new LogDialog(tr("Importing list members..."));
+    logDialog->setModal(true);
+    logDialog->show();
+    connect(logDialog, &LogDialog::accepted, logDialog,
+            &LogDialog::deleteLater);
+    connect(logDialog, &LogDialog::rejected, logDialog,
+            &LogDialog::deleteLater);
+    connect(this, &ListDetailsDialog::newLogLine, logDialog,
+            &LogDialog::appendLine);
+    connect(this, &ListDetailsDialog::importDone, logDialog,
+            &LogDialog::processingDone);
+
+    auto work = [this, file, logDialog]() {
+        QTextStream in(file);
+        bool errorOccured = false;
+        int lineNo = 1;
+        DBManager manager;
+        QSqlError sqlError;
+        QString format(tr("Importing line%1... %2"));
+        manager.beginTransaction();
+        if (!manager.removeAllStudentsFromList(mPrivate->list.id(), sqlError)) {
+            QString message(tr("Clearing old data has failed... %1"));
+            emit newLogLine(message.arg(sqlError.text()));
+            emit newLogLine("");
+            emit newLogLine(tr("Importing list members has failed."));
+            emit newLogLine(tr("Data remains unchanged."));
+            manager.rollback();
+            emit importDone();
+            delete file;
+            return;
+        }
+        emit newLogLine(tr("Clearing old data... OK."));
+        while (!in.atEnd()) {
+            QString message;
+            QString line = in.readLine();
+            auto error =
+                manager.importListStudent(mPrivate->list.id(), line, sqlError);
+            switch (error) {
+            case ListStudentImportError::NO_ERROR:
+                message = format.arg(lineNo).arg(tr("OK."));
+                break;
+            case ListStudentImportError::BAD_INDEX_NUMBER:
+                message = format.arg(lineNo).arg(
+                    tr("Index number is in wrong format or does not exist."));
+                errorOccured = true;
+                break;
+            case ListStudentImportError::NON_EXISTING_STUDENT:
+                message = format.arg(lineNo).arg(
+                    tr("Student with given index does not exist."));
+                errorOccured = true;
+                break;
+            case ListStudentImportError::DB_ERROR:
+                message = format.arg(lineNo).arg(sqlError.text());
+                errorOccured = true;
+                break;
+            }
+
+            emit newLogLine(message);
+            lineNo++;
+        }
+        delete file;
+        emit newLogLine("");
+        if (!errorOccured) {
+            emit newLogLine(tr("Import finished without errors."));
+            loadData();
+            manager.commit();
+        } else {
+            emit newLogLine(tr("Not all lines could be imported. Please see "
+                               "log messages above."));
+            emit newLogLine(tr("Importing list members has failed."));
+            emit newLogLine(tr("Data remains unchanged."));
+            manager.rollback();
+        }
+        emit importDone();
+    };
+
+    QtConcurrent::run(work);
+}
 }
 }

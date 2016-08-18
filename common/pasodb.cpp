@@ -672,6 +672,48 @@ ListStudentImportError DBManager::importCourseStudent(const QString &courseCode,
     return ListStudentImportError::NO_ERROR;
 }
 
+ListStudentImportError DBManager::importListStudent(quint64 listId,
+                                                    const QString &csvLine,
+                                                    QSqlError &error) {
+    QString noQuotes = csvLine;
+    noQuotes.replace("\"", "");
+    auto segments = noQuotes.split(",");
+    auto indexNumber = segments[0].trimmed();
+    if (indexNumber.isEmpty()) {
+        return ListStudentImportError::BAD_INDEX_NUMBER;
+    }
+    if (indexNumber.size() != 9 || indexNumber.count("/") != 1) {
+        return ListStudentImportError::BAD_INDEX_NUMBER;
+    }
+    auto indexSegments = indexNumber.split("/");
+    if (indexSegments[0].size() != 4 || indexSegments[1].size() != 4) {
+        return ListStudentImportError::BAD_INDEX_NUMBER;
+    }
+    if (indexSegments[0].toInt() < 1990 ||
+        indexSegments[0].toInt() > QDate::currentDate().year() ||
+        indexSegments[1].toInt() < 1) {
+        return ListStudentImportError::BAD_INDEX_NUMBER;
+    }
+
+    auto student = getStudentByIndexNumber(indexNumber, error);
+    if (error.type() != QSqlError::NoError) {
+        return ListStudentImportError::DB_ERROR;
+    }
+    if (!student) {
+        return ListStudentImportError::NON_EXISTING_STUDENT;
+    }
+
+    auto db = QSqlDatabase::database(mDbName);
+    auto query = List::addStudentToListQuery(db, listId, indexNumber);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        return ListStudentImportError::DB_ERROR;
+    }
+
+    return ListStudentImportError::NO_ERROR;
+}
+
 EntityVector DBManager::studentsEnlistedToCourse(const QString &courseCode,
                                                  QSqlError &error) const {
     auto query =
@@ -746,7 +788,7 @@ bool DBManager::updateListStudents(uint64_t listId,
                                    QSqlError &error) const {
     auto db = QSqlDatabase::database(mDbName);
     beginTransaction();
-    for (const auto& indexNumber: addIndexNumbers) {
+    for (const auto &indexNumber : addIndexNumbers) {
         auto query = List::addStudentToListQuery(db, listId, indexNumber);
         query.exec();
         error = query.lastError();
@@ -756,7 +798,7 @@ bool DBManager::updateListStudents(uint64_t listId,
         }
     }
 
-    for (const auto &indexNumber: removeIndexNumbers) {
+    for (const auto &indexNumber : removeIndexNumbers) {
         auto query = List::removeStudentFromListQuery(db, listId, indexNumber);
         query.exec();
         error = query.lastError();
@@ -812,6 +854,14 @@ shared_ptr<List> DBManager::getList(const QString &name,
     }
 
     return nullptr;
+}
+
+bool DBManager::removeAllStudentsFromList(quint64 listId, QSqlError &error) {
+    auto db = QSqlDatabase::database(mDbName);
+    auto query = List::removeAllStudentsFromListQuery(db, listId);
+    query.exec();
+    error = query.lastError();
+    return error.type() == QSqlError::NoError;
 }
 }
 }

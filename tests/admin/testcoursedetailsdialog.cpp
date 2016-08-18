@@ -271,6 +271,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
         QTest::qWait(200);
         attempt++;
     }
+
     // Is file open dialog shown?
     QVERIFY(fileOpenDialog != nullptr);
     QTest::keyClick(fileOpenDialog, Qt::Key_Escape);
@@ -285,7 +286,6 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
         QTest::keyClick(msgBox, Qt::Key_Return);
         errorMessageBoxShown = true;
     };
-
     QTimer::singleShot(0, importWithNonExistingFileCallback);
     QTimer::singleShot(0, errorMessageBoxShownCallback);
     QApplication::processEvents();

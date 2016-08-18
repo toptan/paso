@@ -137,20 +137,20 @@
         <translation>Лозинка</translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="57"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="57"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="58"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="58"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="59"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="59"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>
@@ -581,117 +581,194 @@
 <context>
     <name>paso::admin::ListDetailsDialog</name>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="34"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="37"/>
         <source>System list:</source>
         <translation>Системска листа:</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="37"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="40"/>
         <source>Permanent list:</source>
         <translation>Трајна листа:</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="39"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="42"/>
         <source>List:</source>
         <translation>Листа:</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="42"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="45"/>
         <source>Close</source>
         <translation>Затвори</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="43"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="46"/>
         <source>Refresh</source>
         <translation>Освежи</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="48"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="51"/>
         <source>Import Students</source>
         <translation>Увези студенте</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="52"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="55"/>
         <source>Save</source>
         <translation>Сними</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="71"/>
-        <location filename="../admin/listdetailsdialog.cpp" line="108"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="74"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="111"/>
         <source>Unsaved changes</source>
         <translation>Неснимљене промене</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="72"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="75"/>
         <source>You have changes that are not saved.</source>
         <translation>Имате промене које нису снимњене.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="73"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="76"/>
         <source>Do you want to save them?</source>
         <translation>Да ли желите да их снимите?</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="109"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="112"/>
         <source>You have changes that are not saved. If you reload data all unsaved changes will be lost.</source>
         <translation>Имате промене које нису снимњене. Ако освежите податке изгубићете све неснимњене промене.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="111"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="114"/>
         <source>Do you still want to reload data?</source>
         <translation>Да ли још увек желите да освежите податке?</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="76"/>
-        <location filename="../admin/listdetailsdialog.cpp" line="114"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="193"/>
+        <source>Importing list members will overwrite current data.</source>
+        <translation>Увоз чланова листе ће обрисати текуће податке.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="194"/>
+        <source>Do you still want to import list members?</source>
+        <translation>Да ли још увек желите да увезете чланове листе?</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="202"/>
+        <source>Open list members import file</source>
+        <translation>Отвори датотеку за увоз чланова листе</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="222"/>
+        <source>The file %1 cannot be opened.</source>
+        <translation>Датотека %1 не може да се отвори.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="232"/>
+        <source>Importing list members...</source>
+        <translation>Увожење чланова листе...</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="250"/>
+        <source>Importing line%1... %2</source>
+        <translation>Увожење линије %1... %2</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="253"/>
+        <source>Clearing old data has failed... %1</source>
+        <translation>Брисање претходних података није било успешно... %1</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="256"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="301"/>
+        <source>Importing list members has failed.</source>
+        <translation>Увожење чланова листе није успело.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="257"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="302"/>
+        <source>Data remains unchanged.</source>
+        <translation>Подаци су остали непромењени.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="263"/>
+        <source>Clearing old data... OK.</source>
+        <translation>Брисање старих података... ОК.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="271"/>
+        <source>OK.</source>
+        <translation>ОК.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="275"/>
+        <source>Index number is in wrong format or does not exist.</source>
+        <translation>Број индекса је у погрешном формату или не постоји.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="280"/>
+        <source>Student with given index does not exist.</source>
+        <translation>Студент са датим индексом не постоји.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="295"/>
+        <source>Import finished without errors.</source>
+        <translation>Увожење је завршено без грешака.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="299"/>
+        <source>Not all lines could be imported. Please see log messages above.</source>
+        <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
+    </message>
+    <message>
+        <location filename="../admin/listdetailsdialog.cpp" line="79"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="117"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="77"/>
-        <location filename="../admin/listdetailsdialog.cpp" line="115"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="80"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="118"/>
         <source>No</source>
         <translation>Не</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="135"/>
-        <location filename="../admin/listdetailsdialog.cpp" line="176"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="138"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="179"/>
         <source>Critical error</source>
         <translation>Критична грешка</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="136"/>
-        <location filename="../admin/listdetailsdialog.cpp" line="177"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="139"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="180"/>
         <source>There was an error working with the database.</source>
         <translation>Дошло је до грешке при раду са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="145"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="148"/>
         <source>Index Number</source>
         <translation>Број индекса</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="146"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="149"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="147"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="150"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="150"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="153"/>
         <source>Members: %1</source>
         <translation>Чланова: %1</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="151"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="154"/>
         <source>Non members</source>
         <translation>Нису чланови</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="152"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="155"/>
         <source>Members</source>
         <translation>Чланови</translation>
     </message>

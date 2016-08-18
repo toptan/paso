@@ -107,7 +107,7 @@ QSqlQuery List::addStudentToListQuery(const QSqlDatabase &database,
 }
 
 QSqlQuery List::removeStudentFromListQuery(const QSqlDatabase &database,
-                                           qint64 listId,
+                                           quint64 listId,
                                            const QString &indexNumber) {
     QSqlQuery query(database);
     query.prepare("DELETE FROM MEMBER"
@@ -136,6 +136,15 @@ QSqlQuery List::nonMembersQuery(const QSqlDatabase &database, quint64 listId) {
                   "LIST_ID = :list_id_2)");
     query.bindValue(":list_id_1", listId);
     query.bindValue(":list_id_2", listId);
+
+    return query;
+}
+
+QSqlQuery List::removeAllStudentsFromListQuery(const QSqlDatabase &database,
+                                               quint64 listId) {
+    QSqlQuery query(database);
+    query.prepare("DELETE FROM MEMBER WHERE ID_LIST = :list_id");
+    query.bindValue(":list_id", listId);
 
     return query;
 }

@@ -144,7 +144,7 @@ public:
     /// \return The query.
     ///
     static QSqlQuery removeStudentFromListQuery(const QSqlDatabase &database,
-                                                qint64 listId,
+                                                quint64 listId,
                                                 const QString &indexNumber);
 
     ///
@@ -165,6 +165,17 @@ public:
     ///
     static QSqlQuery nonMembersQuery(const QSqlDatabase &database,
                                      quint64 listId);
+
+    ///
+    /// \brief removeAllStudentsFromListQuery Returns query that removes all
+    /// students from the given list.
+    /// \param database The database to use.
+    /// \param listId The list id.
+    /// \return The query.
+    ///
+    static QSqlQuery
+    removeAllStudentsFromListQuery(const QSqlDatabase &database,
+                                   quint64 listId);
 
 private:
     QString mName;     //!< The list name.

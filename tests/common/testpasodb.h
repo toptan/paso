@@ -46,6 +46,7 @@ private slots:
     void testCourseImport();
     void testStudentImport();
     void testImportCourseStudent();
+    void testImportListStudent();
 
     void testEnlistingStudentToCourses();
     void testEnlistingStudentsToCourse();
@@ -57,6 +58,7 @@ private slots:
     void testAddingStudentsToTheList();
     void testRemovingStudentsFromTheList();
     void testUpdatingListStudents();
+    void testRemovingAllStudentsFromList();
 
 private:
     QStringList usernames;
