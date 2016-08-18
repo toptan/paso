@@ -31,6 +31,9 @@ int main(int argc, char **argv) {
     QTEST_DISABLE_KEYPAD_NAVIGATION
     QTEST_ADD_GPU_BLACKLIST_SUPPORT
     QTEST_SET_MAIN_SOURCE_PATH
+    qRegisterMetaType<paso::comm::LoginResponse>("LoginResponse");
+    qRegisterMetaType<QList<QPersistentModelIndex>>();
+    qRegisterMetaType<QAbstractItemModel::LayoutChangeHint>();
     list<QObject *> testCases;
 
     int status = 0;

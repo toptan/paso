@@ -18,9 +18,9 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent, bool readOnly)
     mSourceModel = new EntityTableModel(QStringList(), QMap<QString, QString>(),
                                         EntityVector(), this);
     mSourceProxyModel = new StableRowNumberSortFilterProxyModel(this);
+    mSourceProxyModel->setSourceModel(mSourceModel);
     mSourceProxyModel->setSortLocaleAware(true);
     mSourceProxyModel->setDynamicSortFilter(false);
-    mSourceProxyModel->setSourceModel(mSourceModel);
     ui->sourceTableView->setModel(mSourceProxyModel);
     ui->sourceTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->sourceTableView->horizontalHeader()->setSectionResizeMode(
@@ -30,9 +30,9 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent, bool readOnly)
     mDestinationModel = new EntityTableModel(
         QStringList(), QMap<QString, QString>(), EntityVector(), this);
     mDestinationProxyModel = new StableRowNumberSortFilterProxyModel(this);
+    mDestinationProxyModel->setSourceModel(mDestinationModel);
     mDestinationProxyModel->setSortLocaleAware(true);
     mDestinationProxyModel->setDynamicSortFilter(true);
-    mDestinationProxyModel->setSourceModel(mDestinationModel);
     ui->destinationTableView->setModel(mDestinationProxyModel);
     ui->destinationTableView->setEditTriggers(
         QAbstractItemView::NoEditTriggers);
@@ -107,6 +107,8 @@ void AddRemoveEntitiesForm::setData(
         tr("Total %1").arg(mDestinationModel->rowCount()));
     mAddedEntities.clear();
     mRemovedEntities.clear();
+    ui->sourceTableView->sortByColumn(0);
+    ui->destinationTableView->sortByColumn(0);
 }
 
 void AddRemoveEntitiesForm::addButtonClicked() {

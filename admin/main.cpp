@@ -10,6 +10,8 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv);
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     qRegisterMetaType<paso::comm::LoginResponse>("LoginResponse");
+    qRegisterMetaType<QList<QPersistentModelIndex>>();
+    qRegisterMetaType<QAbstractItemModel::LayoutChangeHint>();
     QTranslator translator;
     if (QSysInfo::kernelType() == "linux") {
         translator.load(QLocale::Serbian,

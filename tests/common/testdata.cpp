@@ -202,7 +202,11 @@ void TestData::testPropertyValues() {
     QCOMPARE(room.value("NAME"), QVariant(room.name()));
     QCOMPARE(room.value("ROOM_NUMBER"), QVariant(room.number()));
 
-    List list("Demo lista", true, 4);
+    List list;
+    list.setName("Demo lista");
+    list.setPermanent(true);
+    list.setId(4);
+    list.setExpiryDate(QDate());
     QCOMPARE(list.value("FOO"), QVariant());
     QCOMPARE(list.value("ID"), QVariant(static_cast<quint64>(list.id())));
     QCOMPARE(list.value("NAME"), QVariant(list.name()));

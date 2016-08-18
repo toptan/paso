@@ -40,9 +40,13 @@ enable_coverage(${PROJECT_NAME} TRUE)
 enable_testing()
 add_test(NAME "${PROJECT_NAME}" COMMAND ${PROJECT_NAME})
 
-# Don't forget to add each test to DEPENDS section
+# Add custom check target that run tests because test target does not build binaries.
 add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} -V
     DEPENDS
     ${PROJECT_NAME}
     )
+
+if (TARGET clean-coverage)
+    add_dependencies(check clean-coverage)
+endif()
