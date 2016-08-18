@@ -394,7 +394,7 @@ void TestListDetailsDialog::testImportListStudents() {
     QApplication::processEvents();
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 
-    db.exec("DROP TABLE LIST");
+    db.exec("DROP TABLE STUDENT");
     logDialog = nullptr;
     attempt = 0;
     importDone = false;
@@ -414,7 +414,7 @@ void TestListDetailsDialog::testImportListStudents() {
     QApplication::processEvents();
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 
-    db.exec("DROP TABLE MEMBERS");
+    db.exec("DROP TABLE MEMBER");
     logDialog = nullptr;
     attempt = 0;
     importDone = false;
