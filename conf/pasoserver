@@ -1,0 +1,22 @@
+/var/log/pasoserver.log {
+    # how many archived logs well be kept:
+    rotate 5
+
+    # The size that logrotate will check when determining
+    # whether or not to perform a rotation (formats: 100k 100M 1000G)
+    size 1M
+
+    # we want the archived logfiles to be compressed (in gzip format)
+    compress
+
+    # an archived log won't be compressed until the next time the log is rotated.
+    delaycompress
+
+    # Do not rotate the log if it is empty
+    notifempty
+
+    # make rsyslog update its logfile handle(s):
+    postrotate
+        /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}
