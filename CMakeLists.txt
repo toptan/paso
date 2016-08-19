@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.4 FATAL_ERROR)
 project(paso)
 
+option(CMAKE_ENABLE_COVERAGE "Controls whether to enable code coverage on Debug build." OFF)
+
 # Include our cmake macros and functions
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(Utils)

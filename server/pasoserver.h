@@ -3,9 +3,9 @@
 
 #include "pasodb.h"
 
-#include <memory>
 #include <QObject>
 #include <QTcpServer>
+#include <memory>
 
 namespace paso {
 namespace server {
@@ -14,7 +14,7 @@ class PasoServer : public QObject {
 public:
     explicit PasoServer(QObject *parent = 0);
 
-    bool loadConfiguration();
+    bool loadConfiguration(const QString &configFile);
     bool initDatabaseSystem();
     bool startServer();
 
@@ -27,8 +27,8 @@ private:
     QTcpServer *mTcpServer;
     std::shared_ptr<db::DBManager> mDbManager;
 
-    const unsigned short mPort;
-    const int mTimeout;
+    unsigned short mPort;
+    int mTimeout;
     const QString mDatabaseName;
 
     QString mDbName;

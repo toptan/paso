@@ -57,6 +57,10 @@ string(REGEX MATCH ".*Clang" USING_CLANG ${CMAKE_CXX_COMPILER_ID})
 # @param TARGET the target for which to enable code coverage
 # @param IS_TEST denotes whether target is test executable and needs to be added to the coverage target.
 function(enable_coverage TARGET IS_TEST)
+    if (NOT ${CMAKE_ENABLE_COVERAGE})
+        message(STATUS "Coverage not enabled. Pass -DCMAKE_ENABLE_COVERAGE=ON to enable it.")
+        return()
+    endif()
     if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         message(STATUS "Build type is not Debug. The coverage will not be enabled for target ${TARGET}.")
         return()

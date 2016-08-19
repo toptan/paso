@@ -3,6 +3,8 @@
 #include "commdata.h"
 
 #include <QDataStream>
+#include <QFile>
+#include <QSettings>
 #include <QSqlError>
 #include <QTcpSocket>
 
@@ -19,13 +21,56 @@ PasoServer::PasoServer(QObject *parent)
             &PasoServer::handleRequest);
 }
 
-bool PasoServer::loadConfiguration() {
-    mDbName = "paso";
-    mDbServer = "localhost";
-    mDbUsername = "paso";
-    mDbPassword = "paso";
-    mDbPort = 5432;
+bool PasoServer::loadConfiguration(const QString &configFile) {
+    if (!QFile::exists(configFile)) {
+        qCritical()
+            << "The configuration file" << configFile
+            << "does not exist or is not readable. Server will not start!";
+        return false;
+    }
+    qInfo() << "Reading PaSo server configuration from" << configFile;
+    QSettings settings(configFile, QSettings::IniFormat);
+    settings.beginGroup("server");
+    mPort = settings.value("port", 6789).toInt();
+    mTimeout = settings.value("timeout", 5000).toInt();
+    settings.endGroup();
 
+    settings.beginGroup("database");
+    if (!settings.contains("database")) {
+        qCritical() << "No database name present in configuration file. Server "
+                       "will not start!";
+        return false;
+    }
+    if (!settings.contains("server")) {
+        qCritical() << "No database server name present in configuration file. "
+                       "Server will not start!";
+        return false;
+    }
+    if (!settings.contains("port")) {
+        qCritical() << "No database server port present in configuration file. "
+                       "Server will not start!";
+        return false;
+    }
+    if (!settings.contains("username")) {
+        qCritical() << "No database username present in configuration file. "
+                       "Server will not start!";
+        return false;
+    }
+    if (!settings.contains("password")) {
+        qCritical() << "No database password present in configuration file. "
+                       "Server will not start!";
+        return false;
+    }
+
+    mDbName = settings.value("database").toString();
+    mDbServer = settings.value("server").toString();
+    mDbPort = settings.value("port").toInt();
+    mDbUsername = settings.value("username").toString();
+    mDbPassword = settings.value("password").toString();
+    settings.endGroup();
+
+    qInfo() << "Server will start on port" << mPort;
+    qInfo() << "Operation timeout set to" << mTimeout << "milliseconds.";
     return true;
 }
 
@@ -37,21 +82,24 @@ bool PasoServer::initDatabaseSystem() {
     db.setPassword(mDbPassword);
     db.setPort(mDbPort);
     if (!db.open()) {
-        qCritical() << db.lastError();
-        qFatal(
-            "Cannot establish database connection! Check your configuration.");
+        qCritical() << "Cannot establish database connection! Check your "
+                       "configuration.";
+        qCritical() << "Database error code:" << db.lastError().number();
+        qCritical() << "Database error text:" << db.lastError().text();
         return false;
     }
     mDbManager = std::make_shared<DBManager>(mDatabaseName);
+    qInfo() << "Database connection successfully establised.";
     return true;
 }
 
 bool PasoServer::startServer() {
     if (!mTcpServer->listen(QHostAddress::Any, mPort)) {
+        qCritical() << "Cannot start server on port " << mPort;
         qCritical() << mTcpServer->errorString();
-        qFatal("Cannot listen on TCP port!");
         return false;
     }
+    qInfo() << "Server started and is listening for connections.";
     return true;
 }
 

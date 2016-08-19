@@ -18,7 +18,7 @@ export LC_ALL=en_US.UTF-8
 # Prepare dirs and configure build
 mkdir -p /tmp/build
 cd /tmp/build
-cmake -DCMAKE_BUILD_TYPE=Debug /paso
+cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_ENABLE_COVERAGE=ON /paso
 
 # Detect number of CPUs online
 CPU_COUNT="$(getconf _NPROCESSORS_ONLN | tr -d '\n')"
