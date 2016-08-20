@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
     qInstallMessageHandler(logMessageHandler);
 
     QCoreApplication::setApplicationName("pasoserver");
-    QCoreApplication::setApplicationVersion("1.0");
+    QCoreApplication::setApplicationVersion(VERSION);
 
     QCommandLineParser parser;
     parser.addHelpOption();

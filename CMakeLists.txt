@@ -62,9 +62,12 @@ else()
     qt5_add_translation(QM_FILES ${TS_FILES})
 endif()
 
-
 add_custom_target(translations DEPENDS ${QM_FILES})
 set_property(DIRECTORY PROPERTY CLEAN_NO_CUSTOM TRUE)
+
+file(STRINGS ${CMAKE_SOURCE_DIR}/VERSION COMPONENT_VERSION)
+
+add_definitions(-DVERSION="${COMPONENT_VERSION}")
 
 # Add subdirectories
 add_subdirectory(admin)
