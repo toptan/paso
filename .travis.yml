@@ -1,19 +1,24 @@
 sudo: required
 
+env:
+    matrix:
+        - OS_TYPE=centos
+        - OS_TYPE=ubuntu
+
 services:
     - docker
 
 before_install:
-  - sudo apt-get update
-  - gem install coveralls-lcov
-  - echo 'DOCKER_OPTS="-H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock -s devicemapper"' | sudo tee /etc/default/docker > /dev/null
-  - sudo service docker restart
-  - sleep 5
-  - sudo docker pull ubuntu:xenial
+    - sudo apt-get update
+    - gem install coveralls-lcov
+    - echo 'DOCKER_OPTS="-H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock -s devicemapper"' | sudo tee /etc/default/docker > /dev/null
+    - sudo service docker restart
+    - sleep 5
 
 script:
-  # Run tests in the container
-  - tests/setup_test.sh
+    # Run tests in the container
+    - tests/setup_test.sh ${OS_TYPE}
 
 after_success:
-  - coveralls-lcov coverage.info
+    # Upload coverage only for Ubuntu which is reference implementation.
+  - if [ "${OS_TYPE}" = "ubuntu" ]; then coveralls-lcov coverage.info; fi
