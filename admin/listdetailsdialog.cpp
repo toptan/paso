@@ -258,8 +258,8 @@ void ListDetailsDialog::onImportFileSelected(const QString &fileName) {
             emit newLogLine(tr("Importing list members has failed."));
             emit newLogLine(tr("Data remains unchanged."));
             manager.rollback();
-            emit importDone();
             delete file;
+            emit importFailed();
             return;
         }
         emit newLogLine(tr("Clearing old data... OK."));
@@ -296,14 +296,15 @@ void ListDetailsDialog::onImportFileSelected(const QString &fileName) {
         if (!errorOccured) {
             emit newLogLine(tr("Import finished without errors."));
             manager.commit();
+            emit importDone();
         } else {
             emit newLogLine(tr("Not all lines could be imported. Please see "
                                "log messages above."));
             emit newLogLine(tr("Importing list members has failed."));
             emit newLogLine(tr("Data remains unchanged."));
             manager.rollback();
+            emit importFailed();
         }
-        emit importDone();
     };
 
     QtConcurrent::run(work);

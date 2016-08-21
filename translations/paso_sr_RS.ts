@@ -429,13 +429,13 @@
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="253"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="297"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="298"/>
         <source>Importing course students has failed.</source>
         <translation>Увожење студената који слушају предмет није успело.</translation>
     </message>
     <message>
         <location filename="../admin/coursedetailsdialog.cpp" line="254"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="298"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="299"/>
         <source>Data remains unchanged.</source>
         <translation>Подаци су остали непромењени.</translation>
     </message>
@@ -465,7 +465,7 @@
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="295"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="296"/>
         <source>Not all lines could be imported. Please see log messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
@@ -715,13 +715,13 @@
     </message>
     <message>
         <location filename="../admin/listdetailsdialog.cpp" line="258"/>
-        <location filename="../admin/listdetailsdialog.cpp" line="302"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="303"/>
         <source>Importing list members has failed.</source>
         <translation>Увожење чланова листе није успело.</translation>
     </message>
     <message>
         <location filename="../admin/listdetailsdialog.cpp" line="259"/>
-        <location filename="../admin/listdetailsdialog.cpp" line="303"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="304"/>
         <source>Data remains unchanged.</source>
         <translation>Подаци су остали непромењени.</translation>
     </message>
@@ -751,7 +751,7 @@
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="300"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="301"/>
         <source>Not all lines could be imported. Please see log messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>

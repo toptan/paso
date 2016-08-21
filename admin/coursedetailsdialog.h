@@ -30,6 +30,7 @@ public slots:
 signals:
     void newLogLine(const QString &line);
     void importDone();
+    void importFailed();
 
 private slots:
     virtual void onButtonBoxButtonClicked(QAbstractButton *button);

@@ -225,9 +225,13 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     manager.importStudent("2000/2000, Jovanovic,jova,jova@gmail.com,3", error);
     manager.enlistStudentsToCourse(courseCode, {"2000/2000"}, error);
     CourseDetailsDialog dialog(*course);
-    bool importDone = false;
-    auto importDoneCallback = [&importDone]() { importDone = true; };
-    connect(&dialog, &CourseDetailsDialog::importDone, importDoneCallback);
+    bool importFinished = false;
+    auto importFinishedCallback = [&importFinished]() {
+        importFinished = true;
+    };
+    connect(&dialog, &CourseDetailsDialog::importDone, importFinishedCallback);
+    connect(&dialog, &CourseDetailsDialog::importFailed,
+            importFinishedCallback);
     dialog.show();
     QTest::qWaitForWindowExposed(&dialog);
 
@@ -302,7 +306,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
         attempt++;
     }
     QVERIFY(logDialog != nullptr);
-    while (!importDone) {
+    while (!importFinished) {
         QTest::qWait(100);
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
@@ -315,9 +319,8 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
 
     logDialog = nullptr;
     attempt = 0;
-    importDone = false;
-    dialog.onImportFileSelected(QDir::currentPath() +
-                                "/files/slusaju.csv");
+    importFinished = false;
+    dialog.onImportFileSelected(QDir::currentPath() + "/files/slusaju.csv");
     while ((logDialog = dynamic_cast<LogDialog *>(
                 QApplication::activeModalWidget())) == nullptr &&
            attempt < 10) {
@@ -325,7 +328,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
         attempt++;
     }
     QVERIFY(logDialog != nullptr);
-    while (!importDone) {
+    while (!importFinished) {
         QTest::qWait(100);
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
@@ -337,9 +340,8 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     db.exec("DROP TABLE STUDENT");
     logDialog = nullptr;
     attempt = 0;
-    importDone = false;
-    dialog.onImportFileSelected(QDir::currentPath() +
-                                "/files/slusaju.csv");
+    importFinished = false;
+    dialog.onImportFileSelected(QDir::currentPath() + "/files/slusaju.csv");
     while ((logDialog = dynamic_cast<LogDialog *>(
                 QApplication::activeModalWidget())) == nullptr &&
            attempt < 10) {
@@ -347,7 +349,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
         attempt++;
     }
     QVERIFY(logDialog != nullptr);
-    while (!importDone) {
+    while (!importFinished) {
         QTest::qWait(100);
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
@@ -358,9 +360,8 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     db.exec("DROP TABLE ENLISTED");
     logDialog = nullptr;
     attempt = 0;
-    importDone = false;
-    dialog.onImportFileSelected(QDir::currentPath() +
-                                "/files/slusaju.csv");
+    importFinished = false;
+    dialog.onImportFileSelected(QDir::currentPath() + "/files/slusaju.csv");
     while ((logDialog = dynamic_cast<LogDialog *>(
                 QApplication::activeModalWidget())) == nullptr &&
            attempt < 10) {
@@ -368,7 +369,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
         attempt++;
     }
     QVERIFY(logDialog != nullptr);
-    while (!importDone) {
+    while (!importFinished) {
         QTest::qWait(100);
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
