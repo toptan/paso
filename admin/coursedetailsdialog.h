@@ -33,6 +33,7 @@ signals:
 
 private slots:
     virtual void onButtonBoxButtonClicked(QAbstractButton *button);
+    bool loadData();
 
 private:
     Ui::CourseDetailsDialog *ui;
@@ -41,7 +42,6 @@ private:
     std::unique_ptr<CourseDetailsDialogPrivate> mPrivate;
 
     void refresh();
-    bool loadData();
     bool saveData();
     void importCourseStudents();
 };

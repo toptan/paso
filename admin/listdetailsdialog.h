@@ -26,6 +26,7 @@ public:
 public slots:
     virtual void reject() override;
     void onImportFileSelected(const QString &fileName);
+    bool loadData();
 
 signals:
     void newLogLine(const QString &line);
@@ -41,7 +42,6 @@ private:
     std::unique_ptr<ListDetailsDialogPrivate> mPrivate;
 
     void refresh();
-    bool loadData();
     bool saveData();
     void importListStudents();
 };

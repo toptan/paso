@@ -59,6 +59,8 @@ ListDetailsDialog::ListDetailsDialog(const List &list, QWidget *parent)
     }
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this,
             &ListDetailsDialog::onButtonBoxButtonClicked);
+    connect(this, &ListDetailsDialog::importDone, this,
+            &ListDetailsDialog::loadData);
     loadData();
 }
 
@@ -293,7 +295,6 @@ void ListDetailsDialog::onImportFileSelected(const QString &fileName) {
         emit newLogLine("");
         if (!errorOccured) {
             emit newLogLine(tr("Import finished without errors."));
-            loadData();
             manager.commit();
         } else {
             emit newLogLine(tr("Not all lines could be imported. Please see "

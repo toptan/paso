@@ -50,6 +50,8 @@ CourseDetailsDialog::CourseDetailsDialog(const Course &course, QWidget *parent)
 
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this,
             &CourseDetailsDialog::onButtonBoxButtonClicked);
+    connect(this, &CourseDetailsDialog::importDone, this,
+            &CourseDetailsDialog::loadData);
     loadData();
 }
 
@@ -288,7 +290,6 @@ void CourseDetailsDialog::onImportFileSelected(const QString &fileName) {
         emit newLogLine("");
         if (!errorOccured) {
             emit newLogLine(tr("Import finished without errors."));
-            loadData();
             manager.commit();
         } else {
             emit newLogLine(tr("Not all lines could be imported. Please see "
