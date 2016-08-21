@@ -33,3 +33,10 @@ build
 *.txt.user
 .DS_Store
 *.autosave
+
+# LaTeX intermediate files
+thesis/*.log
+thesis/*.aux
+thesis/*.pdf
+thesis/*.gz
+thesis/*.toc
