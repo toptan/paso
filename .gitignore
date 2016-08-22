@@ -35,8 +35,10 @@ build
 *.autosave
 
 # LaTeX intermediate files
-thesis/*.log
 thesis/*.aux
-thesis/*.pdf
 thesis/*.gz
+thesis/*.lof
+thesis/*.log
+thesis/*.lot
+thesis/*.pdf
 thesis/*.toc
