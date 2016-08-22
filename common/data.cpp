@@ -1,6 +1,10 @@
 #include "data.h"
 
 #include <QJsonDocument>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+
+using namespace std;
 
 namespace paso {
 namespace data {
@@ -38,5 +42,29 @@ SystemRole stringToRole(const QString &role) {
     }
 }
 
+list<QDateTime> scheduledDates(const QString &cronString,
+                               const QDate &startDate, const QDate &endDate) {
+    list<QDateTime> retVal;
+    auto temp = cronString.trimmed();
+    auto segments = cronString.split(" ");
+    if (segments.size() != 5) {
+        return retVal;
+    }
+    auto minutes = segments[0].trimmed();
+    auto hours = segments[1].trimmed();
+    auto daysOfMont = segments[2].trimmed();
+    auto months = segments[3].trimmed();
+    auto days = segments[4].trimmed();
+
+    QRegularExpression minutesRegEx("^[0-9]{1,2}?");
+    auto match = minutesRegEx.match(minutes);
+    if (!match.hasMatch()) {
+        return retVal;
+    }
+
+
+    retVal.push_back(QDateTime());
+    return retVal;
+}
 }
 }

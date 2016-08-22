@@ -3,10 +3,13 @@
 
 #include "jsonserializable.h"
 
+#include <QDate>
+#include <QDateTime>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QString>
 #include <QVariantMap>
+#include <list>
 
 namespace paso {
 namespace data {
@@ -51,7 +54,7 @@ enum class StudentImportError {
     LAST_NAME_TOO_LONG,  //!< Last name is too long.
     BAD_EMAIL,           //!< The email is bad.
     NO_YEAR_OF_STUDY,    //!< Year of study missing.
-    BAD_YEAR_OF_STUDY,   //<! The year of study is bad.
+    BAD_YEAR_OF_STUDY,   //!< The year of study is bad.
     DB_ERROR             //!< Generic database error.
 };
 
@@ -103,6 +106,29 @@ const QString roleToString(paso::data::SystemRole role);
 ///
 paso::data::SystemRole stringToRole(const QString &role);
 
+///
+/// \brief scheduledDates Returns list of timestapms that are scheduled via cron
+/// string that are after start date and before end date.
+/// \note The cron string is in reduced cron syntax. Minutes are fixed and hours
+/// can be given as list but not range or wildcard. Day of month and month are
+/// always ignored. Day of the week can only be given as list or *.
+/// <br/><strong>Examples:</strong>
+/// <ul>
+/// <li>30 11,16 * * 1,3,5 - Every Monday, Wednesday and Friday at 11:30 and
+/// 16:30</li>
+/// <li>0 9 * * * - Every day at 9:00</li>
+/// </ul>
+/// If string does not comply with above rules, empty list will be
+/// returned.
+///
+/// \param cronString The cron string.
+/// \param startDate Start date.
+/// \param endDate End date.
+/// \return List of timestamps that are after start date and before end date.
+///
+std::list<QDateTime> scheduledDates(const QString &cronString,
+                                    const QDate &startDate,
+                                    const QDate &endDate);
 }
 }
 

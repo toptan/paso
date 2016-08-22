@@ -202,32 +202,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="75"/>
-        <location filename="../common/data.h" line="86"/>
-        <source>Administrator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../common/data.h" line="76"/>
-        <location filename="../common/data.h" line="87"/>
-        <source>Manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../common/data.h" line="77"/>
-        <location filename="../common/data.h" line="88"/>
-        <source>Room manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../common/data.h" line="78"/>
         <location filename="../common/data.h" line="89"/>
-        <source>Scheduler</source>
+        <source>Administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../common/data.h" line="79"/>
         <location filename="../common/data.h" line="90"/>
+        <source>Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="80"/>
+        <location filename="../common/data.h" line="91"/>
+        <source>Room manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="81"/>
+        <location filename="../common/data.h" line="92"/>
+        <source>Scheduler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="82"/>
+        <location filename="../common/data.h" line="93"/>
         <source>Super user</source>
         <translation type="unfinished"></translation>
     </message>

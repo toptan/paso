@@ -21,6 +21,7 @@ private slots:
     void testListSerialization();
     void testConversionToVariantMap();
     void testPropertyValues();
+    void testScheduledDates();
 };
 
 #endif // TESTDATA_H

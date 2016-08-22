@@ -214,3 +214,16 @@ void TestData::testPropertyValues() {
     QCOMPARE(list.value("PERMANENT"), QVariant(list.permanent()));
     QCOMPARE(list.value("EXPIRY_DATE"), QVariant::fromValue(QDate()));
 }
+
+void TestData::testScheduledDates() {
+    QDate startDate = QDate::currentDate();
+    QDate endDate = QDate::currentDate();
+    startDate.addDays(-7);
+    endDate.addDays(7);
+
+    QString cronString("asfgasfh");
+    QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
+
+    cronString = "* 15 * * *";
+    QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
+}

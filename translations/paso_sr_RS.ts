@@ -187,32 +187,32 @@
         <translation>Година студија</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="75"/>
-        <location filename="../common/data.h" line="86"/>
+        <location filename="../common/data.h" line="78"/>
+        <location filename="../common/data.h" line="89"/>
         <source>Administrator</source>
         <translation>Администратор</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="76"/>
-        <location filename="../common/data.h" line="87"/>
+        <location filename="../common/data.h" line="79"/>
+        <location filename="../common/data.h" line="90"/>
         <source>Manager</source>
         <translation>Управник</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="77"/>
-        <location filename="../common/data.h" line="88"/>
+        <location filename="../common/data.h" line="80"/>
+        <location filename="../common/data.h" line="91"/>
         <source>Room manager</source>
         <translation>Управник соба</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="78"/>
-        <location filename="../common/data.h" line="89"/>
+        <location filename="../common/data.h" line="81"/>
+        <location filename="../common/data.h" line="92"/>
         <source>Scheduler</source>
         <translation>Заказивач</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="79"/>
-        <location filename="../common/data.h" line="90"/>
+        <location filename="../common/data.h" line="82"/>
+        <location filename="../common/data.h" line="93"/>
         <source>Super user</source>
         <translation>Супер корисник</translation>
     </message>

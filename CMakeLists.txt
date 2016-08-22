@@ -75,3 +75,7 @@ add_subdirectory(common)
 add_subdirectory(server)
 add_subdirectory(ui)
 add_subdirectory(tests)
+
+configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_BINARY_DIR}/doc/Doxyfile @ONLY)
+
+add_custom_target(doc COMMAND doxygen WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/doc)
