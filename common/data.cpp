@@ -56,12 +56,22 @@ list<QDateTime> scheduledDates(const QString &cronString,
     auto months = segments[3].trimmed();
     auto days = segments[4].trimmed();
 
+    // Checking minutes part.
     QRegularExpression minutesRegEx("^[0-9]{1,2}?");
     auto match = minutesRegEx.match(minutes);
     if (!match.hasMatch()) {
         return retVal;
     }
 
+    // Checking hours part.
+    QRegularExpression hoursRegEx("^[0-9]{1,2}?");
+    auto hoursSplit = hours.split(",");
+    for (const auto &h : hoursSplit) {
+        if (!hoursRegEx.match(h)) {
+            return retVal;
+        }
+        if (h.toInt() )
+    }
 
     retVal.push_back(QDateTime());
     return retVal;

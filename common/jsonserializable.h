@@ -19,28 +19,27 @@ public:
     virtual ~JsonSerializable();
 
     ///
-    /// \brief read This method reads given JSON string and populates this
-    /// object's properties
+    /// \brief This method reads given JSON string and populates this object's
+    /// properties.
     /// \param jsonString A JSON string to read from.
     ///
     virtual void fromJsonString(const QString &jsonString) final;
 
     ///
-    /// \brief read This method reads data from given JSON object and populates
+    /// \brief This method reads data from given JSON object and populates
     /// this object's properties.
     /// \param jsonObject A JSON object to read data from.
     ///
     virtual void read(const QJsonObject &jsonObject) = 0;
 
     ///
-    /// \brief write This method returns JSON string representation of this
-    /// object.
+    /// \brief This method returns JSON string representation of this object.
     /// \return A JSON string representation of this object.
     ///
     virtual QString toJsonString() const final;
 
     ///
-    /// \brief write This method writes data from this object to the given JSON
+    /// \brief This method writes data from this object to the given JSON
     /// object.
     /// \param jsonObject A JSON object to write data to.
     ///

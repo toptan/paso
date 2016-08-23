@@ -19,26 +19,26 @@ namespace entity {
 class Entity {
 public:
     ///
-    /// \brief Entity Constructs new entity.
+    /// \brief Constructs new entity.
     /// \param id The id (primary key) of an entity. The value of zero is
     /// considered as indicator that this is a new entity not yet persisted.
     ///
     explicit Entity(quint64 id = 0);
 
     ///
-    /// \brief id Returns entity id.
+    /// \brief Returns entity id.
     /// \return The id.
     ///
     quint64 id() const;
 
     ///
-    /// \brief setId Sets entity id.
+    /// \brief Sets entity id.
     /// \param id The id to set.
     ///
     void setId(const quint64 id);
 
     ///
-    /// \brief toVariantMap Returns variant map representation of an entity.
+    /// \brief Returns variant map representation of an entity.
     /// Derived classes should first call this method before adding their own
     /// properties to the map.
     /// \return The variant map representation of entity.
@@ -46,15 +46,15 @@ public:
     virtual QVariantMap toVariantMap() const;
 
     ///
-    /// \brief value Returns value of given property. If property does not
+    /// \brief Returns value of given property. If property does not
     /// exist, null variant will be returned.
-    /// \param propertyName The property.
+    /// \param property The property to get.
     /// \return The value of the property.
     ///
     virtual QVariant value(const QString &property) const;
 
 private:
-    quint64 mId;
+    quint64 mId; //!< The entity id.
 };
 
 using EntityVector = std::vector<std::shared_ptr<paso::data::entity::Entity>>;

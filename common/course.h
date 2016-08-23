@@ -68,17 +68,17 @@ public:
     virtual QVariantMap toVariantMap() const override;
 
     ///
-    /// \ref Entity::value(const QStirng &);
+    /// \ref paso::data::entity::Entity::value(const QString &) const;
     ///
     virtual QVariant value(const QString &property) const override;
 
     ///
-    /// \ref JsonSerializable::read(const QJsonObject&);
+    /// \ref paso::data::JsonSerializable::read(const QJsonObject&);
     ///
     virtual void read(const QJsonObject &jsonObject) override;
 
     ///
-    /// \ref JsonSerializable::write(QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 

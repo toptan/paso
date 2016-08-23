@@ -19,7 +19,7 @@ namespace entity {
 class Person : public Entity, public JsonSerializable {
 public:
     ///
-    /// \brief Person constructs new person with given data.
+    /// \brief Constructs new person with given data.
     /// \param firstName first name.
     /// \param lastName last name.
     /// \param email email.
@@ -30,89 +30,88 @@ public:
            const QString &email, quint64 id = 0, const QString &rfid = "");
 
     ///
-    /// \brief Person constructs person from the data given in the map.
+    /// \brief Constructs person from the data given in the map.
     /// \param map a map that contains data for the person.
     ///
     explicit Person(const QVariantMap &map);
 
     ///
-    /// \brief operator == The equality operator.
+    /// \brief The equality operator.
     /// \param other a person to compare to.
     /// \return \c true if persons are equal.
     ///
     virtual bool operator==(const Person &other) const;
 
     ///
-    /// \brief firstName returns persons first name.
+    /// \brief Returns persons first name.
     /// \return The first name.
     ///
     QString firstName() const;
 
     ///
-    /// \brief setFirstName Sets the persons first name.
+    /// \brief Sets the persons first name.
     /// \param firstName The first name to set.
     ///
     void setFirstName(const QString &firstName);
 
     ///
-    /// \brief lastName returns persons last name.
+    /// \brief Returns persons last name.
     /// \return The last name.
     ///
     QString lastName() const;
 
     ///
-    /// \brief setLastName Sets the persons last name.
+    /// \brief Sets the persons last name.
     /// \param lastName The last name to set.
     ///
     void setLastName(const QString &lastName);
 
     ///
-    /// \brief email Returns persons email.
+    /// \brief Returns persons email.
     /// \return The persons email.
     ///
     QString email() const;
 
     ///
-    /// \brief setEmail Sets the persons email.
+    /// \brief Sets the persons email.
     /// \param email The email to set.
     ///
     void setEmail(const QString &email);
 
     ///
-    /// \brief rfid Returns persons access card RFID.
+    /// \brief Returns persons access card RFID.
     /// \return The access card RFID.
     ///
     QString rfid() const;
 
     ///
-    /// \brief setRfid Sets the persons access card RFID.
+    /// \brief Sets the persons access card RFID.
     /// \param rfid The RFID to set.
     ///
     void setRfid(const QString &rfid);
 
     ///
-    /// \ref Entity::toVariantMap();
+    /// \copydoc paso::data::entity::Entity::toVariantMap() const
     ///
     virtual QVariantMap toVariantMap() const override;
 
     ///
-    /// \ref Entity::value(const QStirng &);
+    /// \copydoc paso::data::entity::Entity::value(const QString &) const
     ///
     virtual QVariant value(const QString &property) const override;
 
     ///
-    /// \ref JsonSerializable::read(const QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
     ///
     virtual void read(const QJsonObject &jsonObject) override;
 
     ///
-    /// \ref JsonSerializable::write(QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const;
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 
     ///
-    /// \brief insertQuery Returns insert query for given person with values
-    /// bound.
+    /// \brief Returns insert query for given person with values bound.
     /// \param database The database to use.
     /// \param person The person to insert.
     /// \return The query.
@@ -121,8 +120,7 @@ public:
                                  const Person &person);
 
     ///
-    /// \brief updateQuery Returns update query for given person with values
-    /// bound.
+    /// \brief Returns update query for given person with values bound.
     /// \param database The database to use.
     /// \param person The person to update.
     /// \return The query.

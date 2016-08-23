@@ -36,84 +36,77 @@ public:
     explicit List(const QVariantMap &map);
 
     ///
-    /// The equality operator. Two lists are the equal if all their properties
-    /// are equial.
-    ///
+    /// \brief The equality operator. Two lists are the equal if all their
+    /// properties are equial.
     /// \param other The list to compare to.
     /// \return \c true if lists are equal.
     ///
     bool operator==(const List &other) const;
 
     ///
-    /// \brief name Returns list name.
+    /// \brief Returns list name.
     /// \return The list name.
     ///
     QString name() const;
 
     ///
-    /// \brief setName Sets new list name.
+    /// \brief Sets new list name.
     /// \param name The name to set.
     ///
     void setName(const QString &name);
 
     ///
-    /// \brief system Returns whether this is a system list.
-    ///
+    /// \brief Returns whether this is a system list.
     /// \return \c true if this is system list.
     ///
     bool system() const;
 
     ///
-    /// \brief permanent Returns whether this is permanent list.
-    ///
+    /// \brief Returns whether this is permanent list.
     /// \return \c true if this list is permanent.
     ///
     bool permanent() const;
 
     ///
-    /// \brief setPermanent Sets whether this list should be permanent.
-    ///
+    /// \brief Sets whether this list should be permanent.
     /// \param permanent Whether this list should be permanent.
     ///
     void setPermanent(bool permanent);
 
     ///
-    /// \brief expiryDate Returns the date when this list expires.
-    ///
+    /// \brief Returns the date when this list expires.
     /// \return The date when this list expires.
     ///
     QDate expiryDate() const;
 
     ///
-    /// \brief setExpiryDate Sets the date when this list expires.
-    ///
+    /// \brief Sets the date when this list expires.
     /// \param expiryDate The date when this list expires.
     ///
-    void setExpiryDate(const QDate &expityDate);
+    void setExpiryDate(const QDate &expiryDate);
 
     ///
-    /// \ref Entity::toVariantMap();
+    /// \copydoc paso::data::entity::Entity::toVariantMap() const
     ///
     virtual QVariantMap toVariantMap() const override;
 
     ///
-    /// \ref Entity::value(const QStirng &);
+    /// \copydoc paso::data::entity::Entity::value(const QString &) const
     ///
     virtual QVariant value(const QString &property) const override;
 
     ///
-    /// \ref JsonSerializable::read(const QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
     ///
     virtual void read(const QJsonObject &jsonObject) override;
 
     ///
-    /// \ref JsonSerializable::write(QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const;
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 
     ///
-    /// \brief findByNameQuery Returns find by list name query with bound name
-    /// value.
+    /// \brief Returns find by list name query with bound name value.
     /// \param database The database to use.
     /// \param name The list name.
     /// \return The query.
@@ -122,9 +115,8 @@ public:
                                      const QString &name);
 
     ///
-    /// \brief addStudentToListQuery Returns query that adds student to the
-    /// list. If student is already member of the list, the query will do
-    /// nothing.
+    /// \brief Returns query that adds student to the list. If student is
+    /// already member of the list, the query will do nothing.
     /// \param database The database to use.
     /// \param listId The list id.
     /// \param indexNumber The student's index number.
@@ -135,9 +127,8 @@ public:
                                            const QString &indexNumber);
 
     ///
-    /// \brief removeStudentFromListQuery Returns query that removes student
-    /// from the list. If student is not a member of the list, the query will do
-    /// nothing.
+    /// \brief Returns query that removes student from the list. If student is
+    /// not a member of the list, the query will do nothing.
     /// \param database The database to use.
     /// \param listId The list id.
     /// \param indexNumber The student's index number.
@@ -148,8 +139,8 @@ public:
                                                 const QString &indexNumber);
 
     ///
-    /// \brief membersQuery Returns query that selects all students that are
-    /// members of the list.
+    /// \brief Returns query that selects all students that are members of the
+    /// list.
     /// \param database The database to use.
     /// \param listId The list id.
     /// \return The query.
@@ -157,8 +148,8 @@ public:
     static QSqlQuery membersQuery(const QSqlDatabase &database, quint64 listId);
 
     ///
-    /// \brief nonMembersQuery Returns query that selects all students that are
-    /// not members of the list.
+    /// \brief Returns query that selects all students that are not members of
+    /// the list.
     /// \param database The database to use.
     /// \param listId The list id.
     /// \return The query.
@@ -167,8 +158,7 @@ public:
                                      quint64 listId);
 
     ///
-    /// \brief removeAllStudentsFromListQuery Returns query that removes all
-    /// students from the given list.
+    /// \brief Returns query that removes all students from the given list.
     /// \param database The database to use.
     /// \param listId The list id.
     /// \return The query.

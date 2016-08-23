@@ -18,7 +18,7 @@ namespace entity {
 class SystemUser : public Entity, public JsonSerializable {
 public:
     ///
-    /// \brief SystemUser constructs new system user with given data.
+    /// \brief Constructs new system user with given data.
     /// \param username an username.
     /// \param password a password.
     /// \param firstName a first name.
@@ -34,115 +34,114 @@ public:
                         quint64 id = 0);
 
     ///
-    /// \brief SystemUser constructs system user instance from the map.
+    /// \brief Constructs system user instance from the map.
     /// \param map a map that contains system user data.
     ///
     ///
     explicit SystemUser(const QVariantMap &map);
 
     ///
-    /// \brief SystemUser The copy constructor.
+    /// \brief The copy constructor.
     /// \param other an instance to copy from.
     ///
     explicit SystemUser(const SystemUser &other);
 
     ///
-    /// \brief operator == Equality operator. Two system users are equal all of
-    /// their properties are equal.
+    /// \brief The equality operator. Two system users are equal all of their
+    /// properties are equal.
     /// \param other object to compare against.
-    /// \return \code true if two system users are equal/the same.
+    /// \return \c true if two system users are equal/the same.
     ///
     bool operator==(const SystemUser &other) const;
 
     ///
-    /// \brief username returns username.
+    /// \brief Returns username.
     /// \return username.
     ///
     QString username() const;
 
     ///
-    /// \brief password returns password.
+    /// \brief Returns password.
     /// \return password.
     ///
     QString password() const;
 
     ///
-    /// \brief setPassword sets new password.
+    /// \brief Sets new password.
     /// \param password a new password to set.
     ///
     void setPassword(const QString &password);
 
     ///
-    /// \brief firstName returns first name.
+    /// \brief Returns first name.
     /// \return first name.
     ///
     QString firstName() const;
 
     ///
-    /// \brief setFirstName sets new first name.
+    /// \brief Sets new first name.
     /// \param firstName a new first name.
     ///
     void setFirstName(const QString &firstName);
 
     ///
-    /// \brief lastName returns last name.
+    /// \brief Returns last name.
     /// \return last name.
     ///
     QString lastName() const;
 
     ///
-    /// \brief setLastName sets new last name.
+    /// \brief Sets new last name.
     /// \param lastName a new last name to set.
     ///
     void setLastName(const QString &lastName);
 
     ///
-    /// \brief email returns email.
+    /// \brief Returns email.
     /// \return email.
     ///
     QString email() const;
 
     ///
-    /// \brief setEmail sets new email.
+    /// \brief Sets new email.
     /// \param email a new email to set.
     ///
     void setEmail(const QString &email);
 
     ///
-    /// \brief role returns system role.
+    /// \brief Returns system role.
     /// \return system role.
     ///
     SystemRole role() const;
 
     ///
-    /// \brief setRole sets new system role.
+    /// \brief Sets new system role.
     /// \param role a new system role.
     ///
     void setRole(const SystemRole &role);
 
     ///
-    /// \ref Entity::toVariantMap();
+    /// \copydoc paso::data::entity::Entity::toVariantMap() const
     ///
     virtual QVariantMap toVariantMap() const override;
 
     ///
-    /// \ref Entity::value(const QStirng &);
+    /// \copydoc paso::data::entity::Entity::value(const QString &) const
     ///
     virtual QVariant value(const QString &property) const override;
 
     ///
-    /// \ref JsonSerializable::read(const QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
     ///
     virtual void read(const QJsonObject &jsonObject) override;
 
     ///
-    /// \ref JsonSerializable::write(QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const;
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 
     ///
-    /// \brief insertQuery Returns insert query for given system user with
-    /// values bound.
+    /// \brief Returns insert query for given system user with values bound.
     /// \param database The database to use.
     /// \param user The system user to insert.
     /// \return The query.
@@ -151,8 +150,7 @@ public:
                                  const SystemUser &user);
 
     ///
-    /// \brief updateQuery Returns update query for given system user with
-    /// values bound.
+    /// \brief Returns update query for given system user with values bound.
     /// \param database The database to use.
     /// \param user The system user to insert.
     /// \return The query.
@@ -161,8 +159,7 @@ public:
                                  const SystemUser &user);
 
     ///
-    /// \brief findByUsernameQuery Returns find by username query with bound
-    /// username value.
+    /// \brief Returns find by username query with bound username value.
     /// \param database The database to use.
     /// \param username The username.
     /// \return The query.
@@ -171,15 +168,14 @@ public:
                                          const QString &username);
 
     ///
-    /// \brief findAllQuery Returns find all system users query.
+    /// \brief Returns find all system users query.
     /// \param database The database to use.
     /// \return The query.
     ///
     static QSqlQuery findAllQuery(const QSqlDatabase &database);
 
     ///
-    /// \brief deleteByUsernameQuery Returns delete by username query with bound
-    /// username value.
+    /// \brief Returns delete by username query with bound username value.
     /// \param database The database to use.
     /// \param username The username.
     /// \return The query.

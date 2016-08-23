@@ -18,12 +18,12 @@ namespace data {
 /// \brief The SystemRole enum defines all possible system roles.
 ///
 enum class SystemRole {
-    ADMINISTRATOR = 0,
-    ROOM_MANAGER,
-    MANAGER,
-    SCHEDULER,
-    SUPER_USER,
-    INVALID_ROLE
+    ADMINISTRATOR = 0, //!< The system administrator.
+    ROOM_MANAGER,      //!< The room manager.
+    MANAGER,           //!< The general manager.
+    SCHEDULER,         //!< The activity scheduler.
+    SUPER_USER,        //!< The almighty user.
+    INVALID_ROLE       //!< Invalid role.
 };
 
 ///
