@@ -215,8 +215,8 @@ void TestData::testPropertyValues() {
 }
 
 void TestData::testScheduledDates() {
-    QDate startDate = QDate::currentDate().addDays(-7);
-    QDate endDate = QDate::currentDate().addDays(7);
+    QDate startDate(2016, 8, 10);
+    QDate endDate(2016, 8, 20);
 
     QString cronString("10 13 6 11 *");
     QVERIFY(scheduledDates(cronString, endDate, startDate).empty());
@@ -233,11 +233,35 @@ void TestData::testScheduledDates() {
     cronString = "20 26 * * *";
     QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
 
+    cronString = "60 15 * * *";
+    QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
+
     cronString = "20 15 * * *";
     auto dates = scheduledDates(cronString, startDate, endDate);
-    QCOMPARE(dates.size(), size_t(15));
+    QCOMPARE(dates.size(), size_t(11));
 
-    cronString = "20 8,16 * * *";
+    cronString = "15 8,16 * * *";
     dates = scheduledDates(cronString, startDate, endDate);
-    QCOMPARE(dates.size(), size_t(30));
+    QCOMPARE(dates.size(), size_t(22));
+
+    cronString = "15 4,12,20 * * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(33));
+}
+
+#include <QRegularExpression>
+
+void TestData::testRegEx() {
+//    const QString regExString(
+//        "((\\d{1,2}-\\d{1,2})|(\\d{1,2}))(,((\\d{1,2}-\\d{1,2})|(\\d{1,2})))*");
+//    const QStringList strings{
+//        "12,4",       "15",          "1-3,2", "3,1-4", "17-21,22-23,25-16",
+//        "9,11-15,15", "2-4,9,22-30", "8-15", "3,4-a,12"};
+
+//    QRegularExpression regex(regExString);
+//    for (const auto &line: strings) {
+//        auto match = regex.match(line);
+//        qWarning() << line << ":" << match.hasMatch() << ":" << match.captured();
+//    }
+
 }

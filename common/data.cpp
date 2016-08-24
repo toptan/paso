@@ -58,39 +58,72 @@ list<QDateTime> scheduledDates(const QString &cronString,
     }
     auto sMinutes = segments[0].trimmed();
     auto sHours = segments[1].trimmed();
-    auto sDaysOfMont = segments[2].trimmed();
+    auto sDaysOfMonth = segments[2].trimmed();
     auto sMonths = segments[3].trimmed();
     auto sDays = segments[4].trimmed();
 
     // Checking minutes part.
-    QRegularExpression minutesRegEx("^[0-9]{1,2}?");
+    QRegularExpression minutesRegEx("^[0-9]{1,2}");
     auto match = minutesRegEx.match(sMinutes);
-    if (!match.hasMatch()) {
+    qWarning() << "M:" << sMinutes << ":" << match.captured();
+    if (!match.hasMatch() || match.captured() != sMinutes) {
         return retVal;
     }
 
-    if (sMinutes.toInt() < 0 || sMinutes.toInt() > 59) {
+    if (sMinutes.toInt() > 59) {
         return retVal;
     }
 
     int minutes = sMinutes.toInt();
 
     // Checking hours part.
-    QRegularExpression hoursRegEx("^[0-9]{1,2}?");
+    QRegularExpression hoursRegEx("^[0-9]{1,2}");
     auto hoursSplit = sHours.split(",");
     list<int> hours;
     for (const auto &h : hoursSplit) {
-        if (!hoursRegEx.match(h).hasMatch()) {
+        auto hoursMatch = hoursRegEx.match(h);
+        qWarning() << "H:" << h << ":" << hoursMatch.captured() << ":"
+                   << hoursMatch.hasMatch();
+        if (!hoursMatch.hasMatch() || hoursMatch.captured() != h) {
             return retVal;
         }
-        if (h.toInt() < 0 || h.toInt() > 23) {
+        if (h.toInt() > 23) {
             return retVal;
         }
         hours.push_back(h.toInt());
     }
 
+    auto everyDayOfMonth = sDaysOfMonth == "*";
+    list<int> daysOfMonth;
+    if (!everyDayOfMonth) {
+        QRegularExpression daysPrimaryRegEx("((\\d{1,2}-\\d{1,2})|(\\d{1,2}))(,"
+                                            "((\\d{1,2}-\\d{1,2})|(\\d{1,2})))"
+                                            "*");
+        auto daysPrimaryMatch = daysPrimaryRegEx.match(sDaysOfMonth);
+        qWarning() << "D:" << sDaysOfMonth << ":"
+                   << daysPrimaryMatch.captured();
+        if (!daysPrimaryMatch.hasMatch() ||
+            daysPrimaryMatch.captured() != sDaysOfMonth) {
+            return retVal;
+        }
+
+        auto commaSplit = sDaysOfMonth.split(",");
+        for (const auto &cs : commaSplit) {
+            auto range = cs.split("-");
+            for (const auto &r : range) {
+                auto day = r.toInt();
+                if (day > 31) {
+                    return retVal;
+                }
+                if (day >= startDate.day() && day <= endDate.day()) {
+                    daysOfMonth.push_back(day);
+                }
+            }
+        }
+    }
+
     for (auto c = 0; c <= startDate.daysTo(endDate); c++) {
-        for (auto h: hours) {
+        for (auto h : hours) {
             retVal.emplace_back(startDate.addDays(c), QTime(h, minutes, 0));
         }
     }

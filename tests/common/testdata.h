@@ -22,6 +22,8 @@ private slots:
     void testConversionToVariantMap();
     void testPropertyValues();
     void testScheduledDates();
+
+    void testRegEx();
 };
 
 #endif // TESTDATA_H
