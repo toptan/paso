@@ -166,8 +166,7 @@ void TestData::testPropertyValues() {
     SystemUser systemUser("user", "user_pass", "John", "Doe",
                           "john.doe@internet.com", SystemRole::MANAGER, 6);
     QCOMPARE(systemUser.value("FOO"), QVariant());
-    QCOMPARE(systemUser.value("ID"),
-             QVariant(systemUser.id()));
+    QCOMPARE(systemUser.value("ID"), QVariant(systemUser.id()));
     QCOMPARE(systemUser.value("USERNAME"), QVariant(systemUser.username()));
     QCOMPARE(systemUser.value("PASSWORD"), QVariant(systemUser.password()));
     QCOMPARE(systemUser.value("FIRST_NAME"), QVariant(systemUser.firstName()));
@@ -216,14 +215,29 @@ void TestData::testPropertyValues() {
 }
 
 void TestData::testScheduledDates() {
-    QDate startDate = QDate::currentDate();
-    QDate endDate = QDate::currentDate();
-    startDate.addDays(-7);
-    endDate.addDays(7);
+    QDate startDate = QDate::currentDate().addDays(-7);
+    QDate endDate = QDate::currentDate().addDays(7);
 
-    QString cronString("asfgasfh");
+    QString cronString("10 13 6 11 *");
+    QVERIFY(scheduledDates(cronString, endDate, startDate).empty());
+
+    cronString = "asfgasfh";
     QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
 
     cronString = "* 15 * * *";
     QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
+
+    cronString = "20 -1 * * *";
+    QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
+
+    cronString = "20 26 * * *";
+    QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
+
+    cronString = "20 15 * * *";
+    auto dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(15));
+
+    cronString = "20 8,16 * * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(30));
 }

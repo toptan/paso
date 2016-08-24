@@ -1,5 +1,6 @@
 #include "data.h"
 
+#include <QDebug>
 #include <QJsonDocument>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
@@ -45,35 +46,55 @@ SystemRole stringToRole(const QString &role) {
 list<QDateTime> scheduledDates(const QString &cronString,
                                const QDate &startDate, const QDate &endDate) {
     list<QDateTime> retVal;
+
+    if (startDate > endDate) {
+        return retVal;
+    }
+
     auto temp = cronString.trimmed();
     auto segments = cronString.split(" ");
     if (segments.size() != 5) {
         return retVal;
     }
-    auto minutes = segments[0].trimmed();
-    auto hours = segments[1].trimmed();
-    auto daysOfMont = segments[2].trimmed();
-    auto months = segments[3].trimmed();
-    auto days = segments[4].trimmed();
+    auto sMinutes = segments[0].trimmed();
+    auto sHours = segments[1].trimmed();
+    auto sDaysOfMont = segments[2].trimmed();
+    auto sMonths = segments[3].trimmed();
+    auto sDays = segments[4].trimmed();
 
     // Checking minutes part.
     QRegularExpression minutesRegEx("^[0-9]{1,2}?");
-    auto match = minutesRegEx.match(minutes);
+    auto match = minutesRegEx.match(sMinutes);
     if (!match.hasMatch()) {
         return retVal;
     }
 
-    // Checking hours part.
-    QRegularExpression hoursRegEx("^[0-9]{1,2}?");
-    auto hoursSplit = hours.split(",");
-    for (const auto &h : hoursSplit) {
-        if (!hoursRegEx.match(h)) {
-            return retVal;
-        }
-        if (h.toInt() )
+    if (sMinutes.toInt() < 0 || sMinutes.toInt() > 59) {
+        return retVal;
     }
 
-    retVal.push_back(QDateTime());
+    int minutes = sMinutes.toInt();
+
+    // Checking hours part.
+    QRegularExpression hoursRegEx("^[0-9]{1,2}?");
+    auto hoursSplit = sHours.split(",");
+    list<int> hours;
+    for (const auto &h : hoursSplit) {
+        if (!hoursRegEx.match(h).hasMatch()) {
+            return retVal;
+        }
+        if (h.toInt() < 0 || h.toInt() > 23) {
+            return retVal;
+        }
+        hours.push_back(h.toInt());
+    }
+
+    for (auto c = 0; c <= startDate.daysTo(endDate); c++) {
+        for (auto h: hours) {
+            retVal.emplace_back(startDate.addDays(c), QTime(h, minutes, 0));
+        }
+    }
+
     return retVal;
 }
 }

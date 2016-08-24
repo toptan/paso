@@ -108,10 +108,10 @@ paso::data::SystemRole stringToRole(const QString &role);
 
 ///
 /// \brief scheduledDates Returns list of timestapms that are scheduled via cron
-/// string that are after start date and before end date.
+/// string that are after start date and before end date including both.
 /// \note The cron string is in reduced cron syntax. Minutes are fixed and hours
 /// can be given as list but not range or wildcard. Day of month and month are
-/// always ignored. Day of the week can only be given as list or *.
+/// treated fully cron like. Day of the week can only be given as list or *.
 /// <br/><strong>Examples:</strong>
 /// <ul>
 /// <li>30 11,16 * * 1,3,5 - Every Monday, Wednesday and Friday at 11:30 and
