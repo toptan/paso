@@ -66,12 +66,12 @@ public:
     Operation operation() const;
 
     ///
-    /// \ref paso::data::JsonSerializable::read(const QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
     ///
     virtual void read(const QJsonObject &jsonObject);
 
     ///
-    /// \ref paso::data::JsonSerializable::write(QJsonObject&) const;
+    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const
     ///
     virtual void write(QJsonObject &jsonObject) const;
 
@@ -111,12 +111,12 @@ public:
     QString password() const;
 
     ///
-    /// \ref paso::data::JsonSerializable::read(const QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
     ///
     virtual void read(const QJsonObject &jsonObject);
 
     ///
-    /// \ref paso::data::JsonSerializable::write(QJsonObject&) const;
+    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const
     ///
     virtual void write(QJsonObject &jsonObject) const;
 
@@ -194,12 +194,12 @@ public:
     uint16_t dbPort() const;
 
     ///
-    /// \ref paso::data::JsonSerializable::read(const QJsonObject&)
+    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
     ///
     virtual void read(const QJsonObject &jsonObject);
 
     ///
-    /// \ref paso::data::JsonSerializable::write(QJsonObject&) const;
+    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const
     ///
     virtual void write(QJsonObject &jsonObject) const;
 

@@ -21,6 +21,10 @@ QVariant Entity::value(const QString &property) const {
     }
     return QVariant();
 }
+
+QVariant Entity::operator[](const QString &property) const {
+    return value(property);
+}
 }
 }
 }

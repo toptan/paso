@@ -91,12 +91,12 @@ public:
     void setRfid(const QString &rfid);
 
     ///
-    /// \copydoc paso::data::entity::Entity::toVariantMap() const
+    /// \copydoc paso::data::entity::Entity::toVariantMap()
     ///
     virtual QVariantMap toVariantMap() const override;
 
     ///
-    /// \copydoc paso::data::entity::Entity::value(const QString &) const
+    /// \copydoc paso::data::entity::Entity::value()
     ///
     virtual QVariant value(const QString &property) const override;
 
@@ -106,7 +106,7 @@ public:
     virtual void read(const QJsonObject &jsonObject) override;
 
     ///
-    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const;
+    /// \copydoc paso::data::JsonSerializable::write()
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 

@@ -1,5 +1,6 @@
 #include "testdata.h"
 
+#include "activity.h"
 #include "course.h"
 #include "data.h"
 #include "list.h"
@@ -27,11 +28,13 @@ void TestData::testComparingObjectWithItselfIsAlwaysTrue() {
     Student student("Toplica", "Tanasković", "toptan@foo.com", "164/96", 5, 123,
                     "RRFFIIDD");
     List list("List name", false, 4);
-    QVERIFY(user == user);
-    QVERIFY(*room == *room);
-    QVERIFY(*course == *course);
-    QVERIFY(student == student);
-    QVERIFY(list == list);
+    Activity activity("Activity 1", ActivityType::LAB_EXCERCISE, 6);
+    QCOMPARE(user, user);
+    QCOMPARE(*room, *room);
+    QCOMPARE(*course, *course);
+    QCOMPARE(student, student);
+    QCOMPARE(list, list);
+    QCOMPARE(activity, activity);
     delete room;
 }
 
@@ -85,6 +88,31 @@ void TestData::testSystemRoleSerialization() {
     QCOMPARE(deserialized.role(), SystemRole::SUPER_USER);
 }
 
+void TestData::testAcivityTypeSerialization() {
+    Activity expected("Activity");
+    Activity deserialized;
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.type(), ActivityType::INVALID_ACTIVITY);
+    expected.setType(ActivityType::LECTURE);
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.type(), ActivityType::LECTURE);
+    expected.setType(ActivityType::EXAM);
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.type(), ActivityType::EXAM);
+    expected.setType(ActivityType::COLLOQUIUM);
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.type(), ActivityType::COLLOQUIUM);
+    expected.setType(ActivityType::LAB_EXCERCISE);
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.type(), ActivityType::LAB_EXCERCISE);
+    expected.setType(ActivityType::INDIVIDUAL_WORK);
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.type(), ActivityType::INDIVIDUAL_WORK);
+    expected.setType(ActivityType::SPECIAL_EVENT);
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.type(), ActivityType::SPECIAL_EVENT);
+}
+
 void TestData::testCourseSerialization() {
     Course expected("IR3SP", "Sistemsko programiranje");
     QString jsonString = expected.toJsonString();
@@ -111,6 +139,14 @@ void TestData::testListSerialization() {
     QCOMPARE(deserialized, expected);
 }
 
+void TestData::testActivitySerialization() {
+    Activity expected("Activity 1", ActivityType::COLLOQUIUM, 6);
+    QString jsonString = expected.toJsonString();
+    Activity deserialized((QVariantMap()));
+    deserialized.fromJsonString(jsonString);
+    QCOMPARE(deserialized, expected);
+}
+
 void TestData::testConversionToVariantMap() {
     SystemUser systemUser("user", "user_pass", "John", "Doe",
                           "john.doe@internet.com", SystemRole::MANAGER);
@@ -119,26 +155,27 @@ void TestData::testConversionToVariantMap() {
     Course course("IR3SP", "Sistemsko programiranje", 8);
     Room room(QUuid::createUuid().toString(), "Room 42", "42");
     List list("Demo lista", false, 4);
+    Activity activity("Activity 1", ActivityType::SPECIAL_EVENT, 8);
 
     QStringList systemUserKeys{"ID",         "USERNAME",  "PASSWORD",
                                "FIRST_NAME", "LAST_NAME", "EMAIL",
                                "ROLE"};
-
     QStringList studentKeys{"ID",    "FIRST_NAME",   "LAST_NAME",
                             "EMAIL", "INDEX_NUMBER", "YEAR_OF_STUDY",
                             "RFID"};
-
     QStringList courseKeys{"ID", "CODE", "NAME"};
-
     QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER"};
-
     QStringList listKeys{"ID", "NAME", "SYSTEM", "PERMANENT", "EXPIRY_DATE"};
+    QStringList activityKeys{"ID",          "NAME",       "TYPE",
+                             "SCHEDULE",    "DURATION",   "START_DATE",
+                             "FINISH_DATE", "CAN_OVERLAP"};
 
     QCOMPARE(systemUser.toVariantMap().keys().size(), systemUserKeys.size());
     QCOMPARE(student.toVariantMap().keys().size(), studentKeys.size());
     QCOMPARE(course.toVariantMap().keys().size(), courseKeys.size());
     QCOMPARE(room.toVariantMap().keys().size(), roomKeys.size());
     QCOMPARE(list.toVariantMap().keys().size(), listKeys.size());
+    QCOMPARE(activity.toVariantMap().keys().size(), activityKeys.size());
 
     for (const auto &key : systemUser.toVariantMap().keys()) {
         systemUserKeys.removeOne(key);
@@ -160,6 +197,10 @@ void TestData::testConversionToVariantMap() {
         listKeys.removeOne(key);
     }
     QVERIFY(listKeys.empty());
+    for (const auto &key : activity.toVariantMap().keys()) {
+        activityKeys.removeOne(key);
+    }
+    QVERIFY(activityKeys.empty());
 }
 
 void TestData::testPropertyValues() {
@@ -212,6 +253,26 @@ void TestData::testPropertyValues() {
     QCOMPARE(list.value("SYSTEM"), QVariant(list.system()));
     QCOMPARE(list.value("PERMANENT"), QVariant(list.permanent()));
     QCOMPARE(list.value("EXPIRY_DATE"), QVariant::fromValue(QDate()));
+
+    Activity activity;
+    activity.setId(42);
+    activity.setName("Activity 1");
+    activity.setType(ActivityType::INDIVIDUAL_WORK);
+    activity.setSchedule("0 8 * * 1,3,5");
+    activity.setDuration(QTime(1, 30));
+    activity.setStartDate(QDate::currentDate().addMonths(-1));
+    activity.setFinishDate(QDate::currentDate().addMonths(1));
+    activity.setCanOverlap(true);
+
+    QCOMPARE(activity["FOO"], QVariant());
+    QCOMPARE(activity["ID"], QVariant(activity.id()));
+    QCOMPARE(activity["NAME"], QVariant(activity.name()));
+    QCOMPARE(activity["TYPE"], QVariant(activityTypeToString(activity.type())));
+    QCOMPARE(activity["SCHEDULE"], QVariant(activity.schedule()));
+    QCOMPARE(activity["DURATION"], QVariant(activity.duration()));
+    QCOMPARE(activity["START_DATE"], QVariant(activity.startDate()));
+    QCOMPARE(activity["FINISH_DATE"], QVariant(activity.finishDate()));
+    QCOMPARE(activity["CAN_OVERLAP"], QVariant(activity.canOverlap()));
 }
 
 void TestData::testDifferenceInMonths() {

@@ -46,12 +46,22 @@ public:
     virtual QVariantMap toVariantMap() const;
 
     ///
-    /// \brief Returns value of given property. If property does not
-    /// exist, null variant will be returned.
+    /// \brief Returns value of given property. If property does not exist, null
+    /// variant will be returned.
+    /// \see operator []()
     /// \param property The property to get.
     /// \return The value of the property.
     ///
     virtual QVariant value(const QString &property) const;
+
+    ///
+    /// \brief operator [] Returns value of given property. If property does not
+    /// exist, null variant will be returned.
+    /// \see value()
+    /// \param property The property to get.
+    /// \return The value of the property.
+    ///
+    QVariant operator[](const QString &property) const;
 
 private:
     quint64 mId; //!< The entity id.

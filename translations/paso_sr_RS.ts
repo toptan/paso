@@ -187,34 +187,70 @@
         <translation>Година студија</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="78"/>
-        <location filename="../common/data.h" line="89"/>
+        <location filename="../common/data.h" line="91"/>
+        <location filename="../common/data.h" line="102"/>
         <source>Administrator</source>
         <translation>Администратор</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="79"/>
-        <location filename="../common/data.h" line="90"/>
+        <location filename="../common/data.h" line="92"/>
+        <location filename="../common/data.h" line="103"/>
         <source>Manager</source>
         <translation>Управник</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="80"/>
-        <location filename="../common/data.h" line="91"/>
+        <location filename="../common/data.h" line="93"/>
+        <location filename="../common/data.h" line="104"/>
         <source>Room manager</source>
         <translation>Управник соба</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="81"/>
-        <location filename="../common/data.h" line="92"/>
+        <location filename="../common/data.h" line="94"/>
+        <location filename="../common/data.h" line="105"/>
         <source>Scheduler</source>
         <translation>Заказивач</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="82"/>
-        <location filename="../common/data.h" line="93"/>
+        <location filename="../common/data.h" line="95"/>
+        <location filename="../common/data.h" line="106"/>
         <source>Super user</source>
         <translation>Супер корисник</translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="113"/>
+        <location filename="../common/data.h" line="125"/>
+        <source>Lecture or excercise</source>
+        <translation>Предавања или вежбе</translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="114"/>
+        <location filename="../common/data.h" line="126"/>
+        <source>Exam</source>
+        <translation>Испит</translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="115"/>
+        <location filename="../common/data.h" line="127"/>
+        <source>Colloquium</source>
+        <translation>Колоквијум</translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="116"/>
+        <location filename="../common/data.h" line="128"/>
+        <source>Lab excercise</source>
+        <translation>Лабораторијске вежбе</translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="117"/>
+        <location filename="../common/data.h" line="129"/>
+        <source>Individual work</source>
+        <translation>Индивидуални рад</translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="118"/>
+        <location filename="../common/data.h" line="130"/>
+        <source>Special event</source>
+        <translation>Посебни догађаји</translation>
     </message>
     <message>
         <location filename="../admin/listform.cpp" line="48"/>

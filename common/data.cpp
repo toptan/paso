@@ -12,7 +12,7 @@ using namespace std;
 namespace paso {
 namespace data {
 
-const QString roleToString(data::SystemRole role) {
+const QString roleToString(SystemRole role) {
     switch (role) {
     case SystemRole::ADMINISTRATOR:
         return "ADMINISTRATOR";
@@ -42,6 +42,43 @@ SystemRole stringToRole(const QString &role) {
         return SystemRole::SUPER_USER;
     } else {
         return SystemRole::INVALID_ROLE;
+    }
+}
+
+const QString activityTypeToString(ActivityType type) {
+    switch (type) {
+    case ActivityType::LECTURE:
+        return "LECTURE";
+    case ActivityType::EXAM:
+        return "EXAM";
+    case ActivityType::COLLOQUIUM:
+        return "COLLOQUIUM";
+    case ActivityType::LAB_EXCERCISE:
+        return "LAB_EXCERCISE";
+    case ActivityType::INDIVIDUAL_WORK:
+        return "INDIVIDUAL_WORK";
+    case ActivityType::SPECIAL_EVENT:
+        return "SPECIAL_EVENT";
+    default:
+        return "INVALID_ACTIVITY";
+    }
+}
+
+ActivityType stringToActivityType(const QString &type) {
+    if (type == "LECTURE") {
+        return ActivityType::LECTURE;
+    } else if (type == "EXAM") {
+        return ActivityType::EXAM;
+    } else if (type == "COLLOQUIUM") {
+        return ActivityType::COLLOQUIUM;
+    } else if (type == "LAB_EXCERCISE") {
+        return ActivityType::LAB_EXCERCISE;
+    } else if (type == "INDIVIDUAL_WORK") {
+        return ActivityType::INDIVIDUAL_WORK;
+    } else if (type == "SPECIAL_EVENT") {
+        return ActivityType::SPECIAL_EVENT;
+    } else {
+        return ActivityType::INVALID_ACTIVITY;
     }
 }
 

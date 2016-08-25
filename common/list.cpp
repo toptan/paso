@@ -72,7 +72,7 @@ void List::write(QJsonObject &jsonObject) const {
     jsonObject["NAME"] = mName;
     jsonObject["SYSTEM"] = mSystem;
     jsonObject["PERMANENT"] = mPermanent;
-    jsonObject["EXPIRY_DATE"] = QVariant::fromValue(mExpiryDate).toJsonValue();
+    jsonObject["EXPIRY_DATE"] = QVariant(mExpiryDate).toJsonValue();
 }
 
 QSqlQuery List::findByNameQuery(const QSqlDatabase &database,

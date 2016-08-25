@@ -27,6 +27,19 @@ enum class SystemRole {
 };
 
 ///
+/// \brief The ActivityType enum defines all possible activity types.
+///
+enum class ActivityType {
+    LECTURE = 0,     //!< Regular class lecture or excercise.
+    EXAM,            //!< Exams.
+    COLLOQUIUM,      //!< Colloquiums.
+    LAB_EXCERCISE,   //!< Lab excercises.
+    INDIVIDUAL_WORK, //!< Individual work.
+    SPECIAL_EVENT,   //!< Special events like conferences, public lectures, etc.
+    INVALID_ACTIVITY //!< Invalid or unknown activity.
+};
+
+///
 /// \brief The CourseImportError enum defines error codes for importing courses.
 ///
 enum class CourseImportError {
@@ -74,7 +87,7 @@ enum class ListStudentImportError {
 /// \brief The enumeratedRoles provides translatable system roles for displaying
 /// text.
 ///
-const QMap<SystemRole, QString> enumeratedRoles = {
+const QMap<SystemRole, QString> enumeratedRoles{
     {SystemRole::ADMINISTRATOR, QObject::tr("Administrator")},
     {SystemRole::MANAGER, QObject::tr("Manager")},
     {SystemRole::ROOM_MANAGER, QObject::tr("Room manager")},
@@ -82,10 +95,10 @@ const QMap<SystemRole, QString> enumeratedRoles = {
     {SystemRole::SUPER_USER, QObject::tr("Super user")}};
 
 ///
-/// \brief The stringEnumeratedRoles provides translatable system roles from
+/// \brief The stringEnumeratedRoles provides translatable system roles for
 /// displaying text out if their string representations.
 ///
-const QMap<QString, QString> stringEnumeratedRoles = {
+const QMap<QString, QString> stringEnumeratedRoles{
     {"ADMINISTRATOR", QObject::tr("Administrator")},
     {"MANAGER", QObject::tr("Manager")},
     {"ROOM_MANAGER", QObject::tr("Room manager")},
@@ -93,18 +106,56 @@ const QMap<QString, QString> stringEnumeratedRoles = {
     {"SUPER_USER", QObject::tr("Super user")}};
 
 ///
-/// \brief roleToString Returns string representation of the system role.
+/// \brief The enumeratedActivityTypes provides translatable activity types for
+/// displaying text.
+///
+const QMap<ActivityType, QString> enumeratedActivityTypes{
+    {ActivityType::LECTURE, QObject::tr("Lecture or excercise")},
+    {ActivityType::EXAM, QObject::tr("Exam")},
+    {ActivityType::COLLOQUIUM, QObject::tr("Colloquium")},
+    {ActivityType::LAB_EXCERCISE, QObject::tr("Lab excercise")},
+    {ActivityType::INDIVIDUAL_WORK, QObject::tr("Individual work")},
+    {ActivityType::SPECIAL_EVENT, QObject::tr("Special event")}};
+
+///
+/// \brief stringEnumeratedActivityTypes provides translatable activity types
+/// for displaying text out of their string representations.
+///
+const QMap<QString, QString> stringEnumeratedActivityTypes{
+    {"LECTURE", QObject::tr("Lecture or excercise")},
+    {"EXAM", QObject::tr("Exam")},
+    {"COLLOQUIUM", QObject::tr("Colloquium")},
+    {"LAB_EXCERCIZE", QObject::tr("Lab excercise")},
+    {"INDIVIDUAL_WORK", QObject::tr("Individual work")},
+    {"SPECIAL_EVENT", QObject::tr("Special event")}};
+
+///
+/// \brief Returns string representation of the system role.
 /// \param role The role.
 /// \return String representation of the role.
 ///
 const QString roleToString(paso::data::SystemRole role);
 
 ///
-/// \brief stringToRole Returns role from its string representation.
+/// \brief Returns role from its string representation.
 /// \param role String representation of the role.
 /// \return The role
 ///
 paso::data::SystemRole stringToRole(const QString &role);
+
+///
+/// \brief Returns string representation of the acitivity type.
+/// \param type The activity type.
+/// \return String representation of the activity type.
+///
+const QString activityTypeToString(paso::data::ActivityType type);
+
+///
+/// \brief Returns activity type from its string representation.
+/// \param type String representation of the activity type.
+/// \return The activity type.
+///
+paso::data::ActivityType stringToActivityType(const QString &type);
 
 ///
 /// \brief Returns difference in months between two dates.

@@ -16,9 +16,11 @@ private slots:
     void testSystemUserSerialization();
     void testRoomSerialization();
     void testSystemRoleSerialization();
+    void testAcivityTypeSerialization();
     void testCourseSerialization();
     void testStudentSerialization();
     void testListSerialization();
+    void testActivitySerialization();
     void testConversionToVariantMap();
     void testPropertyValues();
     void testDifferenceInMonths();

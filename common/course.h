@@ -63,22 +63,22 @@ public:
     void setName(const QString &name);
 
     ///
-    /// \ref Entity::toVariantMap();
+    /// \copydoc paso::data::entity::Entity::toVariantMap()
     ///
     virtual QVariantMap toVariantMap() const override;
 
     ///
-    /// \ref paso::data::entity::Entity::value(const QString &) const;
+    /// \copydoc paso::data::entity::Entity::value()
     ///
     virtual QVariant value(const QString &property) const override;
 
     ///
-    /// \ref paso::data::JsonSerializable::read(const QJsonObject&);
+    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
     ///
     virtual void read(const QJsonObject &jsonObject) override;
 
     ///
-    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const
+    /// \copydoc paso::data::JsonSerializable::write()
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 
