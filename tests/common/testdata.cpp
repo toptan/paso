@@ -240,6 +240,9 @@ void TestData::testScheduledDates() {
     cronString = "asfgasfh";
     QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
 
+    cronString = "10 15 16 8 0,2";
+    QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
+
     cronString = "* 15 * * *";
     QVERIFY(scheduledDates(cronString, startDate, endDate).empty());
 
@@ -316,25 +319,82 @@ void TestData::testScheduledDates() {
     dates = scheduledDates(cronString, startDate, endDate);
     QCOMPARE(dates.size(), size_t(14));
 
-//    cronString = "0 12 15 9 *";
-//    dates = scheduledDates(cronString, startDate, endDate);
-//    QCOMPARE(dates.size(), size_t(0));
-}
+    cronString = "0 12 15 z9 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(0));
 
-#include <QRegularExpression>
+    cronString = "0 12 15 9 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(0));
 
-void TestData::testRegEx() {
-    //    const QString regExString(
-    //        "((\\d{1,2}-\\d{1,2})|(\\d{1,2}))(,((\\d{1,2}-\\d{1,2})|(\\d{1,2})))*");
-    //    const QStringList strings{
-    //        "12,4",       "15",          "1-3,2", "3,1-4",
-    //        "17-21,22-23,25-16",
-    //        "9,11-15,15", "2-4,9,22-30", "8-15", "3,4-a,12"};
+    cronString = "0 12 15 9-15 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(0));
 
-    //    QRegularExpression regex(regExString);
-    //    for (const auto &line: strings) {
-    //        auto match = regex.match(line);
-    //        qWarning() << line << ":" << match.hasMatch() << ":" <<
-    //        match.captured();
-    //    }
+    cronString = "0 12 15 8 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(1));
+
+    startDate = startDate.addMonths(-2); //<! 10.06.2016.
+    endDate = endDate.addMonths(2);      //<! 20.10.2016.
+    cronString = "0 12 15 7,9 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(2));
+
+    cronString = "0 12 15 7-9 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(3));
+
+    cronString = "0 12 15 5-7 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(2));
+
+    cronString = "0 12 15 3-5,7,8-9,13 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(0));
+
+    cronString = "0 12 15 3-5,7,8-9,12 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(3));
+
+    cronString = "0 12 15-18 3-5,7,8-9,12 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(12));
+
+    cronString = "0 12,16 15-18 3-5,7,8-9,12 *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(24));
+
+    startDate = startDate.addMonths(2); //<! 10.08.2016.
+    endDate = endDate.addMonths(-2);    //<! 20.08.2016.
+    cronString = "0 12 * 8 0,3";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(3));
+
+    cronString = "0 12 * 8 0,1,3";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(4));
+
+    endDate = endDate.addMonths(1); //<! 20.09.2016.
+    cronString = "0 10 * * 1,3,5";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(18));
+
+    cronString = "0 10,15 * * 1,3,5";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(36));
+
+    cronString = "0 10,15 * 8-10 1,3,5";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(36));
+
+    cronString = "0 10,15 * 8-10 1-5";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(0));
+
+    startDate.setDate(2016, 2, 25);
+    endDate.setDate(2016, 3, 3);
+    cronString = "30 12 * * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(8));
 }

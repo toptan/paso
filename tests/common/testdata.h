@@ -23,9 +23,6 @@ private slots:
     void testPropertyValues();
     void testDifferenceInMonths();
     void testScheduledDates();
-
-
-    void testRegEx();
 };
 
 #endif // TESTDATA_H

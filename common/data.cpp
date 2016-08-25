@@ -5,6 +5,8 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
+#include <set>
+
 using namespace std;
 
 namespace paso {
@@ -68,47 +70,49 @@ list<QDateTime> scheduledDates(const QString &cronString,
     auto sHours = segments[1].trimmed();
     auto sDaysOfMonth = segments[2].trimmed();
     auto sMonths = segments[3].trimmed();
-    auto sDays = segments[4].trimmed();
+    auto sDaysOfWeek = segments[4].trimmed();
+
+    // Days of month and days of week cannot be specified together.
+    if (sDaysOfMonth != "*" && sDaysOfWeek != "*") {
+        return retVal;
+    }
 
     // We check months first.
-//    auto everyMonth = sMonths == "*";
-//    list<int> months;
-//    if (!everyMonth) {
-//        QRegularExpression monthsRegEx("((\\d{1,2}-\\d{1,2})|(\\d{1,2}))(,(("
-//                                       "\\d{1,2}-\\d{1,2})|(\\d{1,2})))*");
-//        auto monthsPrimaryMatch = monthsRegEx.match(sMonths);
-//        if (!monthsPrimaryMatch.hasMatch() || monthsPrimaryMatch.captured() != sMonths) {
-//            return retVal;
-//        }
-
-//   }
-
-    // Checking minutes part.
-    QRegularExpression minutesRegEx("^[0-9]{1,2}");
-    auto match = minutesRegEx.match(sMinutes);
-    if (!match.hasMatch() || match.captured() != sMinutes) {
-        return retVal;
-    }
-
-    if (sMinutes.toInt() > 59) {
-        return retVal;
-    }
-
-    int minutes = sMinutes.toInt();
-
-    // Checking hours part.
-    QRegularExpression hoursRegEx("^[0-9]{1,2}");
-    auto hoursSplit = sHours.split(",");
-    list<int> hours;
-    for (const auto &h : hoursSplit) {
-        auto hoursMatch = hoursRegEx.match(h);
-        if (!hoursMatch.hasMatch() || hoursMatch.captured() != h) {
+    auto everyMonth = sMonths == "*";
+    list<int> months;
+    if (!everyMonth) {
+        QRegularExpression monthsRegEx("((\\d{1,2}-\\d{1,2})|(\\d{1,2}))(,(("
+                                       "\\d{1,2}-\\d{1,2})|(\\d{1,2})))*");
+        auto monthsPrimaryMatch = monthsRegEx.match(sMonths);
+        if (!monthsPrimaryMatch.hasMatch() ||
+            monthsPrimaryMatch.captured() != sMonths) {
             return retVal;
         }
-        if (h.toInt() > 23) {
-            return retVal;
+
+        auto commaSplit = sMonths.split(",");
+        for (const auto &cs : commaSplit) {
+            auto range = cs.split("-");
+            if (range.length() == 1) {
+                auto month = range[0].toInt();
+                if (month > 12) {
+                    return retVal;
+                }
+                months.push_front(month);
+            } else {
+                auto r0 = range[0].toInt();
+                auto r1 = range[1].toInt();
+
+                if (r0 > 12 || r1 > 12) {
+                    return retVal;
+                }
+
+                auto start = r0 < r1 ? r0 : r1;
+                auto stop = r1 > r0 ? r1 : r0;
+                for (auto month = start; month <= stop; month++) {
+                    months.push_back(month);
+                }
+            }
         }
-        hours.push_back(h.toInt());
     }
 
     auto everyDayOfMonth = sDaysOfMonth == "*";
@@ -149,6 +153,50 @@ list<QDateTime> scheduledDates(const QString &cronString,
         }
     }
 
+    // Checking hours part.
+    QRegularExpression hoursRegEx("^[0-9]{1,2}");
+    auto hoursSplit = sHours.split(",");
+    list<int> hours;
+    for (const auto &h : hoursSplit) {
+        auto hoursMatch = hoursRegEx.match(h);
+        if (!hoursMatch.hasMatch() || hoursMatch.captured() != h) {
+            return retVal;
+        }
+        if (h.toInt() > 23) {
+            return retVal;
+        }
+        hours.push_back(h.toInt());
+    }
+
+    // Checking minutes part.
+    QRegularExpression minutesRegEx("^[0-9]{1,2}");
+    auto match = minutesRegEx.match(sMinutes);
+    if (!match.hasMatch() || match.captured() != sMinutes) {
+        return retVal;
+    }
+
+    if (sMinutes.toInt() > 59) {
+        return retVal;
+    }
+
+    int minutes = sMinutes.toInt();
+
+    // Lets finally check days of week.
+    auto everyDayOfWeek = sDaysOfWeek == "*";
+    list<int> daysOfWeek;
+    if (!everyDayOfWeek) {
+        QRegularExpression daysOfWeekRegEx("^[0-6](,[0-6]+)*");
+        auto match = daysOfWeekRegEx.match(sDaysOfWeek);
+        if (!match.hasMatch() || match.captured() != sDaysOfWeek) {
+            return retVal;
+        }
+        auto split = sDaysOfWeek.split(",");
+        for (const auto &s : split) {
+            // Cron Sunday is 0, but QDate Sunday is 7.
+            daysOfWeek.push_back(s.toInt() == 0 ? 7 : s.toInt());
+        }
+    }
+
     if (!everyDayOfMonth) {
         for (auto day : daysOfMonth) {
             auto monthsDiff = differenceInMonths(startDate, endDate);
@@ -163,13 +211,53 @@ list<QDateTime> scheduledDates(const QString &cronString,
             }
         }
     } else {
-        for (auto c = 0; c <= startDate.daysTo(endDate); c++) {
-            for (auto h : hours) {
-                retVal.emplace_back(startDate.addDays(c), QTime(h, minutes, 0));
+        auto monthsDiff = differenceInMonths(startDate, endDate);
+        for (auto m = 0; m <= monthsDiff; m++) {
+            for (auto c = 0; c <= startDate.daysTo(endDate); c++) {
+                for (auto h : hours) {
+                    auto d = startDate.addMonths(m).addDays(c);
+                    if (d >= startDate && d <= endDate) {
+                        retVal.emplace_back(startDate.addMonths(m).addDays(c),
+                                            QTime(h, minutes, 0));
+                    }
+                }
             }
         }
     }
 
+    // Let's remove all dates with months that are not in cron string.
+    if (!everyMonth) {
+        list<QDateTime> toRemove;
+        for (const auto &dateTime : retVal) {
+            if (find(months.begin(), months.end(), dateTime.date().month()) ==
+                    months.end() ||
+                !dateTime.isValid()) {
+                toRemove.push_back(dateTime);
+            }
+        }
+
+        for (const auto &dt : toRemove) {
+            retVal.remove(dt);
+        }
+    }
+
+    // Let's remove dates which don't match given days of week.
+    if (!everyDayOfWeek) {
+        list<QDateTime> toRemove;
+        for (const auto &dateTime : retVal) {
+            if (find(daysOfWeek.begin(), daysOfWeek.end(),
+                     dateTime.date().dayOfWeek()) == daysOfWeek.end()) {
+                toRemove.push_back(dateTime);
+            }
+        }
+        for (const auto &dt : toRemove) {
+            retVal.remove(dt);
+        }
+    }
+
+    // And finally remove duplicates if any.
+    retVal.sort();
+    retVal.unique();
     return retVal;
 }
 }
