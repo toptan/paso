@@ -214,6 +214,22 @@ void TestData::testPropertyValues() {
     QCOMPARE(list.value("EXPIRY_DATE"), QVariant::fromValue(QDate()));
 }
 
+void TestData::testDifferenceInMonths() {
+    QDate startDate(2016, 8, 3);
+    QDate endDate(2016, 8, 24);
+    QCOMPARE(differenceInMonths(startDate, endDate), 0);
+
+    endDate.setDate(2016, 11, 24);
+    QCOMPARE(differenceInMonths(endDate, startDate), 0);
+    QCOMPARE(differenceInMonths(startDate, endDate), 3);
+
+    endDate.setDate(2017, 3, 15);
+    QCOMPARE(differenceInMonths(startDate, endDate), 7);
+
+    endDate.setDate(2017, 10, 22);
+    QCOMPARE(differenceInMonths(startDate, endDate), 14);
+}
+
 void TestData::testScheduledDates() {
     QDate startDate(2016, 8, 10);
     QDate endDate(2016, 8, 20);
@@ -247,21 +263,78 @@ void TestData::testScheduledDates() {
     cronString = "15 4,12,20 * * *";
     dates = scheduledDates(cronString, startDate, endDate);
     QCOMPARE(dates.size(), size_t(33));
+
+    cronString = "15 12 3 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(0));
+
+    cronString = "15 12 sfg * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(0));
+
+    cronString = "15 12 33 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(0));
+
+    cronString = "15 12 25-33 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(0));
+
+    cronString = "15 12 14 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(1));
+
+    cronString = "15 12 14,16,18 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(3));
+
+    cronString = "15 12 10,16,20 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(3));
+
+    cronString = "15 12 6,10,16,20,25 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(3));
+
+    cronString = "15 12 10-16,20 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(8));
+
+    cronString = "15 12,15 10-16,20 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(16));
+
+    cronString = "0 12 5-16 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(7));
+
+    cronString = "0 12 5-12,15,18-27 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(7));
+
+    cronString = "0 12,16 5-12,15,18-27 * *";
+    dates = scheduledDates(cronString, startDate, endDate);
+    QCOMPARE(dates.size(), size_t(14));
+
+//    cronString = "0 12 15 9 *";
+//    dates = scheduledDates(cronString, startDate, endDate);
+//    QCOMPARE(dates.size(), size_t(0));
 }
 
 #include <QRegularExpression>
 
 void TestData::testRegEx() {
-//    const QString regExString(
-//        "((\\d{1,2}-\\d{1,2})|(\\d{1,2}))(,((\\d{1,2}-\\d{1,2})|(\\d{1,2})))*");
-//    const QStringList strings{
-//        "12,4",       "15",          "1-3,2", "3,1-4", "17-21,22-23,25-16",
-//        "9,11-15,15", "2-4,9,22-30", "8-15", "3,4-a,12"};
+    //    const QString regExString(
+    //        "((\\d{1,2}-\\d{1,2})|(\\d{1,2}))(,((\\d{1,2}-\\d{1,2})|(\\d{1,2})))*");
+    //    const QStringList strings{
+    //        "12,4",       "15",          "1-3,2", "3,1-4",
+    //        "17-21,22-23,25-16",
+    //        "9,11-15,15", "2-4,9,22-30", "8-15", "3,4-a,12"};
 
-//    QRegularExpression regex(regExString);
-//    for (const auto &line: strings) {
-//        auto match = regex.match(line);
-//        qWarning() << line << ":" << match.hasMatch() << ":" << match.captured();
-//    }
-
+    //    QRegularExpression regex(regExString);
+    //    for (const auto &line: strings) {
+    //        auto match = regex.match(line);
+    //        qWarning() << line << ":" << match.hasMatch() << ":" <<
+    //        match.captured();
+    //    }
 }

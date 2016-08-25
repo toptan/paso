@@ -107,8 +107,17 @@ const QString roleToString(paso::data::SystemRole role);
 paso::data::SystemRole stringToRole(const QString &role);
 
 ///
-/// \brief scheduledDates Returns list of timestapms that are scheduled via cron
-/// string that are after start date and before end date including both.
+/// \brief Returns difference in months between two dates.
+/// \note If start date is after end date, \c 0 will be returned.
+/// \param startDate The start date.
+/// \param endDate The end date.
+/// \return The difference in months.
+///
+int differenceInMonths(const QDate &startDate, const QDate &endDate);
+
+///
+/// \brief Returns list of timestapms that are scheduled via cron string that
+/// are after start date and before end date including both.
 /// \note The cron string is in reduced cron syntax. Minutes are fixed and hours
 /// can be given as list but not range or wildcard. Day of month and month are
 /// treated fully cron like. Day of the week can only be given as list or *.

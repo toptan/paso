@@ -21,7 +21,9 @@ private slots:
     void testListSerialization();
     void testConversionToVariantMap();
     void testPropertyValues();
+    void testDifferenceInMonths();
     void testScheduledDates();
+
 
     void testRegEx();
 };

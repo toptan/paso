@@ -43,6 +43,14 @@ SystemRole stringToRole(const QString &role) {
     }
 }
 
+int differenceInMonths(const QDate &startDate, const QDate &endDate) {
+    if (endDate < startDate) {
+        return 0;
+    }
+    return (endDate.year() - startDate.year()) * 12 + endDate.month() -
+           startDate.month();
+}
+
 list<QDateTime> scheduledDates(const QString &cronString,
                                const QDate &startDate, const QDate &endDate) {
     list<QDateTime> retVal;
@@ -62,10 +70,22 @@ list<QDateTime> scheduledDates(const QString &cronString,
     auto sMonths = segments[3].trimmed();
     auto sDays = segments[4].trimmed();
 
+    // We check months first.
+//    auto everyMonth = sMonths == "*";
+//    list<int> months;
+//    if (!everyMonth) {
+//        QRegularExpression monthsRegEx("((\\d{1,2}-\\d{1,2})|(\\d{1,2}))(,(("
+//                                       "\\d{1,2}-\\d{1,2})|(\\d{1,2})))*");
+//        auto monthsPrimaryMatch = monthsRegEx.match(sMonths);
+//        if (!monthsPrimaryMatch.hasMatch() || monthsPrimaryMatch.captured() != sMonths) {
+//            return retVal;
+//        }
+
+//   }
+
     // Checking minutes part.
     QRegularExpression minutesRegEx("^[0-9]{1,2}");
     auto match = minutesRegEx.match(sMinutes);
-    qWarning() << "M:" << sMinutes << ":" << match.captured();
     if (!match.hasMatch() || match.captured() != sMinutes) {
         return retVal;
     }
@@ -82,8 +102,6 @@ list<QDateTime> scheduledDates(const QString &cronString,
     list<int> hours;
     for (const auto &h : hoursSplit) {
         auto hoursMatch = hoursRegEx.match(h);
-        qWarning() << "H:" << h << ":" << hoursMatch.captured() << ":"
-                   << hoursMatch.hasMatch();
         if (!hoursMatch.hasMatch() || hoursMatch.captured() != h) {
             return retVal;
         }
@@ -100,8 +118,6 @@ list<QDateTime> scheduledDates(const QString &cronString,
                                             "((\\d{1,2}-\\d{1,2})|(\\d{1,2})))"
                                             "*");
         auto daysPrimaryMatch = daysPrimaryRegEx.match(sDaysOfMonth);
-        qWarning() << "D:" << sDaysOfMonth << ":"
-                   << daysPrimaryMatch.captured();
         if (!daysPrimaryMatch.hasMatch() ||
             daysPrimaryMatch.captured() != sDaysOfMonth) {
             return retVal;
@@ -110,21 +126,47 @@ list<QDateTime> scheduledDates(const QString &cronString,
         auto commaSplit = sDaysOfMonth.split(",");
         for (const auto &cs : commaSplit) {
             auto range = cs.split("-");
-            for (const auto &r : range) {
-                auto day = r.toInt();
+            if (range.length() == 1) {
+                auto day = range[0].toInt();
                 if (day > 31) {
                     return retVal;
                 }
-                if (day >= startDate.day() && day <= endDate.day()) {
+                daysOfMonth.push_back(day);
+            } else {
+                auto r0 = range[0].toInt();
+                auto r1 = range[1].toInt();
+
+                if (r0 > 31 || r1 > 31) {
+                    return retVal;
+                }
+
+                auto start = r0 < r1 ? r0 : r1;
+                auto stop = r1 > r0 ? r1 : r0;
+                for (auto day = start; day <= stop; day++) {
                     daysOfMonth.push_back(day);
                 }
             }
         }
     }
 
-    for (auto c = 0; c <= startDate.daysTo(endDate); c++) {
-        for (auto h : hours) {
-            retVal.emplace_back(startDate.addDays(c), QTime(h, minutes, 0));
+    if (!everyDayOfMonth) {
+        for (auto day : daysOfMonth) {
+            auto monthsDiff = differenceInMonths(startDate, endDate);
+            for (auto m = 0; m <= monthsDiff; m++) {
+                for (auto h : hours) {
+                    QDate d = startDate.addMonths(m);
+                    d.setDate(d.year(), d.month(), day);
+                    if (d >= startDate && d <= endDate) {
+                        retVal.emplace_back(d, QTime(h, minutes, 0));
+                    }
+                }
+            }
+        }
+    } else {
+        for (auto c = 0; c <= startDate.daysTo(endDate); c++) {
+            for (auto h : hours) {
+                retVal.emplace_back(startDate.addDays(c), QTime(h, minutes, 0));
+            }
         }
     }
 
