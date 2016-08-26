@@ -125,7 +125,7 @@ const QMap<QString, QString> stringEnumeratedActivityTypes{
     {"LECTURE", QObject::tr("Lecture or excercise")},
     {"EXAM", QObject::tr("Exam")},
     {"COLLOQUIUM", QObject::tr("Colloquium")},
-    {"LAB_EXCERCIZE", QObject::tr("Lab excercise")},
+    {"LAB_EXCERCISE", QObject::tr("Lab excercise")},
     {"INDIVIDUAL_WORK", QObject::tr("Individual work")},
     {"SPECIAL_EVENT", QObject::tr("Special event")}};
 

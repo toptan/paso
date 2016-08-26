@@ -54,6 +54,15 @@ create table member (
         foreign key(id_student) references student(id) on delete cascade on update cascade,
         foreign key(id_list) references list(id) on delete cascade on update cascade);
 --
+create table activity (
+        id          integer primary key autoincrement,
+        name        text    not null,
+        type        text    not null,
+        schedule    text    not null,
+        duration    time    not null,
+        start_date  date    not null,
+        finish_date date    not null);
+--
 create view enlisted_students as
     select distinct p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, c.code
       from person p

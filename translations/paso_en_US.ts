@@ -862,12 +862,12 @@
 <context>
     <name>paso::admin::ListTableModel</name>
     <message>
-        <location filename="../admin/listtablemodel.cpp" line="26"/>
+        <location filename="../admin/listtablemodel.cpp" line="25"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listtablemodel.cpp" line="27"/>
+        <location filename="../admin/listtablemodel.cpp" line="26"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>

@@ -57,6 +57,7 @@ void TestBase::cleanup() {
     db.exec("DROP TABLE ROOM");
     db.exec("DROP TABLE STUDENT");
     db.exec("DROP TABLE PERSON");
+    db.exec("DROP TABLE ACTIVITY");
 
     m_executed++;
     if (QTest::currentTestFailed()) {

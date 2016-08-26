@@ -1,7 +1,6 @@
 #include "listtablemodel.h"
 
 #include <QDate>
-#include <QDebug>
 #include <QSqlRecord>
 
 namespace paso {

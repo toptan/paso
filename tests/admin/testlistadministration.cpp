@@ -179,11 +179,11 @@ void TestListAdministration::testListTableModel() {
     db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
             "          VALUES('L4', 1, 1, '1980-01-05')");
 
-    QVariantMap columnLabels{{"name", "Name"},
-                             {"permanent", "Permanent"},
-                             {"system", "System"},
-                             {"expiry_date", "Expiry Date"}};
-    ListTableModel model(columnLabels, QSqlDatabase::database(dbName));
+    const QVariantMap columnLabels{{"name", "Name"},
+                                   {"permanent", "Permanent"},
+                                   {"system", "System"},
+                                   {"expiry_date", "Expiry Date"}};
+    ListTableModel model(columnLabels, db);
     QCOMPARE(model.columnCount(), 6);
     QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
