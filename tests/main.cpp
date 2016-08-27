@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QStyleFactory>
 #include <QtTest>
 #include <list>
 
@@ -29,7 +30,9 @@ QT_END_NAMESPACE
 
 int main(int argc, char **argv) {
     QApplication app(argc, argv);
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
     app.setAttribute(Qt::AA_Use96Dpi, true);
+
     QTEST_DISABLE_KEYPAD_NAVIGATION
     QTEST_ADD_GPU_BLACKLIST_SUPPORT
     QTEST_SET_MAIN_SOURCE_PATH
@@ -44,24 +47,24 @@ int main(int argc, char **argv) {
         delete obj;
     };
 
-//    testCases.push_back(new TestLoginDialog);
-//    testCases.push_back(new TestCommData);
-//    testCases.push_back(new TestCommManager);
-//    testCases.push_back(new TestData);
-//    testCases.push_back(new TestModels);
-//    testCases.push_back(new TestPasoDB);
-//    testCases.push_back(new TestForms);
-//    testCases.push_back(new TestWidgets);
-//    testCases.push_back(new TestCourseAdministration);
-//    testCases.push_back(new TestListAdministration);
-//    testCases.push_back(new TestRoomAdministration);
-//    testCases.push_back(new TestSystemUserAdministration);
-//    testCases.push_back(new TestStudentAdministration);
-//    testCases.push_back(new TestCourseDetailsDialog);
-//    testCases.push_back(new TestListDetailsDialog);
-//    testCases.push_back(new TestStudentDetailsDialog);
+    testCases.push_back(new TestLoginDialog);
+    testCases.push_back(new TestCommData);
+    testCases.push_back(new TestCommManager);
+    testCases.push_back(new TestData);
+    testCases.push_back(new TestModels);
+    testCases.push_back(new TestPasoDB);
+    testCases.push_back(new TestForms);
+    testCases.push_back(new TestWidgets);
+    testCases.push_back(new TestCourseAdministration);
+    testCases.push_back(new TestListAdministration);
+    testCases.push_back(new TestRoomAdministration);
+    testCases.push_back(new TestSystemUserAdministration);
+    testCases.push_back(new TestStudentAdministration);
+    testCases.push_back(new TestCourseDetailsDialog);
+    testCases.push_back(new TestListDetailsDialog);
+    testCases.push_back(new TestStudentDetailsDialog);
     testCases.push_back(new TestMainWindow);
-//    testCases.push_back(new TestActivityAdministration);
+    testCases.push_back(new TestActivityAdministration);
 
     for (auto testCase : testCases) {
         ASSERT_TEST(testCase);

@@ -10,6 +10,59 @@
     </message>
 </context>
 <context>
+    <name>ActivityWizardFixedDatePage</name>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="14"/>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="17"/>
+        <source>Activity Date and Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="26"/>
+        <source>Date and time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="33"/>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="20"/>
+        <source>Fill in activity date, time and duration.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ActivityWizardNameAndTypePage</name>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="14"/>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="17"/>
+        <source>Activity Name and Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="20"/>
+        <source>Fill in activity name and select its type.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="26"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="43"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="56"/>
+        <source>Can overlap with other activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AddRemoveEntitiesForm</name>
     <message>
         <location filename="../ui/addremoveentitiesform.ui" line="85"/>
@@ -299,6 +352,16 @@
         <location filename="../common/data.h" line="118"/>
         <location filename="../common/data.h" line="130"/>
         <source>Special event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitytablemodel.cpp" line="37"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitytablemodel.cpp" line="38"/>
+        <source>No</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

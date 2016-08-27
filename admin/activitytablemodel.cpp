@@ -32,6 +32,10 @@ QVariant ActivityTableModel::data(const QModelIndex &idx, int role) const {
                                                   .toString()]
                     .toStdString()
                     .c_str());
+        } else if (idx.column() == 7) {
+            return QSqlTableModel::data(idx, role).toBool()
+                       ? QApplication::instance()->translate("QObject", "Yes")
+                       : QApplication::instance()->translate("QObject", "No");
         }
     }
     return QSqlTableModel::data(idx, role);

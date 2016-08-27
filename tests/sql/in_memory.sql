@@ -61,7 +61,8 @@ create table activity (
         schedule    text    not null,
         duration    time    not null,
         start_date  date    not null,
-        finish_date date    not null);
+        finish_date date    not null,
+        can_overlap boolean not null default false);
 --
 create view enlisted_students as
     select distinct p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, c.code

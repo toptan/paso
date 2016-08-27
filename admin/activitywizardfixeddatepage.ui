@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ActivityWizardFixedDatePage</class>
+ <widget class="QWizardPage" name="ActivityWizardFixedDatePage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>758</width>
+    <height>525</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Activity Date and Duration</string>
+  </property>
+  <property name="title">
+   <string>Activity Date and Duration</string>
+  </property>
+  <property name="subTitle">
+   <string>Fill in activity date, time and duration.</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="dateTimeLabel">
+     <property name="text">
+      <string>Date and time</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="durationLabel">
+     <property name="text">
+      <string>Duration</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QTimeEdit" name="durationEdit">
+     <property name="wrapping">
+      <bool>true</bool>
+     </property>
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::UpDownArrows</enum>
+     </property>
+     <property name="displayFormat">
+      <string notr="true">H:mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QDateTimeEdit" name="dateTimeEdit">
+     <property name="displayFormat">
+      <string notr="true">dd.MM.yyyy H:mm</string>
+     </property>
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>dateTimeEdit</tabstop>
+  <tabstop>durationEdit</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

@@ -15,6 +15,9 @@ private slots:
     void testActivityEditorWidget();
     void testActivityTableModel();
     void testActivityForm();
+    void testNameAndTypePage();
+    void testFixedDatePage();
+    void testActivityWizard();
 };
 
 #endif // TESTACTIVITYADMINISTRATION_H

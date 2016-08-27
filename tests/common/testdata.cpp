@@ -140,7 +140,8 @@ void TestData::testListSerialization() {
 }
 
 void TestData::testActivitySerialization() {
-    Activity expected("Activity 1", ActivityType::COLLOQUIUM, 6);
+    Activity expected("Activity 1", ActivityType::INDIVIDUAL_WORK, 6);
+    expected.setCanOverlap(true);
     QString jsonString = expected.toJsonString();
     Activity deserialized((QVariantMap()));
     deserialized.fromJsonString(jsonString);

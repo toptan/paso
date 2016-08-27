@@ -10,6 +10,59 @@
     </message>
 </context>
 <context>
+    <name>ActivityWizardFixedDatePage</name>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="14"/>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="17"/>
+        <source>Activity Date and Duration</source>
+        <translation>Датум, време и трајање активности</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="26"/>
+        <source>Date and time</source>
+        <translation>Датум и време</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="33"/>
+        <source>Duration</source>
+        <translation>Трајање</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="20"/>
+        <source>Fill in activity date, time and duration.</source>
+        <translation>Попуните датум, време и трајање активности.</translation>
+    </message>
+</context>
+<context>
+    <name>ActivityWizardNameAndTypePage</name>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="14"/>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="17"/>
+        <source>Activity Name and Type</source>
+        <translation>Име и врста активности</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="20"/>
+        <source>Fill in activity name and select its type.</source>
+        <translation>Попуните име и одаберите врсту активности.</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="26"/>
+        <source>Name</source>
+        <translation>Име</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="43"/>
+        <source>Type</source>
+        <translation>Врста</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="56"/>
+        <source>Can overlap with other activities</source>
+        <translation>Може да се преклопи са другим активностима</translation>
+    </message>
+</context>
+<context>
     <name>AddRemoveEntitiesForm</name>
     <message>
         <location filename="../ui/addremoveentitiesform.ui" line="85"/>
@@ -300,6 +353,16 @@
         <location filename="../admin/listform.cpp" line="49"/>
         <source>Expiry date</source>
         <translation>Датум истека</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitytablemodel.cpp" line="37"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitytablemodel.cpp" line="38"/>
+        <source>No</source>
+        <translation>Не</translation>
     </message>
 </context>
 <context>
