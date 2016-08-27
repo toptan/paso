@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "activityform.h"
 #include "courseform.h"
 #include "data.h"
 #include "listform.h"
@@ -150,6 +151,9 @@ void MainWindow::setupManagerUI() {
     auto listForm = new ListForm(this);
     mMainWidget->addWidget(listForm);
     mWidgetChooserComboBox->addItem(tr("List administration"));
+    auto activityForm = new ActivityForm(this);
+    mMainWidget->addWidget(activityForm);
+    mWidgetChooserComboBox->addItem(tr("Activity administration"));
 }
 
 void MainWindow::onWidgetChooserCurrentIndexChanged(int index) {

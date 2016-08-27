@@ -2,6 +2,14 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>ActivityForm</name>
+    <message>
+        <location filename="../admin/activityform.ui" line="14"/>
+        <source>Activities</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AddRemoveEntitiesForm</name>
     <message>
         <location filename="../ui/addremoveentitiesform.ui" line="85"/>
@@ -118,9 +126,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../admin/activityform.cpp" line="32"/>
+        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="47"/>
         <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="33"/>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="34"/>
+        <source>Schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="35"/>
+        <source>Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="36"/>
+        <source>Start date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="37"/>
+        <source>Finish date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -162,17 +196,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="48"/>
+        <location filename="../admin/listform.cpp" line="47"/>
         <source>System list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="49"/>
+        <location filename="../admin/listform.cpp" line="48"/>
         <source>Permanent list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="50"/>
+        <location filename="../admin/listform.cpp" line="49"/>
         <source>Expiry date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -338,6 +372,14 @@
     <message>
         <location filename="../admin/systemusersform.ui" line="14"/>
         <source>System users</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::ActivityForm</name>
+    <message>
+        <location filename="../admin/activityform.cpp" line="80"/>
+        <source>Do you want to delete selected activity from the system?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -854,7 +896,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="94"/>
+        <location filename="../admin/listform.cpp" line="93"/>
         <source>Do you want to delete selected list from the system?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -958,43 +1000,48 @@
 <context>
     <name>paso::admin::MainWindow</name>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="61"/>
+        <location filename="../admin/mainwindow.cpp" line="62"/>
         <source>Critical error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="62"/>
+        <location filename="../admin/mainwindow.cpp" line="63"/>
         <source>Could not establish database connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="83"/>
+        <location filename="../admin/mainwindow.cpp" line="84"/>
         <source>Main Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="134"/>
+        <location filename="../admin/mainwindow.cpp" line="135"/>
         <source>System users administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="140"/>
+        <location filename="../admin/mainwindow.cpp" line="141"/>
         <source>Room administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="146"/>
+        <location filename="../admin/mainwindow.cpp" line="147"/>
         <source>Course administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="149"/>
+        <location filename="../admin/mainwindow.cpp" line="150"/>
         <source>Student administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="152"/>
+        <location filename="../admin/mainwindow.cpp" line="153"/>
         <source>List administration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/mainwindow.cpp" line="156"/>
+        <source>Activity administration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

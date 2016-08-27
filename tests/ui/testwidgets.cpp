@@ -162,7 +162,8 @@ void TestWidgets::testRecordEditorWidget() {
                           {"number_edit", FieldType::NumberEdit},
                           {"combo_box", FieldType::ComboBox},
                           {"check_box", FieldType::CheckBox},
-                          {"date_edit", FieldType::DateEdit}};
+                          {"date_edit", FieldType::DateEdit},
+                          {"time_edit", FieldType::TimeEdit}};
 
     QSqlRecord record;
     record.append(QSqlField("line_edit", QVariant::String));
@@ -173,6 +174,7 @@ void TestWidgets::testRecordEditorWidget() {
     record.append(QSqlField("combo_box", QVariant::Int));
     record.append(QSqlField("check_box", QVariant::Bool));
     record.append(QSqlField("date_edit", QVariant::Date));
+    record.append(QSqlField("time_edit", QVariant::Time));
 
     QVariantMap columnLabels{{"line_edit", "LineEdit"},
                              {"masked_line_edit", "MaskedLineEdit"},
@@ -180,9 +182,11 @@ void TestWidgets::testRecordEditorWidget() {
                              {"number_edit", "NumberEdit"},
                              {"combo_box", "ComboBox"},
                              {"check_box", "CheckBox"},
-                             {"date_edit", "DateEdit"}};
+                             {"date_edit", "DateEdit"},
+                             {"time_edit", "TimeEdit"}};
 
     const QDate testDate = QDate::currentDate().addMonths(6);
+    const QTime testTime = QTime::currentTime();
 
     MockAlwaysValidRecordValidator alwaysValidValidator;
     MockAlwaysInvalidRecordValidator alwaysInvalidValidator;
@@ -194,7 +198,7 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(QTest::qWaitForWindowActive(&w, 10000));
     QVERIFY(QTest::qWaitForWindowExposed(&w, 10000));
     // Form layout, button box + 2 x (columns - ID column)
-    QCOMPARE(w.children().size(), 16);
+    QCOMPARE(w.children().size(), 18);
     QCOMPARE(w.fieldTypes(), fieldTypes);
     QCOMPARE(w.fieldEditors().keys(), fieldTypes.keys());
     record.setValue("id", 42);
@@ -205,6 +209,7 @@ void TestWidgets::testRecordEditorWidget() {
     record.setValue("combo_box", 2);
     record.setValue("check_box", true);
     record.setValue("date_edit", testDate);
+    record.setValue("time_edit", testTime);
     QVariantList stringValues{"Line Edit", "Masked/Line/Edit", "Password Edit"};
     w.onDisplayRecord(record);
     QApplication::processEvents();
@@ -247,6 +252,9 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(!checkBox->isEnabled());
     auto dateEdit = w.findChild<QDateEdit *>();
     QVERIFY(dateEdit->isReadOnly());
+    auto timeEdit = w.findChild<QTimeEdit *>();
+    QVERIFY(timeEdit->isReadOnly());
+    QCOMPARE(timeEdit->displayFormat(), QString("H.mm"));
 
     auto buttonBox = w.findChild<QDialogButtonBox *>();
     QVERIFY(!buttonBox->isVisible());
@@ -257,6 +265,7 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(w.fieldEditors().value("combo_box"), comboBox);
     QCOMPARE(w.fieldEditors().value("check_box"), checkBox);
     QCOMPARE(w.fieldEditors().value("date_edit"), dateEdit);
+    QCOMPARE(w.fieldEditors().value("time_edit"), timeEdit);
     auto saveButton = buttonBox->button(QDialogButtonBox::Save);
     auto cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     QApplication::processEvents();
@@ -271,6 +280,7 @@ void TestWidgets::testRecordEditorWidget() {
     QCOMPARE(comboBox->currentIndex(), -1);
     QVERIFY(!checkBox->isChecked());
     QCOMPARE(dateEdit->date(), QDate::currentDate());
+    QCOMPARE(timeEdit->time(), QTime(0, 0, 0));
 
     w.clearData();
     QApplication::processEvents();
@@ -292,6 +302,8 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(checkBox->isEnabled());
     QCOMPARE(dateEdit->date(), testDate);
     QVERIFY(!dateEdit->isReadOnly());
+    QCOMPARE(timeEdit->time(), testTime);
+    QVERIFY(!timeEdit->isReadOnly());
     QVERIFY(buttonBox->isVisible());
 
     QTest::mouseClick(saveButton, Qt::LeftButton);
@@ -314,6 +326,8 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(!checkBox->isEnabled());
     QCOMPARE(dateEdit->date(), testDate);
     QVERIFY(dateEdit->isReadOnly());
+    QCOMPARE(timeEdit->time(), testTime);
+    QVERIFY(timeEdit->isReadOnly());
     QVERIFY(!buttonBox->isVisible());
 
     w.onEditExistingRecord(record);
@@ -325,6 +339,7 @@ void TestWidgets::testRecordEditorWidget() {
     comboBox->setCurrentIndex(2);
     checkBox->toggle();
     dateEdit->setDate(dateEdit->date().addDays(2));
+    timeEdit->setTime(QTime(1, 30, 0));
     QApplication::processEvents();
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
@@ -344,6 +359,8 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(!checkBox->isEnabled());
     QCOMPARE(dateEdit->date(), testDate);
     QVERIFY(dateEdit->isReadOnly());
+    QCOMPARE(timeEdit->time(), testTime);
+    QVERIFY(timeEdit->isReadOnly());
     QVERIFY(!buttonBox->isVisible());
 
     w.clearData();
@@ -367,6 +384,8 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(checkBox->isEnabled());
     QCOMPARE(dateEdit->date(), QDate::currentDate());
     QVERIFY(!dateEdit->isReadOnly());
+    QCOMPARE(timeEdit->time(), QTime(0, 0, 0));
+    QVERIFY(!timeEdit->isReadOnly());
     QVERIFY(buttonBox->isVisible());
     QVERIFY(lineEdit->hasFocus());
 
@@ -400,6 +419,7 @@ void TestWidgets::testRecordEditorWidget() {
     comboBox->setCurrentIndex(2);
     checkBox->setChecked(true);
     dateEdit->setDate(testDate.addDays(2));
+    timeEdit->setTime(testTime.addSecs(120));
     QApplication::processEvents();
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
@@ -419,6 +439,8 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(!checkBox->isEnabled());
     QCOMPARE(dateEdit->date(), testDate.addDays(2));
     QVERIFY(dateEdit->isReadOnly());
+    QCOMPARE(timeEdit->time(), testTime.addSecs(120));
+    QVERIFY(timeEdit->isReadOnly());
     QVERIFY(!buttonBox->isVisible());
 
     // Focus checks
@@ -458,6 +480,12 @@ void TestWidgets::testRecordEditorWidget() {
     QVERIFY(dateEdit->hasFocus());
     QTest::mouseClick(cancelButton, Qt::LeftButton);
     QApplication::processEvents();
+    w.writableField = "time_edit";
+    w.onEditExistingRecord(record);
+    QApplication::processEvents();
+    QVERIFY(timeEdit->hasFocus());
+    QTest::mouseClick(cancelButton, Qt::LeftButton);
+    QApplication::processEvents();
     w.writableField = "";
 
     // Check for message box when validation fails.
@@ -489,13 +517,15 @@ void TestWidgets::testDateEditWidget() {
     QDate date(1977, 1, 5);
     dateEditWithoutDate.setDate(date);
     QApplication::processEvents();
-    QCOMPARE(dateEditWithoutDate.text(), date.toString(dateEditWithoutDate.displayFormat()));
+    QCOMPARE(dateEditWithoutDate.text(),
+             date.toString(dateEditWithoutDate.displayFormat()));
     QDate invalidDate(-1, -1, -1);
     dateEditWithoutDate.setDate(invalidDate);
     QApplication::processEvents();
     dateEditWithoutDate.setDate(date);
     QApplication::processEvents();
-    QCOMPARE(dateEditWithoutDate.text(), date.toString(dateEditWithoutDate.displayFormat()));
+    QCOMPARE(dateEditWithoutDate.text(),
+             date.toString(dateEditWithoutDate.displayFormat()));
 
     PDateEdit dateEditWithDate(invalidDate);
     dateEditWithDate.show();
@@ -506,5 +536,6 @@ void TestWidgets::testDateEditWidget() {
     QCOMPARE(dateEditWithDate.text(), QString(""));
     dateEditWithDate.setDate(date);
     QApplication::processEvents();
-    QCOMPARE(dateEditWithDate.text(), date.toString(dateEditWithDate.displayFormat()));
+    QCOMPARE(dateEditWithDate.text(),
+             date.toString(dateEditWithDate.displayFormat()));
 }

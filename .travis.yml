@@ -8,6 +8,10 @@ env:
 services:
     - docker
 
+branches:
+    only:
+        - master
+
 before_install:
     - sudo apt-get update
     - gem install coveralls-lcov

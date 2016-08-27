@@ -9,6 +9,7 @@
 #include "studentform.h"
 #include "systemuser.h"
 #include "systemusersform.h"
+#include "activityform.h"
 
 #include <QAbstractButton>
 #include <QJsonObject>
@@ -60,17 +61,20 @@ void TestMainWindow::testRolesForms() {
     window->loginFinished(*response);
     QApplication::processEvents();
     auto stackedWidget = window->findChild<QStackedWidget *>();
-    QCOMPARE(stackedWidget->count(), 5);
+    QCOMPARE(stackedWidget->count(), 6);
     auto courseForm = stackedWidget->findChild<CourseForm *>();
     auto roomForm = stackedWidget->findChild<RoomForm *>();
     auto studentForm = stackedWidget->findChild<StudentForm *>();
     auto systemUsersForm = stackedWidget->findChild<SystemUsersForm *>();
     auto listForm = stackedWidget->findChild<ListForm *>();
+    auto activityForm = stackedWidget->findChild<ActivityForm *>();
+
     QVERIFY(courseForm != nullptr);
     QVERIFY(roomForm != nullptr);
     QVERIFY(studentForm != nullptr);
     QVERIFY(systemUsersForm != nullptr);
     QVERIFY(listForm != nullptr);
+    QVERIFY(activityForm != nullptr);
     delete window;
 
     window = new MainWindow();
@@ -101,13 +105,15 @@ void TestMainWindow::testRolesForms() {
         make_shared<LoginResponse>(user, "QSQLITE", ":memory:", "", "", "", 0);
     window->loginFinished(*response);
     stackedWidget = window->findChild<QStackedWidget *>();
-    QCOMPARE(stackedWidget->count(), 3);
+    QCOMPARE(stackedWidget->count(), 4);
     courseForm = stackedWidget->findChild<CourseForm *>();
     studentForm = stackedWidget->findChild<StudentForm *>();
     listForm = stackedWidget->findChild<ListForm *>();
+    activityForm = stackedWidget->findChild<ActivityForm *>();
     QVERIFY(roomForm != nullptr);
     QVERIFY(studentForm != nullptr);
     QVERIFY(listForm != nullptr);
+    QVERIFY(activityForm != nullptr);
     delete window;
 
     window = new MainWindow();

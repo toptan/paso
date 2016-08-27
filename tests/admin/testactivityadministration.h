@@ -11,7 +11,10 @@ public:
     TestActivityAdministration();
 
 private slots:
+    void testActivityValidator();
+    void testActivityEditorWidget();
     void testActivityTableModel();
+    void testActivityForm();
 };
 
 #endif // TESTACTIVITYADMINISTRATION_H

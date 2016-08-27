@@ -100,6 +100,13 @@ QDateEdit *RecordEditorWidget::createDateEdit(const QString &field) {
     return retVal;
 }
 
+QTimeEdit *RecordEditorWidget::createTimeEdit(const QString &field) {
+    auto retVal = new QTimeEdit(this);
+    retVal->setDisplayFormat("H.mm");
+    retVal->setReadOnly(true);
+    return retVal;
+}
+
 QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
                                                   int index) {
     auto fieldName = record.fieldName(index);
@@ -126,6 +133,9 @@ QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
         break;
     case FieldType::DateEdit:
         fieldEditor = createDateEdit(fieldName);
+        break;
+    case FieldType::TimeEdit:
+        fieldEditor = createTimeEdit(fieldName);
         break;
     }
     fieldEditor->setSizePolicy(QSizePolicy::Policy::Expanding,
@@ -162,6 +172,10 @@ void RecordEditorWidget::onDisplayRecord(const QSqlRecord &record) {
         case FieldType::DateEdit:
             dynamic_cast<QDateEdit *>(mFieldEditors[fieldName])
                 ->setDate(record.value(fieldName).toDate());
+            break;
+        case FieldType::TimeEdit:
+            dynamic_cast<QTimeEdit *>(mFieldEditors[fieldName])
+                ->setTime(record.value(fieldName).toTime());
             break;
         }
     }
@@ -204,6 +218,10 @@ void RecordEditorWidget::clearData() {
         case FieldType::DateEdit:
             dynamic_cast<QDateEdit *>(mFieldEditors[key])
                 ->setDate(QDate::currentDate());
+            break;
+        case FieldType::TimeEdit:
+            dynamic_cast<QTimeEdit *>(mFieldEditors[key])
+                ->setTime(QTime(0, 0, 0));
             break;
         }
     }
@@ -258,6 +276,9 @@ void RecordEditorWidget::accepted() {
         case FieldType::DateEdit:
             value = dynamic_cast<QDateEdit *>(field)->date();
             break;
+        case FieldType::TimeEdit:
+            value = dynamic_cast<QTimeEdit *>(field)->time();
+            break;
         }
 
         mRecord.setValue(key, value);
@@ -304,6 +325,9 @@ void RecordEditorWidget::setFieldsEditable() {
         case FieldType::DateEdit:
             dynamic_cast<QDateEdit *>(field)->setReadOnly(readOnly);
             break;
+        case FieldType::TimeEdit:
+            dynamic_cast<QTimeEdit *>(field)->setReadOnly(readOnly);
+            break;
         }
     }
     mButtonBox->setVisible(true);
@@ -334,6 +358,8 @@ void RecordEditorWidget::setFieldsReadOnly() {
         case FieldType::DateEdit:
             dynamic_cast<QDateEdit *>(field)->setReadOnly(true);
             break;
+        case FieldType::TimeEdit:
+            dynamic_cast<QTimeEdit *>(field)->setReadOnly(true);
         }
     }
     mButtonBox->setVisible(false);
@@ -364,6 +390,11 @@ void RecordEditorWidget::focusFirstEditable() {
         auto dateEdit = dynamic_cast<QDateEdit *>(child);
         if (dateEdit != nullptr && !dateEdit->isReadOnly()) {
             dateEdit->setFocus();
+            return;
+        }
+        auto timeEdit = dynamic_cast<QTimeEdit *>(child);
+        if (timeEdit != nullptr && !timeEdit->isReadOnly()) {
+            timeEdit->setFocus();
             return;
         }
     }

@@ -43,19 +43,18 @@ ListForm::ListForm(QWidget *parent)
 ListForm::~ListForm() { delete ui; }
 
 pair<QSqlTableModel *, RecordEditorWidget *> ListForm::createModelAndEditor() {
-    const QVariantMap columnLabels = {
-        {"name", QObject::tr("Name")},
-        {"system", QObject::tr("System list")},
-        {"permanent", QObject::tr("Permanent list")},
-        {"expiry_date", QObject::tr("Expiry date")}};
+    const QVariantMap columnLabels{{"name", QObject::tr("Name")},
+                                   {"system", QObject::tr("System list")},
+                                   {"permanent", QObject::tr("Permanent list")},
+                                   {"expiry_date", QObject::tr("Expiry date")}};
 
     auto model = new ListTableModel(columnLabels,
                                     QSqlDatabase::database(DEFAULT_DB_NAME));
 
-    const FieldTypes fieldTypes = {{"name", FieldType::LineEdit},
-                                   {"system", FieldType::CheckBox},
-                                   {"permanent", FieldType::CheckBox},
-                                   {"expiry_date", FieldType::DateEdit}};
+    const FieldTypes fieldTypes{{"name", FieldType::LineEdit},
+                                {"system", FieldType::CheckBox},
+                                {"permanent", FieldType::CheckBox},
+                                {"expiry_date", FieldType::DateEdit}};
 
     auto editor = new ListEditorWidget(fieldTypes);
     editor->setupUi(columnLabels, model->record());
@@ -96,11 +95,9 @@ bool ListForm::shouldDeleteRecord(const QSqlRecord &record) const {
     msgBox.setDefaultButton(QMessageBox::No);
     return msgBox.exec() == QMessageBox::Yes;
 }
-
 void ListForm::updateActions(const QSqlRecord &record) {
     mDetailsAction->setEnabled(record.value("id") != 0);
 }
-
 void ListForm::onDetails() {
     List list(DBManager::recordToVariantMap(selectedRecord()));
     ListDetailsDialog dlg(list, this);

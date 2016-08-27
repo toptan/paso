@@ -12,6 +12,7 @@
 #include <QSqlRecord>
 #include <QString>
 #include <QStringList>
+#include <QTimeEdit>
 #include <QVariantMap>
 #include <QWidget>
 
@@ -39,11 +40,11 @@ signals:
     void requestSave(QSqlRecord record);
 
 public slots:
-    void onDisplayRecord(const QSqlRecord &record);
-    void onEditExistingRecord(QSqlRecord record);
-    void onEditNewRecord(QSqlRecord record);
-    void clearData();
-    void saveSuccessfull();
+    virtual void onDisplayRecord(const QSqlRecord &record);
+    virtual void onEditExistingRecord(QSqlRecord record);
+    virtual void onEditNewRecord(QSqlRecord record);
+    virtual void clearData();
+    virtual void saveSuccessfull();
 
 protected:
     virtual void prepareEdit(QSqlRecord &record) = 0;
@@ -56,6 +57,9 @@ protected:
     virtual QSpinBox *createSpinBox(const QString &field);
     virtual QCheckBox *createCheckBox(const QString &field);
     virtual QDateEdit *createDateEdit(const QString &field);
+    virtual QTimeEdit *createTimeEdit(const QString &field);
+
+    void setFieldsReadOnly();
 
 private:
     const FieldTypes mFieldTypes;
@@ -67,7 +71,6 @@ private:
 
     QWidget *createWidgetForField(const QSqlRecord &record, int index);
     void setFieldsEditable();
-    void setFieldsReadOnly();
     void focusFirstEditable();
 
 private slots:

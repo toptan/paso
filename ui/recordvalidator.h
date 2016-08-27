@@ -27,7 +27,8 @@ enum class FieldType {
     NumberEdit,
     ComboBox,
     CheckBox,
-    DateEdit
+    DateEdit,
+    TimeEdit
 };
 
 using FieldTypes = QMap<QString, FieldType>;
