@@ -25,46 +25,55 @@ class AddRemoveEntitiesForm : public QWidget {
     Q_OBJECT
 
 public:
+    ///
+    /// \brief The constructor.
+    /// \param parent The parent widget.
+    /// \param readOnly Whether to operate in read only mode.
+    ///
     explicit AddRemoveEntitiesForm(QWidget *parent = 0, bool readOnly = false);
+
+    ///
+    /// \brief The destructor.
+    ///
     virtual ~AddRemoveEntitiesForm();
 
     ///
-    /// Returns whether this form is read only.
+    /// \brief Returns whether this form is read only.
     ///
     /// \return \c true if this form is read only.
     ///
     bool readOnly() const;
 
     ///
-    /// Sets whether this form should be read only.
+    /// \brief Sets whether this form should be read only.
     ///
     /// \param readOnly Whether this form should be read only.
     ///
     void setReadOnly(bool readOnly = true);
 
     ///
-    /// Returns whether there were changes.
+    /// \brief Returns whether there were changes.
     ///
     /// \return \c true if there were changes.
     ///
     bool dirty() const;
 
     ///
-    /// Returns entities that were added to destination.
+    /// \brief Returns entities that were added to destination.
     ///
     /// \return Entities added to the destination.
     ///
     std::set<std::shared_ptr<data::entity::Entity>> addedEntities() const;
 
     ///
-    /// Returns entities that were removed from the destination.
+    /// \brief Returns entities that were removed from the destination.
     ///
     /// \return Entities removed from the destination.
     ///
     std::set<std::shared_ptr<data::entity::Entity>> removedEntities() const;
 
     ///
-    /// Prepares widget to operate by giving necessary data.
+    /// \brief Prepares widget to operate by giving necessary data.
     ///
     /// \param sourceLabel The label text for the source table.
     /// \param sourceColumns The columns to expose to source table.
@@ -88,17 +97,32 @@ public:
                  const data::entity::EntityVector &destinationData,
                  bool totalLabelsVisible = true);
 
+signals:
+    ///
+    /// \brief Emitted whenever list of added entities changes.
+    /// \see addedEntities()
+    /// \param entityIdList The list of all added entities ids.
+    ///
+    void addedEntitiesChanged(QList<quint64> entityIdList) const;
+
+    ///
+    /// \brief Emitted whenever list of removed entities changes.
+    /// \see removedEntities()
+    /// \param entityIdList The list of all removed entities ids.
+    ///
+    void removedEntitiesChanged(QList<quint64> entityIdList) const;
+
 private slots:
     ///
-    /// The slot to be executed when add button is clicked.
+    /// \brief The slot to be executed when add button is clicked.
     ///
     void addButtonClicked();
     ///
-    /// The slot to be executed when remove button is clicked.
+    /// \brief The slot to be executed when remove button is clicked.
     ///
     void removeButtonClicked();
     ///
-    /// The slot to be executed when reset button is clicked.
+    /// \brief The slot to be executed when reset button is clicked.
     ///
     void resetButtonClicked();
 

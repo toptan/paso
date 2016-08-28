@@ -23,7 +23,7 @@ void TestStudentDetailsDialog::testDataRefresh() {
     DBManager manager(dbName);
     QSqlError error;
     db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L1', 0, 0, '1977-01-05')");
+            "          VALUES('L1', false, false, '1977-01-05')");
     auto listId = manager.getList("L1", error)->id();
     manager.importStudent("2001/2001,Student,1,,3", error);
     manager.importStudent("2002/2002,Student,2,,3", error);

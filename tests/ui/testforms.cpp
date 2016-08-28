@@ -89,7 +89,7 @@ void TestForms::testTableForm() {
     QTimer::singleShot(200, timerCallback);
     QTest::mouseClick(saveButton, Qt::LeftButton);
     QApplication::processEvents();
-    QCOMPARE(form.model()->record(0).value("code").toString(),
+    QCOMPARE(form.model()->record(1).value("code").toString(),
              QString("AAAAA"));
 
     tableView->selectRow(1);
@@ -136,7 +136,7 @@ void TestForms::testTableForm() {
 
     tableView->selectRow(0);
     QApplication::processEvents();
-    db.exec("DROP TABLE COURSE");
+    db.exec("DROP TABLE COURSE CASCADE");
     QTimer::singleShot(200, timerCallback);
     deleteRecordAction->trigger();
     QApplication::processEvents();

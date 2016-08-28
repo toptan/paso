@@ -1548,8 +1548,8 @@
     <message>
         <location filename="../ui/addremoveentitiesform.cpp" line="45"/>
         <location filename="../ui/addremoveentitiesform.cpp" line="50"/>
-        <location filename="../ui/addremoveentitiesform.cpp" line="99"/>
-        <location filename="../ui/addremoveentitiesform.cpp" line="107"/>
+        <location filename="../ui/addremoveentitiesform.cpp" line="103"/>
+        <location filename="../ui/addremoveentitiesform.cpp" line="111"/>
         <source>Total %1</source>
         <translation>Укупно %1</translation>
     </message>

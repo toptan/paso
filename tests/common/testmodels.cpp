@@ -48,6 +48,7 @@ void TestModels::testEntityModel() {
     auto validIndex = model.index(1, 1);
     QCOMPARE(model.columnCount(validIndex), 0);
     QCOMPARE(model.rowCount(), 2);
+    QCOMPARE(model.data().size(), size_t(2));
     QCOMPARE(model.rowCount(validIndex), 0);
     auto index = model.index(0, 0);
     QCOMPARE(model.data(index), QVariant("Sistemsko programiranje"));
@@ -84,6 +85,7 @@ void TestModels::testEntityModel() {
     validIndex = model.index(1, 0);
     QCOMPARE(model.columnCount(validIndex), 0);
     QCOMPARE(model.rowCount(), 3);
+    QCOMPARE(model.data().size(), size_t(3));
     QCOMPARE(model.rowCount(validIndex), 0);
     index = model.index(0, 0);
     QCOMPARE(model.data(index), QVariant("IR4XX"));
@@ -124,17 +126,20 @@ void TestModels::testEntityModelDataUpdates() {
     QCOMPARE(model.data(model.index(1, 1)), QVariant("IR4PRS"));
     model.removeEntity(make_shared<Course>());
     QCOMPARE(model.rowCount(), 3);
+    QCOMPARE(model.data().size(), size_t(3));
     QCOMPARE(model.entity(1), entity);
     QCOMPARE(model.data(model.index(1, 0)),
              QVariant("Performanse računarskih sistema"));
     QCOMPARE(model.data(model.index(1, 1)), QVariant("IR4PRS"));
     model.removeEntity(1);
     QCOMPARE(model.rowCount(), 2);
+    QCOMPARE(model.data().size(), size_t(2));
     QCOMPARE(model.entity(1), data[1]);
     QCOMPARE(model.data(model.index(1, 0)), QVariant("Baze podataka 1"));
     QCOMPARE(model.data(model.index(1, 1)), QVariant("IR3BP1"));
     model.insertEntity(315, entity);
     QCOMPARE(model.rowCount(), 3);
+    QCOMPARE(model.data().size(), size_t(3));
     QCOMPARE(model.entity(1), data[1]);
     QCOMPARE(model.entity(model.rowCount() - 1), entity);
     QCOMPARE(model.data(model.index(1, 0)), QVariant("Baze podataka 1"));
@@ -143,9 +148,11 @@ void TestModels::testEntityModelDataUpdates() {
     model.removeEntity(0);
     model.removeEntity(0);
     QCOMPARE(model.rowCount(), 0);
+    QCOMPARE(model.data().size(), size_t(0));
     model.setEntityData(data);
     QCOMPARE(model.columnCount(), 2);
     QCOMPARE(model.rowCount(), 2);
+    QCOMPARE(model.data().size(), size_t(2));
     auto index = model.index(0, 0);
     QCOMPARE(model.data(index), QVariant("Sistemsko programiranje"));
     QCOMPARE(model.data(index, Qt::EditRole), QVariant());

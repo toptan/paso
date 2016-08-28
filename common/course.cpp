@@ -64,7 +64,7 @@ void Course::write(QJsonObject &jsonObject) const {
 QSqlQuery Course::insertQuery(const QSqlDatabase &database,
                               const Course &course) {
     QSqlQuery query(database);
-    query.prepare("INSERT INTO COURSE (CODE, NAME) VALUES (:code, :name)");
+    query.prepare("INSERT INTO COURSE (CODE, NAME) VALUES (:code, :name) RETURNING ID");
     query.bindValue(":code", course.code());
     query.bindValue(":name", course.name());
     return query;

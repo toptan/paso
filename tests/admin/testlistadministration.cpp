@@ -112,7 +112,7 @@ void TestListAdministration::testListValidator() {
     QCOMPARE(result->title, title);
     QCOMPARE(result->text, QString("List expiry date cannot be in the past."));
 
-    db.close();
+    db.exec("DROP TABLE LIST CASCADE");
     result = validator.validate(notEmptyRecord);
     QCOMPARE(result->editor, nameLineEdit);
     QCOMPARE(result->title, QString("Critical error"));
@@ -171,19 +171,21 @@ void TestListAdministration::testListTableModel() {
     auto db = QSqlDatabase::database(dbName);
     db.exec("DELETE FROM LIST");
     db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L1', 0, 0, '1977-01-05')");
+            "          VALUES('L1', false, false, '1977-01-05')");
     db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L2', 0, 1, '1978-01-05')");
+            "          VALUES('L2', false, true, '1978-01-05')");
     db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L3', 1, 0, '1979-01-05')");
+            "          VALUES('L3', true, false, '1979-01-05')");
     db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L4', 1, 1, '1980-01-05')");
+            "          VALUES('L4', true, true, '1980-01-05')");
 
     const QVariantMap columnLabels{{"name", "Name"},
                                    {"permanent", "Permanent"},
                                    {"system", "System"},
                                    {"expiry_date", "Expiry Date"}};
     ListTableModel model(columnLabels, db);
+    model.sort(1, Qt::AscendingOrder);
+    QApplication::processEvents();
     QCOMPARE(model.columnCount(), 6);
     QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
@@ -225,9 +227,9 @@ void TestListAdministration::testListForm() {
     auto db = QSqlDatabase::database(dbName);
     db.exec("DELETE FROM LIST");
     db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L1', 0, 0, '1977-01-05')");
+            "          VALUES('L1', false, false, '1977-01-05')");
     db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L2', 1, 0, '1977-01-05')");
+            "          VALUES('L2', true, false, '1977-01-05')");
 
     ListForm form;
     form.show();

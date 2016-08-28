@@ -1,0 +1,1 @@
+../../sql/drop_objects.sql

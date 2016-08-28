@@ -32,6 +32,8 @@ public:
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                                 int role = Qt::DisplayRole) const override;
 
+    data::entity::EntityVector data() const;
+
     std::shared_ptr<paso::data::entity::Entity> entity(size_t position) const;
 
     void insertEntity(size_t position,

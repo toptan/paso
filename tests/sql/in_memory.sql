@@ -64,6 +64,13 @@ create table activity (
         finish_date date    not null,
         can_overlap boolean not null default false);
 --
+create table activity_lists (
+        id_activity	integer not null,
+        id_list		integer not null,
+        primary key(id_activity, id_list),
+        foreign key(id_activity) references activity(id) on delete cascade on update cascade,
+        foreign key(id_list) references list(id) on delete cascade on update cascade);
+--
 create view enlisted_students as
     select distinct p.id, p.last_name, p.first_name, p.email, p.rfid, s.index_number, s.year_of_study, c.code
       from person p

@@ -56,6 +56,10 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent, bool readOnly)
             &AddRemoveEntitiesForm::removeButtonClicked);
     connect(ui->resetButton, &QPushButton::clicked, this,
             &AddRemoveEntitiesForm::resetButtonClicked);
+    connect(ui->sourceTableView, &QTableView::doubleClicked,
+            [this]() { addButtonClicked(); });
+    connect(ui->destinationTableView, &QTableView::doubleClicked,
+            [this]() { removeButtonClicked(); });
 
     ui->addButton->setEnabled(!mReadOnly);
     ui->removeButton->setEnabled(!mReadOnly);
@@ -133,6 +137,18 @@ void AddRemoveEntitiesForm::addButtonClicked() {
     }
 
     ui->sourceTableView->clearSelection();
+
+    QList<quint64> entityIdList;
+    for (const auto &entity : mAddedEntities) {
+        entityIdList.append(entity->id());
+    }
+    emit addedEntitiesChanged(entityIdList);
+
+    entityIdList.clear();
+    for (const auto &entity : mRemovedEntities) {
+        entityIdList.append(entity->id());
+    }
+    emit removedEntitiesChanged(entityIdList);
 }
 
 void AddRemoveEntitiesForm::removeButtonClicked() {
@@ -157,6 +173,18 @@ void AddRemoveEntitiesForm::removeButtonClicked() {
     }
 
     ui->destinationTableView->clearSelection();
+
+    QList<quint64> entityIdList;
+    for (const auto &entity : mAddedEntities) {
+        entityIdList.append(entity->id());
+    }
+    emit addedEntitiesChanged(entityIdList);
+
+    entityIdList.clear();
+    for (const auto &entity : mRemovedEntities) {
+        entityIdList.append(entity->id());
+    }
+    emit removedEntitiesChanged(entityIdList);
 }
 
 void AddRemoveEntitiesForm::resetButtonClicked() {
@@ -166,6 +194,8 @@ void AddRemoveEntitiesForm::resetButtonClicked() {
     mDestinationModel->setEntityData(mDestinationData);
     ui->sourceTableView->clearSelection();
     ui->destinationTableView->clearSelection();
+    emit addedEntitiesChanged(QList<quint64>());
+    emit removedEntitiesChanged(QList<quint64>());
 }
 }
 }

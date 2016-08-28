@@ -60,6 +60,8 @@ private slots:
     void testUpdatingListStudents();
     void testRemovingAllStudentsFromList();
 
+    void testAssociateListsWithActivity();
+
 private:
     QStringList usernames;
     QStringList roomUUIDs;

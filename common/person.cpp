@@ -84,7 +84,7 @@ QSqlQuery Person::insertQuery(const QSqlDatabase &database,
     QSqlQuery query(database);
     query.prepare(
         "INSERT INTO PERSON (FIRST_NAME, LAST_NAME, EMAIL, RFID) VALUES "
-        "(:first_name, :last_name, :email, :rfid)");
+        "(:first_name, :last_name, :email, :rfid) RETURNING ID");
     query.bindValue(":first_name", person.firstName());
     query.bindValue(":last_name", person.lastName());
     query.bindValue(":email", person.email().isEmpty()

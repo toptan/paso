@@ -103,13 +103,7 @@ void TestRoomAdministration::testRoomValidator() {
     QVERIFY(!(bool)result);
 
     auto db = QSqlDatabase::database(dbName);
-    db.exec("ALTER TABLE ROOM RENAME TO ROOM_X");
-    db.exec("CREATE TABLE ROOM ( "
-            "   ID          INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "   ROOM_UUID   TEXT UNIQUE NOT NULL,"
-            "   NAME        TEXT NOT NULL)");
-    db.exec("INSERT INTO ROOM (ID, ROOM_UUID, NAME)"
-            "SELECT ID, ROOM_UUID, NAME FROM ROOM_X");
+    db.exec("ALTER TABLE ROOM RENAME COLUMN ROOM_NUMBER TO R_NUMBER");
     uuidLineEdit->setText(QUuid::createUuid().toString());
     result = validator.validate(notEmptyRecord);
     QCOMPARE(result->editor, numberLineEdit);
@@ -118,13 +112,8 @@ void TestRoomAdministration::testRoomValidator() {
              QString("There was an error working with the database."));
     QVERIFY(!result->detailedText.isEmpty());
 
-    db.exec("DROP TABLE ROOM");
-    db.exec("CREATE TABLE ROOM ( "
-            "   ID          INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "   NAME        TEXT NOT NULL,"
-            "   ROOM_NUMBER TEXT UNIQUE NOT NULL)");
-    db.exec("INSERT INTO ROOM (ID, NAME, ROOM_NUMBER)"
-            "SELECT ID, NAME, ROOM_NUMBER FROM ROOM_X");
+    db.exec("ALTER TABLE ROOM RENAME COLUMN R_NUMBER TO ROOM_NUMBER");
+    db.exec("ALTER TABLE ROOM RENAME COLUMN ROOM_UUID TO R_UUID");
     result = validator.validate(notEmptyRecord);
     QCOMPARE(result->editor, uuidLineEdit);
     QCOMPARE(result->title, QString("Critical error"));
@@ -176,11 +165,11 @@ void TestRoomAdministration::testRoomTableModel() {
     RoomTableModel model(columnLabels, QSqlDatabase::database(dbName));
     QCOMPARE(model.columnCount(), 4);
     QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
-    QCOMPARE(model.headerData(1, Qt::Horizontal).toString(),
-             QString("Room UUID"));
-    QCOMPARE(model.headerData(2, Qt::Horizontal).toString(), QString("Name"));
-    QCOMPARE(model.headerData(3, Qt::Horizontal).toString(),
+    QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
+    QCOMPARE(model.headerData(2, Qt::Horizontal).toString(),
              QString("Room Number"));
+    QCOMPARE(model.headerData(3, Qt::Horizontal).toString(),
+             QString("Room UUID"));
 }
 
 void TestRoomAdministration::testRoomForm() {

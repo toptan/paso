@@ -51,7 +51,7 @@ QLineEdit *
 SystemUserEditorWidget::createPasswordLineEdit(const QString &field) {
     auto retVal = RecordEditorWidget::createPasswordLineEdit(field);
     if (field == "password") {
-        retVal->setMaxLength(16);
+        retVal->setMaxLength(32);
     }
     return retVal;
 }

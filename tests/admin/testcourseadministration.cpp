@@ -101,7 +101,7 @@ void TestCourseAdministration::testCourseValidator() {
     QCOMPARE(result->text,
              QString("The name of the course cannot exceed 64 characters."));
 
-    db.close();
+    db.exec("DROP TABLE COURSE CASCADE");
     result = validator.validate(notEmptyRecord);
     QVERIFY(result->editor == nullptr);
     QCOMPARE(result->title, QString("Critical error"));
@@ -333,7 +333,7 @@ void TestCourseAdministration::testCourseFormImportCourses() {
     db.exec("DELETE FROM COURSE");
     refreshAction->trigger();
     QApplication::processEvents();
-    db.exec("DROP TABLE COURSE");
+    db.exec("DROP TABLE COURSE CASCADE");
     logDialog = nullptr;
     importDone = false;
     attempt = 0;

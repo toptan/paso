@@ -8,7 +8,9 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QUuid>
+#include <list>
 
+using namespace std;
 using namespace paso::db;
 using namespace paso::data;
 using namespace paso::data::entity;
@@ -17,13 +19,13 @@ TestPasoDB::TestPasoDB() : TestBase() {}
 
 void TestPasoDB::initTestCase() {
     TestBase::initTestCase();
-    roomUUIDs << QUuid("{d23a502b-a567-4929-ba99-9f93f36bf4e3}").toString();
-    roomUUIDs << QUuid("{7003528d-4c44-4f91-91b4-b82cb5afb009}").toString();
-    usernames << "admin"
+    roomUUIDs << "d23a502b-a567-4929-ba99-9f93f36bf4e3";
+    roomUUIDs << "7003528d-4c44-4f91-91b4-b82cb5afb009";
+    usernames << "root"
+              << "admin"
               << "room_manager"
               << "manager"
-              << "scheduler"
-              << "root";
+              << "scheduler";
 }
 
 void TestPasoDB::testOperationsShouldFailOnDatabaseErrors() {
@@ -38,11 +40,7 @@ void TestPasoDB::testOperationsShouldFailOnDatabaseErrors() {
     user.setEmail("toptan@server.com");
     user.setRole(SystemRole::SCHEDULER);
     QVERIFY(!manager.saveSystemUser(user, error));
-    db.exec("DROP TABLE SYSTEM_USERS");
-    db.close();
-    auto roomUUID = QUuid::createUuid();
-    Room room(roomUUID.toString(), "Demo Room 1", "3");
-    QVERIFY(!manager.saveRoom(room, error));
+    db.exec("DROP TABLE SYSTEM_USERS CASCADE");
 }
 
 void TestPasoDB::testGetAllSystemUsers() {
@@ -50,7 +48,7 @@ void TestPasoDB::testGetAllSystemUsers() {
     QSqlError error;
     QStringList users = usernames;
     auto systemUsers = manager.getAllSystemUsers(error);
-    QVERIFY(error.type() == QSqlError::NoError);
+    QCOMPARE(error.type(), QSqlError::NoError);
     QVERIFY(!systemUsers->empty());
     QCOMPARE(systemUsers->size(), size_t(5));
     for (const auto &user : *systemUsers) {
@@ -63,17 +61,17 @@ void TestPasoDB::testGetSystemUser() {
     DBManager manager(dbName);
     QSqlError error;
     auto systemUser = manager.getSystemUser("root", error);
-    QVERIFY(error.type() == QSqlError::NoError);
+    QCOMPARE(error.type(), QSqlError::NoError);
     QVERIFY((bool)systemUser);
-    QVERIFY(systemUser->username() == "root");
-    QVERIFY(systemUser->password() == "root_password");
-    QVERIFY(systemUser->firstName() == "Root");
-    QVERIFY(systemUser->lastName() == "Rootovic");
-    QVERIFY(systemUser->email() == "root@paso.com");
-    QVERIFY(systemUser->role() == SystemRole::SUPER_USER);
+    QCOMPARE(systemUser->username(), QString("root"));
+    QCOMPARE(systemUser->password(), QString("root"));
+    QCOMPARE(systemUser->firstName(), QString("System"));
+    QCOMPARE(systemUser->lastName(), QString("Administrator"));
+    QCOMPARE(systemUser->email(), QString("root@paso.system"));
+    QCOMPARE(systemUser->role(), SystemRole::SUPER_USER);
 
     auto nonExistingUser = manager.getSystemUser("qrgerbeb", error);
-    QVERIFY(error.type() == QSqlError::NoError);
+    QCOMPARE(error.type(), QSqlError::NoError);
     QVERIFY(!(bool)nonExistingUser);
 }
 
@@ -88,21 +86,21 @@ void TestPasoDB::testSaveSystemUser() {
     user.setRole(SystemRole::SCHEDULER);
     QVERIFY(manager.saveSystemUser(user, error));
     auto temp = manager.getSystemUser("toptan", error);
-    QVERIFY(user == *temp);
+    QCOMPARE(user, *temp);
     user.setEmail("toptan@paso.system");
     user.setRole(SystemRole::ADMINISTRATOR);
     QVERIFY(manager.saveSystemUser(user, error));
     temp = manager.getSystemUser("toptan", error);
-    QVERIFY(user == *temp);
+    QCOMPARE(user, *temp);
     temp = manager.getSystemUser("toptan", error);
     temp->setRole(SystemRole::ROOM_MANAGER);
     QVERIFY(manager.saveSystemUser(*temp, error));
     auto temp2 = manager.getSystemUser("toptan", error);
-    QVERIFY(*temp2 == *temp);
+    QCOMPARE(*temp2, *temp);
     temp2->setRole(SystemRole::MANAGER);
     QVERIFY(manager.saveSystemUser(*temp2, error));
     temp = manager.getSystemUser("toptan", error);
-    QVERIFY(*temp2 == *temp);
+    QCOMPARE(*temp2, *temp);
 }
 
 void TestPasoDB::testDeleteSystemUser() {
@@ -111,13 +109,13 @@ void TestPasoDB::testDeleteSystemUser() {
     QSqlError error;
     QVERIFY(!manager.deleteSystemUser("root", error));
     QCOMPARE(error.type(), QSqlError::NoError);
-    QVERIFY(manager.getAllSystemUsers(error)->size() == 5);
+    QCOMPARE(manager.getAllSystemUsers(error)->size(), size_t(5));
     QVERIFY(manager.deleteSystemUser("room_manager", error));
     QCOMPARE(error.type(), QSqlError::NoError);
-    QVERIFY(manager.getAllSystemUsers(error)->size() == 4);
+    QCOMPARE(manager.getAllSystemUsers(error)->size(), size_t(4));
     auto user = manager.getSystemUser("room_manager", error);
     QVERIFY(!user);
-    db.exec("DROP TABLE SYSTEM_USER");
+    db.exec("DROP TABLE SYSTEM_USER CASCADE");
     QVERIFY(!manager.deleteSystemUser("manager", error));
 }
 
@@ -125,29 +123,30 @@ void TestPasoDB::testGetAllRooms() {
     DBManager manager(dbName);
     QSqlError error;
     auto rooms = manager.getAllRooms(error);
-    QVERIFY(error.type() == QSqlError::NoError);
+    QCOMPARE(error.type(), QSqlError::NoError);
     QVERIFY(!rooms->empty());
-    QVERIFY(rooms->size() == 2);
+    QCOMPARE(rooms->size(), size_t(2));
     QStringList fetchedUUIDs;
     for (const auto &room : *rooms) {
         fetchedUUIDs << room.roomUUID();
     }
-    QVERIFY(fetchedUUIDs == roomUUIDs);
+    QCOMPARE(fetchedUUIDs, roomUUIDs);
 }
 
 void TestPasoDB::testSaveRoom() {
     DBManager manager(dbName);
     QSqlError error;
-    auto roomUUID = QUuid::createUuid();
-    Room room(roomUUID.toString(), "Demo Room 1", "3");
+    auto roomUUID =
+        QUuid::createUuid().toString().replace("{", "").replace("}", "");
+    Room room(roomUUID, "Demo Room 1", "3");
     QVERIFY(manager.saveRoom(room, error));
     auto loadedRoom = manager.getRoom(roomUUID, error);
-    QVERIFY(room == *loadedRoom);
+    QCOMPARE(room, *loadedRoom);
     loadedRoom->setName("Demo Lab 1");
     loadedRoom->setNumber("DL1");
     QVERIFY(manager.saveRoom(*loadedRoom, error));
     auto updatedRoom = manager.getRoom(roomUUID, error);
-    QVERIFY(*updatedRoom == *loadedRoom);
+    QCOMPARE(*updatedRoom, *loadedRoom);
 }
 
 void TestPasoDB::testGetRoom() {
@@ -155,11 +154,11 @@ void TestPasoDB::testGetRoom() {
     QSqlError error;
     QUuid roomUUID(roomUUIDs[1]);
     auto room = manager.getRoom(roomUUID, error);
-    QVERIFY(error.type() == QSqlError::NoError);
+    QCOMPARE(error.type(), QSqlError::NoError);
     QVERIFY((bool)room);
-    QVERIFY(room->roomUUID() == roomUUIDs[1]);
-    QVERIFY(room->name() == "Paviljon 26");
-    QVERIFY(room->number() == "P26");
+    QCOMPARE(room->roomUUID(), roomUUIDs[1]);
+    QCOMPARE(room->name(), QString("Paviljon 26"));
+    QCOMPARE(room->number(), QString("P26"));
 }
 
 void TestPasoDB::testDeleteRoom() {
@@ -171,7 +170,7 @@ void TestPasoDB::testDeleteRoom() {
     QCOMPARE(manager.getAllRooms(error)->size(), size_t(1));
     auto room = manager.getRoom(roomUUID, error);
     QVERIFY(!room);
-    db.exec("DROP TABLE ROOM");
+    db.exec("DROP TABLE ROOM CASCADE");
     QVERIFY(!manager.deleteRoom(roomUUIDs[1], error));
 }
 
@@ -189,7 +188,7 @@ void TestPasoDB::testSaveCourse() {
     QVERIFY(manager.saveCourse(*loadedCourse, error));
     auto updatedCourse = manager.getCourse("IR3BP1", error);
     QCOMPARE(*updatedCourse, *loadedCourse);
-    db.exec("DROP TABLE COURSE");
+    db.exec("DROP TABLE COURSE CASCADE");
     QVERIFY(!manager.saveCourse(*updatedCourse, error));
 }
 
@@ -215,7 +214,7 @@ void TestPasoDB::testDeleteCourse() {
     // The course should not exist anymore.
     course = manager.getCourse("IR3SP", error);
     QVERIFY(!course);
-    db.exec("DROP TABLE COURSE");
+    db.exec("DROP TABLE COURSE CASCADE");
     QVERIFY(!manager.deleteCourse("IR3XY", error));
 }
 
@@ -330,7 +329,7 @@ void TestPasoDB::testSaveStudent() {
     QCOMPARE(updatedStudent->rfid(), QString("RFID"));
     QCOMPARE(updatedStudent->email(), QString(""));
     Student anotherStudent("Mitar", "Mirić", "", "333/11", 2);
-    db.exec("DROP TABLE STUDENT");
+    db.exec("DROP TABLE STUDENT CASCADE");
     QVERIFY(!manager.saveStudent(anotherStudent, error));
     db.exec("create table student ("
             "        id              integer primary key,"
@@ -339,7 +338,7 @@ void TestPasoDB::testSaveStudent() {
             "        foreign key(id) references person(id) "
             "                        on delete cascade "
             "                        on update cascade);");
-    db.exec("DROP TABLE PERSON");
+    db.exec("DROP TABLE PERSON CASCADE");
     QVERIFY(!manager.saveStudent(anotherStudent, error));
 }
 
@@ -350,7 +349,7 @@ void TestPasoDB::testGetStudent() {
                  "RRFFIIDD");
     manager.saveStudent(temp, error);
     auto student = manager.getStudentByIndexNumber("2001/2001", error);
-    QVERIFY(error.type() == QSqlError::NoError);
+    QCOMPARE(error.type(), QSqlError::NoError);
     QVERIFY((bool)student);
     QCOMPARE(student->firstName(), QString("Petar"));
     QCOMPARE(student->lastName(), QString("Petrović"));
@@ -359,7 +358,7 @@ void TestPasoDB::testGetStudent() {
     QCOMPARE(student->indexNumber(), QString("2001/2001"));
     QCOMPARE(student->yearOfStudy(), 5);
     student = manager.getStudentByIndexNumber("XXX/YY", error);
-    QVERIFY(error.type() == QSqlError::NoError);
+    QCOMPARE(error.type(), QSqlError::NoError);
     QVERIFY(!(bool)student);
 }
 
@@ -374,7 +373,7 @@ void TestPasoDB::testDeleteStudent() {
     QVERIFY(manager.deleteStudent("555/15", error));
     studentFromDB = manager.getStudentByIndexNumber("555/15", error);
     QVERIFY(!(bool)studentFromDB);
-    db.exec("DROP TABLE STUDENT");
+    db.exec("DROP TABLE STUDENT CASCADE");
     QVERIFY(!manager.deleteStudent("XXX/YY", error));
 }
 
@@ -496,11 +495,11 @@ void TestPasoDB::testImportCourseStudent() {
         indexNumbers.removeOne(student.indexNumber());
     }
     QVERIFY(indexNumbers.empty());
-    db.exec("DROP TABLE ENLISTED");
+    db.exec("DROP TABLE ENLISTED CASCADE");
     csvLine = "2001/2001";
     QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
              ListStudentImportError::DB_ERROR);
-    db.exec("DROP TABLE STUDENT");
+    db.exec("DROP TABLE STUDENT CASCADE");
     QCOMPARE(manager.importCourseStudent(courseCode, csvLine, error),
              ListStudentImportError::DB_ERROR);
 }
@@ -557,11 +556,11 @@ void TestPasoDB::testImportListStudent() {
         indexNumbers.removeOne(student->value("INDEX_NUMBER").toString());
     }
     QVERIFY(indexNumbers.empty());
-    db.exec("DROP TABLE MEMBER");
+    db.exec("DROP TABLE MEMBER CASCADE");
     csvLine = "2001/2001";
     QCOMPARE(manager.importListStudent(listId, csvLine, error),
              ListStudentImportError::DB_ERROR);
-    db.exec("DROP TABLE STUDENT");
+    db.exec("DROP TABLE STUDENT CASCADE");
     QCOMPARE(manager.importListStudent(listId, csvLine, error),
              ListStudentImportError::DB_ERROR);
 }
@@ -590,7 +589,7 @@ void TestPasoDB::testEnlistingStudentsToCourse() {
         indexNumbers.removeOne(student.indexNumber());
     }
     QVERIFY(indexNumbers.empty());
-    db.exec("DROP TABLE ENLISTED");
+    db.exec("DROP TABLE ENLISTED CASCADE");
     QVERIFY(!manager.enlistStudentsToCourse("IR3SP", {"2003/2003"}, error));
 }
 
@@ -607,7 +606,7 @@ void TestPasoDB::testEnlistingStudentToCourses() {
     manager.importCourse("IR3AC, AC course", error);
     QVERIFY(manager.enlistStudentToCourses("2003/2003", courseCodes, error));
     auto courses = manager.getStudentCourses("2003/2003", error);
-    QVERIFY(courses.size() == 2);
+    QCOMPARE(courses.size(), size_t(2));
     for (const auto &course : courses) {
         courseCodes.removeOne(course->value("CODE").toString());
     }
@@ -643,12 +642,12 @@ void TestPasoDB::testEnlistingStudentToCourses() {
     courseCodes.push_back("IR3AC");
     QVERIFY(manager.enlistStudentToCourses("2003/2003", courseCodes, error));
     courses = manager.getStudentCourses("2003/2003", error);
-    QVERIFY(courses.size() == 3);
+    QCOMPARE(courses.size(), size_t(3));
     for (const auto &course : courses) {
         courseCodes.removeOne(course->value("CODE").toString());
     }
     QVERIFY(courseCodes.empty());
-    db.exec("DROP TABLE ENLISTED");
+    db.exec("DROP TABLE ENLISTED CASCADE");
     QVERIFY(!manager.enlistStudentToCourses("2003/2003", {"IR3AB"}, error));
 }
 
@@ -668,7 +667,7 @@ void TestPasoDB::testRemovingStudentFromCourses() {
     QVERIFY(manager.studentsEnlistedToCourse("IR3AA", error).empty());
     QVERIFY(manager.studentsEnlistedToCourse("IR3AB", error).empty());
     QVERIFY(manager.getStudentCourses("2003/2003", error).empty());
-    db.exec("DROP TABLE ENLISTED");
+    db.exec("DROP TABLE ENLISTED CASCADE");
     QVERIFY(!manager.removeStudentFromCourses("2003/2003", {"IR3AB"}, error));
 }
 
@@ -686,7 +685,7 @@ void TestPasoDB::testRemovingStudentsFromCourse() {
     manager.enlistStudentsToCourse("IR3AB", indexNumbers, error);
     QVERIFY(manager.removeStudentsFromCourse("IR3AB", indexNumbers, error));
     QVERIFY(manager.getCourseStudents("IR3AB", error)->empty());
-    db.exec("DROP TABLE ENLISTED");
+    db.exec("DROP TABLE ENLISTED CASCADE");
     QVERIFY(!manager.removeStudentsFromCourse("IR3AB", {"2001/2001"}, error));
 }
 
@@ -826,7 +825,7 @@ void TestPasoDB::testAddingStudentsToTheList() {
         indexNumbers.removeOne(student->value("INDEX_NUMBER").toString());
     }
     QVERIFY(indexNumbers.empty());
-    db.exec("DROP TABLE MEMBER");
+    db.exec("DROP TABLE MEMBER CASCADE");
     QVERIFY(!manager.addStudentsToList(list->id(), {"2002/2002"}, error));
 }
 
@@ -846,7 +845,7 @@ void TestPasoDB::testRemovingStudentsFromTheList() {
     manager.addStudentsToList(list->id(), indexNumbers, error);
     QVERIFY(manager.removeStudentsFromList(list->id(), indexNumbers, error));
     QVERIFY(manager.membersOfTheList(list->id(), error).empty());
-    db.exec("DROP TABLE MEMBER");
+    db.exec("DROP TABLE MEMBER CASCADE");
     QVERIFY(!manager.removeStudentsFromList(list->id(), {"2002/2002"}, error));
 }
 
@@ -958,7 +957,7 @@ void TestPasoDB::testUpdatingListStudents() {
         temp.removeOne(student->value("INDEX_NUMBER").toString());
     }
     QVERIFY(temp.empty());
-    db.exec("DROP TABLE MEMBER");
+    db.exec("DROP TABLE MEMBER CASCADE");
     QVERIFY(!manager.updateListStudents(
         listId, QStringList(), QStringList{"2002/2002", "2004/2004"}, error));
 }
@@ -979,4 +978,28 @@ void TestPasoDB::testRemovingAllStudentsFromList() {
     QVERIFY(manager.removeAllStudentsFromList(list->id(), error));
     manager.commit();
     QVERIFY(manager.membersOfTheList(list->id(), error).empty());
+}
+
+void TestPasoDB::testAssociateListsWithActivity() {
+    //    auto db = QSqlDatabase::database(dbName);
+    //    db.exec(
+    //        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+    //        "                     DURATION, START_DATE, FINISH_DATE)"
+    //        "              VALUES(1, 'A1', 'EXAM', '0 8 15 8 *',"
+    //        "                     '03:00:00.000', '2016-08-15',
+    //        '2016-08-15');");
+    //    db.exec(
+    //        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+    //        "                     DURATION, START_DATE, FINISH_DATE,
+    //        CAN_OVERLAP)"
+    //        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
+    //        "                     '01:30:00.000', '2016-09-01', '2016-09-30',
+    //        1);");
+    //    DBManager manager(dbName);
+    //    QList<quint64> listIds{1, 2, 3};
+    //    QSqlError error;
+    //    QVERIFY(manager.associateListsWithActivity(1, listIds, error));
+    //    auto q = db.exec("SELECT * FROM ACTIVITY_LISTS");
+    //    QVERIFY(manager.associateListsWithActivity(1, {3, 4, 5}, error));
+    //    q = db.exec("SELECT * FROM ACTIVITY_LISTS");
 }

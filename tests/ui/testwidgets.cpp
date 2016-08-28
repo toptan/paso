@@ -120,6 +120,42 @@ void TestWidgets::testAddRemoveEntityWidget() {
     QVERIFY(form.addedEntities().empty());
     QCOMPARE(form.removedEntities().size(), size_t(2));
     QVERIFY(form.dirty());
+
+    int addedIdsSize = 0;
+    connect(&form, &AddRemoveEntitiesForm::addedEntitiesChanged,
+            [&addedIdsSize](QList<quint64> l) { addedIdsSize = l.size(); });
+    int removedIdsSize = 0;
+    connect(&form, &AddRemoveEntitiesForm::removedEntitiesChanged,
+            [&removedIdsSize](QList<quint64> l) { removedIdsSize = l.size(); });
+
+    QSignalSpy spyForAdded(&form, &AddRemoveEntitiesForm::addedEntitiesChanged);
+    QSignalSpy spyForRemoved(&form,
+                             &AddRemoveEntitiesForm::removedEntitiesChanged);
+    QPoint point(sourceTable->columnViewportPosition(0) + 5,
+                 sourceTable->rowViewportPosition(0) + 10);
+    auto pViewport = sourceTable->viewport();
+    QTest::mouseClick(pViewport, Qt::LeftButton, 0, point);
+    QTest::mouseDClick(pViewport, Qt::LeftButton, 0, point);
+    QApplication::processEvents();
+    QCOMPARE(form.addedEntities().size(), size_t(1));
+    QCOMPARE(form.removedEntities().size(), size_t(1));
+    QCOMPARE(spyForAdded.count(), 1);
+    QCOMPARE(spyForRemoved.count(), 1);
+    QCOMPARE(addedIdsSize, 1);
+    QCOMPARE(removedIdsSize, 1);
+
+    point.setX(destinationTable->columnViewportPosition(0) + 5);
+    point.setY(destinationTable->rowViewportPosition(0) + 10);
+    pViewport = destinationTable->viewport();
+    QTest::mouseClick(pViewport, Qt::LeftButton, 0, point);
+    QTest::mouseDClick(pViewport, Qt::LeftButton, 0, point);
+    QApplication::processEvents();
+    QVERIFY(form.addedEntities().empty());
+    QCOMPARE(form.removedEntities().size(), size_t(2));
+    QCOMPARE(spyForAdded.count(), 2);
+    QCOMPARE(spyForRemoved.count(), 2);
+    QCOMPARE(addedIdsSize, 0);
+    QCOMPARE(removedIdsSize, 2);
 }
 
 void TestWidgets::testRecordValidator() {

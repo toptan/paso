@@ -36,13 +36,18 @@ case "$1" in
             yum -y install rpm-build gcc gcc-c++ boost-devel cmake3 git tar gzip make \
                    python cppcheck doxygen lcov python-pip graphviz qt5-linguist \
                    qt5-qtbase-devel qt5-qtbase-gui xorg-x11-server-Xvfb sysvinit-tools \
-                   glibc-static psmisc motif which xauth
+                   glibc-static psmisc motif which xauth postgresql-server qt5-qtbase-postgresql
 
             # Install gcovr
             pip install gcovr==3.2
 
             # Fix dbus inside docker
             dbus-uuidgen > /etc/machine-id
+
+            # Setup database for tests
+            su - postgres -c "initdb --pgdata=/var/lib/pgsql/data --auth-host=md5"
+            su - postgres -c "pg_ctl -D /var/lib/pgsql/data -l logfile start"
+            su - postgres -c "echo \"CREATE ROLE pasotest SUPERUSER LOGIN UNENCRYPTED PASSWORD 'pasotest';\" | psql"
 
             # Set cmake command
             CMAKE_COMMAND=cmake3

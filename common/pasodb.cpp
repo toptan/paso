@@ -1,5 +1,7 @@
 #include "pasodb.h"
 
+#include "activity.h"
+
 #include <QDate>
 #include <QDebug>
 #include <QRegExp>
@@ -88,7 +90,8 @@ bool DBManager::saveSystemUser(SystemUser &user, QSqlError &error) const {
         return false;
     }
     if (user.id() == 0) {
-        user.setId(query.lastInsertId().toULongLong());
+        query.next();
+        user.setId(query.record().value("ID").toULongLong());
     }
 
     error = commit();
@@ -152,7 +155,8 @@ bool DBManager::saveRoom(Room &room, QSqlError &error) const {
         return false;
     }
     if (room.id() == 0) {
-        room.setId(query.lastInsertId().toULongLong());
+        query.next();
+        room.setId(query.record().value("ID").toULongLong());
     }
     error = commit();
     return error.type() == QSqlError::NoError;
@@ -199,7 +203,8 @@ bool DBManager::saveCourse(Course &course, QSqlError &error) const {
         return false;
     }
     if (course.id() == 0) {
-        course.setId(query.lastInsertId().toULongLong());
+        query.next();
+        course.setId(query.record().value("ID").toULongLong());
     }
 
     error = commit();
@@ -322,7 +327,8 @@ bool DBManager::saveStudent(Student &student, QSqlError &error) const {
         return false;
     }
     if (newStudent) {
-        student.setId(query.lastInsertId().toULongLong());
+        query.next();
+        student.setId(query.record().value("ID").toULongLong());
     }
     query = newStudent ? Student::insertQuery(db, student)
                        : Student::updateQuery(db, student);
@@ -871,6 +877,73 @@ bool DBManager::removeAllStudentsFromList(quint64 listId, QSqlError &error) {
     query.exec();
     error = query.lastError();
     return error.type() == QSqlError::NoError;
+}
+
+EntityVector DBManager::activityLists(quint64 activityId,
+                                      QSqlError &error) const {
+    auto query = Activity::findActivityListsQuery(
+        QSqlDatabase::database(mDbName), activityId);
+    query.exec();
+    error = query.lastError();
+    EntityVector retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal.emplace_back(
+                make_shared<Activity>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
+
+EntityVector DBManager::nonActivityLists(quint64 activityId,
+                                         QSqlError &error) const {
+    auto query = Activity::findNonActivityListsQuery(
+        QSqlDatabase::database(mDbName), activityId);
+    query.exec();
+    error = query.lastError();
+    EntityVector retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal.emplace_back(
+                make_shared<Activity>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
+
+bool DBManager::associateListsWithActivity(quint64 activityId,
+                                           const QList<quint64> &listIds,
+                                           QSqlError &error) const {
+    auto db = QSqlDatabase::database(mDbName);
+    beginTransaction();
+    auto query = Activity::removeAllListsFromActivity(db, activityId);
+    query.exec();
+    error = query.lastError();
+    if (error.type() == QSqlError::NoError) {
+        QSqlQuery q(db);
+        q.prepare("INSERT INTO ACTIVITY_LISTS(ID_ACTIVITY, ID_LIST)"
+                      "            VALUES(:activity_id, :list_id)");
+        QVariantList aIds;
+        for (auto i = 0; i < listIds.size(); i++) {
+            aIds << activityId;
+        }
+        QVariantList lIds;
+        for (auto i = 0; i < listIds.size(); i++) {
+            lIds << listIds[i];
+        }
+        q.bindValue(":activity_id", aIds);
+        q.bindValue(":list_id", lIds);
+//        q.addBindValue(aIds);
+//        q.addBindValue(lIds);
+        q.execBatch();
+        error = q.lastError();
+        if (error.type() == QSqlError::NoError) {
+            commit();
+            return true;
+        }
+    }
+    rollback();
+    return false;
 }
 }
 }

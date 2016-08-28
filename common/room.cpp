@@ -70,7 +70,7 @@ void Room::write(QJsonObject &jsonObject) const {
 QSqlQuery Room::insertQuery(const QSqlDatabase &database, const Room &room) {
     QSqlQuery query(database);
     query.prepare("INSERT INTO ROOM (ROOM_UUID, NAME, ROOM_NUMBER) VALUES "
-                  "(:uuid, :name, :number)");
+                  "(:uuid, :name, :number) RETURNING ID");
     query.bindValue(":uuid", room.roomUUID());
     query.bindValue(":name", room.name());
     query.bindValue(":number", room.number());

@@ -100,12 +100,12 @@ void TestActivityAdministration::testActivityTableModel() {
         "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
         "                     DURATION, START_DATE, FINISH_DATE)"
         "              VALUES('A1', 'EXAM', '0 8 15 8 *',"
-        "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
+        "                     '03:00:00.000', '2016-08-15', '2016-08-15')");
     db.exec(
         "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
         "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
         "              VALUES('A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
-        "                     '01:30:00.000', '2016-09-01', '2016-09-30', 1);");
+        "                     '01:30:00.000', '2016-09-01', '2016-09-30', true)");
 
     const QVariantMap columnLabels{{"name", "Name"},
                                    {"type", "Type"},
@@ -174,7 +174,7 @@ void TestActivityAdministration::testActivityForm() {
         "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
         "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
         "              VALUES('A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
-        "                     '01:30:00.000', '2016-09-01', '2016-09-30', 1);");
+        "                     '01:30:00.000', '2016-09-01', '2016-09-30', true);");
 
     ActivityForm form;
     form.show();

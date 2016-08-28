@@ -5,8 +5,8 @@ namespace data {
 namespace entity {
 
 Activity::Activity(const QString &name, ActivityType type, quint64 id)
-    : Entity(id), mName(name), mType(type), mDuration(),
-      mStartDate(), mFinishDate(), mCanOverlap(false) {}
+    : Entity(id), mName(name), mType(type), mDuration(), mStartDate(),
+      mFinishDate(), mCanOverlap(false) {}
 
 Activity::Activity(const QVariantMap &map)
     : Entity(map["ID"].toULongLong()), mName(map["NAME"].toString()),
@@ -111,6 +111,51 @@ void Activity::write(QJsonObject &jsonObject) const {
     jsonObject["START_DATE"] = QVariant(mStartDate).toJsonValue();
     jsonObject["FINISH_DATE"] = QVariant(mFinishDate).toJsonValue();
     jsonObject["CAN_OVERLAP"] = mCanOverlap;
+}
+
+QSqlQuery Activity::findActivityListsQuery(const QSqlDatabase &database,
+                                           quint64 activityId) {
+    QSqlQuery query(database);
+    query.prepare("SELECT L.*"
+                  "  FROM LIST L"
+                  "  JOIN ACTIVITY_LISTS AL ON AL.ID_LIST = L.ID"
+                  " WHERE LM.ID_ACTIVITY = :activity_id");
+    query.bindValue(":activity_id", activityId);
+    return query;
+}
+
+QSqlQuery Activity::findNonActivityListsQuery(const QSqlDatabase &database,
+                                              quint64 activityId) {
+    QSqlQuery query(database);
+    query.prepare(
+        "SELECT DISTINCT L.*"
+        "  FROM LIST L"
+        " WHERE L.ID NOT IN (SELECT L1.ID"
+        "						 FROM LIST L1"
+        "						 JOIN ACTIVITY_LISTS AL"
+        "                          ON AL.ID_LIST = L1.ID"
+        " 					    WHERE LM.ID_ACTIVITY = "
+        ":activity_id)");
+    query.bindValue(":activity_id", activityId);
+    return query;
+}
+
+QSqlQuery Activity::removeAllListsFromActivity(const QSqlDatabase &database,
+                                               quint64 activityId) {
+    QSqlQuery query(database);
+    query.prepare(
+        "DELETE FROM ACTIVITY_LISTS WHERE ID_ACTIVITY = :activity_id");
+    query.bindValue(":activity_id", activityId);
+    return query;
+}
+
+QSqlQuery Activity::associateListWithActivity(const QSqlDatabase &database,
+                                              quint64 activityId,
+                                              quint64 listId) {
+    QSqlQuery query(database);
+    query.prepare("INSERT INTO ACTIVITY_LISTS(ID_ACTIVITY, ID_LIST)"
+                  "		VALUES(:activity_id, :listId)");
+    return query;
 }
 }
 }

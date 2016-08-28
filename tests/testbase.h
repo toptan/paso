@@ -10,6 +10,7 @@ public:
     static void printTestStats();
 
     TestBase();
+    virtual ~TestBase();
 
 protected slots:
     virtual void initTestCase();

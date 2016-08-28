@@ -473,6 +473,37 @@ public:
     ///
     bool removeAllStudentsFromList(quint64 listId, QSqlError &error);
 
+    ///
+    /// \brief Returns all lists associated with activity with given id.
+    /// \param activityId The activity id.
+    /// \param error The SQL error if any.
+    /// \return Vector of lists associated with activity with given id.
+    ///
+    data::entity::EntityVector activityLists(quint64 activityId,
+                                             QSqlError &error) const;
+
+    ///
+    /// \brief Returns all lists that are not associated with activity with
+    /// given id.
+    /// \param activityId The activity id.
+    /// \param error The SQL error if any.
+    /// \return Vector of lists that are not associated with activity with given
+    /// id.
+    ///
+    data::entity::EntityVector nonActivityLists(quint64 activityId,
+                                                QSqlError &error) const;
+
+    ///
+    /// \brief Associates given lists with activity.
+    /// \param activityId The activity id.
+    /// \param listIds the list of list ids.
+    /// \param error The SQL error if any.
+    /// \return \c true if lists are associated.
+    ///
+    bool associateListsWithActivity(quint64 activityId,
+                                    const QList<quint64> &listIds,
+                                    QSqlError &error) const;
+
 private:
     const QString mDbName;
 };

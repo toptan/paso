@@ -254,7 +254,7 @@ void TestListDetailsDialog::testSavingData() {
     QVERIFY(dialog.isVisible());
     QCOMPARE(manager.membersOfTheList(list->id(), error).size(), size_t(1));
 
-    db.exec("DROP TABLE MEMBERS");
+    db.exec("DROP TABLE MEMBERS CASCADE");
     sourceTable->selectRow(0);
     QApplication::processEvents();
     addButton->click();
@@ -398,7 +398,7 @@ void TestListDetailsDialog::testImportListStudents() {
     QApplication::processEvents();
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 
-    db.exec("DROP TABLE STUDENT");
+    db.exec("DROP TABLE STUDENT CASCADE");
     logDialog = nullptr;
     attempt = 0;
     importFinished = false;
@@ -419,7 +419,7 @@ void TestListDetailsDialog::testImportListStudents() {
     QApplication::processEvents();
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 
-    db.exec("DROP TABLE MEMBER");
+    db.exec("DROP TABLE MEMBER CASCADE");
     logDialog = nullptr;
     attempt = 0;
     importFinished = false;

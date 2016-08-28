@@ -61,8 +61,8 @@ void DemoServer::handleLoginRequest(QTcpSocket *clientSocket,
     QSqlError error;
     auto sysUser = manager.getSystemUser(loginRequest.username(), error);
     if (sysUser && sysUser->password() == loginRequest.password()) {
-        LoginResponse response(*sysUser, "QSQLITE", "db_name", "db_server",
-                               "db_username", "db_password", 5432);
+        LoginResponse response(*sysUser, "QPSQL", "pasotest", "127.0.0.1",
+                               "pasotest", "pasotest", 5432);
         responseData = response.toJsonString();
     } else {
         LoginResponse response;
@@ -115,7 +115,7 @@ void TestCommManager::testSuccessfullLogin() {
     QEventLoop loop;
     connect(this, &TestCommManager::quitLocalEventLoop, &loop,
             &QEventLoop::quit);
-    manager->login("scheduler", "scheduler_password");
+    manager->login("root", "root");
     loop.exec();
     QVERIFY(loginSuccess && !loginFailure);
 }

@@ -150,6 +150,46 @@ public:
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 
+    ///
+    /// \brief Returns query that finds all lists associated with given
+    /// activity.
+    /// \param database The database to use.
+    /// \param activityId The activity id.
+    /// \return The query.
+    ///
+    static QSqlQuery findActivityListsQuery(const QSqlDatabase &database,
+                                            quint64 activityId);
+
+    ///
+    /// \brief Returns query that finds all lists that are not associated with
+    /// given activity.
+    /// \param database The database to use.
+    /// \param activityId The activity id.
+    /// \return The query.
+    ///
+    static QSqlQuery findNonActivityListsQuery(const QSqlDatabase &database,
+                                               quint64 activityId);
+
+    ///
+    /// \brief Returns query that removes all associated lists from activity.
+    /// \param database The database to use.
+    /// \param activityId The activity id.
+    /// \return The query.
+    ///
+    static QSqlQuery removeAllListsFromActivity(const QSqlDatabase &database,
+                                                quint64 activityId);
+
+    ///
+    /// \brief Returns query that associates list with the activity.
+    /// \param database The database to use.
+    /// \param activityId The activity id.
+    /// \param listId The list id.
+    /// \return The query.
+    ///
+    static QSqlQuery associateListWithActivity(const QSqlDatabase &database,
+                                               quint64 activityId,
+                                               quint64 listId);
+
 private:
     QString mName;      //!< The activity name.
     ActivityType mType; //!< The activity type.

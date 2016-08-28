@@ -204,7 +204,7 @@ void TestStudentAdministration::testStudentValidator() {
     QVERIFY((bool)result);
 
     auto db = QSqlDatabase::database(dbName);
-    db.exec("DROP TABLE STUDENT");
+    db.exec("DROP TABLE STUDENT CASCADE");
     firstNameEdit->setText("Toplica");
     result = validator.validate(emptyRecord);
     QCOMPARE(result->editor, indexNumberEdit);
@@ -530,7 +530,7 @@ void TestStudentAdministration::testStudentFormImportStudents() {
     db.exec("DELETE FROM PERSON");
     refreshAction->trigger();
     QApplication::processEvents();
-    db.exec("DROP TABLE STUDENT");
+    db.exec("DROP TABLE STUDENT CASCADE");
     logDialog = nullptr;
     importDone = false;
     attempt = 0;

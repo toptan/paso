@@ -112,7 +112,7 @@ QSqlQuery SystemUser::insertQuery(const QSqlDatabase &database,
     QSqlQuery query(database);
     query.prepare("INSERT INTO SYSTEM_USER (USERNAME, PASSWORD, FIRST_NAME, "
                   "LAST_NAME, EMAIL, ROLE) VALUES (:username, :password, "
-                  ":first_name, :last_name, :email, :role)");
+                  ":first_name, :last_name, :email, :role) RETURNING ID");
     query.bindValue(":username", user.username());
     query.bindValue(":password", user.password());
     query.bindValue(":first_name", user.firstName());

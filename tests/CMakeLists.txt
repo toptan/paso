@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.4 FATAL_ERROR)
 project(pasotests)
 
-configure_file(${CMAKE_SOURCE_DIR}/tests/sql/in_memory.sql ${CMAKE_BINARY_DIR}/tests/in_memory.sql @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/tests/sql/create_db.sql ${CMAKE_BINARY_DIR}/tests/create_db.sql @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/tests/sql/create_objects.sql ${CMAKE_BINARY_DIR}/tests/create_objects.sql @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/tests/sql/drop_db.sql ${CMAKE_BINARY_DIR}/tests/drop_db.sql @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/tests/sql/drop_objects.sql ${CMAKE_BINARY_DIR}/tests/drop_objects.sql @ONLY)
 file(GLOB TEST_FILES LIST_DIRECTORIES false RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/files/*)
 foreach(_TEST_FILE ${TEST_FILES})
     configure_file(${PROJECT_SOURCE_DIR}/${_TEST_FILE} ${PROJECT_BINARY_DIR}/${_TEST_FILE})

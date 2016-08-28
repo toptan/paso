@@ -195,7 +195,7 @@ void TestCourseDetailsDialog::testSavingData() {
     QVERIFY(dialog.isVisible());
     QCOMPARE(manager.getCourseStudents("IR3SP", error)->size(), size_t(1));
 
-    db.exec("DROP TABLE ENLISTED");
+    db.exec("DROP TABLE ENLISTED CASCADE");
     sourceTable->selectRow(0);
     QApplication::processEvents();
     addButton->click();
@@ -337,7 +337,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 
     auto db = QSqlDatabase::database(dbName);
-    db.exec("DROP TABLE STUDENT");
+    db.exec("DROP TABLE STUDENT CASCADE");
     logDialog = nullptr;
     attempt = 0;
     importFinished = false;
@@ -357,7 +357,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     QApplication::processEvents();
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 
-    db.exec("DROP TABLE ENLISTED");
+    db.exec("DROP TABLE ENLISTED CASCADE");
     logDialog = nullptr;
     attempt = 0;
     importFinished = false;

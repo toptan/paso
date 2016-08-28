@@ -41,6 +41,10 @@ QVariant EntityTableModel::headerData(int section, Qt::Orientation orientation,
     return QAbstractTableModel::headerData(section, orientation, role);
 }
 
+EntityVector EntityTableModel::data() const {
+    return mData;
+}
+
 shared_ptr<Entity> EntityTableModel::entity(size_t position) const {
     return mData[position];
 }

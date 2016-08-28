@@ -201,7 +201,7 @@ void TestSystemUserAdministration::testSystemUserEditorWidget() {
     auto roleCombo = dynamic_cast<QComboBox *>(editor.fieldEditors()["role"]);
     QVERIFY(!usernameEdit->isReadOnly());
     QCOMPARE(usernameEdit->maxLength(), 16);
-    QCOMPARE(passwordEdit->maxLength(), 16);
+    QCOMPARE(passwordEdit->maxLength(), 32);
     QCOMPARE(firstNameEdit->maxLength(), 32);
     QCOMPARE(lastNameEdit->maxLength(), 32);
     QCOMPARE(emailEdit->maxLength(), 64);
