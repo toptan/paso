@@ -9,10 +9,14 @@ case "$1" in
             # Install needed packages
             apt --yes install gcc g++ libboost-dev cmake git tar gzip make python cppcheck \
                       doxygen lcov gcovr graphviz qttools5-dev-tools qt5-default psmisc \
-                      mwm xauth sudo xvfb libqt5sql5-sqlite
+                      mwm xauth sudo xvfb libqt5sql5-sqlite libqt5sql5-psql postgresql
 
             # Generate locale
             locale-gen en_US.UTF-8
+
+            # Setup database for tests
+            service postgresql start
+            su - postgres -c "echo \"CREATE ROLE pasotest SUPERUSER LOGIN UNENCRYPTED PASSWORD 'pasotest';\" | psql"
 
             # Set cmake command
             CMAKE_COMMAND=cmake
