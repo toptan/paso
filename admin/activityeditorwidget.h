@@ -15,8 +15,8 @@ public:
                          const QSqlRecord &record) override;
 
 public slots:
-    virtual void onEditExistingRecord(QSqlRecord record);
-    virtual void onEditNewRecord(QSqlRecord record);
+    virtual void onEditExistingRecord(QSqlRecord record) override;
+    virtual void onEditNewRecord(QSqlRecord record) override;
 
 protected:
     virtual void prepareEdit(QSqlRecord &record) override;

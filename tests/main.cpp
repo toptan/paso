@@ -50,11 +50,16 @@ void createDatabase() {
     createProcess.start("psql", arguments);
     if (!createProcess.waitForStarted()) {
         qCritical() << "Failed to start test database creation.";
+        qCritical() << QString(createProcess.readAllStandardError());
+        qCritical() << QString(createProcess.readAllStandardOutput());
+        qCritical() << createProcess.workingDirectory();
         qCritical() << createProcess.errorString();
         exit(-1);
     }
     if (!createProcess.waitForFinished()) {
         qCritical() << "Failed to finish test database creation.";
+        qCritical() << QString(createProcess.readAllStandardError());
+        qCritical() << QString(createProcess.readAllStandardOutput());
         exit(-1);
     }
     if (createProcess.exitCode() != 0) {
@@ -124,23 +129,23 @@ int main(int argc, char **argv) {
         delete obj;
     };
 
-    testCases.push_back(new TestLoginDialog);
-    testCases.push_back(new TestCommData);
-    testCases.push_back(new TestCommManager);
-    testCases.push_back(new TestData);
-    testCases.push_back(new TestModels);
-    testCases.push_back(new TestPasoDB);
-    testCases.push_back(new TestForms);
-    testCases.push_back(new TestWidgets);
-    testCases.push_back(new TestCourseAdministration);
-    testCases.push_back(new TestListAdministration);
-    testCases.push_back(new TestRoomAdministration);
-    testCases.push_back(new TestSystemUserAdministration);
-    testCases.push_back(new TestStudentAdministration);
-    testCases.push_back(new TestCourseDetailsDialog);
-    testCases.push_back(new TestListDetailsDialog);
-    testCases.push_back(new TestStudentDetailsDialog);
-    testCases.push_back(new TestMainWindow);
+    //    testCases.push_back(new TestLoginDialog);
+    //    testCases.push_back(new TestCommData);
+    //    testCases.push_back(new TestCommManager);
+    //    testCases.push_back(new TestData);
+    //    testCases.push_back(new TestModels);
+    //    testCases.push_back(new TestPasoDB);
+    //    testCases.push_back(new TestForms);
+    //    testCases.push_back(new TestWidgets);
+    //    testCases.push_back(new TestCourseAdministration);
+    //    testCases.push_back(new TestListAdministration);
+    //    testCases.push_back(new TestRoomAdministration);
+    //    testCases.push_back(new TestSystemUserAdministration);
+    //    testCases.push_back(new TestStudentAdministration);
+    //    testCases.push_back(new TestCourseDetailsDialog);
+    //    testCases.push_back(new TestListDetailsDialog);
+    //    testCases.push_back(new TestStudentDetailsDialog);
+    //    testCases.push_back(new TestMainWindow);
     testCases.push_back(new TestActivityAdministration);
 
     for (auto testCase : testCases) {

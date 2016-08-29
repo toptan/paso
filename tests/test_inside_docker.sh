@@ -45,7 +45,7 @@ case "$1" in
             dbus-uuidgen > /etc/machine-id
 
             # Setup database for tests
-            su - postgres -c "initdb --pgdata=/var/lib/pgsql/data --auth-host=md5"
+            su - postgres -c "initdb --pgdata=/var/lib/pgsql/data --auth-host=md5 --encoding=UTF8"
             su - postgres -c "pg_ctl -D /var/lib/pgsql/data -l logfile start"
             sleep 5
             su - postgres -c "echo \"CREATE ROLE pasotest SUPERUSER LOGIN UNENCRYPTED PASSWORD 'pasotest';\" | psql"

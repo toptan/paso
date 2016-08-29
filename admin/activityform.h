@@ -19,7 +19,7 @@ public:
     virtual ~ActivityForm();
 
 protected slots:
-    virtual void onNewRecord();
+    virtual void onNewRecord() override;
 
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;

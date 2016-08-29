@@ -15,6 +15,7 @@
 #include <QSqlField>
 #include <QTableView>
 #include <QTime>
+#include <memory>
 
 using namespace std;
 using namespace paso::data::entity;
@@ -26,8 +27,9 @@ TestActivityAdministration::TestActivityAdministration() : TestBase() {}
 void TestActivityAdministration::testActivityValidator() {
     const QSqlRecord record;
 
-    ActivityValidator validator(FieldTypes(), FieldEditors(), this);
-    QVERIFY(validator.validate(record) == nullptr);
+    unique_ptr<ActivityValidator> validator(
+        new ActivityValidator(FieldTypes(), FieldEditors(), this));
+    QVERIFY(validator->validate(record) == nullptr);
 }
 
 void TestActivityAdministration::testActivityEditorWidget() {
@@ -56,22 +58,25 @@ void TestActivityAdministration::testActivityEditorWidget() {
     record.append(QSqlField("start_date", QVariant::Date));
     record.append(QSqlField("finish_date", QVariant::Date));
     record.append(QSqlField("can_overlap", QVariant::Bool));
-    ActivityEditorWidget editor(fieldTypes);
-    editor.setupUi(columnLabels, record);
-    editor.onEditNewRecord(record);
+    unique_ptr<ActivityEditorWidget> editor(
+        new ActivityEditorWidget(fieldTypes));
+    editor->setupUi(columnLabels, record);
+    editor->show();
+    QTest::qWaitForWindowExposed(editor.get());
+    editor->onEditNewRecord(record);
     QApplication::processEvents();
-    auto nameEdit = dynamic_cast<QLineEdit *>(editor.fieldEditors()["name"]);
-    auto typeEdit = dynamic_cast<QComboBox *>(editor.fieldEditors()["type"]);
+    auto nameEdit = dynamic_cast<QLineEdit *>(editor->fieldEditors()["name"]);
+    auto typeEdit = dynamic_cast<QComboBox *>(editor->fieldEditors()["type"]);
     auto scheduleEdit =
-        dynamic_cast<QLineEdit *>(editor.fieldEditors()["schedule"]);
+        dynamic_cast<QLineEdit *>(editor->fieldEditors()["schedule"]);
     auto durationEdit =
-        dynamic_cast<QTimeEdit *>(editor.fieldEditors()["duration"]);
+        dynamic_cast<QTimeEdit *>(editor->fieldEditors()["duration"]);
     auto startEditor =
-        dynamic_cast<QDateEdit *>(editor.fieldEditors()["start_date"]);
+        dynamic_cast<QDateEdit *>(editor->fieldEditors()["start_date"]);
     auto finishEditor =
-        dynamic_cast<QDateEdit *>(editor.fieldEditors()["finish_date"]);
+        dynamic_cast<QDateEdit *>(editor->fieldEditors()["finish_date"]);
     auto canOverlapEditor =
-        dynamic_cast<QCheckBox *>(editor.fieldEditors()["can_overlap"]);
+        dynamic_cast<QCheckBox *>(editor->fieldEditors()["can_overlap"]);
     QVERIFY(nameEdit->isReadOnly());
     QVERIFY(!typeEdit->isEnabled());
     QVERIFY(scheduleEdit->isReadOnly());
@@ -80,9 +85,9 @@ void TestActivityAdministration::testActivityEditorWidget() {
     QVERIFY(finishEditor->isReadOnly());
     QVERIFY(!canOverlapEditor->isEnabled());
 
-    editor.saveSuccessfull();
+    editor->saveSuccessfull();
     QApplication::processEvents();
-    editor.onEditExistingRecord(record);
+    editor->onEditExistingRecord(record);
     QApplication::processEvents();
     QVERIFY(nameEdit->isReadOnly());
     QVERIFY(!typeEdit->isEnabled());
@@ -96,16 +101,16 @@ void TestActivityAdministration::testActivityEditorWidget() {
 void TestActivityAdministration::testActivityTableModel() {
     auto db = QSqlDatabase::database(dbName);
     db.exec("DELETE FROM ACTIVITY");
-    db.exec(
-        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
-        "                     DURATION, START_DATE, FINISH_DATE)"
-        "              VALUES('A1', 'EXAM', '0 8 15 8 *',"
-        "                     '03:00:00.000', '2016-08-15', '2016-08-15')");
+    db.exec("INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
+            "                     DURATION, START_DATE, FINISH_DATE)"
+            "              VALUES('A1', 'EXAM', '0 8 15 8 *',"
+            "                     '03:00:00.000', '2016-08-15', '2016-08-15')");
     db.exec(
         "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
         "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
         "              VALUES('A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
-        "                     '01:30:00.000', '2016-09-01', '2016-09-30', true)");
+        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
+        "true)");
 
     const QVariantMap columnLabels{{"name", "Name"},
                                    {"type", "Type"},
@@ -174,19 +179,20 @@ void TestActivityAdministration::testActivityForm() {
         "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
         "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
         "              VALUES('A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
-        "                     '01:30:00.000', '2016-09-01', '2016-09-30', true);");
+        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
+        "true);");
 
-    ActivityForm form;
-    form.show();
-    QTest::qWaitForWindowExposed(&form);
-    auto tableView = form.findChild<QTableView *>();
-    auto editor = form.findChild<ActivityEditorWidget *>();
-    auto model = dynamic_cast<ActivityTableModel *>(form.model());
+    unique_ptr<ActivityForm> form(new ActivityForm);
+    form->show();
+    QTest::qWaitForWindowExposed(form.get());
+    auto tableView = form->findChild<QTableView *>();
+    auto editor = form->findChild<ActivityEditorWidget *>();
+    auto model = dynamic_cast<ActivityTableModel *>(form->model());
     QAction *newAction = nullptr;
     QAction *editAction = nullptr;
     QAction *deleteAction = nullptr;
     QAction *refreshAction = nullptr;
-    for (auto action : form.toolBarActions()) {
+    for (auto action : form->toolBarActions()) {
         if (action->objectName() == "NEW_RECORD_ACTION") {
             newAction = action;
             continue;
@@ -223,19 +229,20 @@ void TestActivityAdministration::testActivityForm() {
 }
 
 void TestActivityAdministration::testNameAndTypePage() {
-    QWizard wizard;
-    ActivityWizardNameAndTypePage page;
-    wizard.addPage(&page);
-    wizard.show();
-    QTest::qWaitForWindowExposed(&wizard);
+    auto wizard = new QWizard;
+    auto page = new ActivityWizardNameAndTypePage;
+    wizard->addPage(page);
+    wizard->show();
+    QTest::qWaitForWindowExposed(wizard);
+    QApplication::processEvents();
 
-    QCOMPARE(page.title(), QString("Activity Name and Type"));
-    QCOMPARE(page.subTitle(),
+    QCOMPARE(page->title(), QString("Activity Name and Type"));
+    QCOMPARE(page->subTitle(),
              QString("Fill in activity name and select its type."));
 
-    auto nameEdit = page.findChild<QLineEdit *>();
-    auto comboBox = page.findChild<QComboBox *>();
-    auto checkBox = page.findChild<QCheckBox *>();
+    auto nameEdit = page->findChild<QLineEdit *>();
+    auto comboBox = page->findChild<QComboBox *>();
+    auto checkBox = page->findChild<QCheckBox *>();
     QVERIFY(nameEdit != nullptr);
     QVERIFY(comboBox != nullptr);
     QVERIFY(checkBox != nullptr);
@@ -248,32 +255,41 @@ void TestActivityAdministration::testNameAndTypePage() {
     }
     nameEdit->setText("BLABLA");
     QApplication::processEvents();
-    QCOMPARE(wizard.field("name").toString(), QString("BLABLA"));
-    QCOMPARE(wizard.field("type").toString(), QString("SPECIAL_EVENT"));
-    QVERIFY(!wizard.field("canOverlap").toBool());
+    QCOMPARE(wizard->field("name").toString(), QString("BLABLA"));
+    QCOMPARE(wizard->field("type").toString(), QString("SPECIAL_EVENT"));
+    QVERIFY(!wizard->field("canOverlap").toBool());
 
     // Select individual work
     comboBox->setCurrentIndex(4);
     QApplication::processEvents();
     checkBox->setChecked(true);
     QApplication::processEvents();
-    QCOMPARE(wizard.field("type").toString(), QString("INDIVIDUAL_WORK"));
-    QVERIFY(wizard.field("canOverlap").toBool());
+    QCOMPARE(wizard->field("type").toString(), QString("INDIVIDUAL_WORK"));
+    QVERIFY(wizard->field("canOverlap").toBool());
+
+    // Select colloquium
+    comboBox->setCurrentIndex(2);
+    QApplication::processEvents();
+    checkBox->setChecked(true);
+    QApplication::processEvents();
+    QCOMPARE(wizard->field("type").toString(), QString("COLLOQUIUM"));
+    QVERIFY(wizard->field("canOverlap").toBool());
+    delete wizard;
 }
 
 void TestActivityAdministration::testFixedDatePage() {
-    QWizard wizard;
-    ActivityWizardFixedDatePage page;
-    wizard.addPage(&page);
-    wizard.show();
-    QTest::qWaitForWindowExposed(&wizard);
-
-    QCOMPARE(page.title(), QString("Activity Date and Duration"));
-    QCOMPARE(page.subTitle(),
+    auto wizard = new QWizard;
+    auto page = new ActivityWizardFixedDatePage;
+    wizard->addPage(page);
+    wizard->show();
+    QTest::qWaitForWindowExposed(wizard);
+    QApplication::processEvents();
+    QCOMPARE(page->title(), QString("Activity Date and Duration"));
+    QCOMPARE(page->subTitle(),
              QString("Fill in activity date, time and duration."));
 
-    auto dateTimeEdit = page.findChild<QDateTimeEdit *>("dateTimeEdit");
-    auto durationEdit = page.findChild<QTimeEdit *>("durationEdit");
+    auto dateTimeEdit = page->findChild<QDateTimeEdit *>("dateTimeEdit");
+    auto durationEdit = page->findChild<QTimeEdit *>("durationEdit");
     QVERIFY(dateTimeEdit != nullptr);
     QVERIFY(durationEdit != nullptr);
     QCOMPARE(dateTimeEdit->minimumDate(), QDate::currentDate());
@@ -281,22 +297,23 @@ void TestActivityAdministration::testFixedDatePage() {
 
     dateTimeEdit->setDate(QDate::currentDate().addDays(1));
     QApplication::processEvents();
-    QVERIFY(page.isComplete());
+    QVERIFY(page->isComplete());
     durationEdit->setTime(QTime(0, 0, 0));
     QApplication::processEvents();
-    QVERIFY(!page.isComplete());
+    QVERIFY(!page->isComplete());
     dateTimeEdit->setDate(QDate::currentDate().addDays(-2));
     durationEdit->setTime(QTime(2, 0, 0));
     QApplication::processEvents();
-    QVERIFY(!page.isComplete());
+    QVERIFY(!page->isComplete());
 
     QDateTime testDateTime = QDateTime::currentDateTime().addDays(5);
     dateTimeEdit->setDateTime(testDateTime);
     durationEdit->setTime(QTime(0, 45, 0));
     QApplication::processEvents();
-    QCOMPARE(wizard.field("selectedDateTime").toDateTime(), testDateTime);
-    QCOMPARE(wizard.field("duration").toTime(), QTime(0, 45, 0));
+    QCOMPARE(wizard->field("selectedDateTime").toDateTime(), testDateTime);
+    QCOMPARE(wizard->field("duration").toTime(), QTime(0, 45, 0));
+
+    delete wizard;
 }
 
-void TestActivityAdministration::testActivityWizard() {
-}
+void TestActivityAdministration::testActivityWizard() {}

@@ -179,9 +179,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="32"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/roomform.cpp" line="35"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="32"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -208,6 +208,11 @@
     <message>
         <location filename="../admin/activityform.cpp" line="37"/>
         <source>Finish date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="38"/>
+        <source>Can overlap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -441,7 +446,7 @@
 <context>
     <name>paso::admin::ActivityForm</name>
     <message>
-        <location filename="../admin/activityform.cpp" line="80"/>
+        <location filename="../admin/activityform.cpp" line="82"/>
         <source>Do you want to delete selected activity from the system?</source>
         <translation type="unfinished"></translation>
     </message>

@@ -222,9 +222,9 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="32"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/roomform.cpp" line="35"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="32"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
@@ -252,6 +252,11 @@
         <location filename="../admin/activityform.cpp" line="37"/>
         <source>Finish date</source>
         <translation>Крајњи датум</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="38"/>
+        <source>Can overlap</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/roomform.cpp" line="36"/>
@@ -441,7 +446,7 @@
 <context>
     <name>paso::admin::ActivityForm</name>
     <message>
-        <location filename="../admin/activityform.cpp" line="80"/>
+        <location filename="../admin/activityform.cpp" line="82"/>
         <source>Do you want to delete selected activity from the system?</source>
         <translation>Да ли стварно желите да обришете одабрану активност из система?</translation>
     </message>

@@ -42,3 +42,6 @@ thesis/*.log
 thesis/*.lot
 thesis/*.pdf
 thesis/*.toc
+
+# Coverage results
+*coverage.info

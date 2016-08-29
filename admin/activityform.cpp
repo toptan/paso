@@ -34,13 +34,15 @@ ActivityForm::createModelAndEditor() {
                                    {"schedule", QObject::tr("Schedule")},
                                    {"duration", QObject::tr("Duration")},
                                    {"start_date", QObject::tr("Start date")},
-                                   {"finish_date", QObject::tr("Finish date")}};
+                                   {"finish_date", QObject::tr("Finish date")},
+                                   {"can_overlap", QObject::tr("Can overlap")}};
     const FieldTypes fieldTypes{{"name", FieldType::LineEdit},
                                 {"type", FieldType::ComboBox},
                                 {"schedule", FieldType::LineEdit},
                                 {"duration", FieldType::TimeEdit},
                                 {"start_date", FieldType::DateEdit},
-                                {"finish_date", FieldType::DateEdit}};
+                                {"finish_date", FieldType::DateEdit},
+                                {"can_overlap", FieldType::CheckBox}};
 
     auto model = new ActivityTableModel(
         columnLabels, QSqlDatabase::database(DEFAULT_DB_NAME));

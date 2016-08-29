@@ -34,7 +34,6 @@ ActivityWizardNameAndTypePage::ActivityWizardNameAndTypePage(QWidget *parent)
     registerField("type", ui->typeComboBox, "currentData",
                   SIGNAL(currentIndexChanged(int)));
     registerField("canOverlap", ui->overlapCheckBox);
-    QTimer::singleShot(50, [this]() { ui->typeComboBox->setCurrentIndex(0); });
 }
 
 ActivityWizardNameAndTypePage::~ActivityWizardNameAndTypePage() { delete ui; }
