@@ -34,6 +34,7 @@ ActivityWizardNameAndTypePage::ActivityWizardNameAndTypePage(QWidget *parent)
     registerField("type", ui->typeComboBox, "currentData",
                   SIGNAL(currentIndexChanged(int)));
     registerField("canOverlap", ui->overlapCheckBox);
+    registerField("moreThanOnce", ui->moreThanOnceCheckBox);
 }
 
 ActivityWizardNameAndTypePage::~ActivityWizardNameAndTypePage() { delete ui; }

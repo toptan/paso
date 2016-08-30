@@ -17,7 +17,9 @@ private slots:
     void testActivityForm();
     void testNameAndTypePage();
     void testFixedDatePage();
+    void testRoomsSelectionPage();
     void testActivityWizard();
+
 };
 
 #endif // TESTACTIVITYADMINISTRATION_H

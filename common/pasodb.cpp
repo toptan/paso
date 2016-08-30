@@ -928,6 +928,38 @@ bool DBManager::setActivityLists(quint64 activityId,
     return true;
 }
 
+EntityVector DBManager::activityRooms(quint64 activityId,
+                                      QSqlError &error) const {
+    auto query = Activity::findActivityRoomsQuery(
+        QSqlDatabase::database(mDbName), activityId);
+    query.exec();
+    error = query.lastError();
+    EntityVector retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal.emplace_back(
+                make_shared<Room>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
+
+EntityVector DBManager::nonActivityRooms(quint64 activityId,
+                                         QSqlError &error) const {
+    auto query = Activity::findNonActivityRoomsQuery(
+        QSqlDatabase::database(mDbName), activityId);
+    query.exec();
+    error = query.lastError();
+    EntityVector retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal.emplace_back(
+                make_shared<Room>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
+
 bool DBManager::setActivityRooms(quint64 activityId,
                                  const QList<quint64> &roomIds,
                                  QSqlError &error) const {

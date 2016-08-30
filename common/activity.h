@@ -171,6 +171,26 @@ public:
                                                quint64 activityId);
 
     ///
+    /// \brief Returns query that finds all rooms associated with given
+    /// activity.
+    /// \param database The database to use.
+    /// \param activityId The activity id.
+    /// \return The query.
+    ///
+    static QSqlQuery findActivityRoomsQuery(const QSqlDatabase &database,
+                                            quint64 activityId);
+
+    ///
+    /// \brief Returns query that finds all rooms that are not associated with
+    /// given activity.
+    /// \param database The database to use.
+    /// \param activityId The activity id.
+    /// \return The query.
+    ///
+    static QSqlQuery findNonActivityRoomsQuery(const QSqlDatabase &database,
+                                               quint64 activityId);
+
+    ///
     /// \brief Returns query that removes all associated lists from activity.
     /// \param database The database to use.
     /// \param activityId The activity id.

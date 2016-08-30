@@ -88,6 +88,7 @@ void TestBase::init() {
 }
 
 void TestBase::cleanup() {
+    QApplication::processEvents();
     auto db = QSqlDatabase::database(dbName);
     db.exec("set client_min_messages=WARNING;");
     QFile drop_objects_sql("drop_objects.sql");

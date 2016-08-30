@@ -13,7 +13,7 @@ public:
 protected slots:
     virtual void initTestCase() override;
 
-public slots:
+private slots:
     void testOperationsShouldFailOnDatabaseErrors();
 
     void testGetAllSystemUsers();
@@ -60,7 +60,6 @@ public slots:
     void testUpdatingListStudents();
     void testRemovingAllStudentsFromList();
 
-private slots:
     void testAssociateListsWithActivity();
     void testAssociateRoomsWithActivity();
 

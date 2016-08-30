@@ -505,6 +505,26 @@ public:
                           QSqlError &error) const;
 
     ///
+    /// \brief Returns all rooms associated with activity with given id.
+    /// \param activityId The activity id.
+    /// \param error The SQL error if any.
+    /// \return Vector of rooms associated with activity with given id.
+    ///
+    data::entity::EntityVector activityRooms(quint64 activityId,
+                                             QSqlError &error) const;
+
+    ///
+    /// \brief Returns all rooms that are not associated with activity with
+    /// given id.
+    /// \param activityId The activity id.
+    /// \param error The SQL error if any.
+    /// \return Vector of rooms that are not associated with activity with given
+    /// id.
+    ///
+    data::entity::EntityVector nonActivityRooms(quint64 activityId,
+                                                QSqlError &error) const;
+
+    ///
     /// \brief Associates given rooms with activity.
     /// \note Previous associations will be deleted.
     /// \param activityId The activity id.

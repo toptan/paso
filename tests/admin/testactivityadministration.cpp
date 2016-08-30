@@ -7,6 +7,8 @@
 #include "activityvalidator.h"
 #include "activitywizardfixeddatepage.h"
 #include "activitywizardnameandtypepage.h"
+#include "activitywizardroomsselectionpage.h"
+#include "addremoveentitiesform.h"
 
 #include <QAction>
 #include <QCheckBox>
@@ -229,12 +231,11 @@ void TestActivityAdministration::testActivityForm() {
 }
 
 void TestActivityAdministration::testNameAndTypePage() {
-    auto wizard = new QWizard;
+    QWizard wizard;
     auto page = new ActivityWizardNameAndTypePage;
-    wizard->addPage(page);
-    wizard->show();
-    QTest::qWaitForWindowExposed(wizard);
-    QApplication::processEvents();
+    wizard.addPage(page);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
 
     QCOMPARE(page->title(), QString("Activity Name and Type"));
     QCOMPARE(page->subTitle(),
@@ -242,48 +243,54 @@ void TestActivityAdministration::testNameAndTypePage() {
 
     auto nameEdit = page->findChild<QLineEdit *>();
     auto comboBox = page->findChild<QComboBox *>();
-    auto checkBox = page->findChild<QCheckBox *>();
+    auto overlapCheckBox = page->findChild<QCheckBox *>("overlapCheckBox");
+    auto moreThanOnceCheckBox =
+        page->findChild<QCheckBox *>("moreThanOnceCheckBox");
     QVERIFY(nameEdit != nullptr);
     QVERIFY(comboBox != nullptr);
-    QVERIFY(checkBox != nullptr);
+    QVERIFY(overlapCheckBox != nullptr);
+    QVERIFY(moreThanOnceCheckBox != nullptr);
+
     QCOMPARE(nameEdit->maxLength(), 64);
     for (auto i = 0; i < comboBox->count(); i++) {
         comboBox->setCurrentIndex(i);
         QApplication::processEvents();
-        QCOMPARE(checkBox->isVisible(),
+        QCOMPARE(overlapCheckBox->isVisible(),
                  comboBox->itemData(i).toString() == "INDIVIDUAL_WORK");
     }
     nameEdit->setText("BLABLA");
     QApplication::processEvents();
-    QCOMPARE(wizard->field("name").toString(), QString("BLABLA"));
-    QCOMPARE(wizard->field("type").toString(), QString("SPECIAL_EVENT"));
-    QVERIFY(!wizard->field("canOverlap").toBool());
+    QCOMPARE(wizard.field("name").toString(), QString("BLABLA"));
+    QCOMPARE(wizard.field("type").toString(), QString("SPECIAL_EVENT"));
+    QVERIFY(!wizard.field("canOverlap").toBool());
+    QVERIFY(!wizard.field("moreThanOnce").toBool());
 
     // Select individual work
     comboBox->setCurrentIndex(4);
     QApplication::processEvents();
-    checkBox->setChecked(true);
+    overlapCheckBox->setChecked(true);
+    moreThanOnceCheckBox->setChecked(true);
     QApplication::processEvents();
-    QCOMPARE(wizard->field("type").toString(), QString("INDIVIDUAL_WORK"));
-    QVERIFY(wizard->field("canOverlap").toBool());
+    QCOMPARE(wizard.field("type").toString(), QString("INDIVIDUAL_WORK"));
+    QVERIFY(wizard.field("canOverlap").toBool());
+    QVERIFY(wizard.field("moreThanOnce").toBool());
 
     // Select colloquium
     comboBox->setCurrentIndex(2);
     QApplication::processEvents();
-    checkBox->setChecked(true);
+    overlapCheckBox->setChecked(true);
     QApplication::processEvents();
-    QCOMPARE(wizard->field("type").toString(), QString("COLLOQUIUM"));
-    QVERIFY(wizard->field("canOverlap").toBool());
-    delete wizard;
+    QCOMPARE(wizard.field("type").toString(), QString("COLLOQUIUM"));
+    QVERIFY(wizard.field("canOverlap").toBool());
 }
 
 void TestActivityAdministration::testFixedDatePage() {
-    auto wizard = new QWizard;
+    QWizard wizard;
     auto page = new ActivityWizardFixedDatePage;
-    wizard->addPage(page);
-    wizard->show();
-    QTest::qWaitForWindowExposed(wizard);
-    QApplication::processEvents();
+    wizard.addPage(page);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+
     QCOMPARE(page->title(), QString("Activity Date and Duration"));
     QCOMPARE(page->subTitle(),
              QString("Fill in activity date, time and duration."));
@@ -310,10 +317,22 @@ void TestActivityAdministration::testFixedDatePage() {
     dateTimeEdit->setDateTime(testDateTime);
     durationEdit->setTime(QTime(0, 45, 0));
     QApplication::processEvents();
-    QCOMPARE(wizard->field("selectedDateTime").toDateTime(), testDateTime);
-    QCOMPARE(wizard->field("duration").toTime(), QTime(0, 45, 0));
+    QCOMPARE(wizard.field("selectedDateTime").toDateTime(), testDateTime);
+    QCOMPARE(wizard.field("duration").toTime(), QTime(0, 45, 0));
+}
 
-    delete wizard;
+void TestActivityAdministration::testRoomsSelectionPage() {
+    QWizard wizard;
+    auto page = new ActivityWizardRoomsSelectionPage;
+    wizard.addPage(page);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    QCOMPARE(page->title(), QString("Activity Rooms"));
+    QCOMPARE(page->subTitle(),
+             QString("Select rooms where activity will happen."));
+
+    auto addRemoveForm = page->findChild<AddRemoveEntitiesForm *>();
+
 }
 
 void TestActivityAdministration::testActivityWizard() {}

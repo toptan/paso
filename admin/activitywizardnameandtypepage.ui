@@ -57,6 +57,13 @@
      </property>
     </widget>
    </item>
+   <item row="3" column="1">
+    <widget class="QCheckBox" name="moreThanOnceCheckBox">
+     <property name="text">
+      <string>Ativity happens more than once or during period of time</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

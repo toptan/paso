@@ -1,16 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>ActivityWizardRoomsSelectionPage</class>
- <widget name="ActivityWizardRoomsSelectionPage" class="QWizardPage">
+ <widget class="QWizardPage" name="ActivityWizardRoomsSelectionPage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>689</width>
+    <height>542</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>WizardPage</string>
   </property>
+  <property name="title">
+   <string>Activity Rooms</string>
+  </property>
+  <property name="subTitle">
+   <string>Select rooms where activity will happen.</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="paso::widget::AddRemoveEntitiesForm" name="entityForm" native="true"/>
+   </item>
+  </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>paso::widget::AddRemoveEntitiesForm</class>
+   <extends>QWidget</extends>
+   <header>addremoveentitiesform.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
 </ui>

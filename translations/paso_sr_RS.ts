@@ -61,12 +61,27 @@
         <source>Can overlap with other activities</source>
         <translation>Може да се преклопи са другим активностима</translation>
     </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="63"/>
+        <source>Ativity happens more than once or during period of time</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ActivityWizardRoomsSelectionPage</name>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.ui" line="13"/>
+        <location filename="../admin/activitywizardroomsselectionpage.ui" line="14"/>
         <source>WizardPage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.ui" line="17"/>
+        <source>Activity Rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.ui" line="20"/>
+        <source>Select rooms where activity will happen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -230,9 +245,9 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="32"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/roomform.cpp" line="35"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="32"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>

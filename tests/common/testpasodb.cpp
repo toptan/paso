@@ -1004,6 +1004,7 @@ void TestPasoDB::testAssociateListsWithActivity() {
 }
 
 void TestPasoDB::testAssociateRoomsWithActivity() {
+    auto db = QSqlDatabase::database(dbName);
     db.exec(
         "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
         "                     DURATION, START_DATE, FINISH_DATE)"

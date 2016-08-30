@@ -142,6 +142,33 @@ QSqlQuery Activity::findNonActivityListsQuery(const QSqlDatabase &database,
     return query;
 }
 
+QSqlQuery Activity::findActivityRoomsQuery(const QSqlDatabase &database,
+                                           quint64 activityId) {
+    QSqlQuery query(database);
+    query.prepare("SELECT R.*"
+                  "  FROM ROOM R"
+                  "  JOIN ACTIVITY_ROOMS AR ON AR.ID_ROOM = R.ID"
+                  " WHERE AR.ID_ACTIVITY = :activity_id");
+    query.bindValue(":activity_id", activityId);
+    return query;
+}
+
+QSqlQuery Activity::findNonActivityRoomsQuery(const QSqlDatabase &database,
+                                              quint64 activityId) {
+    QSqlQuery query(database);
+    query.prepare(
+        "SELECT DISTINCT R.*"
+        "  FROM ROOM R"
+        " WHERE R.ID NOT IN (SELECT R1.ID"
+        "						 FROM ROOM R1"
+        "						 JOIN ACTIVITY_ROOMS AR"
+        "                          ON AR.ID_ROOM = R1.ID"
+        " 					    WHERE AR.ID_ACTIVITY = "
+        ":activity_id)");
+    query.bindValue(":activity_id", activityId);
+    return query;
+}
+
 QSqlQuery
 Activity::removeAllListsFromActivityQuery(const QSqlDatabase &database,
                                           quint64 activityId) {
