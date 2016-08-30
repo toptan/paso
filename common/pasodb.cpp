@@ -911,39 +911,38 @@ EntityVector DBManager::nonActivityLists(quint64 activityId,
     return retVal;
 }
 
-bool DBManager::associateListsWithActivity(quint64 activityId,
-                                           const QList<quint64> &listIds,
-                                           QSqlError &error) const {
+bool DBManager::setActivityLists(quint64 activityId,
+                                 const QList<quint64> &listIds,
+                                 QSqlError &error) const {
     auto db = QSqlDatabase::database(mDbName);
     beginTransaction();
-    auto query = Activity::removeAllListsFromActivity(db, activityId);
+    auto query = Activity::setActivityListsQuery(db, activityId, listIds);
+    query.execBatch(QSqlQuery::ValuesAsColumns);
     query.exec();
     error = query.lastError();
-    if (error.type() == QSqlError::NoError) {
-        QSqlQuery q(db);
-        q.prepare("INSERT INTO ACTIVITY_LISTS(ID_ACTIVITY, ID_LIST)"
-                      "            VALUES(:activity_id, :list_id)");
-        QVariantList aIds;
-        for (auto i = 0; i < listIds.size(); i++) {
-            aIds << activityId;
-        }
-        QVariantList lIds;
-        for (auto i = 0; i < listIds.size(); i++) {
-            lIds << listIds[i];
-        }
-        q.bindValue(":activity_id", aIds);
-        q.bindValue(":list_id", lIds);
-//        q.addBindValue(aIds);
-//        q.addBindValue(lIds);
-        q.execBatch();
-        error = q.lastError();
-        if (error.type() == QSqlError::NoError) {
-            commit();
-            return true;
-        }
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
     }
-    rollback();
-    return false;
+    commit();
+    return true;
+}
+
+bool DBManager::setActivityRooms(quint64 activityId,
+                                 const QList<quint64> &roomIds,
+                                 QSqlError &error) const {
+    auto db = QSqlDatabase::database(mDbName);
+    beginTransaction();
+    auto query = Activity::setActivityRoomsQuery(db, activityId, roomIds);
+    query.execBatch(QSqlQuery::ValuesAsColumns);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+    commit();
+    return true;
 }
 }
 }

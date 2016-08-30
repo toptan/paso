@@ -8,7 +8,7 @@
     - [**Build requirements**](#build-requirements)
     - [**Installing requirements**](#installing-requirements)
     - [**Source code access**](#source-code-access)
-- [**Building**](#building-and-running)
+- [**Building**](#building)
     - [**Configuring the build**](#configuring-the-build)
     - [**Building binaries**](#building-binaries)
     - [**Important make targets**](#important-make-targets)

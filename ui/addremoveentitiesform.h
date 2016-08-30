@@ -112,6 +112,14 @@ signals:
     ///
     void removedEntitiesChanged(QList<quint64> entityIdList) const;
 
+    ///
+    /// \brief Emited whenever destination data vector is changed.
+    /// \see mDestinationData
+    ///
+    /// \param entityIdList The list of entity ids from \ref mDestinationData.
+    ///
+    void destinationEntitiesChanged(QList<quint64> entityIdList) const;
+
 private slots:
     ///
     /// \brief The slot to be executed when add button is clicked.
@@ -146,6 +154,30 @@ private:
     model::StableRowNumberSortFilterProxyModel *mSourceProxyModel;
     /// The proxy model for the destination data.
     model::StableRowNumberSortFilterProxyModel *mDestinationProxyModel;
+
+    ///
+    /// \brief A helper function for preparing data for emitting \ref
+    /// addedEntitiesChanged() signal.
+    ///
+    /// \return List of entity ids from \ref mAddedEntities
+    ///
+    QList<quint64> addedEntitiesChangedHelper();
+
+    ///
+    /// \brief A helper function for preparing data for emitting \ref
+    /// removedEntitiesChanged() signal.
+    ///
+    /// \return List of entity ids from \ref mRemovedEntities
+    ///
+    QList<quint64> removedEntitiesChangedHelper();
+
+    ///
+    /// \brief A helper function for preparing data for emitting \ref
+    /// destinationEntitiesChanged() signal.
+    ///
+    /// \return List of entity ids from \ref mDestinationData
+    ///
+    QList<quint64> destinationEntitiesChangedHelper();
 };
 }
 }

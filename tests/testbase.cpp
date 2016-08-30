@@ -84,6 +84,7 @@ void TestBase::init() {
     if (db.lastError().type() != QSqlError::NoError) {
         qWarning() << "IR3SP:" << db.lastError();
     }
+    db.exec("set client_min_messages=NOTICE;");
 }
 
 void TestBase::cleanup() {

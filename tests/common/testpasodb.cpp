@@ -981,25 +981,44 @@ void TestPasoDB::testRemovingAllStudentsFromList() {
 }
 
 void TestPasoDB::testAssociateListsWithActivity() {
-    //    auto db = QSqlDatabase::database(dbName);
-    //    db.exec(
-    //        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
-    //        "                     DURATION, START_DATE, FINISH_DATE)"
-    //        "              VALUES(1, 'A1', 'EXAM', '0 8 15 8 *',"
-    //        "                     '03:00:00.000', '2016-08-15',
-    //        '2016-08-15');");
-    //    db.exec(
-    //        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
-    //        "                     DURATION, START_DATE, FINISH_DATE,
-    //        CAN_OVERLAP)"
-    //        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
-    //        "                     '01:30:00.000', '2016-09-01', '2016-09-30',
-    //        1);");
-    //    DBManager manager(dbName);
-    //    QList<quint64> listIds{1, 2, 3};
-    //    QSqlError error;
-    //    QVERIFY(manager.associateListsWithActivity(1, listIds, error));
-    //    auto q = db.exec("SELECT * FROM ACTIVITY_LISTS");
-    //    QVERIFY(manager.associateListsWithActivity(1, {3, 4, 5}, error));
-    //    q = db.exec("SELECT * FROM ACTIVITY_LISTS");
+    auto db = QSqlDatabase::database(dbName);
+    db.exec(
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+        "                     DURATION, START_DATE, FINISH_DATE)"
+        "              VALUES(1, 'A1', 'EXAM', '0 8 15 8 *',"
+        "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
+    db.exec(
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+        "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
+        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
+        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
+        "true);");
+
+    DBManager manager(dbName);
+    QList<quint64> listIds{1, 2, 3};
+    QSqlError error;
+    QVERIFY(manager.setActivityLists(1, listIds, error));
+    QCOMPARE(manager.activityLists(1, error).size(), size_t(3));
+    QVERIFY(manager.setActivityLists(1, {3, 4}, error));
+    QCOMPARE(manager.activityLists(1, error).size(), size_t(2));
+}
+
+void TestPasoDB::testAssociateRoomsWithActivity() {
+    db.exec(
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+        "                     DURATION, START_DATE, FINISH_DATE)"
+        "              VALUES(1, 'A1', 'EXAM', '0 8 15 8 *',"
+        "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
+    db.exec(
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+        "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
+        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
+        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
+        "true);");
+
+    DBManager manager(dbName);
+    QList<quint64> roomIds{1, 2};
+    QSqlError error;
+    QVERIFY(manager.setActivityRooms(1, roomIds, error));
+    QCOMPARE(manager.activityRooms(1, error).size(), size_t(2));
 }

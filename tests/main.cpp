@@ -134,7 +134,7 @@ int main(int argc, char **argv) {
     //    testCases.push_back(new TestCommManager);
     //    testCases.push_back(new TestData);
     //    testCases.push_back(new TestModels);
-    //    testCases.push_back(new TestPasoDB);
+    testCases.push_back(new TestPasoDB);
     //    testCases.push_back(new TestForms);
     //    testCases.push_back(new TestWidgets);
     //    testCases.push_back(new TestCourseAdministration);
@@ -146,7 +146,7 @@ int main(int argc, char **argv) {
     //    testCases.push_back(new TestListDetailsDialog);
     //    testCases.push_back(new TestStudentDetailsDialog);
     //    testCases.push_back(new TestMainWindow);
-    testCases.push_back(new TestActivityAdministration);
+    //    testCases.push_back(new TestActivityAdministration);
 
     for (auto testCase : testCases) {
         ASSERT_TEST(testCase);

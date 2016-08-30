@@ -63,6 +63,14 @@
     </message>
 </context>
 <context>
+    <name>ActivityWizardRoomsSelectionPage</name>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.ui" line="13"/>
+        <source>WizardPage</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AddRemoveEntitiesForm</name>
     <message>
         <location filename="../ui/addremoveentitiesform.ui" line="85"/>
@@ -222,9 +230,9 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/activityform.cpp" line="32"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/roomform.cpp" line="35"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>

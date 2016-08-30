@@ -1,5 +1,7 @@
 #include "activity.h"
 
+#include <QTextStream>
+
 namespace paso {
 namespace data {
 namespace entity {
@@ -119,7 +121,7 @@ QSqlQuery Activity::findActivityListsQuery(const QSqlDatabase &database,
     query.prepare("SELECT L.*"
                   "  FROM LIST L"
                   "  JOIN ACTIVITY_LISTS AL ON AL.ID_LIST = L.ID"
-                  " WHERE LM.ID_ACTIVITY = :activity_id");
+                  " WHERE AL.ID_ACTIVITY = :activity_id");
     query.bindValue(":activity_id", activityId);
     return query;
 }
@@ -134,14 +136,15 @@ QSqlQuery Activity::findNonActivityListsQuery(const QSqlDatabase &database,
         "						 FROM LIST L1"
         "						 JOIN ACTIVITY_LISTS AL"
         "                          ON AL.ID_LIST = L1.ID"
-        " 					    WHERE LM.ID_ACTIVITY = "
+        " 					    WHERE AL.ID_ACTIVITY = "
         ":activity_id)");
     query.bindValue(":activity_id", activityId);
     return query;
 }
 
-QSqlQuery Activity::removeAllListsFromActivity(const QSqlDatabase &database,
-                                               quint64 activityId) {
+QSqlQuery
+Activity::removeAllListsFromActivityQuery(const QSqlDatabase &database,
+                                          quint64 activityId) {
     QSqlQuery query(database);
     query.prepare(
         "DELETE FROM ACTIVITY_LISTS WHERE ID_ACTIVITY = :activity_id");
@@ -149,12 +152,34 @@ QSqlQuery Activity::removeAllListsFromActivity(const QSqlDatabase &database,
     return query;
 }
 
-QSqlQuery Activity::associateListWithActivity(const QSqlDatabase &database,
-                                              quint64 activityId,
-                                              quint64 listId) {
+QSqlQuery Activity::setActivityListsQuery(const QSqlDatabase &database,
+                                          quint64 activityId,
+                                          QList<quint64> listIds) {
     QSqlQuery query(database);
-    query.prepare("INSERT INTO ACTIVITY_LISTS(ID_ACTIVITY, ID_LIST)"
-                  "		VALUES(:activity_id, :listId)");
+    QString strIds;
+    QTextStream ts(&strIds);
+    for (auto i = 0; i < listIds.size(); i++) {
+        ts << listIds[i] << " ";
+    }
+
+    query.prepare("SELECT set_activity_lists(:activity_id, :list_ids)");
+    query.bindValue(":activity_id", activityId);
+    query.bindValue(":list_ids", strIds);
+    return query;
+}
+
+QSqlQuery Activity::setActivityRoomsQuery(const QSqlDatabase &database,
+                                          quint64 activityId,
+                                          QList<quint64> roomIds) {
+    QSqlQuery query(database);
+    QString strIds;
+    QTextStream ts(&strIds);
+    for (auto i = 0; i < roomIds.size(); i++) {
+        ts << roomIds[i] << " ";
+    }
+    query.prepare("SELECT set_activity_rooms(:activity_id, :room_ids)");
+    query.bindValue(":activity_id", activityId);
+    query.bindValue(":room_ids", strIds);
     return query;
 }
 }

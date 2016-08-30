@@ -176,19 +176,31 @@ public:
     /// \param activityId The activity id.
     /// \return The query.
     ///
-    static QSqlQuery removeAllListsFromActivity(const QSqlDatabase &database,
-                                                quint64 activityId);
+    static QSqlQuery
+    removeAllListsFromActivityQuery(const QSqlDatabase &database,
+                                    quint64 activityId);
 
     ///
-    /// \brief Returns query that associates list with the activity.
+    /// \brief Returns query that associates given lists with the activity.
     /// \param database The database to use.
     /// \param activityId The activity id.
-    /// \param listId The list id.
+    /// \param listIds The list of list ids.
     /// \return The query.
     ///
-    static QSqlQuery associateListWithActivity(const QSqlDatabase &database,
-                                               quint64 activityId,
-                                               quint64 listId);
+    static QSqlQuery setActivityListsQuery(const QSqlDatabase &database,
+                                           quint64 activityId,
+                                           QList<quint64> listIds);
+
+    ///
+    /// \brief Returns query that associates given rooms with the activity.
+    /// \param database The database to use.
+    /// \param activityId The activity id.
+    /// \param roomIds The list of room ids.
+    /// \return The query.
+    ///
+    static QSqlQuery setActivityRoomsQuery(const QSqlDatabase &database,
+                                           quint64 activityId,
+                                           QList<quint64> roomIds);
 
 private:
     QString mName;      //!< The activity name.

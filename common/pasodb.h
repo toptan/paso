@@ -495,14 +495,25 @@ public:
 
     ///
     /// \brief Associates given lists with activity.
+    /// \note Previous associations will be deleted.
     /// \param activityId The activity id.
-    /// \param listIds the list of list ids.
+    /// \param listIds The list of list ids.
     /// \param error The SQL error if any.
     /// \return \c true if lists are associated.
     ///
-    bool associateListsWithActivity(quint64 activityId,
-                                    const QList<quint64> &listIds,
-                                    QSqlError &error) const;
+    bool setActivityLists(quint64 activityId, const QList<quint64> &listIds,
+                          QSqlError &error) const;
+
+    ///
+    /// \brief Associates given rooms with activity.
+    /// \note Previous associations will be deleted.
+    /// \param activityId The activity id.
+    /// \param roomIds The list of room ids.
+    /// \param error The SQL error if any.
+    /// \return \c true if rooms are associated.
+    ///
+    bool setActivityRooms(quint64 activityId, const QList<quint64> &roomIds,
+                          QSqlError &error) const;
 
 private:
     const QString mDbName;

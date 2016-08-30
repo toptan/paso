@@ -131,6 +131,8 @@ void TestWidgets::testAddRemoveEntityWidget() {
     QSignalSpy spyForAdded(&form, &AddRemoveEntitiesForm::addedEntitiesChanged);
     QSignalSpy spyForRemoved(&form,
                              &AddRemoveEntitiesForm::removedEntitiesChanged);
+    QSignalSpy spyForDestinationEntitiesChanged(
+        &form, &AddRemoveEntitiesForm::destinationEntitiesChanged);
     QPoint point(sourceTable->columnViewportPosition(0) + 5,
                  sourceTable->rowViewportPosition(0) + 10);
     auto pViewport = sourceTable->viewport();
@@ -141,6 +143,7 @@ void TestWidgets::testAddRemoveEntityWidget() {
     QCOMPARE(form.removedEntities().size(), size_t(1));
     QCOMPARE(spyForAdded.count(), 1);
     QCOMPARE(spyForRemoved.count(), 1);
+    QCOMPARE(spyForDestinationEntitiesChanged.count(), 1);
     QCOMPARE(addedIdsSize, 1);
     QCOMPARE(removedIdsSize, 1);
 
@@ -154,6 +157,7 @@ void TestWidgets::testAddRemoveEntityWidget() {
     QCOMPARE(form.removedEntities().size(), size_t(2));
     QCOMPARE(spyForAdded.count(), 2);
     QCOMPARE(spyForRemoved.count(), 2);
+    QCOMPARE(spyForDestinationEntitiesChanged.count(), 2);
     QCOMPARE(addedIdsSize, 0);
     QCOMPARE(removedIdsSize, 2);
 }

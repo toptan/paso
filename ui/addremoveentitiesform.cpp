@@ -113,6 +113,10 @@ void AddRemoveEntitiesForm::setData(
     mRemovedEntities.clear();
     ui->sourceTableView->sortByColumn(0);
     ui->destinationTableView->sortByColumn(0);
+
+    emit addedEntitiesChanged(addedEntitiesChangedHelper());
+    emit removedEntitiesChanged(removedEntitiesChangedHelper());
+    emit destinationEntitiesChanged(destinationEntitiesChangedHelper());
 }
 
 void AddRemoveEntitiesForm::addButtonClicked() {
@@ -138,17 +142,9 @@ void AddRemoveEntitiesForm::addButtonClicked() {
 
     ui->sourceTableView->clearSelection();
 
-    QList<quint64> entityIdList;
-    for (const auto &entity : mAddedEntities) {
-        entityIdList.append(entity->id());
-    }
-    emit addedEntitiesChanged(entityIdList);
-
-    entityIdList.clear();
-    for (const auto &entity : mRemovedEntities) {
-        entityIdList.append(entity->id());
-    }
-    emit removedEntitiesChanged(entityIdList);
+    emit addedEntitiesChanged(addedEntitiesChangedHelper());
+    emit removedEntitiesChanged(removedEntitiesChangedHelper());
+    emit destinationEntitiesChanged(destinationEntitiesChangedHelper());
 }
 
 void AddRemoveEntitiesForm::removeButtonClicked() {
@@ -174,17 +170,9 @@ void AddRemoveEntitiesForm::removeButtonClicked() {
 
     ui->destinationTableView->clearSelection();
 
-    QList<quint64> entityIdList;
-    for (const auto &entity : mAddedEntities) {
-        entityIdList.append(entity->id());
-    }
-    emit addedEntitiesChanged(entityIdList);
-
-    entityIdList.clear();
-    for (const auto &entity : mRemovedEntities) {
-        entityIdList.append(entity->id());
-    }
-    emit removedEntitiesChanged(entityIdList);
+    emit addedEntitiesChanged(addedEntitiesChangedHelper());
+    emit removedEntitiesChanged(removedEntitiesChangedHelper());
+    emit destinationEntitiesChanged(destinationEntitiesChangedHelper());
 }
 
 void AddRemoveEntitiesForm::resetButtonClicked() {
@@ -194,8 +182,36 @@ void AddRemoveEntitiesForm::resetButtonClicked() {
     mDestinationModel->setEntityData(mDestinationData);
     ui->sourceTableView->clearSelection();
     ui->destinationTableView->clearSelection();
-    emit addedEntitiesChanged(QList<quint64>());
-    emit removedEntitiesChanged(QList<quint64>());
+    emit addedEntitiesChanged(addedEntitiesChangedHelper());
+    emit removedEntitiesChanged(removedEntitiesChangedHelper());
+    emit destinationEntitiesChanged(destinationEntitiesChangedHelper());
+}
+
+QList<quint64> AddRemoveEntitiesForm::addedEntitiesChangedHelper() {
+    QList<quint64> retList;
+    for (const auto &entity : mAddedEntities) {
+        retList.append(entity->id());
+    }
+
+    return retList;
+}
+
+QList<quint64> AddRemoveEntitiesForm::removedEntitiesChangedHelper() {
+    QList<quint64> retList;
+    for (const auto &entity : mRemovedEntities) {
+        retList.append(entity->id());
+    }
+
+    return retList;
+}
+
+QList<quint64> AddRemoveEntitiesForm::destinationEntitiesChangedHelper() {
+    QList<quint64> retList;
+    for (const auto &entity : mDestinationData) {
+        retList.append(entity->id());
+    }
+
+    return retList;
 }
 }
 }

@@ -110,7 +110,7 @@ void TestForms::testTableForm() {
     QApplication::processEvents();
     QCOMPARE(form.model()->rowCount(), 1);
 
-    auto db = QSqlDatabase::database("paso");
+    auto db = QSqlDatabase::database(dbName);
     db.exec("INSERT INTO COURSE(CODE, NAME) VALUES('CCCCC', 'DDDDD')");
     refreshAction->trigger();
     QApplication::processEvents();
@@ -162,7 +162,7 @@ void TestForms::testQueryForm() {
     QVERIFY(tableView != nullptr);
     QSqlError error;
     QCOMPARE(tableView->model()->rowCount(), 1);
-    auto db = QSqlDatabase::database("paso");
+    auto db = QSqlDatabase::database(dbName);
     db.exec("INSERT INTO COURSE(CODE, NAME) VALUES('CCCCC', 'DDDDD')");
     refreshAction->trigger();
     QApplication::processEvents();

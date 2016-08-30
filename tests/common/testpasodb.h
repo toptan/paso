@@ -13,7 +13,7 @@ public:
 protected slots:
     virtual void initTestCase() override;
 
-private slots:
+public slots:
     void testOperationsShouldFailOnDatabaseErrors();
 
     void testGetAllSystemUsers();
@@ -60,7 +60,9 @@ private slots:
     void testUpdatingListStudents();
     void testRemovingAllStudentsFromList();
 
+private slots:
     void testAssociateListsWithActivity();
+    void testAssociateRoomsWithActivity();
 
 private:
     QStringList usernames;
