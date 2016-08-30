@@ -23,6 +23,7 @@ namespace widget {
 ///
 class AddRemoveEntitiesForm : public QWidget {
     Q_OBJECT
+//    Q_PROPERTY(QList<QVariant> destinationIds READ destinationIds)
 
 public:
     ///
@@ -97,6 +98,13 @@ public:
                  const data::entity::EntityVector &destinationData,
                  bool totalLabelsVisible = true);
 
+    ///
+    /// \brief Returns list of entity ids in the destination table.
+    ///
+    /// \return  list of entity ids in the destination table.
+    ///
+    QList<QVariant> destinationIds() const;
+
 signals:
     ///
     /// \brief Emitted whenever list of added entities changes.
@@ -118,7 +126,7 @@ signals:
     ///
     /// \param entityIdList The list of entity ids from \ref mDestinationData.
     ///
-    void destinationEntitiesChanged(QList<quint64> entityIdList) const;
+    void destinationEntitiesChanged(QVariantList entityIdList) const;
 
 private slots:
     ///
@@ -154,6 +162,8 @@ private:
     model::StableRowNumberSortFilterProxyModel *mSourceProxyModel;
     /// The proxy model for the destination data.
     model::StableRowNumberSortFilterProxyModel *mDestinationProxyModel;
+    /// The list of entity ids in destination table/model.
+    QList<QVariant> mDestinationIds;
 
     ///
     /// \brief A helper function for preparing data for emitting \ref
@@ -172,12 +182,10 @@ private:
     QList<quint64> removedEntitiesChangedHelper();
 
     ///
-    /// \brief A helper function for preparing data for emitting \ref
-    /// destinationEntitiesChanged() signal.
+    /// \brief A helper function that updates \ref mDestinationIds whenever
+    /// destination table/model data changes.
     ///
-    /// \return List of entity ids from \ref mDestinationData
-    ///
-    QList<quint64> destinationEntitiesChangedHelper();
+    void updateDestinationIds();
 };
 }
 }

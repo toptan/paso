@@ -10,9 +10,15 @@
 #include "activitywizardroomsselectionpage.h"
 #include "addremoveentitiesform.h"
 
+#include "data.h"
+#include "list.h"
+#include "pasodb.h"
+#include "room.h"
+
 #include <QAction>
 #include <QCheckBox>
 #include <QDate>
+#include <QPushButton>
 #include <QSqlError>
 #include <QSqlField>
 #include <QTableView>
@@ -20,6 +26,7 @@
 #include <memory>
 
 using namespace std;
+using namespace paso::db;
 using namespace paso::data::entity;
 using namespace paso::widget;
 using namespace paso::admin;
@@ -331,8 +338,34 @@ void TestActivityAdministration::testRoomsSelectionPage() {
     QCOMPARE(page->subTitle(),
              QString("Select rooms where activity will happen."));
 
+    QSqlError error;
+    DBManager manager(dbName);
     auto addRemoveForm = page->findChild<AddRemoveEntitiesForm *>();
+    auto sourceTable =
+        addRemoveForm->findChild<QTableView *>("sourceTableView");
+    auto destinationTable =
+        addRemoveForm->findChild<QTableView *>("destinationTableView");
+    auto addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    auto removeButton = addRemoveForm->findChild<QPushButton *>("removeButton");
 
+    QCOMPARE(sourceTable->model()->rowCount(), 2);
+    QCOMPARE(destinationTable->model()->rowCount(), 0);
+    QVERIFY(wizard.field("activityRooms").toList().isEmpty());
+    QVERIFY(!page->isComplete());
+
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->clicked();
+    QApplication::processEvents();
+    QCOMPARE(wizard.field("activityRooms").toList().size(), 1);
+    QVERIFY(page->isComplete());
+
+    destinationTable->selectAll();
+    QApplication::processEvents();
+    removeButton->clicked();
+    QApplication::processEvents();
+    QVERIFY(wizard.field("activityRooms").toList().isEmpty());
+    QVERIFY(!page->isComplete());
 }
 
 void TestActivityAdministration::testActivityWizard() {}

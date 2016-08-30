@@ -202,9 +202,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/activityform.cpp" line="32"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/roomform.cpp" line="35"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -471,6 +471,29 @@
     <message>
         <location filename="../admin/activityform.cpp" line="82"/>
         <source>Do you want to delete selected activity from the system?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::ActivityWizardRoomsSelectionPage</name>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="38"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="38"/>
+        <source>Room number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="43"/>
+        <source>Non assigned rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="44"/>
+        <source>Assigned rooms</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1564,8 +1587,8 @@
     <message>
         <location filename="../ui/addremoveentitiesform.cpp" line="45"/>
         <location filename="../ui/addremoveentitiesform.cpp" line="50"/>
-        <location filename="../ui/addremoveentitiesform.cpp" line="103"/>
-        <location filename="../ui/addremoveentitiesform.cpp" line="111"/>
+        <location filename="../ui/addremoveentitiesform.cpp" line="107"/>
+        <location filename="../ui/addremoveentitiesform.cpp" line="115"/>
         <source>Total %1</source>
         <translation type="unfinished"></translation>
     </message>

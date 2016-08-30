@@ -100,7 +100,6 @@ void TestBase::cleanup() {
         qWarning() << db.lastError();
     }
     db.exec("set client_min_messages=NOTICE;");
-
     m_executed++;
     if (QTest::currentTestFailed()) {
         m_failed++;

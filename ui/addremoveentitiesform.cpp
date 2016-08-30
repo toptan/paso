@@ -89,6 +89,10 @@ set<shared_ptr<Entity>> AddRemoveEntitiesForm::removedEntities() const {
     return mRemovedEntities;
 }
 
+QList<QVariant> AddRemoveEntitiesForm::destinationIds() const {
+    return mDestinationIds;
+}
+
 void AddRemoveEntitiesForm::setData(
     const QString &sourceLabel, const QStringList &sourceColumns,
     const QMap<QString, QString> &sourceColumnNames,
@@ -114,9 +118,10 @@ void AddRemoveEntitiesForm::setData(
     ui->sourceTableView->sortByColumn(0);
     ui->destinationTableView->sortByColumn(0);
 
+    updateDestinationIds();
     emit addedEntitiesChanged(addedEntitiesChangedHelper());
     emit removedEntitiesChanged(removedEntitiesChangedHelper());
-    emit destinationEntitiesChanged(destinationEntitiesChangedHelper());
+    emit destinationEntitiesChanged(destinationIds());
 }
 
 void AddRemoveEntitiesForm::addButtonClicked() {
@@ -142,9 +147,10 @@ void AddRemoveEntitiesForm::addButtonClicked() {
 
     ui->sourceTableView->clearSelection();
 
+    updateDestinationIds();
     emit addedEntitiesChanged(addedEntitiesChangedHelper());
     emit removedEntitiesChanged(removedEntitiesChangedHelper());
-    emit destinationEntitiesChanged(destinationEntitiesChangedHelper());
+    emit destinationEntitiesChanged(destinationIds());
 }
 
 void AddRemoveEntitiesForm::removeButtonClicked() {
@@ -170,9 +176,10 @@ void AddRemoveEntitiesForm::removeButtonClicked() {
 
     ui->destinationTableView->clearSelection();
 
+    updateDestinationIds();
     emit addedEntitiesChanged(addedEntitiesChangedHelper());
     emit removedEntitiesChanged(removedEntitiesChangedHelper());
-    emit destinationEntitiesChanged(destinationEntitiesChangedHelper());
+    emit destinationEntitiesChanged(destinationIds());
 }
 
 void AddRemoveEntitiesForm::resetButtonClicked() {
@@ -182,9 +189,11 @@ void AddRemoveEntitiesForm::resetButtonClicked() {
     mDestinationModel->setEntityData(mDestinationData);
     ui->sourceTableView->clearSelection();
     ui->destinationTableView->clearSelection();
+
+    updateDestinationIds();
     emit addedEntitiesChanged(addedEntitiesChangedHelper());
     emit removedEntitiesChanged(removedEntitiesChangedHelper());
-    emit destinationEntitiesChanged(destinationEntitiesChangedHelper());
+    emit destinationEntitiesChanged(destinationIds());
 }
 
 QList<quint64> AddRemoveEntitiesForm::addedEntitiesChangedHelper() {
@@ -205,13 +214,11 @@ QList<quint64> AddRemoveEntitiesForm::removedEntitiesChangedHelper() {
     return retList;
 }
 
-QList<quint64> AddRemoveEntitiesForm::destinationEntitiesChangedHelper() {
-    QList<quint64> retList;
-    for (const auto &entity : mDestinationData) {
-        retList.append(entity->id());
+void AddRemoveEntitiesForm::updateDestinationIds() {
+    mDestinationIds.clear();
+    for (const auto &entity : mDestinationModel->data()) {
+        mDestinationIds.append(entity->id());
     }
-
-    return retList;
 }
 }
 }
