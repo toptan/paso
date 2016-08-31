@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ActivityWizardRoomsSelectionPage</class>
- <widget class="QWizardPage" name="ActivityWizardRoomsSelectionPage">
+ <class>ActivityWizardListsSelectionPage</class>
+ <widget class="QWizardPage" name="ActivityWizardListsSelectionPage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>689</width>
-    <height>542</height>
+    <width>1110</width>
+    <height>635</height>
    </rect>
   </property>
   <property name="title">
-   <string>Activity Rooms</string>
+   <string>Activity Lists</string>
   </property>
   <property name="subTitle">
-   <string>Select rooms where activity will happen.</string>
+   <string>Select lists that participate in this activity.</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

@@ -41,9 +41,7 @@ QVariant EntityTableModel::headerData(int section, Qt::Orientation orientation,
     return QAbstractTableModel::headerData(section, orientation, role);
 }
 
-EntityVector EntityTableModel::data() const {
-    return mData;
-}
+EntityVector EntityTableModel::data() const { return mData; }
 
 shared_ptr<Entity> EntityTableModel::entity(size_t position) const {
     return mData[position];
@@ -92,8 +90,8 @@ void EntityTableModel::setEntityData(const EntityVector &newData) {
 }
 
 void EntityTableModel::setEntityData(const QStringList &columns,
-                               const QMap<QString, QString> &columnNames,
-                               const EntityVector &newData) {
+                                     const QMap<QString, QString> &columnNames,
+                                     const EntityVector &newData) {
     emit beginResetModel();
     mColumns = columns;
     mColumnNames = columnNames;

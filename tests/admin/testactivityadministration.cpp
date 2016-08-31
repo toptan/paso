@@ -6,6 +6,7 @@
 #include "activitytablemodel.h"
 #include "activityvalidator.h"
 #include "activitywizardfixeddatepage.h"
+#include "activitywizardlistsselectionpage.h"
 #include "activitywizardnameandtypepage.h"
 #include "activitywizardroomsselectionpage.h"
 #include "addremoveentitiesform.h"
@@ -368,4 +369,54 @@ void TestActivityAdministration::testRoomsSelectionPage() {
     QVERIFY(!page->isComplete());
 }
 
-void TestActivityAdministration::testActivityWizard() {}
+void TestActivityAdministration::testListsSelectionPage() {
+    QWizard wizard;
+    auto page = new ActivityWizardListsSelectionPage;
+    wizard.addPage(page);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    QCOMPARE(page->title(), QString("Activity Lists"));
+    QCOMPARE(page->subTitle(),
+             QString("Select lists that participate in this activity."));
+
+    QSqlError error;
+    DBManager manager(dbName);
+    auto addRemoveForm = page->findChild<AddRemoveEntitiesForm *>();
+    auto sourceTable =
+        addRemoveForm->findChild<QTableView *>("sourceTableView");
+    auto destinationTable =
+        addRemoveForm->findChild<QTableView *>("destinationTableView");
+    auto addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    auto removeButton = addRemoveForm->findChild<QPushButton *>("removeButton");
+
+    QCOMPARE(sourceTable->model()->rowCount(), 6);
+    QCOMPARE(destinationTable->model()->rowCount(), 0);
+    QVERIFY(wizard.field("activityLists").toList().isEmpty());
+    QVERIFY(!page->isComplete());
+
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->clicked();
+    QApplication::processEvents();
+    QCOMPARE(wizard.field("activityLists").toList().size(), 1);
+    QVERIFY(page->isComplete());
+
+    destinationTable->selectAll();
+    QApplication::processEvents();
+    removeButton->clicked();
+    QApplication::processEvents();
+    QVERIFY(wizard.field("activityLists").toList().isEmpty());
+    QVERIFY(!page->isComplete());
+}
+
+void TestActivityAdministration::testActivityWizard() {
+    QWizard wizard;
+    wizard.addPage(new ActivityWizardNameAndTypePage(0));
+    wizard.addPage(new ActivityWizardFixedDatePage);
+    wizard.addPage(new ActivityWizardRoomsSelectionPage);
+    wizard.addPage(new ActivityWizardListsSelectionPage);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    QTest::qWait(60000);
+
+}

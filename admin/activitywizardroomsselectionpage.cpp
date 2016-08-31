@@ -5,7 +5,6 @@
 #include "data.h"
 #include "pasodb.h"
 
-#include <QDebug>
 #include <QMap>
 #include <QSqlError>
 
@@ -33,9 +32,9 @@ ActivityWizardRoomsSelectionPage::~ActivityWizardRoomsSelectionPage() {
 
 void ActivityWizardRoomsSelectionPage::initializePage() {
     DBManager manager;
-    const QStringList columns{"name", "room_number"};
+    const QStringList columns{"NAME", "ROOM_NUMBER"};
     const QMap<QString, QString> columnNames{
-        {"name", tr("Name")}, {"room_number", tr("Room number")}};
+        {"NAME", tr("Name")}, {"ROOM_NUMBER", tr("Room number")}};
     QSqlError error;
     quint64 activityId = wizard()->field("activityId").toULongLong();
     auto sourceData = manager.nonActivityRooms(activityId, error);
@@ -56,6 +55,7 @@ QVariantList ActivityWizardRoomsSelectionPage::roomIds() const {
 void ActivityWizardRoomsSelectionPage::setRoomIds(const QVariantList &roomIds) {
     mRoomIds = roomIds;
     emit roomIdsChanged();
+    emit completeChanged();
 }
 }
 }

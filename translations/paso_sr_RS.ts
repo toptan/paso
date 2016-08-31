@@ -13,56 +13,67 @@
     <name>ActivityWizardFixedDatePage</name>
     <message>
         <location filename="../admin/activitywizardfixeddatepage.ui" line="14"/>
-        <location filename="../admin/activitywizardfixeddatepage.ui" line="17"/>
         <source>Activity Date and Duration</source>
         <translation>Датум, време и трајање активности</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardfixeddatepage.ui" line="26"/>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="23"/>
         <source>Date and time</source>
         <translation>Датум и време</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardfixeddatepage.ui" line="33"/>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="30"/>
         <source>Duration</source>
         <translation>Трајање</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardfixeddatepage.ui" line="20"/>
+        <location filename="../admin/activitywizardfixeddatepage.ui" line="17"/>
         <source>Fill in activity date, time and duration.</source>
         <translation>Попуните датум, време и трајање активности.</translation>
+    </message>
+</context>
+<context>
+    <name>ActivityWizardListsSelectionPage</name>
+    <message>
+        <location filename="../admin/activitywizardlistsselectionpage.ui" line="14"/>
+        <source>Activity Lists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardlistsselectionpage.ui" line="17"/>
+        <source>Select lists that participate in this activity.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ActivityWizardNameAndTypePage</name>
     <message>
         <location filename="../admin/activitywizardnameandtypepage.ui" line="14"/>
-        <location filename="../admin/activitywizardnameandtypepage.ui" line="17"/>
         <source>Activity Name and Type</source>
         <translation>Име и врста активности</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardnameandtypepage.ui" line="20"/>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="17"/>
         <source>Fill in activity name and select its type.</source>
         <translation>Попуните име и одаберите врсту активности.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardnameandtypepage.ui" line="26"/>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="23"/>
         <source>Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardnameandtypepage.ui" line="43"/>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="40"/>
         <source>Type</source>
         <translation>Врста</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardnameandtypepage.ui" line="56"/>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="53"/>
         <source>Can overlap with other activities</source>
         <translation>Може да се преклопи са другим активностима</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardnameandtypepage.ui" line="63"/>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="60"/>
         <source>Ativity happens more than once or during period of time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -71,16 +82,11 @@
     <name>ActivityWizardRoomsSelectionPage</name>
     <message>
         <location filename="../admin/activitywizardroomsselectionpage.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/activitywizardroomsselectionpage.ui" line="17"/>
         <source>Activity Rooms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.ui" line="20"/>
+        <location filename="../admin/activitywizardroomsselectionpage.ui" line="17"/>
         <source>Select rooms where activity will happen.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -245,9 +251,9 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="32"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/roomform.cpp" line="35"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="32"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
@@ -475,24 +481,42 @@
     </message>
 </context>
 <context>
-    <name>paso::admin::ActivityWizardRoomsSelectionPage</name>
+    <name>paso::admin::ActivityWizardListsSelectionPage</name>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="38"/>
+        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="35"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="38"/>
+        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="40"/>
+        <source>Non participating lists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="41"/>
+        <source>Participating lists</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::ActivityWizardRoomsSelectionPage</name>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="37"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="37"/>
         <source>Room number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="43"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="42"/>
         <source>Non assigned rooms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="44"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="43"/>
         <source>Assigned rooms</source>
         <translation type="unfinished"></translation>
     </message>

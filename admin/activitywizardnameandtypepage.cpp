@@ -13,8 +13,10 @@ using namespace paso::data;
 namespace paso {
 namespace admin {
 
-ActivityWizardNameAndTypePage::ActivityWizardNameAndTypePage(QWidget *parent)
-    : QWizardPage(parent), ui(new Ui::ActivityWizardNameAndTypePage) {
+ActivityWizardNameAndTypePage::ActivityWizardNameAndTypePage(quint64 activityId,
+                                                             QWidget *parent)
+    : QWizardPage(parent), ui(new Ui::ActivityWizardNameAndTypePage),
+      mActivityId(activityId) {
     ui->setupUi(this);
     for (const auto &type : enumeratedActivityTypes.keys()) {
         ui->typeComboBox->addItem(
@@ -35,8 +37,20 @@ ActivityWizardNameAndTypePage::ActivityWizardNameAndTypePage(QWidget *parent)
                   SIGNAL(currentIndexChanged(int)));
     registerField("canOverlap", ui->overlapCheckBox);
     registerField("moreThanOnce", ui->moreThanOnceCheckBox);
+    registerField("activityId", this, "activityId", SIGNAL(activityIdChanged()));
 }
 
 ActivityWizardNameAndTypePage::~ActivityWizardNameAndTypePage() { delete ui; }
+
+void ActivityWizardNameAndTypePage::initializePage() {}
+
+quint64 ActivityWizardNameAndTypePage::activityId() const {
+    return mActivityId;
+}
+
+void ActivityWizardNameAndTypePage::setActivityId(const quint64 &activityId) {
+    mActivityId = activityId;
+    emit activityIdChanged();
+}
 }
 }

@@ -18,6 +18,7 @@ private slots:
     void testNameAndTypePage();
     void testFixedDatePage();
     void testRoomsSelectionPage();
+    void testListsSelectionPage();
     void testActivityWizard();
 
 };

@@ -16,8 +16,8 @@ class ActivityWizardRoomsSelectionPage : public QWizardPage {
     Q_PROPERTY(QVariantList roomIds READ roomIds WRITE setRoomIds NOTIFY
                    roomIdsChanged)
 public:
-    explicit ActivityWizardRoomsSelectionPage(QWidget *parent = 0);
-    ~ActivityWizardRoomsSelectionPage();
+    explicit ActivityWizardRoomsSelectionPage(QWidget *parent = nullptr);
+    virtual ~ActivityWizardRoomsSelectionPage();
 
     virtual void initializePage() override;
     virtual bool isComplete() const override;

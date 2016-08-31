@@ -10,9 +10,6 @@
     <height>525</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Activity Date and Duration</string>
-  </property>
   <property name="title">
    <string>Activity Date and Duration</string>
   </property>
