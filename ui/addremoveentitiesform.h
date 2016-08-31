@@ -23,7 +23,6 @@ namespace widget {
 ///
 class AddRemoveEntitiesForm : public QWidget {
     Q_OBJECT
-//    Q_PROPERTY(QList<QVariant> destinationIds READ destinationIds)
 
 public:
     ///

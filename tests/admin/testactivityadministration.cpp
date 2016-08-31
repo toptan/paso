@@ -417,6 +417,6 @@ void TestActivityAdministration::testActivityWizard() {
     wizard.addPage(new ActivityWizardListsSelectionPage);
     wizard.show();
     QTest::qWaitForWindowExposed(&wizard);
-    QTest::qWait(60000);
+    QTest::qWait(20000);
 
 }

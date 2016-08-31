@@ -208,9 +208,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/activityform.cpp" line="32"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/roomform.cpp" line="35"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
