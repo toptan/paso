@@ -77,6 +77,21 @@
         <source>Ativity happens more than once or during period of time</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="67"/>
+        <source>Repeats on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="73"/>
+        <source>Week days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="83"/>
+        <source>Specific days</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ActivityWizardRoomsSelectionPage</name>
@@ -251,39 +266,43 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="32"/>
         <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="33"/>
         <location filename="../admin/roomform.cpp" line="35"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="33"/>
+        <location filename="../admin/activityform.cpp" line="34"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="34"/>
         <source>Schedule</source>
-        <translation>Распоред</translation>
+        <translation type="vanished">Распоред</translation>
     </message>
     <message>
         <location filename="../admin/activityform.cpp" line="35"/>
+        <source>Schedule type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="36"/>
         <source>Duration</source>
         <translation>Трајање</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="36"/>
+        <location filename="../admin/activityform.cpp" line="37"/>
         <source>Start date</source>
         <translation>Почетни датум</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="37"/>
+        <location filename="../admin/activityform.cpp" line="38"/>
         <source>Finish date</source>
         <translation>Крајњи датум</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="38"/>
+        <location filename="../admin/activityform.cpp" line="39"/>
         <source>Can overlap</source>
         <translation type="unfinished"></translation>
     </message>
@@ -308,70 +327,88 @@
         <translation>Година студија</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="91"/>
         <location filename="../common/data.h" line="102"/>
+        <location filename="../common/data.h" line="113"/>
         <source>Administrator</source>
         <translation>Администратор</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="92"/>
         <location filename="../common/data.h" line="103"/>
+        <location filename="../common/data.h" line="114"/>
         <source>Manager</source>
         <translation>Управник</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="93"/>
         <location filename="../common/data.h" line="104"/>
+        <location filename="../common/data.h" line="115"/>
         <source>Room manager</source>
         <translation>Управник соба</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="94"/>
         <location filename="../common/data.h" line="105"/>
+        <location filename="../common/data.h" line="116"/>
         <source>Scheduler</source>
         <translation>Заказивач</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="95"/>
         <location filename="../common/data.h" line="106"/>
+        <location filename="../common/data.h" line="117"/>
         <source>Super user</source>
         <translation>Супер корисник</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="113"/>
-        <location filename="../common/data.h" line="125"/>
+        <location filename="../common/data.h" line="124"/>
+        <location filename="../common/data.h" line="136"/>
         <source>Lecture or excercise</source>
         <translation>Предавања или вежбе</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="114"/>
-        <location filename="../common/data.h" line="126"/>
+        <location filename="../common/data.h" line="125"/>
+        <location filename="../common/data.h" line="137"/>
         <source>Exam</source>
         <translation>Испит</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="115"/>
-        <location filename="../common/data.h" line="127"/>
+        <location filename="../common/data.h" line="126"/>
+        <location filename="../common/data.h" line="138"/>
         <source>Colloquium</source>
         <translation>Колоквијум</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="116"/>
-        <location filename="../common/data.h" line="128"/>
+        <location filename="../common/data.h" line="127"/>
+        <location filename="../common/data.h" line="139"/>
         <source>Lab excercise</source>
         <translation>Лабораторијске вежбе</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="117"/>
-        <location filename="../common/data.h" line="129"/>
+        <location filename="../common/data.h" line="128"/>
+        <location filename="../common/data.h" line="140"/>
         <source>Individual work</source>
         <translation>Индивидуални рад</translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="118"/>
-        <location filename="../common/data.h" line="130"/>
+        <location filename="../common/data.h" line="129"/>
+        <location filename="../common/data.h" line="141"/>
         <source>Special event</source>
         <translation>Посебни догађаји</translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="148"/>
+        <location filename="../common/data.h" line="159"/>
+        <source>Activity does not repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="150"/>
+        <location filename="../common/data.h" line="160"/>
+        <source>Repeats on certain week days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="152"/>
+        <location filename="../common/data.h" line="161"/>
+        <source>Repeats on certain days in month</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/listform.cpp" line="47"/>
@@ -389,12 +426,12 @@
         <translation>Датум истека</translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="37"/>
+        <location filename="../admin/activitytablemodel.cpp" line="44"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="38"/>
+        <location filename="../admin/activitytablemodel.cpp" line="45"/>
         <source>No</source>
         <translation>Не</translation>
     </message>
@@ -475,7 +512,7 @@
 <context>
     <name>paso::admin::ActivityForm</name>
     <message>
-        <location filename="../admin/activityform.cpp" line="82"/>
+        <location filename="../admin/activityform.cpp" line="83"/>
         <source>Do you want to delete selected activity from the system?</source>
         <translation>Да ли стварно желите да обришете одабрану активност из система?</translation>
     </message>

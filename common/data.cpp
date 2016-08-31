@@ -82,6 +82,31 @@ ActivityType stringToActivityType(const QString &type) {
     }
 }
 
+const QString activityScheduleTypeToString(ActivityScheduleType type) {
+    switch (type) {
+    case ActivityScheduleType::ONCE:
+        return "ONCE";
+    case ActivityScheduleType::WEEK_DAYS:
+        return "WEEK_DAYS";
+    case ActivityScheduleType::MONTH_DAYS:
+        return "MONTH_DAYS";
+    default:
+        return "INVALID_ACTIVITY";
+    }
+}
+
+ActivityScheduleType stringToActivityScheduleType(const QString &type) {
+    if (type == "ONCE") {
+        return ActivityScheduleType::ONCE;
+    } else if (type == "WEEK_DAYS") {
+        return ActivityScheduleType::WEEK_DAYS;
+    } else if (type == "MONTH_DAYS") {
+        return ActivityScheduleType::MONTH_DAYS;
+    } else {
+        return ActivityScheduleType::INVALID;
+    }
+}
+
 int differenceInMonths(const QDate &startDate, const QDate &endDate) {
     if (endDate < startDate) {
         return 0;

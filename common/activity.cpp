@@ -7,13 +7,15 @@ namespace data {
 namespace entity {
 
 Activity::Activity(const QString &name, ActivityType type, quint64 id)
-    : Entity(id), mName(name), mType(type), mDuration(), mStartDate(),
+    : Entity(id), mName(name), mType(type),
+      mScheduleType(ActivityScheduleType::INVALID), mDuration(), mStartDate(),
       mFinishDate(), mCanOverlap(false) {}
 
 Activity::Activity(const QVariantMap &map)
     : Entity(map["ID"].toULongLong()), mName(map["NAME"].toString()),
       mType(stringToActivityType(map["ROLE"].toString())),
-      mSchedule(map["SCHEDULE"].toString()),
+      mScheduleType(
+          stringToActivityScheduleType(map["SCHEDULE_TYPE"].toString())),
       mDuration(map["DURATION"].toTime()),
       mStartDate(map["START_DATE"].toDate()),
       mFinishDate(map["FINISH_DATE"].toDate()),
@@ -25,9 +27,9 @@ bool Activity::operator==(const Activity &other) const {
     }
 
     return id() == other.id() && mName == other.mName && mType == other.mType &&
-           mSchedule == other.mSchedule && mDuration == other.mDuration &&
-           mStartDate == other.mStartDate && mFinishDate == other.mFinishDate &&
-           mCanOverlap == other.mCanOverlap;
+           mScheduleType == other.mScheduleType &&
+           mDuration == other.mDuration && mStartDate == other.mStartDate &&
+           mFinishDate == other.mFinishDate && mCanOverlap == other.mCanOverlap;
 }
 
 QString Activity::name() const { return mName; }
@@ -38,9 +40,11 @@ ActivityType Activity::type() const { return mType; }
 
 void Activity::setType(const ActivityType &type) { mType = type; }
 
-QString Activity::schedule() const { return mSchedule; }
+ActivityScheduleType Activity::scheduleType() const { return mScheduleType; }
 
-void Activity::setSchedule(const QString &schedule) { mSchedule = schedule; }
+void Activity::setScheduleType(const ActivityScheduleType &scheduleType) {
+    mScheduleType = scheduleType;
+}
 
 QTime Activity::duration() const { return mDuration; }
 
@@ -64,7 +68,7 @@ QVariantMap Activity::toVariantMap() const {
     auto retVal = Entity::toVariantMap();
     retVal.insert("NAME", mName);
     retVal.insert("TYPE", activityTypeToString(mType));
-    retVal.insert("SCHEDULE", mSchedule);
+    retVal.insert("SCHEDULE_TYPE", activityScheduleTypeToString(mScheduleType));
     retVal.insert("DURATION", mDuration);
     retVal.insert("START_DATE", mStartDate);
     retVal.insert("FINISH_DATE", mFinishDate);
@@ -77,8 +81,8 @@ QVariant Activity::value(const QString &property) const {
         return mName;
     } else if (property == "TYPE") {
         return activityTypeToString(mType);
-    } else if (property == "SCHEDULE") {
-        return mSchedule;
+    } else if (property == "SCHEDULE_TYPE") {
+        return activityScheduleTypeToString(mScheduleType);
     } else if (property == "DURATION") {
         return mDuration;
     } else if (property == "START_DATE") {
@@ -97,7 +101,8 @@ void Activity::read(const QJsonObject &jsonObject) {
     mName = jsonObject["NAME"].toString();
     auto strType = jsonObject["TYPE"].toString();
     mType = stringToActivityType(strType);
-    mSchedule = jsonObject["SCHEDULE"].toString();
+    strType = jsonObject["SCHEDULE_TYPE"].toString();
+    mScheduleType = stringToActivityScheduleType(strType);
     mDuration = jsonObject["DURATION"].toVariant().toTime();
     mStartDate = jsonObject["START_DATE"].toVariant().toDate();
     mFinishDate = jsonObject["FINISH_DATE"].toVariant().toDate();
@@ -108,7 +113,7 @@ void Activity::write(QJsonObject &jsonObject) const {
     jsonObject["ID"] = static_cast<qint64>(id());
     jsonObject["NAME"] = mName;
     jsonObject["TYPE"] = activityTypeToString(mType);
-    jsonObject["SCHEDULE"] = mSchedule;
+    jsonObject["SCHEDULE_TYPE"] = activityScheduleTypeToString(mScheduleType);
     jsonObject["DURATION"] = QVariant(mDuration).toJsonValue();
     jsonObject["START_DATE"] = QVariant(mStartDate).toJsonValue();
     jsonObject["FINISH_DATE"] = QVariant(mFinishDate).toJsonValue();
@@ -165,16 +170,6 @@ QSqlQuery Activity::findNonActivityRoomsQuery(const QSqlDatabase &database,
         "                          ON AR.ID_ROOM = R1.ID"
         " 					    WHERE AR.ID_ACTIVITY = "
         ":activity_id)");
-    query.bindValue(":activity_id", activityId);
-    return query;
-}
-
-QSqlQuery
-Activity::removeAllListsFromActivityQuery(const QSqlDatabase &database,
-                                          quint64 activityId) {
-    QSqlQuery query(database);
-    query.prepare(
-        "DELETE FROM ACTIVITY_LISTS WHERE ID_ACTIVITY = :activity_id");
     query.bindValue(":activity_id", activityId);
     return query;
 }

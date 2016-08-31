@@ -64,14 +64,14 @@ CREATE TABLE MEMBER (
 );
 
 CREATE TABLE ACTIVITY (
-    ID          BIGSERIAL PRIMARY KEY,
-    NAME        VARCHAR(64) NOT NULL,
-    TYPE        VARCHAR(16) NOT NULL,
-    SCHEDULE    VARCHAR(64) NOT NULL,
-    DURATION    TIME        NOT NULL,
-    START_DATE  DATE        NOT NULL,
-    FINISH_DATE DATE        NOT NULL,
-    CAN_OVERLAP BOOLEAN     NOT NULL DEFAULT FALSE
+    ID            BIGSERIAL PRIMARY KEY,
+    NAME          VARCHAR(64) NOT NULL,
+    TYPE          VARCHAR(16) NOT NULL,
+    SCHEDULE_TYPE VARCHAR(16) NOT NULL,
+    DURATION      TIME        NOT NULL,
+    START_DATE    DATE        NOT NULL,
+    FINISH_DATE   DATE        NOT NULL,
+    CAN_OVERLAP   BOOLEAN     NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE ACTIVITY_LISTS (
@@ -236,11 +236,11 @@ $BODY$;
 CREATE TRIGGER B_IU_LIST BEFORE INSERT OR UPDATE ON LIST FOR EACH ROW
 EXECUTE PROCEDURE B_IU_LIST_FUNCTION();
 
-CREATE OR REPLACE FUNCTION set_activity_rooms(activity_id BIGINT, room_ids text)
+CREATE OR REPLACE FUNCTION set_activity_rooms(activity_id BIGINT, room_ids TEXT)
     RETURNS VOID AS $$
 DECLARE
-    room_id_array TEXT[];
-    array_size INTEGER;
+    room_id_array TEXT [];
+    array_size    INTEGER;
 BEGIN
     room_id_array := string_to_array(room_ids, ' ');
     array_size := array_length(room_id_array, 1) - 1;
@@ -249,15 +249,15 @@ BEGIN
     WHERE id_activity = activity_id;
 
     FOR i IN 1 .. array_size LOOP
-        INSERT INTO activity_rooms (id_activity, id_room) VALUES (activity_id, CAST(room_id_array[i] AS BIGINT));
+        INSERT INTO activity_rooms (id_activity, id_room) VALUES (activity_id, CAST(room_id_array [i] AS BIGINT));
     END LOOP;
 END $$ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION set_activity_lists(activity_id BIGINT, list_ids TEXT)
     RETURNS VOID AS $$
 DECLARE
-    list_id_array TEXT[];
-    array_size INTEGER;
+    list_id_array TEXT [];
+    array_size    INTEGER;
 BEGIN
     list_id_array := string_to_array(list_ids, ' ');
     array_size := array_length(list_id_array, 1) - 1;
@@ -266,7 +266,7 @@ BEGIN
     WHERE id_activity = activity_id;
 
     FOR i IN 1 .. array_size LOOP
-        INSERT INTO activity_lists (id_activity, id_list) VALUES (activity_id, CAST(list_id_array[i] AS BIGINT));
+        INSERT INTO activity_lists (id_activity, id_list) VALUES (activity_id, CAST(list_id_array [i] AS BIGINT));
     END LOOP;
 END $$ LANGUAGE plpgsql VOLATILE;
 

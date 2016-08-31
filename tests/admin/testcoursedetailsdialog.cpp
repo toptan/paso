@@ -311,8 +311,8 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
     buttonBox->button(QDialogButtonBox::Close)->click();
-    QApplication::processEvents();
     delete logDialog;
+    QApplication::processEvents();
     refreshButton->click();
     QApplication::processEvents();
     QCOMPARE(destinationTable->model()->rowCount(), 1);
@@ -333,6 +333,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
     buttonBox->button(QDialogButtonBox::Close)->click();
+    delete logDialog;
     QApplication::processEvents();
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 
@@ -354,6 +355,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
     buttonBox->button(QDialogButtonBox::Close)->click();
+    delete logDialog;
     QApplication::processEvents();
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 
@@ -374,6 +376,7 @@ void TestCourseDetailsDialog::testImportCourseStudents() {
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
     buttonBox->button(QDialogButtonBox::Close)->click();
+    delete logDialog;
     QApplication::processEvents();
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 }

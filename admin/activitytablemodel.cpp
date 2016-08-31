@@ -32,6 +32,13 @@ QVariant ActivityTableModel::data(const QModelIndex &idx, int role) const {
                                                   .toString()]
                     .toStdString()
                     .c_str());
+        } else if (idx.column() == 3) {
+            return QApplication::instance()->translate(
+                "QObject", stringEnumeratedActivityScheduleTypes
+                               [QSqlTableModel::data(idx, role).toString()]
+                                   .toStdString()
+                                   .c_str());
+
         } else if (idx.column() == 7) {
             return QSqlTableModel::data(idx, role).toBool()
                        ? QApplication::instance()->translate("QObject", "Yes")

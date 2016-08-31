@@ -19,7 +19,9 @@
 #include <QAction>
 #include <QCheckBox>
 #include <QDate>
+#include <QGroupBox>
 #include <QPushButton>
+#include <QRadioButton>
 #include <QSqlError>
 #include <QSqlField>
 #include <QTableView>
@@ -111,20 +113,20 @@ void TestActivityAdministration::testActivityEditorWidget() {
 void TestActivityAdministration::testActivityTableModel() {
     auto db = QSqlDatabase::database(dbName);
     db.exec("DELETE FROM ACTIVITY");
-    db.exec("INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
+    db.exec("INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE_TYPE, "
             "                     DURATION, START_DATE, FINISH_DATE)"
-            "              VALUES('A1', 'EXAM', '0 8 15 8 *',"
+            "              VALUES('A1', 'EXAM', 'ONCE',"
             "                     '03:00:00.000', '2016-08-15', '2016-08-15')");
     db.exec(
-        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
+        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE_TYPE, "
         "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
-        "              VALUES('A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
+        "              VALUES('A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
         "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
         "true)");
 
     const QVariantMap columnLabels{{"name", "Name"},
                                    {"type", "Type"},
-                                   {"schedule", "Schedule"},
+                                   {"schedule_type", "Schedule type"},
                                    {"duration", "Duration"},
                                    {"start_date", "Start date"},
                                    {"finish_date", "Finish date"},
@@ -137,7 +139,7 @@ void TestActivityAdministration::testActivityTableModel() {
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(), QString("Type"));
     QCOMPARE(model.headerData(3, Qt::Horizontal).toString(),
-             QString("Schedule"));
+             QString("Schedule type"));
     QCOMPARE(model.headerData(4, Qt::Horizontal).toString(),
              QString("Duration"));
     QCOMPARE(model.headerData(5, Qt::Horizontal).toString(),
@@ -151,7 +153,7 @@ void TestActivityAdministration::testActivityTableModel() {
     index = model.index(0, 2);
     QCOMPARE(model.data(index).toString(), QString("Exam"));
     index = model.index(0, 3);
-    QCOMPARE(model.data(index).toString(), QString("0 8 15 8 *"));
+    QCOMPARE(model.data(index).toString(), QString("Activity does not repeat"));
     index = model.index(0, 4);
     QCOMPARE(model.data(index).toTime(), QTime(3, 0, 0));
     index = model.index(0, 5);
@@ -166,7 +168,7 @@ void TestActivityAdministration::testActivityTableModel() {
     index = model.index(1, 2);
     QCOMPARE(model.data(index).toString(), QString("Individual work"));
     index = model.index(1, 3);
-    QCOMPARE(model.data(index).toString(), QString("0 8 * * 1,3"));
+    QCOMPARE(model.data(index).toString(), QString("Repeats on certain week days"));
     index = model.index(1, 4);
     QCOMPARE(model.data(index).toTime(), QTime(1, 30, 0));
     index = model.index(1, 5);
@@ -181,14 +183,14 @@ void TestActivityAdministration::testActivityForm() {
     auto db = QSqlDatabase::database(dbName);
     db.exec("DELETE FROM ACTIVITY");
     db.exec(
-        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
+        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE_TYPE, "
         "                     DURATION, START_DATE, FINISH_DATE)"
-        "              VALUES('A1', 'EXAM', '0 8 15 8 *',"
+        "              VALUES('A1', 'EXAM', 'ONCE',"
         "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
     db.exec(
-        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE, "
+        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE_TYPE, "
         "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
-        "              VALUES('A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
+        "              VALUES('A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
         "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
         "true);");
 
@@ -254,10 +256,18 @@ void TestActivityAdministration::testNameAndTypePage() {
     auto overlapCheckBox = page->findChild<QCheckBox *>("overlapCheckBox");
     auto moreThanOnceCheckBox =
         page->findChild<QCheckBox *>("moreThanOnceCheckBox");
+    auto groupBox = page->findChild<QGroupBox *>();
+    auto weekDaysRadioButton =
+        page->findChild<QRadioButton *>("weekDaysRadioButton");
+    auto specificDaysRadioButton =
+        page->findChild<QRadioButton *>("specificDaysRadioButton");
     QVERIFY(nameEdit != nullptr);
     QVERIFY(comboBox != nullptr);
     QVERIFY(overlapCheckBox != nullptr);
     QVERIFY(moreThanOnceCheckBox != nullptr);
+    QVERIFY(groupBox != nullptr);
+    QVERIFY(weekDaysRadioButton != nullptr);
+    QVERIFY(specificDaysRadioButton != nullptr);
 
     QCOMPARE(nameEdit->maxLength(), 64);
     for (auto i = 0; i < comboBox->count(); i++) {
@@ -272,6 +282,9 @@ void TestActivityAdministration::testNameAndTypePage() {
     QCOMPARE(wizard.field("type").toString(), QString("SPECIAL_EVENT"));
     QVERIFY(!wizard.field("canOverlap").toBool());
     QVERIFY(!wizard.field("moreThanOnce").toBool());
+    QVERIFY(wizard.field("onWeekDays").toBool());
+    QVERIFY(!wizard.field("onSpecificDays").toBool());
+    QVERIFY(!groupBox->isVisible());
 
     // Select individual work
     comboBox->setCurrentIndex(4);
@@ -282,6 +295,11 @@ void TestActivityAdministration::testNameAndTypePage() {
     QCOMPARE(wizard.field("type").toString(), QString("INDIVIDUAL_WORK"));
     QVERIFY(wizard.field("canOverlap").toBool());
     QVERIFY(wizard.field("moreThanOnce").toBool());
+    QVERIFY(groupBox->isVisible());
+
+    moreThanOnceCheckBox->setChecked(false);
+    QVERIFY(!wizard.field("moreThanOnce").toBool());
+    QVERIFY(!groupBox->isVisible());
 
     // Select colloquium
     comboBox->setCurrentIndex(2);
@@ -290,6 +308,17 @@ void TestActivityAdministration::testNameAndTypePage() {
     QApplication::processEvents();
     QCOMPARE(wizard.field("type").toString(), QString("COLLOQUIUM"));
     QVERIFY(wizard.field("canOverlap").toBool());
+
+    // Check radio buttons.
+    specificDaysRadioButton->setChecked(true);
+    QApplication::processEvents();
+    QVERIFY(!wizard.field("onWeekDays").toBool());
+    QVERIFY(wizard.field("onSpecificDays").toBool());
+
+    weekDaysRadioButton->setChecked(true);
+    QApplication::processEvents();
+    QVERIFY(wizard.field("onWeekDays").toBool());
+    QVERIFY(!wizard.field("onSpecificDays").toBool());
 }
 
 void TestActivityAdministration::testFixedDatePage() {
@@ -410,13 +439,12 @@ void TestActivityAdministration::testListsSelectionPage() {
 }
 
 void TestActivityAdministration::testActivityWizard() {
-    QWizard wizard;
-    wizard.addPage(new ActivityWizardNameAndTypePage(0));
-    wizard.addPage(new ActivityWizardFixedDatePage);
-    wizard.addPage(new ActivityWizardRoomsSelectionPage);
-    wizard.addPage(new ActivityWizardListsSelectionPage);
-    wizard.show();
-    QTest::qWaitForWindowExposed(&wizard);
-    QTest::qWait(20000);
-
+    //    QWizard wizard;
+    //    wizard.addPage(new ActivityWizardNameAndTypePage(0));
+    //    wizard.addPage(new ActivityWizardFixedDatePage);
+    //    wizard.addPage(new ActivityWizardRoomsSelectionPage);
+    //    wizard.addPage(new ActivityWizardListsSelectionPage);
+    //    wizard.show();
+    //    QTest::qWaitForWindowExposed(&wizard);
+    //    QTest::qWait(20000);
 }

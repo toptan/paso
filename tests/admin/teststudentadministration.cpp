@@ -502,8 +502,8 @@ void TestStudentAdministration::testStudentFormImportStudents() {
     }
     auto buttonBox = logDialog->findChild<QDialogButtonBox *>();
     buttonBox->button(QDialogButtonBox::Close)->click();
-    QApplication::processEvents();
     delete logDialog;
+    QApplication::processEvents();
     QCOMPARE(form.model()->rowCount(), 1);
 
     db.exec("DELETE FROM PERSON");
@@ -523,8 +523,8 @@ void TestStudentAdministration::testStudentFormImportStudents() {
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
     buttonBox->button(QDialogButtonBox::Close)->click();
-    QApplication::processEvents();
     delete logDialog;
+    QApplication::processEvents();
     QCOMPARE(form.model()->rowCount(), 13);
 
     db.exec("DELETE FROM PERSON");
@@ -548,7 +548,7 @@ void TestStudentAdministration::testStudentFormImportStudents() {
     }
     buttonBox = logDialog->findChild<QDialogButtonBox *>();
     buttonBox->button(QDialogButtonBox::Close)->click();
-    QApplication::processEvents();
     delete logDialog;
+    QApplication::processEvents();
     QCOMPARE(form.model()->rowCount(), 0);
 }

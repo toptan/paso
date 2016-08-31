@@ -63,20 +63,16 @@ public:
     void setType(const ActivityType &type);
 
     ///
-    /// \brief Returns activity cron like schedule string.
-    /// \see paso::data::scheduledDates(const QString&, const QDate&, const
-    /// QDate&)
-    /// \return Cron like schedule string.
+    /// \brief Returns activity schedule type.
+    /// \return Activity schedule type.
     ///
-    QString schedule() const;
+    ActivityScheduleType scheduleType() const;
 
     ///
-    /// \brief Set activity cron like schedule string.
-    /// \see paso::data::scheduledDates(const QString&, const QDate&, const
-    /// QDate&)
-    /// \param schedule The new schedule to set.
+    /// \brief Sets activity schedule type.
+    /// \param scheduleType The new schedule type to set.
     ///
-    void setSchedule(const QString &schedule);
+    void setScheduleType(const ActivityScheduleType &scheduleType);
 
     ///
     /// \brief Returns activity duration in hours for each occurence.
@@ -191,16 +187,6 @@ public:
                                                quint64 activityId);
 
     ///
-    /// \brief Returns query that removes all associated lists from activity.
-    /// \param database The database to use.
-    /// \param activityId The activity id.
-    /// \return The query.
-    ///
-    static QSqlQuery
-    removeAllListsFromActivityQuery(const QSqlDatabase &database,
-                                    quint64 activityId);
-
-    ///
     /// \brief Returns query that associates given lists with the activity.
     /// \param database The database to use.
     /// \param activityId The activity id.
@@ -223,12 +209,12 @@ public:
                                            QList<quint64> roomIds);
 
 private:
-    QString mName;      //!< The activity name.
-    ActivityType mType; //!< The activity type.
-    QString mSchedule;  //!< The cron like schedule string.
-    QTime mDuration;    //!< The activity duration.
-    QDate mStartDate;   //!< The activity start date.
-    QDate mFinishDate;  //!< The activity finish date.
+    QString mName;                      //!< The activity name.
+    ActivityType mType;                 //!< The activity type.
+    ActivityScheduleType mScheduleType; //!< The activity schedule type.
+    QTime mDuration;                    //!< The activity duration.
+    QDate mStartDate;                   //!< The activity start date.
+    QDate mFinishDate;                  //!< The activity finish date.
 
     /// \brief Whether activity allows entry/overlap even if some other activity
     /// is in progress. This applies only to \ref ActivityType::INDIVIDUAL_WORK

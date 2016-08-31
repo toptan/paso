@@ -134,6 +134,7 @@ void TestPasoDB::testGetAllRooms() {
 }
 
 void TestPasoDB::testSaveRoom() {
+    auto db = QSqlDatabase::database(dbName);
     DBManager manager(dbName);
     QSqlError error;
     auto roomUUID =
@@ -147,6 +148,10 @@ void TestPasoDB::testSaveRoom() {
     QVERIFY(manager.saveRoom(*loadedRoom, error));
     auto updatedRoom = manager.getRoom(roomUUID, error);
     QCOMPARE(*updatedRoom, *loadedRoom);
+    db.exec("DROP TABLE ROOM CASCADE");
+    roomUUID = QUuid::createUuid().toString().replace("{", "").replace("}", "");
+    Room anotherRoom(roomUUID, "Demo Room 2", "DR2");
+    QVERIFY(!manager.saveRoom(room, error));
 }
 
 void TestPasoDB::testGetRoom() {
@@ -983,14 +988,14 @@ void TestPasoDB::testRemovingAllStudentsFromList() {
 void TestPasoDB::testAssociateListsWithActivity() {
     auto db = QSqlDatabase::database(dbName);
     db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
         "                     DURATION, START_DATE, FINISH_DATE)"
-        "              VALUES(1, 'A1', 'EXAM', '0 8 15 8 *',"
+        "              VALUES(1, 'A1', 'EXAM', 'ONCE',"
         "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
     db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
         "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
-        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
+        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
         "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
         "true);");
 
@@ -1001,19 +1006,21 @@ void TestPasoDB::testAssociateListsWithActivity() {
     QCOMPARE(manager.activityLists(1, error).size(), size_t(3));
     QVERIFY(manager.setActivityLists(1, {3, 4}, error));
     QCOMPARE(manager.activityLists(1, error).size(), size_t(2));
+    db.exec("DROP TABLE ACTIVITY_LISTS CASCADE");
+    QVERIFY(!manager.setActivityLists(1, {1}, error));
 }
 
 void TestPasoDB::testAssociateRoomsWithActivity() {
     auto db = QSqlDatabase::database(dbName);
     db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
         "                     DURATION, START_DATE, FINISH_DATE)"
-        "              VALUES(1, 'A1', 'EXAM', '0 8 15 8 *',"
+        "              VALUES(1, 'A1', 'EXAM', 'ONCE',"
         "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
     db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE, "
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
         "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
-        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', '0 8 * * 1,3',"
+        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
         "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
         "true);");
 
@@ -1022,4 +1029,6 @@ void TestPasoDB::testAssociateRoomsWithActivity() {
     QSqlError error;
     QVERIFY(manager.setActivityRooms(1, roomIds, error));
     QCOMPARE(manager.activityRooms(1, error).size(), size_t(2));
+    db.exec("DROP TABLE ACTIVITY_ROOMS CASCADE");
+    QVERIFY(!manager.setActivityRooms(1, {1}, error));
 }

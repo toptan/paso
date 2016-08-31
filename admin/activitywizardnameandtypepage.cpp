@@ -4,6 +4,7 @@
 #include "data.h"
 
 #include <QApplication>
+#include <QButtonGroup>
 #include <QComboBox>
 #include <QDebug>
 #include <QTimer>
@@ -31,26 +32,38 @@ ActivityWizardNameAndTypePage::ActivityWizardNameAndTypePage(quint64 activityId,
                     ui->typeComboBox->itemData(index).toString() ==
                     "INDIVIDUAL_WORK");
             });
+    connect(ui->moreThanOnceCheckBox, &QCheckBox::toggled,
+            [this](bool checked) {
+                ui->groupBox->setVisible(checked);
+                if (checked) {
+                    ui->weekDaysRadioButton->setChecked(true);
+                } else {
+                    ui->specificDaysRadioButton->setChecked(true);
+                }
+            });
     ui->overlapCheckBox->setVisible(false);
+    ui->groupBox->setVisible(false);
     registerField("name*", ui->nameEdit);
     registerField("type", ui->typeComboBox, "currentData",
                   SIGNAL(currentIndexChanged(int)));
     registerField("canOverlap", ui->overlapCheckBox);
     registerField("moreThanOnce", ui->moreThanOnceCheckBox);
-    registerField("activityId", this, "activityId", SIGNAL(activityIdChanged()));
+    registerField("activityId", this, "activityId",
+                  SIGNAL(activityIdChanged()));
+    registerField("onWeekDays", ui->weekDaysRadioButton);
+    registerField("onSpecificDays", ui->specificDaysRadioButton);
 }
 
 ActivityWizardNameAndTypePage::~ActivityWizardNameAndTypePage() { delete ui; }
 
-void ActivityWizardNameAndTypePage::initializePage() {}
+void ActivityWizardNameAndTypePage::initializePage() {
+    ui->weekDaysRadioButton->setChecked(true);
+    ui->specificDaysRadioButton->setChecked(false);
+    emit activityIdChanged();
+}
 
 quint64 ActivityWizardNameAndTypePage::activityId() const {
     return mActivityId;
-}
-
-void ActivityWizardNameAndTypePage::setActivityId(const quint64 &activityId) {
-    mActivityId = activityId;
-    emit activityIdChanged();
 }
 }
 }

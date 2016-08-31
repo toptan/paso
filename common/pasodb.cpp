@@ -561,10 +561,9 @@ CourseImportError DBManager::importCourse(const QString &csvLine,
     } else {
         course = make_shared<Course>(code, name);
     }
-    if (!saveCourse(*course, error)) {
-        return CourseImportError::DB_ERROR;
-    }
-    return CourseImportError::NO_ERROR;
+
+    auto success = saveCourse(*course, error);
+    return success ? CourseImportError::NO_ERROR : CourseImportError::DB_ERROR;
 }
 
 StudentImportError DBManager::importStudent(const QString &csvLine,
@@ -637,11 +636,8 @@ StudentImportError DBManager::importStudent(const QString &csvLine,
                                        yearOfStudy.toInt());
     }
 
-    if (!saveStudent(*student, error)) {
-        return StudentImportError::DB_ERROR;
-    }
-
-    return StudentImportError::NO_ERROR;
+    auto res = saveStudent(*student, error);
+    return res ? StudentImportError::NO_ERROR : StudentImportError::DB_ERROR;
 }
 
 ListStudentImportError DBManager::importCourseStudent(const QString &courseCode,

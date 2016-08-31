@@ -29,16 +29,17 @@ ActivityForm::~ActivityForm() { delete ui; }
 
 pair<QSqlTableModel *, RecordEditorWidget *>
 ActivityForm::createModelAndEditor() {
-    const QVariantMap columnLabels{{"name", QObject::tr("Name")},
-                                   {"type", QObject::tr("Type")},
-                                   {"schedule", QObject::tr("Schedule")},
-                                   {"duration", QObject::tr("Duration")},
-                                   {"start_date", QObject::tr("Start date")},
-                                   {"finish_date", QObject::tr("Finish date")},
-                                   {"can_overlap", QObject::tr("Can overlap")}};
+    const QVariantMap columnLabels{
+        {"name", QObject::tr("Name")},
+        {"type", QObject::tr("Type")},
+        {"schedule_type", QObject::tr("Schedule type")},
+        {"duration", QObject::tr("Duration")},
+        {"start_date", QObject::tr("Start date")},
+        {"finish_date", QObject::tr("Finish date")},
+        {"can_overlap", QObject::tr("Can overlap")}};
     const FieldTypes fieldTypes{{"name", FieldType::LineEdit},
                                 {"type", FieldType::ComboBox},
-                                {"schedule", FieldType::LineEdit},
+                                {"schedule_type", FieldType::LineEdit},
                                 {"duration", FieldType::TimeEdit},
                                 {"start_date", FieldType::DateEdit},
                                 {"finish_date", FieldType::DateEdit},

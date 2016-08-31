@@ -61,8 +61,48 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="1">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Repeats on</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="weekDaysRadioButton">
+        <property name="text">
+         <string>Week days</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="specificDaysRadioButton">
+        <property name="text">
+         <string>Specific days</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">buttonGroup</string>
+        </attribute>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>nameEdit</tabstop>
+  <tabstop>typeComboBox</tabstop>
+  <tabstop>overlapCheckBox</tabstop>
+  <tabstop>moreThanOnceCheckBox</tabstop>
+  <tabstop>weekDaysRadioButton</tabstop>
+  <tabstop>specificDaysRadioButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>

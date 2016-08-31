@@ -40,6 +40,17 @@ enum class ActivityType {
 };
 
 ///
+/// \brief The ActivityScheduleType enum defines possible activity schedule
+/// types.
+///
+enum class ActivityScheduleType {
+    ONCE = 0,   //!< Activity occurs once.
+    WEEK_DAYS,  //!< Activity repeats on certain week days.
+    MONTH_DAYS, //!< Activity repeats on certain days of the month.
+    INVALID
+};
+
+///
 /// \brief The CourseImportError enum defines error codes for importing courses.
 ///
 enum class CourseImportError {
@@ -130,32 +141,66 @@ const QMap<QString, QString> stringEnumeratedActivityTypes{
     {"SPECIAL_EVENT", QObject::tr("Special event")}};
 
 ///
+/// \brief enumeratedActivityScheduleTypes provides translatable activity
+/// schedule types for displaying text.
+///
+const QMap<ActivityScheduleType, QString> enumeratedActivityScheduleTypes{
+    {ActivityScheduleType::ONCE, QObject::tr("Activity does not repeat")},
+    {ActivityScheduleType::WEEK_DAYS,
+     QObject::tr("Repeats on certain week days")},
+    {ActivityScheduleType::MONTH_DAYS,
+     QObject::tr("Repeats on certain days in month")}};
+
+///
+/// \brief stringEnumeratedActivityScheduleTypes provides translatable activity
+/// schedule types for displaying text out of ther string representations.
+///
+const QMap<QString, QString> stringEnumeratedActivityScheduleTypes{
+    {"ONCE", QObject::tr("Activity does not repeat")},
+    {"WEEK_DAYS", QObject::tr("Repeats on certain week days")},
+    {"MONTH_DAYS", QObject::tr("Repeats on certain days in month")}};
+
+///
 /// \brief Returns string representation of the system role.
 /// \param role The role.
 /// \return String representation of the role.
 ///
-const QString roleToString(paso::data::SystemRole role);
+const QString roleToString(SystemRole role);
 
 ///
 /// \brief Returns role from its string representation.
 /// \param role String representation of the role.
 /// \return The role
 ///
-paso::data::SystemRole stringToRole(const QString &role);
+SystemRole stringToRole(const QString &role);
 
 ///
 /// \brief Returns string representation of the acitivity type.
 /// \param type The activity type.
 /// \return String representation of the activity type.
 ///
-const QString activityTypeToString(paso::data::ActivityType type);
+const QString activityTypeToString(ActivityType type);
 
 ///
 /// \brief Returns activity type from its string representation.
 /// \param type String representation of the activity type.
 /// \return The activity type.
 ///
-paso::data::ActivityType stringToActivityType(const QString &type);
+ActivityType stringToActivityType(const QString &type);
+
+///
+/// \brief Returns string representation of the activity schedule type.
+/// \param type The ectivity schedule type.
+/// \return String representation of the activity schedule type.
+///
+const QString activityScheduleTypeToString(ActivityScheduleType type);
+
+///
+/// \brief Returns activity schedule type from its string representation.
+/// \param type String representation of activity schedule type.
+/// \return The activity schedule type.
+///
+ActivityScheduleType stringToActivityScheduleType(const QString &type);
 
 ///
 /// \brief Returns difference in months between two dates.

@@ -88,7 +88,7 @@ void TestData::testSystemRoleSerialization() {
     QCOMPARE(deserialized.role(), SystemRole::SUPER_USER);
 }
 
-void TestData::testAcivityTypeSerialization() {
+void TestData::testActivityTypeSerialization() {
     Activity expected("Activity");
     Activity deserialized;
     deserialized.fromJsonString(expected.toJsonString());
@@ -111,6 +111,22 @@ void TestData::testAcivityTypeSerialization() {
     expected.setType(ActivityType::SPECIAL_EVENT);
     deserialized.fromJsonString(expected.toJsonString());
     QCOMPARE(deserialized.type(), ActivityType::SPECIAL_EVENT);
+}
+
+void TestData::testActivityScheduleTypeSerialization() {
+    Activity expected("Activity");
+    Activity deserialized;
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.scheduleType(), ActivityScheduleType::INVALID);
+    expected.setScheduleType(ActivityScheduleType::ONCE);
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.scheduleType(), ActivityScheduleType::ONCE);
+    expected.setScheduleType(ActivityScheduleType::WEEK_DAYS);
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.scheduleType(), ActivityScheduleType::WEEK_DAYS);
+    expected.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.scheduleType(), ActivityScheduleType::MONTH_DAYS);
 }
 
 void TestData::testCourseSerialization() {
@@ -142,6 +158,7 @@ void TestData::testListSerialization() {
 void TestData::testActivitySerialization() {
     Activity expected("Activity 1", ActivityType::INDIVIDUAL_WORK, 6);
     expected.setCanOverlap(true);
+    expected.setScheduleType(ActivityScheduleType::MONTH_DAYS);
     QString jsonString = expected.toJsonString();
     Activity deserialized((QVariantMap()));
     deserialized.fromJsonString(jsonString);
@@ -167,9 +184,9 @@ void TestData::testConversionToVariantMap() {
     QStringList courseKeys{"ID", "CODE", "NAME"};
     QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER"};
     QStringList listKeys{"ID", "NAME", "SYSTEM", "PERMANENT", "EXPIRY_DATE"};
-    QStringList activityKeys{"ID",          "NAME",       "TYPE",
-                             "SCHEDULE",    "DURATION",   "START_DATE",
-                             "FINISH_DATE", "CAN_OVERLAP"};
+    QStringList activityKeys{
+        "ID",       "NAME",       "TYPE",        "SCHEDULE_TYPE",
+        "DURATION", "START_DATE", "FINISH_DATE", "CAN_OVERLAP"};
 
     QCOMPARE(systemUser.toVariantMap().keys().size(), systemUserKeys.size());
     QCOMPARE(student.toVariantMap().keys().size(), studentKeys.size());
@@ -259,7 +276,7 @@ void TestData::testPropertyValues() {
     activity.setId(42);
     activity.setName("Activity 1");
     activity.setType(ActivityType::INDIVIDUAL_WORK);
-    activity.setSchedule("0 8 * * 1,3,5");
+    activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
     activity.setDuration(QTime(1, 30));
     activity.setStartDate(QDate::currentDate().addMonths(-1));
     activity.setFinishDate(QDate::currentDate().addMonths(1));
@@ -269,7 +286,8 @@ void TestData::testPropertyValues() {
     QCOMPARE(activity["ID"], QVariant(activity.id()));
     QCOMPARE(activity["NAME"], QVariant(activity.name()));
     QCOMPARE(activity["TYPE"], QVariant(activityTypeToString(activity.type())));
-    QCOMPARE(activity["SCHEDULE"], QVariant(activity.schedule()));
+    QCOMPARE(activity["SCHEDULE_TYPE"],
+             QVariant(activityScheduleTypeToString(activity.scheduleType())));
     QCOMPARE(activity["DURATION"], QVariant(activity.duration()));
     QCOMPARE(activity["START_DATE"], QVariant(activity.startDate()));
     QCOMPARE(activity["FINISH_DATE"], QVariant(activity.finishDate()));
