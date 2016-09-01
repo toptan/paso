@@ -92,15 +92,20 @@ void ActivityForm::updateActions(const QSqlRecord &record) {
 }
 
 bool ActivityForm::insertRecord(QSqlRecord &record, QSqlError &error) {
-    return false;
+    // Insert is done via wizard so we just return true here.
+    return true;
 }
 
 bool ActivityForm::updateRecord(int, const QSqlRecord &record,
                                 QSqlError &error) {
+    // Update is done via wizard so we just return true here.
     return false;
 }
 
-bool ActivityForm::removeRow(int row, QSqlError &error) { return false; }
+bool ActivityForm::removeRow(int row, QSqlError &error) {
+    // TODO: Implement activity deletion.
+    return false;
+}
 
 void ActivityForm::onNewRecord() {
     // Show wizard.

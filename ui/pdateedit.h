@@ -5,6 +5,9 @@
 #include <QDateEdit>
 #include <QString>
 
+namespace paso {
+namespace widget {
+
 ///
 /// \brief The PDateEdit class is simple extension of QDateEdit that is capable
 /// of displaying empty text. If minimum date is set the QDateEdit will display
@@ -19,5 +22,6 @@ public:
 protected:
     virtual QString textFromDateTime(const QDateTime &dt) const override;
 };
-
+}
+}
 #endif // PDATEEDIT_H

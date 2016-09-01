@@ -94,6 +94,40 @@
     </message>
 </context>
 <context>
+    <name>ActivityWizardRepetitiveDatesPage</name>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.ui" line="14"/>
+        <source>Activity Dates, Days, Time and Duration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.ui" line="17"/>
+        <source>Pick activity days or dates and set its time and duration.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.ui" line="36"/>
+        <source>Start date</source>
+        <translation type="unfinished">Почетни датум</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.ui" line="53"/>
+        <source>Finish date</source>
+        <translation type="unfinished">Крајњи датум</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.ui" line="43"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.ui" line="60"/>
+        <source>dd.MM.yyyy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.ui" line="70"/>
+        <source>Duration</source>
+        <translation type="unfinished">Трајање</translation>
+    </message>
+</context>
+<context>
     <name>ActivityWizardRoomsSelectionPage</name>
     <message>
         <location filename="../admin/activitywizardroomsselectionpage.ui" line="14"/>
@@ -238,20 +272,20 @@
         <translation>Лозинка</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="60"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="61"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="62"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>
@@ -266,9 +300,9 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/activityform.cpp" line="34"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/roomform.cpp" line="35"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
@@ -532,6 +566,54 @@
     <message>
         <location filename="../admin/activitywizardlistsselectionpage.cpp" line="41"/>
         <source>Participating lists</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::ActivityWizardRepetitiveDatesPage</name>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="69"/>
+        <source>Mo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="69"/>
+        <source>Tu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="69"/>
+        <source>We</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="69"/>
+        <source>Th</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="70"/>
+        <source>Fr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="70"/>
+        <source>Sa</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="70"/>
+        <source>Su</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="71"/>
+        <source>Week days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="80"/>
+        <source>Month days</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

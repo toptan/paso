@@ -36,11 +36,15 @@
      <property name="wrapping">
       <bool>true</bool>
      </property>
-     <property name="buttonSymbols">
-      <enum>QAbstractSpinBox::UpDownArrows</enum>
-     </property>
      <property name="displayFormat">
       <string notr="true">H:mm</string>
+     </property>
+     <property name="time">
+      <time>
+       <hour>1</hour>
+       <minute>0</minute>
+       <second>0</second>
+      </time>
      </property>
     </widget>
    </item>

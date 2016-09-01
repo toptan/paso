@@ -1,5 +1,8 @@
 #include "pdateedit.h"
 
+namespace paso {
+namespace widget {
+
 PDateEdit::PDateEdit(QWidget *parent) : QDateEdit(parent) {}
 
 PDateEdit::PDateEdit(const QDate &date, QWidget *parent)
@@ -10,4 +13,6 @@ QString PDateEdit::textFromDateTime(const QDateTime &dt) const {
         return "";
     }
     return QDateEdit::textFromDateTime(dt);
+}
+}
 }

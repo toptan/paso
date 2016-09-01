@@ -51,7 +51,7 @@ ActivityWizardNameAndTypePage::ActivityWizardNameAndTypePage(quint64 activityId,
     registerField("activityId", this, "activityId",
                   SIGNAL(activityIdChanged()));
     registerField("onWeekDays", ui->weekDaysRadioButton);
-    registerField("onSpecificDays", ui->specificDaysRadioButton);
+    registerField("onMonthDays", ui->specificDaysRadioButton);
 }
 
 ActivityWizardNameAndTypePage::~ActivityWizardNameAndTypePage() { delete ui; }

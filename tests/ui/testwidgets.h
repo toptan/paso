@@ -15,6 +15,7 @@ private slots:
     void testRecordEditorWidget();
     void testRecordValidator();
     void testDateEditWidget();
+    void testItemsPicker();
 };
 
 #endif // TESTWIDGETS_H

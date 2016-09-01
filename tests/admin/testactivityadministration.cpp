@@ -8,10 +8,12 @@
 #include "activitywizardfixeddatepage.h"
 #include "activitywizardlistsselectionpage.h"
 #include "activitywizardnameandtypepage.h"
+#include "activitywizardrepetitivedatespage.h"
 #include "activitywizardroomsselectionpage.h"
 #include "addremoveentitiesform.h"
 
 #include "data.h"
+#include "itemspicker.h"
 #include "list.h"
 #include "pasodb.h"
 #include "room.h"
@@ -169,7 +171,8 @@ void TestActivityAdministration::testActivityTableModel() {
     index = model.index(1, 2);
     QCOMPARE(model.data(index).toString(), QString("Individual work"));
     index = model.index(1, 3);
-    QCOMPARE(model.data(index).toString(), QString("Repeats on certain week days"));
+    QCOMPARE(model.data(index).toString(),
+             QString("Repeats on certain week days"));
     index = model.index(1, 4);
     QCOMPARE(model.data(index).toTime(), QTime(1, 30, 0));
     index = model.index(1, 5);
@@ -284,7 +287,7 @@ void TestActivityAdministration::testNameAndTypePage() {
     QVERIFY(!wizard.field("canOverlap").toBool());
     QVERIFY(!wizard.field("moreThanOnce").toBool());
     QVERIFY(wizard.field("onWeekDays").toBool());
-    QVERIFY(!wizard.field("onSpecificDays").toBool());
+    QVERIFY(!wizard.field("onMonthDays").toBool());
     QVERIFY(!groupBox->isVisible());
 
     // Select individual work
@@ -314,12 +317,12 @@ void TestActivityAdministration::testNameAndTypePage() {
     specificDaysRadioButton->setChecked(true);
     QApplication::processEvents();
     QVERIFY(!wizard.field("onWeekDays").toBool());
-    QVERIFY(wizard.field("onSpecificDays").toBool());
+    QVERIFY(wizard.field("onMonthDays").toBool());
 
     weekDaysRadioButton->setChecked(true);
     QApplication::processEvents();
     QVERIFY(wizard.field("onWeekDays").toBool());
-    QVERIFY(!wizard.field("onSpecificDays").toBool());
+    QVERIFY(!wizard.field("onMonthDays").toBool());
 }
 
 void TestActivityAdministration::testFixedDatePage() {
@@ -437,6 +440,40 @@ void TestActivityAdministration::testListsSelectionPage() {
     QApplication::processEvents();
     QVERIFY(wizard.field("activityLists").toList().isEmpty());
     QVERIFY(!page->isComplete());
+}
+
+void TestActivityAdministration::testRepetitiveDatesPage() {
+    QWizard wizard;
+    auto page = new ActivityWizardRepetitiveDatesPage;
+    wizard.addPage(page);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    QCOMPARE(page->title(), QString("Activity Dates, Days, Time and Duration"));
+    QCOMPARE(
+        page->subTitle(),
+        QString("Pick activity days or dates and set its time and duration."));
+
+    auto itemsPicker = page->findChild<ItemsPicker *>();
+    auto startDateEdit = page->findChild<QDateEdit *>("startDateEdit");
+    auto finishDateEdit = page->findChild<QDateEdit *>("finishDateEdit");
+    auto durationTimeEdit = page->findChild<QTimeEdit *>("durationTimeEdit");
+
+    // Week mode not set
+    QCOMPARE(itemsPicker->findChildren<QCheckBox *>().size(), 31);
+    QCOMPARE(startDateEdit->date(), QDate::currentDate());
+    QCOMPARE(finishDateEdit->date(), QDate::currentDate().addMonths(1));
+    QCOMPARE(durationTimeEdit->time(), QTime(1, 0));
+    QVERIFY(!page->isComplete());
+
+    auto item003 = itemsPicker->findChild<QCheckBox *>("item003");
+    auto item013 = itemsPicker->findChild<QCheckBox *>("item013");
+    auto item023 = itemsPicker->findChild<QCheckBox *>("item023");
+    item003->setChecked(true);
+    item013->setChecked(true);
+    item023->setChecked(true);
+    QApplication::processEvents();
+    QVERIFY(page->isComplete());
+    QCOMPARE(wizard.field("selectedDays").toList().size(), 3);
 }
 
 void TestActivityAdministration::testActivityWizard() {

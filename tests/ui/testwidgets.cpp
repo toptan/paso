@@ -3,6 +3,7 @@
 #include "addremoveentitiesform.h"
 #include "course.h"
 #include "entity.h"
+#include "itemspicker.h"
 #include "pdateedit.h"
 #include "recordeditorwidget.h"
 
@@ -578,4 +579,59 @@ void TestWidgets::testDateEditWidget() {
     QApplication::processEvents();
     QCOMPARE(dateEditWithDate.text(),
              date.toString(dateEditWithDate.displayFormat()));
+}
+
+void TestWidgets::testItemsPicker() {
+    ItemsPicker picker1(2);
+    QStringList objectNames;
+    objectNames << "item000"
+                << "item001"
+                << "item002"
+                << "item003"
+                << "item004";
+    QStringList itemLabels;
+    itemLabels << "000"
+               << "001"
+               << "002"
+               << "003"
+               << "004";
+    picker1.show();
+    QTest::qWaitForWindowExposed(&picker1);
+    picker1.setItemLabels(itemLabels);
+    QCOMPARE(picker1.columnCount(), 2);
+    for (const auto &child : picker1.findChildren<QCheckBox *>()) {
+        QVERIFY(objectNames.contains(child->objectName()));
+        objectNames.removeOne(child->objectName());
+    }
+    QVERIFY(objectNames.empty());
+    QSignalSpy spy(&picker1, &ItemsPicker::selectedItemsChanged);
+    auto item001 =
+        dynamic_cast<QCheckBox *>(picker1.findChild<QCheckBox *>("item001"));
+    auto item003 =
+        dynamic_cast<QCheckBox *>(picker1.findChild<QCheckBox *>("item003"));
+    item001->setChecked(true);
+    item003->setChecked(true);
+    QApplication::processEvents();
+    QCOMPARE(spy.count(), 2);
+    auto selectedItems = picker1.selectedItems();
+    QCOMPARE(selectedItems.size(), 2);
+    QVERIFY(selectedItems.contains(1));
+    QVERIFY(selectedItems.contains(3));
+    picker1.hide();
+    QApplication::processEvents();
+
+    ItemsPicker picker2(3);
+    picker2.show();
+    QTest::qWaitForWindowExposed(&picker2);
+    picker2.setItemLabels(itemLabels);
+    QApplication::processEvents();
+    QVERIFY(picker2.selectedItems().empty());
+    picker2.setSelectedItems({0, 3, 6});
+    QApplication::processEvents();
+    selectedItems = picker2.selectedItems();
+    QCOMPARE(selectedItems.size(), 2);
+    QVERIFY(selectedItems.contains(0));
+    QVERIFY(selectedItems.contains(3));
+    picker2.hide();
+    QApplication::processEvents();
 }
