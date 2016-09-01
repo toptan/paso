@@ -15,6 +15,7 @@
 #include <QtConcurrent>
 
 using namespace paso::data;
+using namespace paso::data::entity;
 using namespace paso::db;
 using namespace paso::model;
 using namespace paso::widget;

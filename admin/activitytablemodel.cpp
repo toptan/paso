@@ -6,46 +6,45 @@
 #include <QSqlRecord>
 
 namespace paso {
-namespace admin {
+namespace model {
 
 using namespace paso::data;
 
-ActivityTableModel::ActivityTableModel(const QVariantMap &columnLabels,
-                                       QSqlDatabase db, QObject *parent)
-    : QSqlTableModel(parent, db) {
-    setTable("activity");
-    setEditStrategy(QSqlTableModel::OnManualSubmit);
-    select();
+const QString ActivityQueryModel::QUERY = "SELECT * FROM ACTIVITY";
 
+ActivityQueryModel::ActivityQueryModel(const QVariantMap &columnLabels,
+                                       QSqlDatabase db, QObject *parent)
+    : RefreshableSqlQueryModel(QUERY, db.connectionName(), parent) {
     const auto &rec = record();
     for (auto i = 0; i < rec.count(); i++) {
         setHeaderData(i, Qt::Horizontal, columnLabels[rec.fieldName(i)]);
     }
 }
 
-QVariant ActivityTableModel::data(const QModelIndex &idx, int role) const {
+QVariant ActivityQueryModel::data(const QModelIndex &idx, int role) const {
     if (role == Qt::DisplayRole) {
         if (idx.column() == 2) {
             return QApplication::instance()->translate(
                 "QObject",
-                stringEnumeratedActivityTypes[QSqlTableModel::data(idx, role)
-                                                  .toString()]
-                    .toStdString()
-                    .c_str());
+                stringEnumeratedActivityTypes
+                    [RefreshableSqlQueryModel::data(idx, role).toString()]
+                        .toStdString()
+                        .c_str());
         } else if (idx.column() == 3) {
             return QApplication::instance()->translate(
-                "QObject", stringEnumeratedActivityScheduleTypes
-                               [QSqlTableModel::data(idx, role).toString()]
-                                   .toStdString()
-                                   .c_str());
+                "QObject",
+                stringEnumeratedActivityScheduleTypes
+                    [RefreshableSqlQueryModel::data(idx, role).toString()]
+                        .toStdString()
+                        .c_str());
 
         } else if (idx.column() == 7) {
-            return QSqlTableModel::data(idx, role).toBool()
+            return RefreshableSqlQueryModel::data(idx, role).toBool()
                        ? QApplication::instance()->translate("QObject", "Yes")
                        : QApplication::instance()->translate("QObject", "No");
         }
     }
-    return QSqlTableModel::data(idx, role);
+    return RefreshableSqlQueryModel::data(idx, role);
 }
 }
 }

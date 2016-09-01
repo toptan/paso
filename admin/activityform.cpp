@@ -9,6 +9,7 @@
 
 using namespace paso::widget;
 using namespace paso::db;
+using namespace paso::model;
 
 using namespace std;
 
@@ -16,7 +17,7 @@ namespace paso {
 namespace admin {
 
 ActivityForm::ActivityForm(QWidget *parent)
-    : TableForm(createModelAndEditor(), parent), ui(new Ui::ActivityForm) {
+    : QueryForm(createModelAndEditor(), parent), ui(new Ui::ActivityForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
     ui->tableView->hideColumn(0);
@@ -27,7 +28,7 @@ ActivityForm::ActivityForm(QWidget *parent)
 
 ActivityForm::~ActivityForm() { delete ui; }
 
-pair<QSqlTableModel *, RecordEditorWidget *>
+pair<QSqlQueryModel *, RecordEditorWidget *>
 ActivityForm::createModelAndEditor() {
     const QVariantMap columnLabels{
         {"name", QObject::tr("Name")},
@@ -45,7 +46,7 @@ ActivityForm::createModelAndEditor() {
                                 {"finish_date", FieldType::DateEdit},
                                 {"can_overlap", FieldType::CheckBox}};
 
-    auto model = new ActivityTableModel(
+    auto model = new ActivityQueryModel(
         columnLabels, QSqlDatabase::database(DEFAULT_DB_NAME));
     auto editor = new ActivityEditorWidget(fieldTypes);
     editor->setupUi(columnLabels, model->record());
@@ -53,7 +54,7 @@ ActivityForm::createModelAndEditor() {
                                                editor->fieldEditors(), editor));
     editor->clearData();
 
-    return make_pair<QSqlTableModel *, RecordEditorWidget *>(model, editor);
+    return make_pair<QSqlQueryModel *, RecordEditorWidget *>(model, editor);
 }
 
 void ActivityForm::prepareRecordForSaving(QSqlRecord &record) {
@@ -89,6 +90,17 @@ bool ActivityForm::shouldDeleteRecord(const QSqlRecord &record) const {
 void ActivityForm::updateActions(const QSqlRecord &record) {
     // No form specific actions.
 }
+
+bool ActivityForm::insertRecord(QSqlRecord &record, QSqlError &error) {
+    return false;
+}
+
+bool ActivityForm::updateRecord(int, const QSqlRecord &record,
+                                QSqlError &error) {
+    return false;
+}
+
+bool ActivityForm::removeRow(int row, QSqlError &error) { return false; }
 
 void ActivityForm::onNewRecord() {
     // Show wizard.

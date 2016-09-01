@@ -33,6 +33,7 @@ using namespace paso::db;
 using namespace paso::data::entity;
 using namespace paso::widget;
 using namespace paso::admin;
+using namespace paso::model;
 
 TestActivityAdministration::TestActivityAdministration() : TestBase() {}
 
@@ -132,7 +133,7 @@ void TestActivityAdministration::testActivityTableModel() {
                                    {"finish_date", "Finish date"},
                                    {"can_overlap", "Can overlap"}};
 
-    ActivityTableModel model(columnLabels, db);
+    ActivityQueryModel model(columnLabels, db);
     QCOMPARE(model.rowCount(), 2);
     QCOMPARE(model.columnCount(), 8);
     QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
@@ -199,7 +200,7 @@ void TestActivityAdministration::testActivityForm() {
     QTest::qWaitForWindowExposed(form.get());
     auto tableView = form->findChild<QTableView *>();
     auto editor = form->findChild<ActivityEditorWidget *>();
-    auto model = dynamic_cast<ActivityTableModel *>(form->model());
+    auto model = dynamic_cast<ActivityQueryModel *>(form->model());
     QAction *newAction = nullptr;
     QAction *editAction = nullptr;
     QAction *deleteAction = nullptr;

@@ -2,7 +2,7 @@
 #define ACTIVITYFORM_H
 
 #include "activityeditorwidget.h"
-#include "tableform.h"
+#include "queryform.h"
 
 namespace Ui {
 class ActivityForm;
@@ -11,7 +11,7 @@ class ActivityForm;
 namespace paso {
 namespace admin {
 
-class ActivityForm : public widget::TableForm {
+class ActivityForm : public widget::QueryForm {
     Q_OBJECT
 
 public:
@@ -34,10 +34,16 @@ protected:
 
     virtual void updateActions(const QSqlRecord &record) override;
 
+    virtual bool insertRecord(QSqlRecord &record, QSqlError &error) override;
+    virtual bool updateRecord(int row, const QSqlRecord &record,
+                              QSqlError &error) override;
+
+    virtual bool removeRow(int row, QSqlError &error) override;
+
 private:
     Ui::ActivityForm *ui;
 
-    static std::pair<QSqlTableModel *, widget::RecordEditorWidget *>
+    static std::pair<QSqlQueryModel *, widget::RecordEditorWidget *>
     createModelAndEditor();
 };
 }

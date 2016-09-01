@@ -3,14 +3,8 @@
 
 #include "refreshablesqlquerymodel.h"
 
-#include "pasodb.h"
-#include "student.h"
-
 #include <QObject>
 #include <QVariantMap>
-
-using namespace paso::db;
-using namespace paso::data::entity;
 
 namespace paso {
 namespace model {
