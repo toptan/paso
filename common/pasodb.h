@@ -1,6 +1,7 @@
 #ifndef PASODB_H
 #define PASODB_H
 
+#include "activity.h"
 #include "course.h"
 #include "data.h"
 #include "entity.h"
@@ -106,9 +107,9 @@ public:
     getAllRooms(QSqlError &error) const;
 
     ///
-    /// \brief getRoom Returns room with given \c roomUUID
-    /// \param [in]  roomUUID The room UUID to look for.
-    /// \param [out] error SQL error if any.
+    /// \brief Returns room with given \c roomUUID
+    /// \param roomUUID The room UUID to look for.
+    /// \param error SQL error if any.
     /// \return Found room or \c nullptr if none is found.
     ///
     std::shared_ptr<data::entity::Room> getRoom(const QUuid &roomUUID,
@@ -472,6 +473,15 @@ public:
     /// \return \c true if all students are successfully removed from the list.
     ///
     bool removeAllStudentsFromList(quint64 listId, QSqlError &error);
+
+    ///
+    /// \brief Returns activity with given id.
+    /// \param activityId The activity id.
+    /// \param error The SQL error if any.
+    /// \return Found activity of \c nullptr if such activity does not exist.
+    ///
+    std::shared_ptr<data::entity::Activity> getActivity(quint64 activityId,
+                                                        QSqlError &error) const;
 
     ///
     /// \brief Returns all lists associated with activity with given id.

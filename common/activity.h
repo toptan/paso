@@ -147,6 +147,15 @@ public:
     virtual void write(QJsonObject &jsonObject) const override;
 
     ///
+    /// \brief Returns the query that finds activity by its id.
+    /// \param database The database to use.
+    /// \param activityId The activity id.
+    /// \return The query.
+    ///
+    static QSqlQuery findActivityByIdQuery(const QSqlDatabase &database,
+                                           quint64 activityId);
+
+    ///
     /// \brief Returns query that finds all lists associated with given
     /// activity.
     /// \param database The database to use.

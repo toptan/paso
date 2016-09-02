@@ -88,7 +88,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardnameandtypepage.ui" line="83"/>
+        <location filename="../admin/activitywizardnameandtypepage.ui" line="86"/>
         <source>Specific days</source>
         <translation type="unfinished"></translation>
     </message>
@@ -257,9 +257,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="34"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/roomform.cpp" line="35"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="34"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -299,20 +299,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="60"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="60"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="61"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="61"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="62"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="62"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -562,6 +562,24 @@
     <message>
         <location filename="../admin/activitywizardlistsselectionpage.cpp" line="41"/>
         <source>Participating lists</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::ActivityWizardNameAndTypePage</name>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.cpp" line="73"/>
+        <source>There was an error while loading activity from the database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.cpp" line="84"/>
+        <source>The requested activity does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardnameandtypepage.cpp" line="86"/>
+        <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

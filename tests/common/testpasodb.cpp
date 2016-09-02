@@ -985,6 +985,28 @@ void TestPasoDB::testRemovingAllStudentsFromList() {
     QVERIFY(manager.membersOfTheList(list->id(), error).empty());
 }
 
+void TestPasoDB::testGetActivity() {
+    auto db = QSqlDatabase::database(dbName);
+    db.exec(
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
+        "                     DURATION, START_DATE, FINISH_DATE)"
+        "              VALUES(1, 'A1', 'EXAM', 'ONCE',"
+        "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
+    DBManager manager(dbName);
+    QSqlError error;
+    auto activity = manager.getActivity(1, error);
+    QCOMPARE(error.type(), QSqlError::NoError);
+    QVERIFY((bool)activity);
+    QCOMPARE(activity->name(), QString("A1"));
+    QCOMPARE(activity->type(), ActivityType::EXAM);
+    QCOMPARE(activity->scheduleType(), ActivityScheduleType::ONCE);
+    QCOMPARE(activity->duration(), QTime(3, 0));
+    QCOMPARE(activity->startDate(), QDate(2016, 8, 15));
+    QCOMPARE(activity->finishDate(), QDate(2016, 8, 15));
+    activity = manager.getActivity(2, error);
+    QVERIFY(!(bool)activity);
+}
+
 void TestPasoDB::testAssociateListsWithActivity() {
     auto db = QSqlDatabase::database(dbName);
     db.exec(

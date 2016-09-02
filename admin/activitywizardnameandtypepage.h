@@ -12,15 +12,16 @@ namespace admin {
 
 class ActivityWizardNameAndTypePage : public QWizardPage {
     Q_OBJECT
-    Q_PROPERTY(quint64 activityId READ activityId NOTIFY activityIdChanged)
+    Q_PROPERTY(quint64 activityId READ activityId WRITE setActivityId NOTIFY
+                   activityIdChanged)
 public:
-    explicit ActivityWizardNameAndTypePage(quint64 activityId = 0,
-                                           QWidget *parent = 0);
+    explicit ActivityWizardNameAndTypePage(QWidget *parent = 0);
     virtual ~ActivityWizardNameAndTypePage();
 
     virtual void initializePage() override;
 
     quint64 activityId() const;
+    void setActivityId(const quint64 &activityId);
 
 signals:
     void activityIdChanged();

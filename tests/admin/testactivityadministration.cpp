@@ -32,6 +32,7 @@
 
 using namespace std;
 using namespace paso::db;
+using namespace paso::data;
 using namespace paso::data::entity;
 using namespace paso::widget;
 using namespace paso::admin;
@@ -245,9 +246,23 @@ void TestActivityAdministration::testActivityForm() {
 }
 
 void TestActivityAdministration::testNameAndTypePage() {
+    auto db = QSqlDatabase::database(dbName);
+    db.exec("DELETE FROM ACTIVITY");
+    db.exec(
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
+        "                     DURATION, START_DATE, FINISH_DATE)"
+        "              VALUES(1, 'A1', 'EXAM', 'ONCE',"
+        "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
+    db.exec(
+        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
+        "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
+        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
+        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
+        "true);");
     QWizard wizard;
     auto page = new ActivityWizardNameAndTypePage;
-    wizard.addPage(page);
+    page->setActivityId(0);
+    wizard.setPage(0, page);
     wizard.show();
     QTest::qWaitForWindowExposed(&wizard);
 
@@ -323,6 +338,39 @@ void TestActivityAdministration::testNameAndTypePage() {
     QApplication::processEvents();
     QVERIFY(wizard.field("onWeekDays").toBool());
     QVERIFY(!wizard.field("onMonthDays").toBool());
+
+    wizard.hide();
+    QApplication::processEvents();
+    wizard.removePage(0);
+    delete page;
+
+    page = new ActivityWizardNameAndTypePage;
+    page->setActivityId(1);
+    wizard.setPage(0, page);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    nameEdit = page->findChild<QLineEdit *>();
+    comboBox = page->findChild<QComboBox *>();
+    overlapCheckBox = page->findChild<QCheckBox *>("overlapCheckBox");
+    moreThanOnceCheckBox = page->findChild<QCheckBox *>("moreThanOnceCheckBox");
+    groupBox = page->findChild<QGroupBox *>();
+    weekDaysRadioButton =
+        page->findChild<QRadioButton *>("weekDaysRadioButton");
+    specificDaysRadioButton =
+        page->findChild<QRadioButton *>("specificDaysRadioButton");
+
+    QCOMPARE(nameEdit->text(), QString("A1"));
+    QCOMPARE(stringToActivityType(comboBox->currentData().toString()),
+             ActivityType::EXAM);
+    QVERIFY(!overlapCheckBox->isChecked());
+    QVERIFY(!moreThanOnceCheckBox->isChecked());
+    QCOMPARE(wizard.field("name").toString(), QString("A1"));
+    QCOMPARE(wizard.field("type").toString(), QString("EXAM"));
+    QVERIFY(!wizard.field("canOverlap").toBool());
+    QVERIFY(!wizard.field("moreThanOnce").toBool());
+    QVERIFY(!groupBox->isVisible());
+
+
 }
 
 void TestActivityAdministration::testFixedDatePage() {
@@ -443,11 +491,11 @@ void TestActivityAdministration::testListsSelectionPage() {
 }
 
 void TestActivityAdministration::testRepetitiveDatesPage() {
-    QWizard wizard;
+    std::unique_ptr<QWizard> wizard(new QWizard);
     auto page = new ActivityWizardRepetitiveDatesPage;
-    wizard.addPage(page);
-    wizard.show();
-    QTest::qWaitForWindowExposed(&wizard);
+    wizard->addPage(page);
+    wizard->show();
+    QTest::qWaitForWindowExposed(wizard.get());
     QCOMPARE(page->title(), QString("Activity Dates, Days, Time and Duration"));
     QCOMPARE(
         page->subTitle(),
@@ -473,7 +521,11 @@ void TestActivityAdministration::testRepetitiveDatesPage() {
     item023->setChecked(true);
     QApplication::processEvents();
     QVERIFY(page->isComplete());
-    QCOMPARE(wizard.field("selectedDays").toList().size(), 3);
+    QCOMPARE(wizard->field("selectedDays").toList().size(), 3);
+
+    finishDateEdit->setDate(QDate::currentDate().addMonths(-5));
+    QApplication::processEvents();
+    QVERIFY(!page->isComplete());
 }
 
 void TestActivityAdministration::testActivityWizard() {

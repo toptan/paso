@@ -13,7 +13,7 @@ Activity::Activity(const QString &name, ActivityType type, quint64 id)
 
 Activity::Activity(const QVariantMap &map)
     : Entity(map["ID"].toULongLong()), mName(map["NAME"].toString()),
-      mType(stringToActivityType(map["ROLE"].toString())),
+      mType(stringToActivityType(map["TYPE"].toString())),
       mScheduleType(
           stringToActivityScheduleType(map["SCHEDULE_TYPE"].toString())),
       mDuration(map["DURATION"].toTime()),
@@ -118,6 +118,13 @@ void Activity::write(QJsonObject &jsonObject) const {
     jsonObject["START_DATE"] = QVariant(mStartDate).toJsonValue();
     jsonObject["FINISH_DATE"] = QVariant(mFinishDate).toJsonValue();
     jsonObject["CAN_OVERLAP"] = mCanOverlap;
+}
+
+QSqlQuery Activity::findActivityByIdQuery(const QSqlDatabase &database, quint64 activityId) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM ACTIVITY WHERE ID = :activity_id");
+    query.bindValue(":activity_id", activityId);
+    return query;
 }
 
 QSqlQuery Activity::findActivityListsQuery(const QSqlDatabase &database,

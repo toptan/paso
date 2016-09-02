@@ -875,6 +875,21 @@ bool DBManager::removeAllStudentsFromList(quint64 listId, QSqlError &error) {
     return error.type() == QSqlError::NoError;
 }
 
+shared_ptr<Activity> DBManager::getActivity(quint64 activityId,
+                                            QSqlError &error) const {
+    auto query = Activity::findActivityByIdQuery(
+        QSqlDatabase::database(mDbName), activityId);
+    query.exec();
+    error = query.lastError();
+    if (error.type() == QSqlError::NoError) {
+        if (query.next()) {
+            return make_shared<Activity>(recordToVariantMap(query.record()));
+        }
+    }
+
+    return nullptr;
+}
+
 EntityVector DBManager::activityLists(quint64 activityId,
                                       QSqlError &error) const {
     auto query = Activity::findActivityListsQuery(
