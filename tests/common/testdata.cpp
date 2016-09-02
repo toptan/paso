@@ -295,6 +295,7 @@ void TestData::testPropertyValues() {
     QCOMPARE(activity["TYPE"], QVariant(activityTypeToString(activity.type())));
     QCOMPARE(activity["SCHEDULE_TYPE"],
              QVariant(activityScheduleTypeToString(activity.scheduleType())));
+    QCOMPARE(activity["SCHEDULED_DAYS"], QVariant(activity.scheduledDays()));
     QCOMPARE(activity["DURATION"], QVariant(activity.duration()));
     QCOMPARE(activity["START_DATE"], QVariant(activity.startDate()));
     QCOMPARE(activity["FINISH_DATE"], QVariant(activity.finishDate()));
