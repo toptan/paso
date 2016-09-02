@@ -61,6 +61,9 @@ private slots:
     void testRemovingAllStudentsFromList();
 
     void testGetActivity();
+    void testSaveActivity();
+    void testDeleteActivity();
+
     void testAssociateListsWithActivity();
     void testAssociateRoomsWithActivity();
 

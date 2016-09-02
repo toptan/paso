@@ -26,6 +26,8 @@ private slots:
     void testPropertyValues();
     void testDifferenceInMonths();
     void testScheduledDates();
+    void testJsonArrayStringToVariantList();
+    void testVariantListToJsonArrayString();
 };
 
 #endif // TESTDATA_H

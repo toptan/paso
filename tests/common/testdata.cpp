@@ -90,6 +90,7 @@ void TestData::testSystemRoleSerialization() {
 
 void TestData::testActivityTypeSerialization() {
     Activity expected("Activity");
+    expected.setScheduledDays(QVariantList{1, 3, 5});
     Activity deserialized;
     deserialized.fromJsonString(expected.toJsonString());
     QCOMPARE(deserialized.type(), ActivityType::INVALID_ACTIVITY);
@@ -184,9 +185,15 @@ void TestData::testConversionToVariantMap() {
     QStringList courseKeys{"ID", "CODE", "NAME"};
     QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER"};
     QStringList listKeys{"ID", "NAME", "SYSTEM", "PERMANENT", "EXPIRY_DATE"};
-    QStringList activityKeys{
-        "ID",       "NAME",       "TYPE",        "SCHEDULE_TYPE",
-        "DURATION", "START_DATE", "FINISH_DATE", "CAN_OVERLAP"};
+    QStringList activityKeys{"ID",
+                             "NAME",
+                             "TYPE",
+                             "SCHEDULE_TYPE",
+                             "SCHEDULED_DAYS",
+                             "DURATION",
+                             "START_DATE",
+                             "FINISH_DATE",
+                             "CAN_OVERLAP"};
 
     QCOMPARE(systemUser.toVariantMap().keys().size(), systemUserKeys.size());
     QCOMPARE(student.toVariantMap().keys().size(), studentKeys.size());
@@ -477,4 +484,30 @@ void TestData::testScheduledDates() {
     cronString = "30 12 * * *";
     dates = scheduledDates(cronString, startDate, endDate);
     QCOMPARE(dates.size(), size_t(8));
+}
+
+void TestData::testJsonArrayStringToVariantList() {
+    auto result = jsonArrayStringToVariantList("{1, 2, 3}");
+    QCOMPARE(result.size(), 3);
+    QCOMPARE(result[0].toInt(), 1);
+    QCOMPARE(result[1].toInt(), 2);
+    QCOMPARE(result[2].toInt(), 3);
+
+    result = jsonArrayStringToVariantList("{\"AB\", \"CD\"}");
+    QCOMPARE(result.size(), 2);
+    QCOMPARE(result[0].toString(), QString("AB"));
+    QCOMPARE(result[1].toString(), QString("CD"));
+
+    result = jsonArrayStringToVariantList("1, \"AB\", 2, \"cd\"}");
+    // All array members have to be of the same type.
+    QCOMPARE(result.size(), 0);
+}
+
+void TestData::testVariantListToJsonArrayString() {
+    QVariantList l{1, 2, 3};
+    QCOMPARE(variantListToJsonArrayString(l), QString("{1,2,3}"));
+    l.clear();
+    l << "AB"
+      << "CD";
+    QCOMPARE(variantListToJsonArrayString(l), QString("{\"AB\",\"CD\"}"));
 }

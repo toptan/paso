@@ -21,6 +21,8 @@ public:
 
 private:
     static const QString QUERY;
+
+    QString generateRepetitionString(const QModelIndex &idx) const;
 };
 }
 }

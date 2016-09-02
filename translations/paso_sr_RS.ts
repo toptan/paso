@@ -428,20 +428,67 @@
     </message>
     <message>
         <location filename="../common/data.h" line="148"/>
-        <location filename="../common/data.h" line="159"/>
         <source>Activity does not repeat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../common/data.h" line="150"/>
-        <location filename="../common/data.h" line="160"/>
         <source>Repeats on certain week days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../common/data.h" line="152"/>
-        <location filename="../common/data.h" line="161"/>
         <source>Repeats on certain days in month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="159"/>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="160"/>
+        <source>Weekly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="161"/>
+        <source>Monthly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="167"/>
+        <source>Monday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="167"/>
+        <source>Tuesday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="167"/>
+        <source>Wednesday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="168"/>
+        <source>Thursday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="168"/>
+        <source>Friday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="168"/>
+        <source>Saturday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../common/data.h" line="169"/>
+        <source>Sunday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -460,12 +507,12 @@
         <translation>Датум истека</translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="43"/>
+        <location filename="../admin/activitytablemodel.cpp" line="45"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="44"/>
+        <location filename="../admin/activitytablemodel.cpp" line="46"/>
         <source>No</source>
         <translation>Не</translation>
     </message>
@@ -1719,6 +1766,25 @@
         <location filename="../admin/systemusersform.cpp" line="92"/>
         <source>Do you want to delete selected system user?</source>
         <translation>Да ли стварно желите да обришете одабраног корисника?</translation>
+    </message>
+</context>
+<context>
+    <name>paso::model::ActivityQueryModel</name>
+    <message>
+        <location filename="../admin/activitytablemodel.cpp" line="68"/>
+        <location filename="../admin/activitytablemodel.cpp" line="81"/>
+        <source>and</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitytablemodel.cpp" line="82"/>
+        <source>Every </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitytablemodel.cpp" line="82"/>
+        <source>in month</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

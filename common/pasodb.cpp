@@ -890,6 +890,43 @@ shared_ptr<Activity> DBManager::getActivity(quint64 activityId,
     return nullptr;
 }
 
+bool DBManager::saveActivity(Activity &activity, QSqlError &error) const {
+    auto query =
+        activity.id() == 0
+            ? Activity::insertQuery(QSqlDatabase::database(mDbName), activity)
+            : Activity::updateQuery(QSqlDatabase::database(mDbName), activity);
+    beginTransaction();
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+
+    if (activity.id() == 0) {
+        query.next();
+        activity.setId(query.record().value("ID").toULongLong());
+    }
+
+    error = commit();
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::deleteActivity(quint64 activityId, QSqlError &error) const {
+    auto query =
+        Activity::deleteQuery(QSqlDatabase::database(mDbName), activityId);
+    beginTransaction();
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+
+    error = commit();
+    return error.type() == QSqlError::NoError;
+}
+
 EntityVector DBManager::activityLists(quint64 activityId,
                                       QSqlError &error) const {
     auto query = Activity::findActivityListsQuery(

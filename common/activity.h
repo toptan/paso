@@ -75,6 +75,19 @@ public:
     void setScheduleType(const ActivityScheduleType &scheduleType);
 
     ///
+    /// \brief Returns the list of scheduled days. The list simply contains
+    /// either week day numbers, or month day numbers.
+    /// \return The list of scheduled days.
+    ///
+    QVariantList scheduledDays() const;
+
+    ///
+    /// \brief Sets scheduled days.
+    /// \param scheduledDays The list of scheduled days.
+    ///
+    void setScheduledDays(const QVariantList &scheduledDays);
+
+    ///
     /// \brief Returns activity duration in hours for each occurence.
     /// \return Activity duration in hours.
     ///
@@ -145,6 +158,33 @@ public:
     /// \copydoc paso::data::JsonSerializable::write()
     ///
     virtual void write(QJsonObject &jsonObject) const override;
+
+    ///
+    /// \brief Returns insert query for given activity with values bound.
+    /// \param database The database to use.
+    /// \param activity The activity to insert.
+    /// \return The query.
+    ///
+    static QSqlQuery insertQuery(const QSqlDatabase &database,
+                                 const Activity &activity);
+
+    ///
+    /// \brief Returns update query for given activity with values bound.
+    /// \param database The database to use.
+    /// \param activity The activity to update.
+    /// \return The query.
+    ///
+    static QSqlQuery updateQuery(const QSqlDatabase &database,
+                                 const Activity &activity);
+
+    ///
+    /// \brief Returns delete query for given activity id with values bound.
+    /// \param database The database to use.
+    /// \param activityId The id of activity to delete.
+    /// \return The query.
+    ///
+    static QSqlQuery deleteQuery(const QSqlDatabase &database,
+                                 quint64 activityId);
 
     ///
     /// \brief Returns the query that finds activity by its id.
@@ -221,6 +261,7 @@ private:
     QString mName;                      //!< The activity name.
     ActivityType mType;                 //!< The activity type.
     ActivityScheduleType mScheduleType; //!< The activity schedule type.
+    QVariantList mScheduledDays;        //!< The array of scheduled days.
     QTime mDuration;                    //!< The activity duration.
     QDate mStartDate;                   //!< The activity start date.
     QDate mFinishDate;                  //!< The activity finish date.

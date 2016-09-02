@@ -116,55 +116,75 @@ void TestActivityAdministration::testActivityEditorWidget() {
 
 void TestActivityAdministration::testActivityTableModel() {
     auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
     db.exec("DELETE FROM ACTIVITY");
-    db.exec("INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE_TYPE, "
-            "                     DURATION, START_DATE, FINISH_DATE)"
-            "              VALUES('A1', 'EXAM', 'ONCE',"
-            "                     '03:00:00.000', '2016-08-15', '2016-08-15')");
-    db.exec(
-        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE_TYPE, "
-        "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
-        "              VALUES('A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
-        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
-        "true)");
 
+    const QVariantList scheduledDates{1, 3, 5};
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A2");
+    activity.setType(ActivityType::INDIVIDUAL_WORK);
+    activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
+    activity.setDuration(QTime(1, 30));
+    activity.setFinishDate(QDate(2016, 9, 15));
+    activity.setCanOverlap(true);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A3");
+    activity.setType(ActivityType::LECTURE);
+    activity.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    activity.setFinishDate(QDate(2017, 9, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
     const QVariantMap columnLabels{{"name", "Name"},
                                    {"type", "Type"},
-                                   {"schedule_type", "Schedule type"},
+                                   {"schedule_type", "Repeats"},
+                                   {"scheduled_days", "When"},
                                    {"duration", "Duration"},
                                    {"start_date", "Start date"},
                                    {"finish_date", "Finish date"},
                                    {"can_overlap", "Can overlap"}};
 
     ActivityQueryModel model(columnLabels, db);
-    QCOMPARE(model.rowCount(), 2);
-    QCOMPARE(model.columnCount(), 8);
+    QCOMPARE(model.rowCount(), 3);
+    QCOMPARE(model.columnCount(), 9);
     QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(), QString("Type"));
     QCOMPARE(model.headerData(3, Qt::Horizontal).toString(),
-             QString("Schedule type"));
-    QCOMPARE(model.headerData(4, Qt::Horizontal).toString(),
-             QString("Duration"));
+             QString("Repeats"));
+    QCOMPARE(model.headerData(4, Qt::Horizontal).toString(), QString("When"));
     QCOMPARE(model.headerData(5, Qt::Horizontal).toString(),
-             QString("Start date"));
+             QString("Duration"));
     QCOMPARE(model.headerData(6, Qt::Horizontal).toString(),
-             QString("Finish date"));
+             QString("Start date"));
     QCOMPARE(model.headerData(7, Qt::Horizontal).toString(),
+             QString("Finish date"));
+    QCOMPARE(model.headerData(8, Qt::Horizontal).toString(),
              QString("Can overlap"));
     auto index = model.index(0, 1);
     QCOMPARE(model.data(index).toString(), QString("A1"));
     index = model.index(0, 2);
     QCOMPARE(model.data(index).toString(), QString("Exam"));
     index = model.index(0, 3);
-    QCOMPARE(model.data(index).toString(), QString("Activity does not repeat"));
+    QCOMPARE(model.data(index).toString(), QString("Never"));
     index = model.index(0, 4);
-    QCOMPARE(model.data(index).toTime(), QTime(3, 0, 0));
+    QCOMPARE(model.data(index).toString(), QString(""));
     index = model.index(0, 5);
-    QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
+    QCOMPARE(model.data(index).toTime(), QTime(3, 0, 0));
     index = model.index(0, 6);
     QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
     index = model.index(0, 7);
+    QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
+    index = model.index(0, 8);
     QCOMPARE(model.data(index).toString(), QString("No"));
 
     index = model.index(1, 1);
@@ -172,32 +192,67 @@ void TestActivityAdministration::testActivityTableModel() {
     index = model.index(1, 2);
     QCOMPARE(model.data(index).toString(), QString("Individual work"));
     index = model.index(1, 3);
-    QCOMPARE(model.data(index).toString(),
-             QString("Repeats on certain week days"));
+    QCOMPARE(model.data(index).toString(), QString("Weekly"));
     index = model.index(1, 4);
-    QCOMPARE(model.data(index).toTime(), QTime(1, 30, 0));
+    QCOMPARE(model.data(index).toString(),
+             QString("Monday, Wednesday and Friday"));
     index = model.index(1, 5);
-    QCOMPARE(model.data(index).toDate(), QDate(2016, 9, 1));
+    QCOMPARE(model.data(index).toTime(), QTime(1, 30, 0));
     index = model.index(1, 6);
-    QCOMPARE(model.data(index).toDate(), QDate(2016, 9, 30));
+    QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
     index = model.index(1, 7);
+    QCOMPARE(model.data(index).toDate(), QDate(2016, 9, 15));
+    index = model.index(1, 8);
     QCOMPARE(model.data(index).toString(), QString("Yes"));
+
+    index = model.index(2, 1);
+    QCOMPARE(model.data(index).toString(), QString("A3"));
+    index = model.index(2, 2);
+    QCOMPARE(model.data(index).toString(), QString("Lecture or excercise"));
+    index = model.index(2, 3);
+    QCOMPARE(model.data(index).toString(), QString("Monthly"));
+    index = model.index(2, 4);
+    QCOMPARE(model.data(index).toString(),
+             QString("Every 1, 3 and 5 in month"));
+    index = model.index(2, 5);
+    QCOMPARE(model.data(index).toTime(), QTime(1, 30, 0));
+    index = model.index(2, 6);
+    QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
+    index = model.index(2, 7);
+    QCOMPARE(model.data(index).toDate(), QDate(2017, 9, 15));
+    index = model.index(2, 8);
+    QCOMPARE(model.data(index).toString(), QString("No"));
 }
 
 void TestActivityAdministration::testActivityForm() {
     auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
     db.exec("DELETE FROM ACTIVITY");
-    db.exec(
-        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE_TYPE, "
-        "                     DURATION, START_DATE, FINISH_DATE)"
-        "              VALUES('A1', 'EXAM', 'ONCE',"
-        "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
-    db.exec(
-        "INSERT INTO ACTIVITY(NAME, TYPE, SCHEDULE_TYPE, "
-        "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
-        "              VALUES('A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
-        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
-        "true);");
+    const QVariantList scheduledDates{1, 3, 5};
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A2");
+    activity.setType(ActivityType::INDIVIDUAL_WORK);
+    activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
+    activity.setDuration(QTime(1, 30));
+    activity.setFinishDate(QDate(2016, 9, 15));
+    activity.setCanOverlap(true);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A3");
+    activity.setType(ActivityType::LECTURE);
+    activity.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    activity.setFinishDate(QDate(2017, 9, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
 
     unique_ptr<ActivityForm> form(new ActivityForm);
     form->show();
@@ -230,7 +285,7 @@ void TestActivityAdministration::testActivityForm() {
 
     QVERIFY(tableView != nullptr);
     QVERIFY(editor != nullptr);
-    QCOMPARE(tableView->model()->rowCount(), 2);
+    QCOMPARE(tableView->model()->rowCount(), 3);
 
     QVERIFY(newAction != nullptr);
     QVERIFY(editAction != nullptr);
@@ -247,18 +302,34 @@ void TestActivityAdministration::testActivityForm() {
 
 void TestActivityAdministration::testNameAndTypePage() {
     auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
     db.exec("DELETE FROM ACTIVITY");
-    db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
-        "                     DURATION, START_DATE, FINISH_DATE)"
-        "              VALUES(1, 'A1', 'EXAM', 'ONCE',"
-        "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
-    db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
-        "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
-        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
-        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
-        "true);");
+    const QVariantList scheduledDates{1, 3, 5};
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A2");
+    activity.setType(ActivityType::INDIVIDUAL_WORK);
+    activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
+    activity.setDuration(QTime(1, 30));
+    activity.setFinishDate(QDate(2016, 9, 15));
+    activity.setCanOverlap(true);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A3");
+    activity.setType(ActivityType::LECTURE);
+    activity.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    activity.setFinishDate(QDate(2017, 9, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+
     QWizard wizard;
     auto page = new ActivityWizardNameAndTypePage;
     page->setActivityId(0);
@@ -369,8 +440,6 @@ void TestActivityAdministration::testNameAndTypePage() {
     QVERIFY(!wizard.field("canOverlap").toBool());
     QVERIFY(!wizard.field("moreThanOnce").toBool());
     QVERIFY(!groupBox->isVisible());
-
-
 }
 
 void TestActivityAdministration::testFixedDatePage() {

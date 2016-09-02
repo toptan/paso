@@ -152,13 +152,21 @@ const QMap<ActivityScheduleType, QString> enumeratedActivityScheduleTypes{
      QObject::tr("Repeats on certain days in month")}};
 
 ///
-/// \brief stringEnumeratedActivityScheduleTypes provides translatable activity
-/// schedule types for displaying text out of ther string representations.
+/// \brief Provides translatable activity schedule types for displaying text in
+/// activities form out of ther string representations.
 ///
 const QMap<QString, QString> stringEnumeratedActivityScheduleTypes{
-    {"ONCE", QObject::tr("Activity does not repeat")},
-    {"WEEK_DAYS", QObject::tr("Repeats on certain week days")},
-    {"MONTH_DAYS", QObject::tr("Repeats on certain days in month")}};
+    {"ONCE", QObject::tr("Never")},
+    {"WEEK_DAYS", QObject::tr("Weekly")},
+    {"MONTH_DAYS", QObject::tr("Monthly")}};
+
+///
+/// \brief Provides translatable day names for displaying when activity repeats.
+///
+const QStringList repetitionWeekDays{
+    QObject::tr("Monday"),   QObject::tr("Tuesday"), QObject::tr("Wednesday"),
+    QObject::tr("Thursday"), QObject::tr("Friday"),  QObject::tr("Saturday"),
+    QObject::tr("Sunday")};
 
 ///
 /// \brief Returns string representation of the system role.
@@ -236,6 +244,26 @@ int differenceInMonths(const QDate &startDate, const QDate &endDate);
 std::list<QDateTime> scheduledDates(const QString &cronString,
                                     const QDate &startDate,
                                     const QDate &endDate);
+
+///
+/// \brief Returns the variant list constructed out of json array string.
+/// \note If json array string is illformed the return value is undefined.
+/// \note Apart from standard json array notation of [elements], this method can
+/// also work with {elements} notation.
+/// \param jsonArrayString The json array string.
+/// \return The variant list.
+///
+QVariantList jsonArrayStringToVariantList(const QString &jsonArrayString);
+
+///
+/// \brief Returns modifed string notation of json array. The difference from
+/// standard notation is usage of curly braces insted of square brackets.
+/// \note If all elements of the list are not of the same type, the result is
+/// undefined.
+/// \param variantList The variant list.
+/// \return The modified string notation of json array.
+///
+QString variantListToJsonArrayString(const QVariantList &variantList);
 }
 }
 

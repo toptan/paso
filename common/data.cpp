@@ -1,7 +1,9 @@
 #include "data.h"
 
 #include <QDebug>
+#include <QJsonArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
@@ -320,6 +322,39 @@ list<QDateTime> scheduledDates(const QString &cronString,
     // And finally remove duplicates if any.
     retVal.sort();
     retVal.unique();
+    return retVal;
+}
+
+QVariantList jsonArrayStringToVariantList(const QString &jsonArrayString) {
+    auto tmp = jsonArrayString.trimmed();
+    tmp[0] = QChar('[');
+    tmp[tmp.size() - 1] = QChar(']');
+    auto doc = QJsonDocument::fromJson(tmp.toUtf8());
+    auto jsonArray = doc.array();
+    QVariantList retVal;
+    for (int i = 0; i < jsonArray.count(); i++) {
+        retVal << jsonArray[i].toVariant();
+    }
+    return retVal;
+}
+
+QString variantListToJsonArrayString(const QVariantList &variantList) {
+    QString retVal("{");
+    QTextStream ts(&retVal);
+
+    for (const auto &item : variantList) {
+        if (item.type() == QVariant::String) {
+            ts << "\"" << item.toString() << "\",";
+        } else {
+            ts << item.toString() << ",";
+        }
+    }
+    retVal = retVal.trimmed();
+    if (retVal.endsWith(",")) {
+        retVal.chop(1);
+    }
+    retVal.append("}");
+
     return retVal;
 }
 }

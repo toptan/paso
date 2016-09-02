@@ -169,7 +169,7 @@ public:
     getStudentByIndexNumber(const QString &indexNumber, QSqlError &error) const;
 
     ///
-    /// \brief saveStudent Adds new or updates existing student. If adding new
+    /// \brief Adds new or updates existing student. If adding new
     /// student the id property of the student will be updated.
     /// \param student The student.
     /// \param error The SQL error if any.
@@ -178,7 +178,7 @@ public:
     bool saveStudent(data::entity::Student &student, QSqlError &error) const;
 
     ///
-    /// \brief deleteStudent Deletes student with given \c indexNumber. Deleting
+    /// \brief Deletes student with given \c indexNumber. Deleting
     /// non existant student will not result in error.
     /// \param indexNumber The index number of the student to delete.
     /// \param error The SQL error if any.
@@ -187,39 +187,39 @@ public:
     bool deleteStudent(const QString &indexNumber, QSqlError &error) const;
 
     ///
-    /// \brief usernameUnique checks if given username is unique.
-    /// \param [in] username The username to check.
-    /// \param [out] error The SQL error if any.
+    /// \brief Checks if given username is unique.
+    /// \param username The username to check.
+    /// \param error The SQL error if any.
     /// \return \c true if username does not exist in the database.
     ///
     bool usernameUnique(const QString &username, QSqlError &error) const;
 
     ///
-    /// \brief roomUuidUnique checks if given room UUID is unique.
-    /// \param [in] roomUUID The room UUID to check.
-    /// \param [out] error The SQL error if any.
+    /// \brief Checks if given room UUID is unique.
+    /// \param roomUUID The room UUID to check.
+    /// \param error The SQL error if any.
     /// \return \c true if the room UUID does not exit in the database.
     ///
     bool roomUuidUnique(const QString &roomUUID, QSqlError &error) const;
 
     ///
-    /// \brief roomNumberUnique checks if given room number is unique.
-    /// \param [in] roomNumber The room number to check.
-    /// \param [out] error The SQL error if any.
+    /// \brief Checks if given room number is unique.
+    /// \param roomNumber The room number to check.
+    /// \param error The SQL error if any.
     /// \return \c true if the room number does not exist in the database.
     ///
     bool roomNumberUnique(const QString &roomNumber, QSqlError &error) const;
 
     ///
-    /// \brief courseCodeUnique checks if given course code is unique.
-    /// \param [in] courseCode The course code to check.
-    /// \param [out] error The SQL error if any.
+    /// \brief Checks if given course code is unique.
+    /// \param courseCode The course code to check.
+    /// \param error The SQL error if any.
     /// \return \c true if the course code does not exist in the database.
     ///
     bool courseCodeUnique(const QString &courseCode, QSqlError &error) const;
 
     ///
-    /// \brief indexNumberUnique checks if given index number is unique.
+    /// \brief Checks if given index number is unique.
     /// \param indexNumber The index number to check.
     /// \param error The SQL error if any.
     /// \return \c true if the index number does not exist in the database.
@@ -465,7 +465,7 @@ public:
                                                       QSqlError &error) const;
 
     ///
-    /// \brief removeAllStudentsFromList Removes all students from given list.
+    /// \brief Removes all students from given list.
     /// \note This method has no transaction of its own and should not be used
     /// without enclosing transaction, which must be initiated by the caller.
     /// \param listId The list id.
@@ -482,6 +482,24 @@ public:
     ///
     std::shared_ptr<data::entity::Activity> getActivity(quint64 activityId,
                                                         QSqlError &error) const;
+
+    ///
+    /// \brief Adds new or updates existing activity. If adding new activity the
+    /// id property will be updated.
+    /// \param activity The activity.
+    /// \param error The SQL error if any.
+    /// \return \c true if student is successfully saved.
+    ///
+    bool saveActivity(data::entity::Activity &activity, QSqlError &error) const;
+
+    ///
+    /// \brief Deletes activity with given \c activityId. Deleting non existing
+    /// activity will not result in error.
+    /// \param activityId The id of activity to delete.
+    /// \param error The SQL error if any.
+    /// \return \c true if activity is successfuly deleted.
+    ///
+    bool deleteActivity(quint64 activityId, QSqlError &error) const;
 
     ///
     /// \brief Returns all lists associated with activity with given id.

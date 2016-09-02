@@ -16,6 +16,7 @@ Activity::Activity(const QVariantMap &map)
       mType(stringToActivityType(map["TYPE"].toString())),
       mScheduleType(
           stringToActivityScheduleType(map["SCHEDULE_TYPE"].toString())),
+      mScheduledDays(jsonArrayStringToVariantList(map["SCHEDULED_DAYS"].toString())),
       mDuration(map["DURATION"].toTime()),
       mStartDate(map["START_DATE"].toDate()),
       mFinishDate(map["FINISH_DATE"].toDate()),
@@ -28,6 +29,7 @@ bool Activity::operator==(const Activity &other) const {
 
     return id() == other.id() && mName == other.mName && mType == other.mType &&
            mScheduleType == other.mScheduleType &&
+           mScheduledDays == other.mScheduledDays &&
            mDuration == other.mDuration && mStartDate == other.mStartDate &&
            mFinishDate == other.mFinishDate && mCanOverlap == other.mCanOverlap;
 }
@@ -44,6 +46,12 @@ ActivityScheduleType Activity::scheduleType() const { return mScheduleType; }
 
 void Activity::setScheduleType(const ActivityScheduleType &scheduleType) {
     mScheduleType = scheduleType;
+}
+
+QVariantList Activity::scheduledDays() const { return mScheduledDays; }
+
+void Activity::setScheduledDays(const QVariantList &scheduledDays) {
+    mScheduledDays = scheduledDays;
 }
 
 QTime Activity::duration() const { return mDuration; }
@@ -69,6 +77,7 @@ QVariantMap Activity::toVariantMap() const {
     retVal.insert("NAME", mName);
     retVal.insert("TYPE", activityTypeToString(mType));
     retVal.insert("SCHEDULE_TYPE", activityScheduleTypeToString(mScheduleType));
+    retVal.insert("SCHEDULED_DAYS", mScheduledDays);
     retVal.insert("DURATION", mDuration);
     retVal.insert("START_DATE", mStartDate);
     retVal.insert("FINISH_DATE", mFinishDate);
@@ -83,6 +92,8 @@ QVariant Activity::value(const QString &property) const {
         return activityTypeToString(mType);
     } else if (property == "SCHEDULE_TYPE") {
         return activityScheduleTypeToString(mScheduleType);
+    } else if (property == "SCHEDULED_DAYS") {
+        return mScheduledDays;
     } else if (property == "DURATION") {
         return mDuration;
     } else if (property == "START_DATE") {
@@ -99,10 +110,12 @@ QVariant Activity::value(const QString &property) const {
 void Activity::read(const QJsonObject &jsonObject) {
     setId(jsonObject["ID"].toVariant().toULongLong());
     mName = jsonObject["NAME"].toString();
-    auto strType = jsonObject["TYPE"].toString();
-    mType = stringToActivityType(strType);
-    strType = jsonObject["SCHEDULE_TYPE"].toString();
-    mScheduleType = stringToActivityScheduleType(strType);
+    auto tmp = jsonObject["TYPE"].toString();
+    mType = stringToActivityType(tmp);
+    tmp = jsonObject["SCHEDULE_TYPE"].toString();
+    mScheduleType = stringToActivityScheduleType(tmp);
+    tmp = jsonObject["SCHEDULED_DAYS"].toString();
+    mScheduledDays = jsonArrayStringToVariantList(tmp);
     mDuration = jsonObject["DURATION"].toVariant().toTime();
     mStartDate = jsonObject["START_DATE"].toVariant().toDate();
     mFinishDate = jsonObject["FINISH_DATE"].toVariant().toDate();
@@ -114,13 +127,70 @@ void Activity::write(QJsonObject &jsonObject) const {
     jsonObject["NAME"] = mName;
     jsonObject["TYPE"] = activityTypeToString(mType);
     jsonObject["SCHEDULE_TYPE"] = activityScheduleTypeToString(mScheduleType);
+    jsonObject["SCHEDULED_DAYS"] = variantListToJsonArrayString(mScheduledDays);
     jsonObject["DURATION"] = QVariant(mDuration).toJsonValue();
     jsonObject["START_DATE"] = QVariant(mStartDate).toJsonValue();
     jsonObject["FINISH_DATE"] = QVariant(mFinishDate).toJsonValue();
     jsonObject["CAN_OVERLAP"] = mCanOverlap;
 }
 
-QSqlQuery Activity::findActivityByIdQuery(const QSqlDatabase &database, quint64 activityId) {
+QSqlQuery Activity::insertQuery(const QSqlDatabase &database,
+                                const Activity &activity) {
+    QSqlQuery query(database);
+    query.prepare("SELECT insert_activity(:name, :type, :schedule_type, "
+                  ":scheduled_days, :duration, :start_date, :finish_date, "
+                  ":can_overlap) AS ID");
+    query.bindValue(":name", activity.name());
+    query.bindValue(":type", activityTypeToString(activity.type()));
+    query.bindValue(":schedule_type",
+                    activityScheduleTypeToString(activity.scheduleType()));
+    query.bindValue(":duration", activity.duration());
+    query.bindValue(":start_date", activity.startDate());
+    query.bindValue(":finish_date", activity.finishDate());
+    query.bindValue(":can_overlap", activity.canOverlap());
+    QString strDays;
+    QTextStream ts(&strDays);
+    for (auto i = 0; i < activity.scheduledDays().size(); i++) {
+        ts << activity.scheduledDays()[i].toInt() << " ";
+    }
+    query.bindValue(":scheduled_days", strDays.trimmed());
+    return query;
+}
+
+QSqlQuery Activity::updateQuery(const QSqlDatabase &database,
+                                const Activity &activity) {
+    QSqlQuery query(database);
+    query.prepare("SELECT update_activity(:id, :name, :type, :schedule_type, "
+                  ":scheduled_days, :duration, :start_date, :finish_date, "
+                  ":can_overlap)");
+    query.bindValue(":id", activity.id());
+    query.bindValue(":name", activity.name());
+    query.bindValue(":type", activityTypeToString(activity.type()));
+    query.bindValue(":schedule_type",
+                    activityScheduleTypeToString(activity.scheduleType()));
+    query.bindValue(":duration", activity.duration());
+    query.bindValue(":start_date", activity.startDate());
+    query.bindValue(":finish_date", activity.finishDate());
+    query.bindValue(":can_overlap", activity.canOverlap());
+    QString strDays;
+    QTextStream ts(&strDays);
+    for (auto i = 0; i < activity.scheduledDays().size(); i++) {
+        ts << activity.scheduledDays()[i].toInt() << " ";
+    }
+    query.bindValue(":scheduled_days", strDays.trimmed());
+    return query;
+}
+
+QSqlQuery Activity::deleteQuery(const QSqlDatabase &database,
+                                quint64 activityId) {
+    QSqlQuery query(database);
+    query.prepare("DELETE FROM ACTIVITY WHERE ID = :activity_id");
+    query.bindValue(":activity_id", activityId);
+    return query;
+}
+
+QSqlQuery Activity::findActivityByIdQuery(const QSqlDatabase &database,
+                                          quint64 activityId) {
     QSqlQuery query(database);
     query.prepare("SELECT * FROM ACTIVITY WHERE ID = :activity_id");
     query.bindValue(":activity_id", activityId);
@@ -193,7 +263,7 @@ QSqlQuery Activity::setActivityListsQuery(const QSqlDatabase &database,
 
     query.prepare("SELECT set_activity_lists(:activity_id, :list_ids)");
     query.bindValue(":activity_id", activityId);
-    query.bindValue(":list_ids", strIds);
+    query.bindValue(":list_ids", strIds.trimmed());
     return query;
 }
 
@@ -208,7 +278,7 @@ QSqlQuery Activity::setActivityRoomsQuery(const QSqlDatabase &database,
     }
     query.prepare("SELECT set_activity_rooms(:activity_id, :room_ids)");
     query.bindValue(":activity_id", activityId);
-    query.bindValue(":room_ids", strIds);
+    query.bindValue(":room_ids", strIds.trimmed());
     return query;
 }
 }

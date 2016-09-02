@@ -4,6 +4,7 @@
 
 #include <QApplication>
 #include <QSqlRecord>
+#include <QTextStream>
 
 namespace paso {
 namespace model {
@@ -37,14 +38,50 @@ QVariant ActivityQueryModel::data(const QModelIndex &idx, int role) const {
                     [RefreshableSqlQueryModel::data(idx, role).toString()]
                         .toStdString()
                         .c_str());
-
-        } else if (idx.column() == 7) {
+        } else if (idx.column() == 4) {
+            return generateRepetitionString(idx);
+        } else if (idx.column() == 8) {
             return RefreshableSqlQueryModel::data(idx, role).toBool()
                        ? QApplication::instance()->translate("QObject", "Yes")
                        : QApplication::instance()->translate("QObject", "No");
         }
     }
     return RefreshableSqlQueryModel::data(idx, role);
+}
+
+QString
+ActivityQueryModel::generateRepetitionString(const QModelIndex &idx) const {
+    QString retVal = "";
+    auto typeIndex = index(idx.row(), 3);
+    if (RefreshableSqlQueryModel::data(typeIndex) == "WEEK_DAYS") {
+        const QVariantList days = jsonArrayStringToVariantList(
+            RefreshableSqlQueryModel::data(idx).toString());
+        QTextStream ts(&retVal);
+        for (const auto &day : days) {
+            ts << repetitionWeekDays[day.toInt() - 1] << ", ";
+        }
+        retVal = retVal.trimmed();
+        if (retVal.endsWith(",")) {
+            retVal.chop(1);
+        }
+        auto lastIndex = retVal.lastIndexOf(",");
+        retVal = retVal.replace(lastIndex, 1, QString(" ") + tr("and"));
+    } else if (RefreshableSqlQueryModel::data(typeIndex) == "MONTH_DAYS") {
+        const QVariantList days = jsonArrayStringToVariantList(
+            RefreshableSqlQueryModel::data(idx).toString());
+        QTextStream ts(&retVal);
+        for (const auto &day : days) {
+            ts << day.toInt() << ", ";
+        }
+        retVal = retVal.trimmed();
+        if (retVal.endsWith(",")) {
+            retVal.chop(1);
+        }
+        auto lastIndex = retVal.lastIndexOf(",");
+        retVal = retVal.replace(lastIndex, 1, QString(" ") + tr("and"));
+        retVal = tr("Every ") + retVal + QString(" ") + tr("in month");
+    }
+    return retVal;
 }
 }
 }
