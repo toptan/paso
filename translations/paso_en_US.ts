@@ -116,6 +116,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.ui" line="94"/>
+        <source>Start time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="43"/>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="60"/>
         <source>dd.MM.yyyy</source>
@@ -257,9 +262,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/activityform.cpp" line="34"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/roomform.cpp" line="35"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -299,20 +304,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="60"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="61"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="62"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -595,37 +600,60 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::ActivityWizardFixedDatePage</name>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.cpp" line="43"/>
+        <source>There was an error while loading activity from the database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.cpp" line="54"/>
+        <source>The requested activity does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardfixeddatepage.cpp" line="56"/>
+        <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::ActivityWizardListsSelectionPage</name>
     <message>
-        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="35"/>
+        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="38"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="40"/>
+        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="48"/>
         <source>Non participating lists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="41"/>
+        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="49"/>
         <source>Participating lists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardlistsselectionpage.cpp" line="53"/>
+        <source>There was an error while loading activity lists from the database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>paso::admin::ActivityWizardNameAndTypePage</name>
     <message>
-        <location filename="../admin/activitywizardnameandtypepage.cpp" line="73"/>
+        <location filename="../admin/activitywizardnameandtypepage.cpp" line="74"/>
         <source>There was an error while loading activity from the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardnameandtypepage.cpp" line="84"/>
+        <location filename="../admin/activitywizardnameandtypepage.cpp" line="85"/>
         <source>The requested activity does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardnameandtypepage.cpp" line="86"/>
+        <location filename="../admin/activitywizardnameandtypepage.cpp" line="87"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -633,47 +661,62 @@
 <context>
     <name>paso::admin::ActivityWizardRepetitiveDatesPage</name>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="69"/>
-        <source>Mo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="69"/>
-        <source>Tu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="69"/>
-        <source>We</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="69"/>
-        <source>Th</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="70"/>
-        <source>Fr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="70"/>
-        <source>Sa</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="70"/>
-        <source>Su</source>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="60"/>
+        <source>There was an error while loading activity from the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="71"/>
+        <source>The requested activity does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="73"/>
+        <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="128"/>
+        <source>Mo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="128"/>
+        <source>Tu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="128"/>
+        <source>We</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="128"/>
+        <source>Th</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="129"/>
+        <source>Fr</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="129"/>
+        <source>Sa</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="129"/>
+        <source>Su</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="130"/>
         <source>Week days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="80"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="139"/>
         <source>Month days</source>
         <translation type="unfinished"></translation>
     </message>
@@ -681,23 +724,28 @@
 <context>
     <name>paso::admin::ActivityWizardRoomsSelectionPage</name>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="37"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="39"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="37"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="39"/>
         <source>Room number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="42"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="48"/>
         <source>Non assigned rooms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="43"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="49"/>
         <source>Assigned rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="54"/>
+        <source>There was an error while loading activity rooms from the database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

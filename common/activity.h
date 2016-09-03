@@ -112,6 +112,18 @@ public:
     void setStartDate(const QDate &startDate);
 
     ///
+    /// \brief Returns activity start time.
+    /// \return Activity start time.
+    ///
+    QTime startTime() const;
+
+    ///
+    /// \brief Sets activity start time.
+    /// \param startTime Activity start time.
+    ///
+    void setStartTime(const QTime &startTime);
+
+    ///
     /// \brief Returns activity finish date.
     /// \return Activity finish date.
     ///
@@ -264,6 +276,7 @@ private:
     QVariantList mScheduledDays;        //!< The array of scheduled days.
     QTime mDuration;                    //!< The activity duration.
     QDate mStartDate;                   //!< The activity start date.
+    QTime mStartTime;                   //!< The activity start time.
     QDate mFinishDate;                  //!< The activity finish date.
 
     /// \brief Whether activity allows entry/overlap even if some other activity

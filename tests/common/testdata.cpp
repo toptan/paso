@@ -192,6 +192,7 @@ void TestData::testConversionToVariantMap() {
                              "SCHEDULED_DAYS",
                              "DURATION",
                              "START_DATE",
+                             "START_TIME",
                              "FINISH_DATE",
                              "CAN_OVERLAP"};
 
@@ -286,6 +287,7 @@ void TestData::testPropertyValues() {
     activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
     activity.setDuration(QTime(1, 30));
     activity.setStartDate(QDate::currentDate().addMonths(-1));
+    activity.setStartTime(QTime(8, 0));
     activity.setFinishDate(QDate::currentDate().addMonths(1));
     activity.setCanOverlap(true);
 
@@ -298,6 +300,7 @@ void TestData::testPropertyValues() {
     QCOMPARE(activity["SCHEDULED_DAYS"], QVariant(activity.scheduledDays()));
     QCOMPARE(activity["DURATION"], QVariant(activity.duration()));
     QCOMPARE(activity["START_DATE"], QVariant(activity.startDate()));
+    QCOMPARE(activity["START_TIME"], QVariant(activity.startTime()));
     QCOMPARE(activity["FINISH_DATE"], QVariant(activity.finishDate()));
     QCOMPARE(activity["CAN_OVERLAP"], QVariant(activity.canOverlap()));
 }

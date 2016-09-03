@@ -632,6 +632,16 @@ void TestWidgets::testItemsPicker() {
     QCOMPARE(selectedItems.size(), 2);
     QVERIFY(selectedItems.contains(0));
     QVERIFY(selectedItems.contains(3));
+    picker2.setColumnCount(2);
+    QApplication::processEvents();
+    selectedItems = picker2.selectedItems();
+    QCOMPARE(selectedItems.size(), 2);
+    QVERIFY(selectedItems.contains(0));
+    QVERIFY(selectedItems.contains(3));
+    picker2.setItemLabels({"A", "B", "C"});
+    QApplication::processEvents();
+    selectedItems = picker2.selectedItems();
+    QVERIFY(selectedItems.empty());
     picker2.hide();
     QApplication::processEvents();
 }

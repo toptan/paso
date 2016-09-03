@@ -17,6 +17,7 @@ public:
     explicit ActivityWizardFixedDatePage(QWidget *parent = 0);
     virtual ~ActivityWizardFixedDatePage();
 
+    virtual void initializePage() override;
     virtual bool isComplete() const override;
 
 private:

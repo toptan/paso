@@ -64,14 +64,14 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Duration</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="4" column="1">
     <widget class="QTimeEdit" name="durationTimeEdit">
      <property name="wrapping">
       <bool>true</bool>
@@ -82,6 +82,27 @@
      <property name="time">
       <time>
        <hour>1</hour>
+       <minute>0</minute>
+       <second>0</second>
+      </time>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Start time</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QTimeEdit" name="startTimeEdit">
+     <property name="displayFormat">
+      <string notr="true">H:mm</string>
+     </property>
+     <property name="time">
+      <time>
+       <hour>8</hour>
        <minute>0</minute>
        <second>0</second>
       </time>

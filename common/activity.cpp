@@ -9,16 +9,18 @@ namespace entity {
 Activity::Activity(const QString &name, ActivityType type, quint64 id)
     : Entity(id), mName(name), mType(type),
       mScheduleType(ActivityScheduleType::INVALID), mDuration(), mStartDate(),
-      mFinishDate(), mCanOverlap(false) {}
+      mStartTime(), mFinishDate(), mCanOverlap(false) {}
 
 Activity::Activity(const QVariantMap &map)
     : Entity(map["ID"].toULongLong()), mName(map["NAME"].toString()),
       mType(stringToActivityType(map["TYPE"].toString())),
       mScheduleType(
           stringToActivityScheduleType(map["SCHEDULE_TYPE"].toString())),
-      mScheduledDays(jsonArrayStringToVariantList(map["SCHEDULED_DAYS"].toString())),
+      mScheduledDays(
+          jsonArrayStringToVariantList(map["SCHEDULED_DAYS"].toString())),
       mDuration(map["DURATION"].toTime()),
       mStartDate(map["START_DATE"].toDate()),
+      mStartTime(map["START_TIME"].toTime()),
       mFinishDate(map["FINISH_DATE"].toDate()),
       mCanOverlap(map["CAN_OVERLAP"].toBool()) {}
 
@@ -31,7 +33,8 @@ bool Activity::operator==(const Activity &other) const {
            mScheduleType == other.mScheduleType &&
            mScheduledDays == other.mScheduledDays &&
            mDuration == other.mDuration && mStartDate == other.mStartDate &&
-           mFinishDate == other.mFinishDate && mCanOverlap == other.mCanOverlap;
+           mStartTime == other.mStartTime && mFinishDate == other.mFinishDate &&
+           mCanOverlap == other.mCanOverlap;
 }
 
 QString Activity::name() const { return mName; }
@@ -62,6 +65,10 @@ QDate Activity::startDate() const { return mStartDate; }
 
 void Activity::setStartDate(const QDate &startDate) { mStartDate = startDate; }
 
+QTime Activity::startTime() const { return mStartTime; }
+
+void Activity::setStartTime(const QTime &startTime) { mStartTime = startTime; }
+
 QDate Activity::finishDate() const { return mFinishDate; }
 
 void Activity::setFinishDate(const QDate &finishDate) {
@@ -80,6 +87,7 @@ QVariantMap Activity::toVariantMap() const {
     retVal.insert("SCHEDULED_DAYS", mScheduledDays);
     retVal.insert("DURATION", mDuration);
     retVal.insert("START_DATE", mStartDate);
+    retVal.insert("START_TIME", mStartTime);
     retVal.insert("FINISH_DATE", mFinishDate);
     retVal.insert("CAN_OVERLAP", mCanOverlap);
     return retVal;
@@ -98,6 +106,8 @@ QVariant Activity::value(const QString &property) const {
         return mDuration;
     } else if (property == "START_DATE") {
         return mStartDate;
+    } else if (property == "START_TIME") {
+        return mStartTime;
     } else if (property == "FINISH_DATE") {
         return mFinishDate;
     } else if (property == "CAN_OVERLAP") {
@@ -118,6 +128,7 @@ void Activity::read(const QJsonObject &jsonObject) {
     mScheduledDays = jsonArrayStringToVariantList(tmp);
     mDuration = jsonObject["DURATION"].toVariant().toTime();
     mStartDate = jsonObject["START_DATE"].toVariant().toDate();
+    mStartTime = jsonObject["START_TIME"].toVariant().toTime();
     mFinishDate = jsonObject["FINISH_DATE"].toVariant().toDate();
     mCanOverlap = jsonObject["CAN_OVERLAP"].toBool();
 }
@@ -130,6 +141,7 @@ void Activity::write(QJsonObject &jsonObject) const {
     jsonObject["SCHEDULED_DAYS"] = variantListToJsonArrayString(mScheduledDays);
     jsonObject["DURATION"] = QVariant(mDuration).toJsonValue();
     jsonObject["START_DATE"] = QVariant(mStartDate).toJsonValue();
+    jsonObject["START_TIME"] = QVariant(mStartTime).toJsonValue();
     jsonObject["FINISH_DATE"] = QVariant(mFinishDate).toJsonValue();
     jsonObject["CAN_OVERLAP"] = mCanOverlap;
 }
@@ -137,15 +149,17 @@ void Activity::write(QJsonObject &jsonObject) const {
 QSqlQuery Activity::insertQuery(const QSqlDatabase &database,
                                 const Activity &activity) {
     QSqlQuery query(database);
-    query.prepare("SELECT insert_activity(:name, :type, :schedule_type, "
-                  ":scheduled_days, :duration, :start_date, :finish_date, "
-                  ":can_overlap) AS ID");
+    query.prepare(
+        "SELECT insert_activity(:name, :type, :schedule_type, "
+        ":scheduled_days, :duration, :start_date, :start_time, :finish_date, "
+        ":can_overlap) AS ID");
     query.bindValue(":name", activity.name());
     query.bindValue(":type", activityTypeToString(activity.type()));
     query.bindValue(":schedule_type",
                     activityScheduleTypeToString(activity.scheduleType()));
     query.bindValue(":duration", activity.duration());
     query.bindValue(":start_date", activity.startDate());
+    query.bindValue(":start_time", activity.startTime());
     query.bindValue(":finish_date", activity.finishDate());
     query.bindValue(":can_overlap", activity.canOverlap());
     QString strDays;
@@ -160,9 +174,10 @@ QSqlQuery Activity::insertQuery(const QSqlDatabase &database,
 QSqlQuery Activity::updateQuery(const QSqlDatabase &database,
                                 const Activity &activity) {
     QSqlQuery query(database);
-    query.prepare("SELECT update_activity(:id, :name, :type, :schedule_type, "
-                  ":scheduled_days, :duration, :start_date, :finish_date, "
-                  ":can_overlap)");
+    query.prepare(
+        "SELECT update_activity(:id, :name, :type, :schedule_type, "
+        ":scheduled_days, :duration, :start_date, :start_time, :finish_date, "
+        ":can_overlap)");
     query.bindValue(":id", activity.id());
     query.bindValue(":name", activity.name());
     query.bindValue(":type", activityTypeToString(activity.type()));
@@ -170,6 +185,7 @@ QSqlQuery Activity::updateQuery(const QSqlDatabase &database,
                     activityScheduleTypeToString(activity.scheduleType()));
     query.bindValue(":duration", activity.duration());
     query.bindValue(":start_date", activity.startDate());
+    query.bindValue(":start_time", activity.startTime());
     query.bindValue(":finish_date", activity.finishDate());
     query.bindValue(":can_overlap", activity.canOverlap());
     QString strDays;

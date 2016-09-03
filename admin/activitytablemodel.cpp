@@ -40,7 +40,7 @@ QVariant ActivityQueryModel::data(const QModelIndex &idx, int role) const {
                         .c_str());
         } else if (idx.column() == 4) {
             return generateRepetitionString(idx);
-        } else if (idx.column() == 8) {
+        } else if (idx.column() == 9) {
             return RefreshableSqlQueryModel::data(idx, role).toBool()
                        ? QApplication::instance()->translate("QObject", "Yes")
                        : QApplication::instance()->translate("QObject", "No");

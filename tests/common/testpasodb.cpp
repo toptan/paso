@@ -992,6 +992,7 @@ void TestPasoDB::testGetActivity() {
     activity.setScheduledDays(scheduledDates);
     activity.setDuration(QTime(3, 0));
     activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
     activity.setFinishDate(QDate(2016, 8, 15));
     activity.setCanOverlap(false);
     DBManager manager(dbName);
@@ -1007,6 +1008,7 @@ void TestPasoDB::testGetActivity() {
     QCOMPARE(loaded->scheduledDays(), scheduledDates);
     QCOMPARE(loaded->duration(), QTime(3, 0));
     QCOMPARE(loaded->startDate(), QDate(2016, 8, 15));
+    QCOMPARE(loaded->startTime(), QTime(8, 0));
     QCOMPARE(loaded->finishDate(), QDate(2016, 8, 15));
     QCOMPARE(*loaded, activity);
     loaded = manager.getActivity(24623, error);
@@ -1015,6 +1017,8 @@ void TestPasoDB::testGetActivity() {
 
 void TestPasoDB::testSaveActivity() {
     auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
     const QVariantList scheduledDates{1, 3, 5};
     const QVariantList updatedDates{2, 4, 6};
 
@@ -1023,10 +1027,9 @@ void TestPasoDB::testSaveActivity() {
     activity.setScheduledDays(scheduledDates);
     activity.setDuration(QTime(3, 0));
     activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
     activity.setFinishDate(QDate(2016, 8, 15));
     activity.setCanOverlap(false);
-    DBManager manager(dbName);
-    QSqlError error;
     QVERIFY(manager.saveActivity(activity, error));
     QVERIFY(activity.id() != 0);
 
@@ -1036,6 +1039,7 @@ void TestPasoDB::testSaveActivity() {
     activity.setScheduledDays(updatedDates);
     activity.setDuration(QTime(2, 0));
     activity.setStartDate(QDate(2016, 9, 22));
+    activity.setStartTime(QTime(9, 0));
     activity.setFinishDate(QDate(2016, 9, 29));
     activity.setCanOverlap(true);
 
@@ -1055,6 +1059,7 @@ void TestPasoDB::testDeleteActivity() {
     activity.setScheduledDays(scheduledDates);
     activity.setDuration(QTime(3, 0));
     activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
     activity.setFinishDate(QDate(2016, 8, 15));
     activity.setCanOverlap(false);
     DBManager manager(dbName);
@@ -1076,46 +1081,42 @@ void TestPasoDB::testDeleteActivity() {
 
 void TestPasoDB::testAssociateListsWithActivity() {
     auto db = QSqlDatabase::database(dbName);
-    db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
-        "                     DURATION, START_DATE, FINISH_DATE)"
-        "              VALUES(1, 'A1', 'EXAM', 'ONCE',"
-        "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
-    db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
-        "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
-        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
-        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
-        "true);");
-
     DBManager manager(dbName);
     QList<quint64> listIds{1, 2, 3};
     QSqlError error;
-    QVERIFY(manager.setActivityLists(1, listIds, error));
-    QCOMPARE(manager.activityLists(1, error).size(), size_t(3));
-    QVERIFY(manager.setActivityLists(1, {3, 4}, error));
-    QCOMPARE(manager.activityLists(1, error).size(), size_t(2));
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+
+    manager.saveActivity(activity, error);
+
+    QVERIFY(manager.setActivityLists(activity.id(), listIds, error));
+    QCOMPARE(manager.activityLists(activity.id(), error).size(), size_t(3));
+    QVERIFY(manager.setActivityLists(activity.id(), {3, 4}, error));
+    QCOMPARE(manager.activityLists(activity.id(), error).size(), size_t(2));
     db.exec("DROP TABLE ACTIVITY_LISTS CASCADE");
-    QVERIFY(!manager.setActivityLists(1, {1}, error));
+    QVERIFY(!manager.setActivityLists(activity.id(), {1}, error));
 }
 
 void TestPasoDB::testAssociateRoomsWithActivity() {
     auto db = QSqlDatabase::database(dbName);
-    db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
-        "                     DURATION, START_DATE, FINISH_DATE)"
-        "              VALUES(1, 'A1', 'EXAM', 'ONCE',"
-        "                     '03:00:00.000', '2016-08-15', '2016-08-15');");
-    db.exec(
-        "INSERT INTO ACTIVITY(ID, NAME, TYPE, SCHEDULE_TYPE, "
-        "                     DURATION, START_DATE, FINISH_DATE, CAN_OVERLAP)"
-        "              VALUES(2, 'A2', 'INDIVIDUAL_WORK', 'WEEK_DAYS',"
-        "                     '01:30:00.000', '2016-09-01', '2016-09-30', "
-        "true);");
-
     DBManager manager(dbName);
-    QList<quint64> roomIds{1, 2};
     QSqlError error;
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+
+    manager.saveActivity(activity, error);
+
+    QList<quint64> roomIds{1, 2};
     QVERIFY(manager.setActivityRooms(1, roomIds, error));
     QCOMPARE(manager.activityRooms(1, error).size(), size_t(2));
     db.exec("DROP TABLE ACTIVITY_ROOMS CASCADE");

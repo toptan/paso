@@ -1,5 +1,7 @@
 #include "testactivityadministration.h"
 
+#include "mocks/mockactivitywizardpage.h"
+
 #include "activity.h"
 #include "activityeditorwidget.h"
 #include "activityform.h"
@@ -28,6 +30,8 @@
 #include <QSqlField>
 #include <QTableView>
 #include <QTime>
+#include <QTimer>
+
 #include <memory>
 
 using namespace std;
@@ -126,6 +130,7 @@ void TestActivityAdministration::testActivityTableModel() {
     activity.setScheduledDays(scheduledDates);
     activity.setDuration(QTime(3, 0));
     activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
     activity.setFinishDate(QDate(2016, 8, 15));
     activity.setCanOverlap(false);
     manager.saveActivity(activity, error);
@@ -134,6 +139,7 @@ void TestActivityAdministration::testActivityTableModel() {
     activity.setType(ActivityType::INDIVIDUAL_WORK);
     activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
     activity.setDuration(QTime(1, 30));
+    activity.setStartTime(QTime(9, 0));
     activity.setFinishDate(QDate(2016, 9, 15));
     activity.setCanOverlap(true);
     manager.saveActivity(activity, error);
@@ -141,6 +147,7 @@ void TestActivityAdministration::testActivityTableModel() {
     activity.setName("A3");
     activity.setType(ActivityType::LECTURE);
     activity.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    activity.setStartTime(QTime(10, 0));
     activity.setFinishDate(QDate(2017, 9, 15));
     activity.setCanOverlap(false);
     manager.saveActivity(activity, error);
@@ -150,12 +157,13 @@ void TestActivityAdministration::testActivityTableModel() {
                                    {"scheduled_days", "When"},
                                    {"duration", "Duration"},
                                    {"start_date", "Start date"},
+                                   {"start_time", "Start time"},
                                    {"finish_date", "Finish date"},
                                    {"can_overlap", "Can overlap"}};
 
     ActivityQueryModel model(columnLabels, db);
     QCOMPARE(model.rowCount(), 3);
-    QCOMPARE(model.columnCount(), 9);
+    QCOMPARE(model.columnCount(), 10);
     QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(), QString("Type"));
@@ -167,8 +175,10 @@ void TestActivityAdministration::testActivityTableModel() {
     QCOMPARE(model.headerData(6, Qt::Horizontal).toString(),
              QString("Start date"));
     QCOMPARE(model.headerData(7, Qt::Horizontal).toString(),
-             QString("Finish date"));
+             QString("Start time"));
     QCOMPARE(model.headerData(8, Qt::Horizontal).toString(),
+             QString("Finish date"));
+    QCOMPARE(model.headerData(9, Qt::Horizontal).toString(),
              QString("Can overlap"));
     auto index = model.index(0, 1);
     QCOMPARE(model.data(index).toString(), QString("A1"));
@@ -183,8 +193,10 @@ void TestActivityAdministration::testActivityTableModel() {
     index = model.index(0, 6);
     QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
     index = model.index(0, 7);
-    QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
+    QCOMPARE(model.data(index).toTime(), QTime(8, 0));
     index = model.index(0, 8);
+    QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
+    index = model.index(0, 9);
     QCOMPARE(model.data(index).toString(), QString("No"));
 
     index = model.index(1, 1);
@@ -201,8 +213,10 @@ void TestActivityAdministration::testActivityTableModel() {
     index = model.index(1, 6);
     QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
     index = model.index(1, 7);
-    QCOMPARE(model.data(index).toDate(), QDate(2016, 9, 15));
+    QCOMPARE(model.data(index).toTime(), QTime(9, 0));
     index = model.index(1, 8);
+    QCOMPARE(model.data(index).toDate(), QDate(2016, 9, 15));
+    index = model.index(1, 9);
     QCOMPARE(model.data(index).toString(), QString("Yes"));
 
     index = model.index(2, 1);
@@ -219,8 +233,10 @@ void TestActivityAdministration::testActivityTableModel() {
     index = model.index(2, 6);
     QCOMPARE(model.data(index).toDate(), QDate(2016, 8, 15));
     index = model.index(2, 7);
-    QCOMPARE(model.data(index).toDate(), QDate(2017, 9, 15));
+    QCOMPARE(model.data(index).toTime(), QTime(10, 0));
     index = model.index(2, 8);
+    QCOMPARE(model.data(index).toDate(), QDate(2017, 9, 15));
+    index = model.index(2, 9);
     QCOMPARE(model.data(index).toString(), QString("No"));
 }
 
@@ -235,6 +251,7 @@ void TestActivityAdministration::testActivityForm() {
     activity.setScheduledDays(scheduledDates);
     activity.setDuration(QTime(3, 0));
     activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
     activity.setFinishDate(QDate(2016, 8, 15));
     activity.setCanOverlap(false);
     manager.saveActivity(activity, error);
@@ -311,9 +328,11 @@ void TestActivityAdministration::testNameAndTypePage() {
     activity.setScheduledDays(scheduledDates);
     activity.setDuration(QTime(3, 0));
     activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
     activity.setFinishDate(QDate(2016, 8, 15));
     activity.setCanOverlap(false);
     manager.saveActivity(activity, error);
+    auto id1 = activity.id();
     activity.setId(0);
     activity.setName("A2");
     activity.setType(ActivityType::INDIVIDUAL_WORK);
@@ -322,6 +341,7 @@ void TestActivityAdministration::testNameAndTypePage() {
     activity.setFinishDate(QDate(2016, 9, 15));
     activity.setCanOverlap(true);
     manager.saveActivity(activity, error);
+    auto id2 = activity.id();
     activity.setId(0);
     activity.setName("A3");
     activity.setType(ActivityType::LECTURE);
@@ -329,8 +349,10 @@ void TestActivityAdministration::testNameAndTypePage() {
     activity.setFinishDate(QDate(2017, 9, 15));
     activity.setCanOverlap(false);
     manager.saveActivity(activity, error);
+    auto id3 = activity.id();
 
     QWizard wizard;
+    wizard.setOption(QWizard::IndependentPages, false);
     auto page = new ActivityWizardNameAndTypePage;
     page->setActivityId(0);
     wizard.setPage(0, page);
@@ -416,7 +438,8 @@ void TestActivityAdministration::testNameAndTypePage() {
     delete page;
 
     page = new ActivityWizardNameAndTypePage;
-    page->setActivityId(1);
+    page->setActivityId(id2);
+    QApplication::processEvents();
     wizard.setPage(0, page);
     wizard.show();
     QTest::qWaitForWindowExposed(&wizard);
@@ -430,24 +453,119 @@ void TestActivityAdministration::testNameAndTypePage() {
     specificDaysRadioButton =
         page->findChild<QRadioButton *>("specificDaysRadioButton");
 
-    QCOMPARE(nameEdit->text(), QString("A1"));
+    QCOMPARE(nameEdit->text(), QString("A2"));
     QCOMPARE(stringToActivityType(comboBox->currentData().toString()),
-             ActivityType::EXAM);
+             ActivityType::INDIVIDUAL_WORK);
+    QVERIFY(overlapCheckBox->isChecked());
+    QVERIFY(moreThanOnceCheckBox->isChecked());
+    QVERIFY(weekDaysRadioButton->isChecked());
+    QVERIFY(!specificDaysRadioButton->isChecked());
+    QCOMPARE(wizard.field("name").toString(), QString("A2"));
+    QCOMPARE(wizard.field("type").toString(), QString("INDIVIDUAL_WORK"));
+    QVERIFY(wizard.field("canOverlap").toBool());
+    QVERIFY(wizard.field("moreThanOnce").toBool());
+    QVERIFY(groupBox->isVisible());
+
+    wizard.hide();
+    QApplication::processEvents();
+    wizard.removePage(0);
+    delete page;
+
+    page = new ActivityWizardNameAndTypePage;
+    page->setActivityId(id3);
+    QApplication::processEvents();
+    wizard.setPage(0, page);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    nameEdit = page->findChild<QLineEdit *>();
+    comboBox = page->findChild<QComboBox *>();
+    overlapCheckBox = page->findChild<QCheckBox *>("overlapCheckBox");
+    moreThanOnceCheckBox = page->findChild<QCheckBox *>("moreThanOnceCheckBox");
+    groupBox = page->findChild<QGroupBox *>();
+    weekDaysRadioButton =
+        page->findChild<QRadioButton *>("weekDaysRadioButton");
+    specificDaysRadioButton =
+        page->findChild<QRadioButton *>("specificDaysRadioButton");
+
+    QCOMPARE(nameEdit->text(), QString("A3"));
+    QCOMPARE(stringToActivityType(comboBox->currentData().toString()),
+             ActivityType::LECTURE);
     QVERIFY(!overlapCheckBox->isChecked());
-    QVERIFY(!moreThanOnceCheckBox->isChecked());
-    QCOMPARE(wizard.field("name").toString(), QString("A1"));
-    QCOMPARE(wizard.field("type").toString(), QString("EXAM"));
+    QVERIFY(moreThanOnceCheckBox->isChecked());
+    QVERIFY(!weekDaysRadioButton->isChecked());
+    QVERIFY(specificDaysRadioButton->isChecked());
+    QCOMPARE(wizard.field("name").toString(), QString("A3"));
+    QCOMPARE(wizard.field("type").toString(), QString("LECTURE"));
     QVERIFY(!wizard.field("canOverlap").toBool());
-    QVERIFY(!wizard.field("moreThanOnce").toBool());
-    QVERIFY(!groupBox->isVisible());
+    QVERIFY(wizard.field("moreThanOnce").toBool());
+    QVERIFY(groupBox->isVisible());
+
+    bool messageBoxShown = false;
+    auto timerCallback = [&messageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Enter);
+        messageBoxShown = true;
+    };
+    wizard.hide();
+    QApplication::processEvents();
+    wizard.removePage(0);
+    delete page;
+
+    page = new ActivityWizardNameAndTypePage;
+    page->setActivityId(123);
+    QApplication::processEvents();
+    wizard.setPage(0, page);
+    QTimer::singleShot(200, timerCallback);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    QApplication::processEvents();
+    QVERIFY(messageBoxShown);
+
+    db.exec("DROP TABLE ACTIVITY CASCADE");
+    messageBoxShown = false;
+    wizard.hide();
+    QApplication::processEvents();
+    wizard.removePage(0);
+    delete page;
+
+    page = new ActivityWizardNameAndTypePage;
+    page->setActivityId(id1);
+    QApplication::processEvents();
+    wizard.setPage(0, page);
+    QTimer::singleShot(200, timerCallback);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    QApplication::processEvents();
+    QVERIFY(messageBoxShown);
 }
 
 void TestActivityAdministration::testFixedDatePage() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    db.exec("DELETE FROM ACTIVITY");
+    const QVariantList scheduledDates{1, 3, 5};
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
     QWizard wizard;
+    auto mock = new MockActivityWizardPage;
+    mock->setActivityId(0);
+    QApplication::processEvents();
+    wizard.setPage(0, mock);
     auto page = new ActivityWizardFixedDatePage;
-    wizard.addPage(page);
+    wizard.setPage(1, page);
     wizard.show();
     QTest::qWaitForWindowExposed(&wizard);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
 
     QCOMPARE(page->title(), QString("Activity Date and Duration"));
     QCOMPARE(page->subTitle(),
@@ -457,17 +575,12 @@ void TestActivityAdministration::testFixedDatePage() {
     auto durationEdit = page->findChild<QTimeEdit *>("durationEdit");
     QVERIFY(dateTimeEdit != nullptr);
     QVERIFY(durationEdit != nullptr);
-    QCOMPARE(dateTimeEdit->minimumDate(), QDate::currentDate());
     QCOMPARE(durationEdit->time(), QTime(1, 0, 0));
 
     dateTimeEdit->setDate(QDate::currentDate().addDays(1));
     QApplication::processEvents();
     QVERIFY(page->isComplete());
     durationEdit->setTime(QTime(0, 0, 0));
-    QApplication::processEvents();
-    QVERIFY(!page->isComplete());
-    dateTimeEdit->setDate(QDate::currentDate().addDays(-2));
-    durationEdit->setTime(QTime(2, 0, 0));
     QApplication::processEvents();
     QVERIFY(!page->isComplete());
 
@@ -477,20 +590,77 @@ void TestActivityAdministration::testFixedDatePage() {
     QApplication::processEvents();
     QCOMPARE(wizard.field("selectedDateTime").toDateTime(), testDateTime);
     QCOMPARE(wizard.field("duration").toTime(), QTime(0, 45, 0));
+
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    QApplication::processEvents();
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QCOMPARE(durationEdit->time(), activity.duration());
+    QCOMPARE(dateTimeEdit->date(), activity.startDate());
+    QCOMPARE(dateTimeEdit->time(), activity.startTime());
+
+    bool messageBoxShown = false;
+    auto timerCallback = [&messageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Enter);
+        messageBoxShown = true;
+    };
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(123);
+    QApplication::processEvents();
+    QTimer::singleShot(200, timerCallback);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QVERIFY(messageBoxShown);
+
+    db.exec("DROP TABLE ACTIVITY CASCADE");
+    messageBoxShown = false;
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    QApplication::processEvents();
+    QTimer::singleShot(200, timerCallback);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QVERIFY(messageBoxShown);
 }
 
 void TestActivityAdministration::testRoomsSelectionPage() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    const QVariantList scheduledDates{1, 3, 5};
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+    manager.setActivityRooms(activity.id(), {1}, error);
+
     QWizard wizard;
+    auto mock = new MockActivityWizardPage;
+    mock->setActivityId(0);
+    QApplication::processEvents();
+    wizard.setPage(0, mock);
     auto page = new ActivityWizardRoomsSelectionPage;
-    wizard.addPage(page);
+    wizard.setPage(1, page);
     wizard.show();
     QTest::qWaitForWindowExposed(&wizard);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+
     QCOMPARE(page->title(), QString("Activity Rooms"));
     QCOMPARE(page->subTitle(),
              QString("Select rooms where activity will happen."));
 
-    QSqlError error;
-    DBManager manager(dbName);
     auto addRemoveForm = page->findChild<AddRemoveEntitiesForm *>();
     auto sourceTable =
         addRemoveForm->findChild<QTableView *>("sourceTableView");
@@ -517,20 +687,68 @@ void TestActivityAdministration::testRoomsSelectionPage() {
     QApplication::processEvents();
     QVERIFY(wizard.field("activityRooms").toList().isEmpty());
     QVERIFY(!page->isComplete());
+
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    QApplication::processEvents();
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QCOMPARE(sourceTable->model()->rowCount(), 1);
+    QCOMPARE(destinationTable->model()->rowCount(), 1);
+    QCOMPARE(wizard.field("activityRooms").toList().size(), 1);
+    QVERIFY(page->isComplete());
+
+    db.exec("DROP TABLE ACTIVITY_ROOMS CASCADE");
+    bool messageBoxShown = false;
+    auto timerCallback = [&messageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Enter);
+        messageBoxShown = true;
+    };
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    QApplication::processEvents();
+    QTimer::singleShot(200, timerCallback);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QVERIFY(messageBoxShown);
 }
 
 void TestActivityAdministration::testListsSelectionPage() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    const QVariantList scheduledDates{1, 3, 5};
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+    manager.setActivityLists(activity.id(), {1, 2}, error);
+
     QWizard wizard;
+    auto mock = new MockActivityWizardPage;
+    mock->setActivityId(0);
+    QApplication::processEvents();
+    wizard.setPage(0, mock);
     auto page = new ActivityWizardListsSelectionPage;
-    wizard.addPage(page);
+    wizard.setPage(1, page);
     wizard.show();
     QTest::qWaitForWindowExposed(&wizard);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+
     QCOMPARE(page->title(), QString("Activity Lists"));
     QCOMPARE(page->subTitle(),
              QString("Select lists that participate in this activity."));
 
-    QSqlError error;
-    DBManager manager(dbName);
     auto addRemoveForm = page->findChild<AddRemoveEntitiesForm *>();
     auto sourceTable =
         addRemoveForm->findChild<QTableView *>("sourceTableView");
@@ -557,14 +775,64 @@ void TestActivityAdministration::testListsSelectionPage() {
     QApplication::processEvents();
     QVERIFY(wizard.field("activityLists").toList().isEmpty());
     QVERIFY(!page->isComplete());
+
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    QApplication::processEvents();
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QCOMPARE(sourceTable->model()->rowCount(), 4);
+    QCOMPARE(destinationTable->model()->rowCount(), 2);
+    QCOMPARE(wizard.field("activityLists").toList().size(), 2);
+    QVERIFY(page->isComplete());
+
+    db.exec("DROP TABLE ACTIVITY_LISTS CASCADE");
+    bool messageBoxShown = false;
+    auto timerCallback = [&messageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Enter);
+        messageBoxShown = true;
+    };
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    QApplication::processEvents();
+    QTimer::singleShot(200, timerCallback);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QVERIFY(messageBoxShown);
 }
 
 void TestActivityAdministration::testRepetitiveDatesPage() {
-    std::unique_ptr<QWizard> wizard(new QWizard);
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    const QVariantList scheduledDates{1, 3};
+    Activity activity("A1", ActivityType::LAB_EXCERCISE);
+    activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
+    activity.setFinishDate(QDate(2016, 9, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+
+    QWizard wizard;
+    auto mock = new MockActivityWizardPage;
+    mock->setActivityId(0);
+    mock->setWeekDays(false);
+    QApplication::processEvents();
+    wizard.setPage(0, mock);
     auto page = new ActivityWizardRepetitiveDatesPage;
-    wizard->addPage(page);
-    wizard->show();
-    QTest::qWaitForWindowExposed(wizard.get());
+    wizard.setPage(1, page);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+
     QCOMPARE(page->title(), QString("Activity Dates, Days, Time and Duration"));
     QCOMPARE(
         page->subTitle(),
@@ -573,12 +841,14 @@ void TestActivityAdministration::testRepetitiveDatesPage() {
     auto itemsPicker = page->findChild<ItemsPicker *>();
     auto startDateEdit = page->findChild<QDateEdit *>("startDateEdit");
     auto finishDateEdit = page->findChild<QDateEdit *>("finishDateEdit");
+    auto startTimeEdit = page->findChild<QTimeEdit *>("startTimeEdit");
     auto durationTimeEdit = page->findChild<QTimeEdit *>("durationTimeEdit");
 
     // Week mode not set
     QCOMPARE(itemsPicker->findChildren<QCheckBox *>().size(), 31);
     QCOMPARE(startDateEdit->date(), QDate::currentDate());
     QCOMPARE(finishDateEdit->date(), QDate::currentDate().addMonths(1));
+    QCOMPARE(startTimeEdit->time(), QTime(8, 0));
     QCOMPARE(durationTimeEdit->time(), QTime(1, 0));
     QVERIFY(!page->isComplete());
 
@@ -590,11 +860,95 @@ void TestActivityAdministration::testRepetitiveDatesPage() {
     item023->setChecked(true);
     QApplication::processEvents();
     QVERIFY(page->isComplete());
-    QCOMPARE(wizard->field("selectedDays").toList().size(), 3);
+    QCOMPARE(wizard.field("selectedDays").toList().size(), 3);
 
     finishDateEdit->setDate(QDate::currentDate().addMonths(-5));
     QApplication::processEvents();
     QVERIFY(!page->isComplete());
+
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setWeekDays(true);
+    QApplication::processEvents();
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QCOMPARE(itemsPicker->findChildren<QCheckBox *>().size(), 7);
+
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    mock->setWeekDays(true);
+    QApplication::processEvents();
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+
+    QCOMPARE(itemsPicker->selectedItems().size(), 2);
+    QCOMPARE(wizard.field("selectedDays").toList().size(), 2);
+
+    // Simulate changed schedule type on previous page.
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    mock->setWeekDays(false);
+    QApplication::processEvents();
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+
+    QCOMPARE(itemsPicker->selectedItems().size(), 0);
+    QCOMPARE(wizard.field("selectedDays").toList().size(), 0);
+
+    activity.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    activity.setScheduledDays({1, 2, 3, 4, 5, 10, 15, 20, 25});
+    manager.saveActivity(activity, error);
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    mock->setWeekDays(false);
+    QApplication::processEvents();
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+
+    QCOMPARE(itemsPicker->selectedItems().size(), 9);
+    QCOMPARE(wizard.field("selectedDays").toList().size(), 9);
+
+    // Simulate changed schedule type on previous page.
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    mock->setWeekDays(true);
+    QApplication::processEvents();
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+
+    QCOMPARE(itemsPicker->selectedItems().size(), 0);
+    QCOMPARE(wizard.field("selectedDays").toList().size(), 0);
+
+    bool messageBoxShown = false;
+    auto timerCallback = [&messageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Enter);
+        messageBoxShown = true;
+    };
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(123);
+    QApplication::processEvents();
+    QTimer::singleShot(200, timerCallback);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QVERIFY(messageBoxShown);
+
+    db.exec("DROP TABLE ACTIVITY CASCADE");
+    messageBoxShown = false;
+    wizard.restart();
+    QApplication::processEvents();
+    mock->setActivityId(activity.id());
+    QApplication::processEvents();
+    QTimer::singleShot(200, timerCallback);
+    wizard.button(QWizard::NextButton)->click();
+    QApplication::processEvents();
+    QVERIFY(messageBoxShown);
 }
 
 void TestActivityAdministration::testActivityWizard() {

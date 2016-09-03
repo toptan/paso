@@ -16,6 +16,7 @@
 using namespace paso::data;
 using namespace paso::data::entity;
 using namespace paso::db;
+
 namespace paso {
 namespace admin {
 

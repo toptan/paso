@@ -3,9 +3,17 @@
 
 #include "itemspicker.h"
 
-#include <QDebug>
+#include "activity.h"
+#include "data.h"
+#include "pasodb.h"
+
+#include <QMessageBox>
+#include <QSqlError>
 #include <QStringList>
 
+using namespace paso::data;
+using namespace paso::data::entity;
+using namespace paso::db;
 using namespace paso::widget;
 
 namespace paso {
@@ -32,13 +40,64 @@ ActivityWizardRepetitiveDatesPage::~ActivityWizardRepetitiveDatesPage() {
 }
 
 void ActivityWizardRepetitiveDatesPage::initializePage() {
+    auto activityId = wizard()->field("activityId").toULongLong();
+    if (activityId == 0) {
+        if (wizard()->field("onWeekDays").toBool()) {
+            initializeWeekDaysMode();
+        } else {
+            initializeMonthDaysMode();
+        }
+        ui->startDateEdit->setDate(QDate::currentDate());
+        ui->finishDateEdit->setDate(QDate::currentDate().addMonths(1));
+        return;
+    }
+    DBManager manager;
+    QSqlError error;
+    auto activity = manager.getActivity(activityId, error);
+    if (error.type() != QSqlError::NoError) {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(tr("There was an error while loading activity from the "
+                          "database."));
+        msgBox.setDetailedText(error.text());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        return;
+    }
+    if (!activity) {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setText(tr("The requested activity does not exist."));
+        msgBox.setInformativeText(
+            tr("Maybe someone or system clean up job deleted the activity. "
+               "Try refreshing the data."));
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        return;
+    }
+
+    QList<int> temp;
+    for (const auto &x : activity->scheduledDays()) {
+        temp << x.toInt();
+    }
+
     if (wizard()->field("onWeekDays").toBool()) {
         initializeWeekDaysMode();
+        if (activity->scheduleType() == ActivityScheduleType::WEEK_DAYS) {
+            setSelectedDays(activity->scheduledDays());
+        }
     } else {
         initializeMonthDaysMode();
+        if (activity->scheduleType() == ActivityScheduleType::MONTH_DAYS) {
+            setSelectedDays(activity->scheduledDays());
+        }
     }
-    ui->startDateEdit->setDate(QDate::currentDate());
-    ui->finishDateEdit->setDate(QDate::currentDate().addMonths(1));
+
+    ui->startDateEdit->setDate(activity->startDate());
+    ui->startTimeEdit->setTime(activity->startTime());
+    ui->finishDateEdit->setDate(activity->finishDate());
 }
 
 bool ActivityWizardRepetitiveDatesPage::isComplete() const {
@@ -49,7 +108,7 @@ bool ActivityWizardRepetitiveDatesPage::isComplete() const {
 
 QList<QVariant> ActivityWizardRepetitiveDatesPage::selectedDays() const {
     QList<QVariant> retVal;
-    for (auto t: ui->itemsPicker->selectedItems()) {
+    for (auto t : ui->itemsPicker->selectedItems()) {
         retVal << t;
     }
     return retVal;
@@ -58,7 +117,7 @@ QList<QVariant> ActivityWizardRepetitiveDatesPage::selectedDays() const {
 void ActivityWizardRepetitiveDatesPage::setSelectedDays(
     const QList<QVariant> &selectedDays) {
     QList<int> temp;
-    for (const auto& t: selectedDays) {
+    for (const auto &t : selectedDays) {
         temp << t.toInt();
     }
     ui->itemsPicker->setSelectedItems(temp);
