@@ -1,15 +1,15 @@
 #include "testmainwindow.h"
 
+#include "activityform.h"
 #include "commdata.h"
 #include "courseform.h"
 #include "data.h"
-#include "mainwindow.h"
 #include "listform.h"
+#include "mainwindow.h"
 #include "roomform.h"
 #include "studentform.h"
 #include "systemuser.h"
 #include "systemusersform.h"
-#include "activityform.h"
 
 #include <QAbstractButton>
 #include <QJsonObject>
@@ -75,6 +75,8 @@ void TestMainWindow::testRolesForms() {
     QVERIFY(systemUsersForm != nullptr);
     QVERIFY(listForm != nullptr);
     QVERIFY(activityForm != nullptr);
+    window->hide();
+    QApplication::processEvents();
     delete window;
 
     window = new MainWindow();
@@ -86,6 +88,8 @@ void TestMainWindow::testRolesForms() {
     QCOMPARE(stackedWidget->count(), 1);
     systemUsersForm = stackedWidget->findChild<SystemUsersForm *>();
     QVERIFY(systemUsersForm != nullptr);
+    window->hide();
+    QApplication::processEvents();
     delete window;
 
     window = new MainWindow();
@@ -97,6 +101,8 @@ void TestMainWindow::testRolesForms() {
     QCOMPARE(stackedWidget->count(), 1);
     roomForm = stackedWidget->findChild<RoomForm *>();
     QVERIFY(roomForm != nullptr);
+    window->hide();
+    QApplication::processEvents();
     delete window;
 
     window = new MainWindow();
@@ -114,6 +120,9 @@ void TestMainWindow::testRolesForms() {
     QVERIFY(studentForm != nullptr);
     QVERIFY(listForm != nullptr);
     QVERIFY(activityForm != nullptr);
+
+    window->hide();
+    QApplication::processEvents();
     delete window;
 
     window = new MainWindow();
@@ -123,5 +132,7 @@ void TestMainWindow::testRolesForms() {
     window->loginFinished(*response);
     stackedWidget = window->findChild<QStackedWidget *>();
     QCOMPARE(stackedWidget->count(), 0);
+    window->hide();
+    QApplication::processEvents();
     delete window;
 }

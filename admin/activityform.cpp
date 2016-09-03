@@ -3,6 +3,7 @@
 
 #include "activitytablemodel.h"
 #include "activityvalidator.h"
+#include "activitywizard.h"
 
 #include <QDebug>
 #include <QSqlField>
@@ -108,7 +109,15 @@ bool ActivityForm::removeRow(int row, QSqlError &error) {
 }
 
 void ActivityForm::onNewRecord() {
-    // Show wizard.
+    auto record = model()->record();
+    ActivityWizard wizard(record, this);
+    wizard.show();
+}
+
+void ActivityForm::onEditRecord() {
+    auto record = selectedRecord();
+    ActivityWizard wizard(record, this);
+    wizard.show();
 }
 }
 }

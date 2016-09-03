@@ -19,6 +19,7 @@ public:
     virtual ~ActivityWizardNameAndTypePage();
 
     virtual void initializePage() override;
+    virtual int nextId() const override;
 
     quint64 activityId() const;
     void setActivityId(const quint64 &activityId);

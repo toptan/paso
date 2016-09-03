@@ -305,14 +305,14 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="34"/>
+        <location filename="../admin/activityform.cpp" line="35"/>
         <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/roomform.cpp" line="35"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="35"/>
+        <location filename="../admin/activityform.cpp" line="36"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
@@ -321,27 +321,27 @@
         <translation type="vanished">Распоред</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="36"/>
+        <location filename="../admin/activityform.cpp" line="37"/>
         <source>Schedule type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="37"/>
+        <location filename="../admin/activityform.cpp" line="38"/>
         <source>Duration</source>
         <translation>Трајање</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="38"/>
+        <location filename="../admin/activityform.cpp" line="39"/>
         <source>Start date</source>
         <translation>Почетни датум</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="39"/>
+        <location filename="../admin/activityform.cpp" line="40"/>
         <source>Finish date</source>
         <translation>Крајњи датум</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="40"/>
+        <location filename="../admin/activityform.cpp" line="41"/>
         <source>Can overlap</source>
         <translation type="unfinished"></translation>
     </message>
@@ -598,7 +598,7 @@
 <context>
     <name>paso::admin::ActivityForm</name>
     <message>
-        <location filename="../admin/activityform.cpp" line="84"/>
+        <location filename="../admin/activityform.cpp" line="85"/>
         <source>Do you want to delete selected activity from the system?</source>
         <translation>Да ли стварно желите да обришете одабрану активност из система?</translation>
     </message>

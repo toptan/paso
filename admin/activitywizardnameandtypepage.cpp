@@ -107,6 +107,11 @@ void ActivityWizardNameAndTypePage::initializePage() {
     emit activityIdChanged();
 }
 
+int ActivityWizardNameAndTypePage::nextId() const {
+    return ui->moreThanOnceCheckBox->isChecked() ? 2 : 1;
+}
+
+
 quint64 ActivityWizardNameAndTypePage::activityId() const {
     return mActivityId;
 }

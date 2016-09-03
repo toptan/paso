@@ -13,7 +13,7 @@ public:
 private slots:
     void testActivityValidator();
     void testActivityEditorWidget();
-    void testActivityTableModel();
+    void testActivityQueryModel();
     void testActivityForm();
     void testNameAndTypePage();
     void testFixedDatePage();

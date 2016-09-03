@@ -20,6 +20,7 @@ public:
 
 protected slots:
     virtual void onNewRecord() override;
+    virtual void onEditRecord() override;
 
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;

@@ -7,6 +7,7 @@
 #include "activityform.h"
 #include "activitytablemodel.h"
 #include "activityvalidator.h"
+#include "activitywizard.h"
 #include "activitywizardfixeddatepage.h"
 #include "activitywizardlistsselectionpage.h"
 #include "activitywizardnameandtypepage.h"
@@ -118,7 +119,7 @@ void TestActivityAdministration::testActivityEditorWidget() {
     QVERIFY(!canOverlapEditor->isEnabled());
 }
 
-void TestActivityAdministration::testActivityTableModel() {
+void TestActivityAdministration::testActivityQueryModel() {
     auto db = QSqlDatabase::database(dbName);
     DBManager manager(dbName);
     QSqlError error;
@@ -502,8 +503,9 @@ void TestActivityAdministration::testNameAndTypePage() {
 
     bool messageBoxShown = false;
     auto timerCallback = [&messageBoxShown]() {
+        auto widget = QApplication::activeModalWidget();
         QMessageBox *msgBox =
-            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+            dynamic_cast<QMessageBox *>(widget);
         QTest::keyClick(msgBox, Qt::Key_Enter);
         messageBoxShown = true;
     };
@@ -511,7 +513,6 @@ void TestActivityAdministration::testNameAndTypePage() {
     QApplication::processEvents();
     wizard.removePage(0);
     delete page;
-
     page = new ActivityWizardNameAndTypePage;
     page->setActivityId(123);
     QApplication::processEvents();
@@ -952,12 +953,21 @@ void TestActivityAdministration::testRepetitiveDatesPage() {
 }
 
 void TestActivityAdministration::testActivityWizard() {
-    //    QWizard wizard;
-    //    wizard.addPage(new ActivityWizardNameAndTypePage(0));
-    //    wizard.addPage(new ActivityWizardFixedDatePage);
-    //    wizard.addPage(new ActivityWizardRoomsSelectionPage);
-    //    wizard.addPage(new ActivityWizardListsSelectionPage);
-    //    wizard.show();
-    //    QTest::qWaitForWindowExposed(&wizard);
-    //    QTest::qWait(20000);
+    auto db = QSqlDatabase::database(dbName);
+    const QVariantMap columnLabels{{"name", "Name"},
+                                   {"type", "Type"},
+                                   {"schedule_type", "Repeats"},
+                                   {"scheduled_days", "When"},
+                                   {"duration", "Duration"},
+                                   {"start_date", "Start date"},
+                                   {"start_time", "Start time"},
+                                   {"finish_date", "Finish date"},
+                                   {"can_overlap", "Can overlap"}};
+
+    ActivityQueryModel model(columnLabels, db);
+    auto record = model.record();
+    std::unique_ptr<ActivityWizard> wizard(new ActivityWizard(record));
+    wizard->show();
+    QTest::qWaitForWindowExposed(wizard.get());
+    QCOMPARE(wizard->pageIds().size(), 5);
 }
