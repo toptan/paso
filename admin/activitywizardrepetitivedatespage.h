@@ -22,6 +22,7 @@ public:
 
     virtual void initializePage() override;
     virtual bool isComplete() const override;
+    virtual void cleanupPage() override;
 
     QList<QVariant> selectedDays() const;
     void setSelectedDays(const QList<QVariant> &selectedDays);

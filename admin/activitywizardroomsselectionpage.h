@@ -21,6 +21,7 @@ public:
 
     virtual void initializePage() override;
     virtual bool isComplete() const override;
+    virtual void cleanupPage() override;
 
     QVariantList roomIds() const;
     void setRoomIds(const QVariantList &roomIds);

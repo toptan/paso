@@ -64,6 +64,10 @@ bool ActivityWizardListsSelectionPage::isComplete() const {
     return !field("activityLists").toList().isEmpty();
 }
 
+void ActivityWizardListsSelectionPage::cleanupPage() {
+    // We want to preserve what user entered, so we do nothing here.
+}
+
 QVariantList ActivityWizardListsSelectionPage::listIds() const {
     return mListIds;
 }

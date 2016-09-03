@@ -28,7 +28,7 @@ ActivityWizardRepetitiveDatesPage::ActivityWizardRepetitiveDatesPage(
                   SIGNAL(selectedDaysChanged()));
     registerField("startDate*", ui->startDateEdit);
     registerField("finishDate*", ui->finishDateEdit);
-    registerField("duration*", ui->durationTimeEdit);
+    registerField("repetitiveDuration*", ui->durationTimeEdit);
     connect(ui->itemsPicker, &ItemsPicker::selectedItemsChanged, [this]() {
         emit selectedDaysChanged();
         emit completeChanged();
@@ -104,6 +104,10 @@ bool ActivityWizardRepetitiveDatesPage::isComplete() const {
     return selectedDays().size() > 0 &&
            ui->startDateEdit->date() < ui->finishDateEdit->date() &&
            ui->durationTimeEdit->time() > QTime(0, 0, 0);
+}
+
+void ActivityWizardRepetitiveDatesPage::cleanupPage() {
+    // We want to preserve what user entered, so we do nothing here.
 }
 
 QList<QVariant> ActivityWizardRepetitiveDatesPage::selectedDays() const {

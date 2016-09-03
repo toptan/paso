@@ -680,47 +680,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="128"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="132"/>
         <source>Mo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="128"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="132"/>
         <source>Tu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="128"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="132"/>
         <source>We</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="128"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="132"/>
         <source>Th</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="129"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="133"/>
         <source>Fr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="129"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="133"/>
         <source>Sa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="129"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="133"/>
         <source>Su</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="130"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
         <source>Week days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="139"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="143"/>
         <source>Month days</source>
         <translation type="unfinished"></translation>
     </message>
@@ -728,27 +728,22 @@
 <context>
     <name>paso::admin::ActivityWizardRoomsSelectionPage</name>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="39"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="38"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="39"/>
-        <source>Room number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="48"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="47"/>
         <source>Non assigned rooms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="49"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="48"/>
         <source>Assigned rooms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="54"/>
+        <location filename="../admin/activitywizardroomsselectionpage.cpp" line="53"/>
         <source>There was an error while loading activity rooms from the database.</source>
         <translation type="unfinished"></translation>
     </message>

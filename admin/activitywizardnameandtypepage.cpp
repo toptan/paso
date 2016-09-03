@@ -107,10 +107,9 @@ void ActivityWizardNameAndTypePage::initializePage() {
     emit activityIdChanged();
 }
 
-int ActivityWizardNameAndTypePage::nextId() const {
-    return ui->moreThanOnceCheckBox->isChecked() ? 2 : 1;
+void ActivityWizardNameAndTypePage::cleanupPage() {
+    // We want to preserve what user entered, so we do nothing here.
 }
-
 
 quint64 ActivityWizardNameAndTypePage::activityId() const {
     return mActivityId;

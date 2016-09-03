@@ -24,7 +24,7 @@ ActivityWizardFixedDatePage::ActivityWizardFixedDatePage(QWidget *parent)
     ui->durationEdit->setDateTime(QDateTime::currentDateTime());
     ui->durationEdit->setTime(QTime(1, 0, 0));
     registerField("selectedDateTime*", ui->dateTimeEdit);
-    registerField("duration*", ui->durationEdit);
+    registerField("fixedDuration*", ui->durationEdit);
 }
 
 ActivityWizardFixedDatePage::~ActivityWizardFixedDatePage() { delete ui; }
@@ -67,6 +67,10 @@ void ActivityWizardFixedDatePage::initializePage() {
 
 bool ActivityWizardFixedDatePage::isComplete() const {
     return ui->durationEdit->time() > QTime(0, 0, 0);
+}
+
+void ActivityWizardFixedDatePage::cleanupPage() {
+    // We want to preserve what user entered, so we do nothing here.
 }
 }
 }

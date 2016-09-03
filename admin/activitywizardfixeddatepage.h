@@ -19,6 +19,7 @@ public:
 
     virtual void initializePage() override;
     virtual bool isComplete() const override;
+    virtual void cleanupPage() override;
 
 private:
     Ui::ActivityWizardFixedDatePage *ui;

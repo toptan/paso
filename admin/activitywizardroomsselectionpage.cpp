@@ -34,9 +34,8 @@ ActivityWizardRoomsSelectionPage::~ActivityWizardRoomsSelectionPage() {
 
 void ActivityWizardRoomsSelectionPage::initializePage() {
     DBManager manager;
-    const QStringList columns{"NAME", "ROOM_NUMBER"};
-    const QMap<QString, QString> columnNames{
-        {"NAME", tr("Name")}, {"ROOM_NUMBER", tr("Room number")}};
+    const QStringList columns{"NAME"};
+    const QMap<QString, QString> columnNames{{"NAME", tr("Name")}};
     QSqlError error;
     quint64 activityId = wizard()->field("activityId").toULongLong();
     EntityVector destinationData;
@@ -63,6 +62,10 @@ void ActivityWizardRoomsSelectionPage::initializePage() {
 
 bool ActivityWizardRoomsSelectionPage::isComplete() const {
     return !field("activityRooms").toList().isEmpty();
+}
+
+void ActivityWizardRoomsSelectionPage::cleanupPage() {
+    // We want to preserve what user entered, so we do nothing here.
 }
 
 QVariantList ActivityWizardRoomsSelectionPage::roomIds() const {

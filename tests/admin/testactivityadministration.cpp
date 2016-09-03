@@ -24,6 +24,7 @@
 #include <QAction>
 #include <QCheckBox>
 #include <QDate>
+#include <QEventLoop>
 #include <QGroupBox>
 #include <QPushButton>
 #include <QRadioButton>
@@ -316,6 +317,25 @@ void TestActivityAdministration::testActivityForm() {
     QVERIFY(editAction->isEnabled());
     QVERIFY(deleteAction->isEnabled());
     QVERIFY(refreshAction->isEnabled());
+
+    bool wizardShown = false;
+    auto timerCallback = [&wizardShown]() {
+        ActivityWizard *wizard =
+            dynamic_cast<ActivityWizard *>(QApplication::activeModalWidget());
+        auto cancelButton = wizard->button(QWizard::CancelButton);
+        QTest::mouseClick(cancelButton, Qt::LeftButton);
+        wizardShown = true;
+    };
+    QTimer::singleShot(200, timerCallback);
+    newAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(wizardShown);
+
+    wizardShown = false;
+    QTimer::singleShot(200, timerCallback);
+    editAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(wizardShown);
 }
 
 void TestActivityAdministration::testNameAndTypePage() {
@@ -504,8 +524,7 @@ void TestActivityAdministration::testNameAndTypePage() {
     bool messageBoxShown = false;
     auto timerCallback = [&messageBoxShown]() {
         auto widget = QApplication::activeModalWidget();
-        QMessageBox *msgBox =
-            dynamic_cast<QMessageBox *>(widget);
+        QMessageBox *msgBox = dynamic_cast<QMessageBox *>(widget);
         QTest::keyClick(msgBox, Qt::Key_Enter);
         messageBoxShown = true;
     };
@@ -590,7 +609,7 @@ void TestActivityAdministration::testFixedDatePage() {
     durationEdit->setTime(QTime(0, 45, 0));
     QApplication::processEvents();
     QCOMPARE(wizard.field("selectedDateTime").toDateTime(), testDateTime);
-    QCOMPARE(wizard.field("duration").toTime(), QTime(0, 45, 0));
+    QCOMPARE(wizard.field("fixedDuration").toTime(), QTime(0, 45, 0));
 
     wizard.restart();
     QApplication::processEvents();
@@ -966,8 +985,56 @@ void TestActivityAdministration::testActivityWizard() {
 
     ActivityQueryModel model(columnLabels, db);
     auto record = model.record();
-    std::unique_ptr<ActivityWizard> wizard(new ActivityWizard(record));
-    wizard->show();
-    QTest::qWaitForWindowExposed(wizard.get());
-    QCOMPARE(wizard->pageIds().size(), 5);
+    ActivityWizard wizard(record);
+    wizard.show();
+    QTest::qWaitForWindowExposed(&wizard);
+    auto nextButton = wizard.button(QWizard::NextButton);
+    auto backButton = wizard.button(QWizard::BackButton);
+
+    QCOMPARE(wizard.pageIds().size(), 5);
+    QCOMPARE(wizard.currentId(), static_cast<int>(ActivityWizard::NameAndType));
+    auto nameEdit = wizard.currentPage()->findChild<QLineEdit *>("nameEdit");
+    auto moreThanOnceCheckBox =
+        wizard.currentPage()->findChild<QCheckBox *>("moreThanOnceCheckBox");
+    nameEdit->setText("A1");
+    QApplication::processEvents();
+    nextButton->click();
+    QApplication::processEvents();
+
+    QCOMPARE(wizard.currentId(), static_cast<int>(ActivityWizard::SingleSlot));
+    nextButton->click();
+    QApplication::processEvents();
+
+    QCOMPARE(wizard.currentId(),
+             static_cast<int>(ActivityWizard::ListSelection));
+    auto sourceTable =
+        wizard.currentPage()->findChild<QTableView *>("sourceTableView");
+    auto addButton =
+        wizard.currentPage()->findChild<QPushButton *>("addButton");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    nextButton->click();
+    QApplication::processEvents();
+
+    QCOMPARE(wizard.currentId(),
+             static_cast<int>(ActivityWizard::RoomSelection));
+
+    backButton->click();
+    QApplication::processEvents();
+    backButton->click();
+    QApplication::processEvents();
+    backButton->click();
+    QApplication::processEvents();
+
+    moreThanOnceCheckBox->setChecked(true);
+    QApplication::processEvents();
+    nextButton->click();
+    QApplication::processEvents();
+    QCOMPARE(wizard.currentId(),
+             static_cast<int>(ActivityWizard::MultipleSlots));
+
+    wizard.reject();
+    QApplication::processEvents();
 }

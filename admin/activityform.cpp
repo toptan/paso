@@ -111,13 +111,13 @@ bool ActivityForm::removeRow(int row, QSqlError &error) {
 void ActivityForm::onNewRecord() {
     auto record = model()->record();
     ActivityWizard wizard(record, this);
-    wizard.show();
+    wizard.exec();
 }
 
 void ActivityForm::onEditRecord() {
     auto record = selectedRecord();
     ActivityWizard wizard(record, this);
-    wizard.show();
+    wizard.exec();
 }
 }
 }
