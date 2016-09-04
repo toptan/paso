@@ -88,7 +88,6 @@ QSpinBox *RecordEditorWidget::createSpinBox(const QString &field) {
 
 QCheckBox *RecordEditorWidget::createCheckBox(const QString &field) {
     auto retVal = new QCheckBox(this);
-    retVal->setText(field);
     retVal->setChecked(false);
     retVal->setEnabled(false);
     return retVal;

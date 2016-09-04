@@ -4,6 +4,8 @@
 #include "data.h"
 
 #include <QApplication>
+#include <QCheckBox>
+#include <QTextStream>
 
 using namespace paso::data;
 using namespace paso::widget;
@@ -79,6 +81,97 @@ void ActivityEditorWidget::accepted() {
     } else {
         emit requestUpdate(mRecord);
     }
+}
+
+void ActivityEditorWidget::onDisplayRecord(const QSqlRecord &record) {
+    for (int i = 0; i < record.count(); i++) {
+        auto fieldName = record.fieldName(i);
+        if (fieldName.toUpper() == "ID" || fieldName.toUpper() == "ID_COURSE") {
+            continue;
+        }
+        switch (fieldTypes()[fieldName]) {
+        case FieldType::ComboBox: {
+            auto field = dynamic_cast<QComboBox *>(fieldEditors()[fieldName]);
+            field->setCurrentIndex(
+                mNewRecord ? 0 : field->findData(record.value(fieldName)));
+        } break;
+        case FieldType::LineEdit:
+        case FieldType::PasswordEdit:
+        case FieldType::MaskedLineEdit:
+            if (fieldName == "scheduled_days") {
+                dynamic_cast<QLineEdit *>(fieldEditors()[fieldName])
+                    ->setText(generateRepetitionString(
+                        record.value("schedule_type").toString(),
+                        record.value(fieldName).toString()));
+            } else if (fieldName == "schedule_type") {
+                dynamic_cast<QLineEdit *>(fieldEditors()[fieldName])
+                    ->setText(translateScheduleType(
+                        record.value(fieldName).toString()));
+            } else {
+                dynamic_cast<QLineEdit *>(fieldEditors()[fieldName])
+                    ->setText(record.value(fieldName).toString());
+            }
+            break;
+        case FieldType::NumberEdit:
+            dynamic_cast<QSpinBox *>(fieldEditors()[fieldName])
+                ->setValue(record.value(fieldName).toLongLong());
+            break;
+        case FieldType::CheckBox:
+            dynamic_cast<QCheckBox *>(fieldEditors()[fieldName])
+                ->setChecked(record.value(fieldName).toBool());
+            break;
+        case FieldType::DateEdit:
+            dynamic_cast<QDateEdit *>(fieldEditors()[fieldName])
+                ->setDate(record.value(fieldName).toDate());
+            break;
+        case FieldType::TimeEdit:
+            dynamic_cast<QTimeEdit *>(fieldEditors()[fieldName])
+                ->setTime(record.value(fieldName).toTime());
+            break;
+        }
+    }
+}
+
+QString
+ActivityEditorWidget::generateRepetitionString(const QString &repetitionType,
+                                               const QString &strDays) {
+    QString retVal = "";
+    if (repetitionType == "WEEK_DAYS") {
+        const QVariantList days = jsonArrayStringToVariantList(strDays);
+        QTextStream ts(&retVal);
+        for (const auto &day : days) {
+            ts << repetitionWeekDays[day.toInt() - 1] << ", ";
+        }
+        retVal = retVal.trimmed();
+        if (retVal.endsWith(",")) {
+            retVal.chop(1);
+        }
+        auto lastIndex = retVal.lastIndexOf(",");
+        retVal = retVal.replace(lastIndex, 1, QString(" ") + tr("and"));
+    } else if (repetitionType == "MONTH_DAYS") {
+        const QVariantList days = jsonArrayStringToVariantList(strDays);
+        QTextStream ts(&retVal);
+        for (const auto &day : days) {
+            ts << day.toInt() + 1 << ", ";
+        }
+        retVal = retVal.trimmed();
+        if (retVal.endsWith(",")) {
+            retVal.chop(1);
+        }
+        auto lastIndex = retVal.lastIndexOf(",");
+        retVal = retVal.replace(lastIndex, 1, QString(" ") + tr("and"));
+        retVal = tr("Every ") + retVal + QString(" ") + tr("in month");
+    }
+
+    return retVal;
+}
+
+QString
+ActivityEditorWidget::translateScheduleType(const QString &strScheduleType) {
+    return QApplication::instance()->translate(
+        "QObject", stringEnumeratedActivityScheduleTypes[strScheduleType]
+                       .toStdString()
+                       .c_str());
 }
 }
 }

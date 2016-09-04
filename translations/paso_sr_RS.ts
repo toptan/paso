@@ -596,6 +596,25 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::ActivityEditorWidget</name>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="150"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="162"/>
+        <source>and</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="163"/>
+        <source>Every </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="163"/>
+        <source>in month</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::ActivityForm</name>
     <message>
         <location filename="../admin/activityform.cpp" line="85"/>

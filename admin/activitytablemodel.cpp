@@ -71,7 +71,7 @@ ActivityQueryModel::generateRepetitionString(const QModelIndex &idx) const {
             RefreshableSqlQueryModel::data(idx).toString());
         QTextStream ts(&retVal);
         for (const auto &day : days) {
-            ts << day.toInt() << ", ";
+            ts << day.toInt() + 1 << ", ";
         }
         retVal = retVal.trimmed();
         if (retVal.endsWith(",")) {
