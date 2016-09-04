@@ -72,6 +72,7 @@ Apart from standard make targets several additional ones are provided:
  make coverage       - Runs tests and generates code coverage report.
  make clean-coverage - Cleans/resets code coverage data.
 ```
+To be able to run tests and coverage report, a running PostgreSQL database is needed. Also, the database user with superuser role has to exist. The user name and password both must be ```pasotest```.
 
 ### Coverage report
 The coverage report, if generated, is available by opening `<build_dir>/coverage/index.html`
