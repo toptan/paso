@@ -1,0 +1,12 @@
+yum install texlive
+yum install texlive-latex-doc
+yum install texlive-cyrillic
+yum install texlive-polyglossia
+yum install texlive-euenc
+yum install texlive-xetex
+yum install texlive-xetex-def
+yum install texlive-xecyr
+yum install texlive-xtab
+yum install texlive-multirow
+yum install texlive-sectsty
+yum install texlive-tocloft

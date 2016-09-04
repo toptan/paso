@@ -3,12 +3,25 @@
 
 #include "recordeditorwidget.h"
 
+class QListView;
+class QSqlQueryModel;
+
+namespace paso {
+namespace model {
+class EntityTableModel;
+}
+}
+
 namespace paso {
 namespace admin {
 
 class ActivityEditorWidget : public widget::RecordEditorWidget {
     Q_OBJECT
 public:
+    static QString generateRepetitionString(const QString &repetitionType,
+                                     const QString &strDays);
+    static QString translateScheduleType(const QString &strScheduleType);
+
     ActivityEditorWidget(const widget::FieldTypes &fieldTypes,
                          QWidget *parent = nullptr);
 
@@ -29,9 +42,15 @@ protected:
 
     virtual QComboBox *createComboBox(const QString &field) override;
 
-    QString generateRepetitionString(const QString &repetitionType,
-                                     const QString &strDays);
-    QString translateScheduleType(const QString &strScheduleType);
+private:
+    QListView *mActivityRoomsView;
+    QListView *mActivityListsView;
+    QListView *mActivitySlotsView;
+
+    paso::model::EntityTableModel *mActivityRoomsModel;
+    paso::model::EntityTableModel *mActivityListsModel;
+    QSqlQueryModel *mActivitySlotsModel;
+
 };
 }
 }

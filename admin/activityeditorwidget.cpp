@@ -1,14 +1,29 @@
 #include "activityeditorwidget.h"
 
+#include "activity.h"
 #include "activitywizard.h"
 #include "data.h"
+#include "entitytablemodel.h"
+#include "list.h"
+#include "pasodb.h"
+#include "room.h"
 
 #include <QApplication>
 #include <QCheckBox>
+#include <QDebug>
+#include <QFormLayout>
+#include <QLabel>
+#include <QListView>
+#include <QSqlError>
+#include <QSqlQueryModel>
 #include <QTextStream>
 
 using namespace paso::data;
+using namespace paso::data::entity;
+using namespace paso::db;
+using namespace paso::model;
 using namespace paso::widget;
+
 using namespace std;
 
 namespace paso {
@@ -21,6 +36,29 @@ ActivityEditorWidget::ActivityEditorWidget(const FieldTypes &fieldTypes,
 void ActivityEditorWidget::setupUi(const QVariantMap &columnLabels,
                                    const QSqlRecord &record) {
     RecordEditorWidget::setupUi(columnLabels, record);
+    QFormLayout *l = dynamic_cast<QFormLayout *>(layout());
+    QDialogButtonBox *buttonBox = findChild<QDialogButtonBox *>();
+    mActivityRoomsView = new QListView(this);
+    mActivityListsView = new QListView(this);
+    mActivitySlotsView = new QListView(this);
+    l->insertRow(l->rowCount() - 1, new QLabel(tr("Rooms"), this),
+                 mActivityRoomsView);
+    l->insertRow(l->rowCount() - 1, new QLabel(tr("Lists"), this),
+                 mActivityListsView);
+    l->insertRow(l->rowCount() - 1, new QLabel(tr("Time slots"), this),
+                 mActivitySlotsView);
+    const QStringList columns{"NAME"};
+    const QMap<QString, QString> columnNames{{"NAME", tr("Name")}};
+    EntityVector emptyData;
+    mActivityRoomsModel =
+        new EntityTableModel(columns, columnNames, emptyData, this);
+    mActivityListsModel =
+        new EntityTableModel(columns, columnNames, emptyData, this);
+    mActivitySlotsModel = new QSqlQueryModel(this);
+
+    mActivityRoomsView->setModel(mActivityRoomsModel);
+    mActivityListsView->setModel(mActivityListsModel);
+    mActivitySlotsView->setModel(mActivitySlotsModel);
 }
 
 void ActivityEditorWidget::prepareEdit(QSqlRecord &record) {
@@ -98,6 +136,7 @@ void ActivityEditorWidget::onDisplayRecord(const QSqlRecord &record) {
         case FieldType::LineEdit:
         case FieldType::PasswordEdit:
         case FieldType::MaskedLineEdit:
+        case FieldType::NumberEdit:
             if (fieldName == "scheduled_days") {
                 dynamic_cast<QLineEdit *>(fieldEditors()[fieldName])
                     ->setText(generateRepetitionString(
@@ -111,10 +150,6 @@ void ActivityEditorWidget::onDisplayRecord(const QSqlRecord &record) {
                 dynamic_cast<QLineEdit *>(fieldEditors()[fieldName])
                     ->setText(record.value(fieldName).toString());
             }
-            break;
-        case FieldType::NumberEdit:
-            dynamic_cast<QSpinBox *>(fieldEditors()[fieldName])
-                ->setValue(record.value(fieldName).toLongLong());
             break;
         case FieldType::CheckBox:
             dynamic_cast<QCheckBox *>(fieldEditors()[fieldName])
@@ -130,6 +165,17 @@ void ActivityEditorWidget::onDisplayRecord(const QSqlRecord &record) {
             break;
         }
     }
+    DBManager manager;
+    QSqlError error;
+    quint64 activityId = record.value("ID").toULongLong();
+    mActivityRoomsModel->setEntityData(
+        manager.activityRooms(activityId, error));
+    mActivityListsModel->setEntityData(
+        manager.activityLists(activityId, error));
+    auto query = Activity::timeSlotsQuery(
+        QSqlDatabase::database(DEFAULT_DB_NAME), activityId);
+    query.exec();
+    mActivitySlotsModel->setQuery(query);
 }
 
 QString

@@ -1,7 +1,7 @@
 #include "activity.h"
 
-#include <QTextStream>
 #include <QDebug>
+#include <QTextStream>
 
 namespace paso {
 namespace data {
@@ -169,7 +169,6 @@ void Activity::write(QJsonObject &jsonObject) const {
     jsonObject["ACTIVITY_ROOMS"] = variantListToJsonArrayString(mRoomIds);
     jsonObject["ACTIVITY_LISTS"] = variantListToJsonArrayString(mListIds);
 }
-
 
 QSqlQuery Activity::insertQuery(const QSqlDatabase &database,
                                 const Activity &activity) {
@@ -351,6 +350,15 @@ QSqlQuery Activity::setActivityRoomsQuery(const QSqlDatabase &database,
     query.prepare("SELECT set_activity_rooms(:activity_id, :room_ids)");
     query.bindValue(":activity_id", activityId);
     query.bindValue(":room_ids", strIds.trimmed());
+    return query;
+}
+
+QSqlQuery Activity::timeSlotsQuery(const QSqlDatabase &database,
+                                   quint64 activityId) {
+    QSqlQuery query(database);
+    query.prepare("SELECT START, FINISH FROM ACTIVITY_SLOTS WHERE ID_ACTIVITY "
+                  "= :activity_id");
+    query.bindValue(":activity_id", activityId);
     return query;
 }
 }

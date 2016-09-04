@@ -142,6 +142,9 @@ void TestActivityAdministration::testActivityEditorWidget() {
     QVERIFY(startEditor->isReadOnly());
     QVERIFY(finishEditor->isReadOnly());
     QVERIFY(!canOverlapEditor->isEnabled());
+
+    QCOMPARE(ActivityEditorWidget::generateRepetitionString("WEEK_DAYS", "{1, 3}"), QString("Monday and Wednesday"));
+    QCOMPARE(ActivityEditorWidget::generateRepetitionString("MONTH_DAYS", "{1, 3}"), QString("Every 1 and 3 in month"));
 }
 
 void TestActivityAdministration::testActivityQueryModel() {

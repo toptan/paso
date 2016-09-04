@@ -604,18 +604,38 @@
 <context>
     <name>paso::admin::ActivityEditorWidget</name>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="153"/>
-        <location filename="../admin/activityeditorwidget.cpp" line="165"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="44"/>
+        <source>Rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="46"/>
+        <source>Lists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="48"/>
+        <source>Time slots</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="51"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="199"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="211"/>
         <source>and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="166"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="212"/>
         <source>Every </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="166"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="212"/>
         <source>in month</source>
         <translation type="unfinished"></translation>
     </message>

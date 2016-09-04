@@ -293,6 +293,15 @@ public:
                                            quint64 activityId,
                                            QList<quint64> roomIds);
 
+    ///
+    /// \brief Returns query that find all activity time slots.
+    /// \param database The database to use.
+    /// \param activityId The activity id.
+    /// \return The query.
+    ///
+    static QSqlQuery timeSlotsQuery(const QSqlDatabase &database,
+                                    quint64 activityId);
+
 private:
     QString mName;                      //!< The activity name.
     ActivityType mType;                 //!< The activity type.
