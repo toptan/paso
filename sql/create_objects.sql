@@ -251,6 +251,7 @@ CREATE OR REPLACE FUNCTION insert_activity(a_name           VARCHAR, a_type VARC
                                            a_duration       TIME, a_start_date DATE, a_start_time TIME,
                                            a_finish_date    DATE,
                                            a_can_overlap    BOOLEAN, an_activity_rooms VARCHAR, an_activity_lists VARCHAR)
+
     RETURNS BIGINT AS $$
 DECLARE
     str_days_array TEXT [];
@@ -327,6 +328,7 @@ CREATE OR REPLACE FUNCTION update_activity(an_id            BIGINT, a_name VARCH
                                            a_duration       TIME, a_start_date DATE, a_start_time TIME,
                                            a_finish_date    DATE,
                                            a_can_overlap    BOOLEAN, an_activity_rooms VARCHAR, an_activity_lists VARCHAR)
+
     RETURNS VOID AS $$
 DECLARE
     str_days_array TEXT [];

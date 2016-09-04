@@ -205,7 +205,6 @@ QSqlQuery Activity::insertQuery(const QSqlDatabase &database,
         tsLists << activity.listIds()[i].toInt() << " ";
     }
     query.bindValue(":lists", strLists.trimmed());
-    qWarning() << query.boundValues();
     return query;
 }
 
