@@ -607,7 +607,6 @@
     <name>paso::admin::ActivityWizard</name>
     <message>
         <location filename="../admin/activitywizard.cpp" line="69"/>
-        <location filename="../admin/activitywizard.cpp" line="129"/>
         <source>There was an error while loading activity from the database.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -619,6 +618,11 @@
     <message>
         <location filename="../admin/activitywizard.cpp" line="81"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="131"/>
+        <source>There was an error while saving activity to the database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

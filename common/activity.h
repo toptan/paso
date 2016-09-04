@@ -152,6 +152,30 @@ public:
     void setCanOverlap(bool canOverlap);
 
     ///
+    /// \brief Returns list of activity room ids.
+    /// \return The list of activity room ids.
+    ///
+    QVariantList roomIds() const;
+
+    ///
+    /// \brief Sets new list of activity room ids.
+    /// \param roomIds The new list of activity room ids.
+    ///
+    void setRoomIds(const QVariantList &roomIds);
+
+    ///
+    /// \brief Returns list of activity list ids.
+    /// \return The list of activity list ids.
+    ///
+    QVariantList listIds() const;
+
+    ///
+    /// \brief Sets new list of activity list ids.
+    /// \param listIds The new list of activity room ids.
+    ///
+    void setListIds(const QVariantList &listIds);
+
+    ///
     /// \copydoc paso::data::entity::Entity::toVariantMap()
     ///
     virtual QVariantMap toVariantMap() const override;
@@ -278,11 +302,12 @@ private:
     QDate mStartDate;                   //!< The activity start date.
     QTime mStartTime;                   //!< The activity start time.
     QDate mFinishDate;                  //!< The activity finish date.
-
     /// \brief Whether activity allows entry/overlap even if some other activity
     /// is in progress. This applies only to \ref ActivityType::INDIVIDUAL_WORK
     /// activities.
     bool mCanOverlap;
+    QVariantList mRoomIds; //!< The list of activity room ids.
+    QVariantList mListIds; //!< The list of activiry list ids.
 };
 }
 }

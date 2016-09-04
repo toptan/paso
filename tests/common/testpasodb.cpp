@@ -998,7 +998,6 @@ void TestPasoDB::testGetActivity() {
     DBManager manager(dbName);
     QSqlError error;
     manager.saveActivity(activity, error);
-
     auto loaded = manager.getActivity(activity.id(), error);
     QCOMPARE(error.type(), QSqlError::NoError);
     QVERIFY((bool)loaded);
@@ -1030,8 +1029,10 @@ void TestPasoDB::testSaveActivity() {
     activity.setStartTime(QTime(8, 0));
     activity.setFinishDate(QDate(2016, 8, 15));
     activity.setCanOverlap(false);
+    activity.setListIds({1, 3, 5});
     QVERIFY(manager.saveActivity(activity, error));
     QVERIFY(activity.id() != 0);
+    QCOMPARE(manager.activityLists(activity.id(), error).size(), size_t(3));
 
     activity.setName("A2");
     activity.setType(ActivityType::INDIVIDUAL_WORK);

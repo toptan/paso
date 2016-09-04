@@ -886,7 +886,6 @@ shared_ptr<Activity> DBManager::getActivity(quint64 activityId,
             return make_shared<Activity>(recordToVariantMap(query.record()));
         }
     }
-
     return nullptr;
 }
 

@@ -120,13 +120,15 @@ void ActivityWizard::accept() {
         mActivity->setDuration(field("repetitiveDuration").toTime());
         mActivity->setScheduledDays(field("selectedDays").toList());
     }
+    mActivity->setRoomIds(field("activityRooms").toList());
+    mActivity->setListIds(field("activityLists").toList());
     QSqlError error;
     DBManager manager;
 
     if (!manager.saveActivity(*mActivity, error)) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setText(tr("There was an error while loading activity from the "
+        msgBox.setText(tr("There was an error while saving activity to the "
                           "database."));
         msgBox.setDetailedText(error.text());
         msgBox.setStandardButtons(QMessageBox::Ok);
