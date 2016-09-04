@@ -140,7 +140,10 @@ ActivityEditorWidget::generateRepetitionString(const QString &repetitionType,
         const QVariantList days = jsonArrayStringToVariantList(strDays);
         QTextStream ts(&retVal);
         for (const auto &day : days) {
-            ts << repetitionWeekDays[day.toInt() - 1] << ", ";
+            auto translated = QApplication::instance()->translate(
+                "QObject",
+                repetitionWeekDays[day.toInt() - 1].toStdString().c_str());
+            ts << translated << ", ";
         }
         retVal = retVal.trimmed();
         if (retVal.endsWith(",")) {
@@ -152,7 +155,7 @@ ActivityEditorWidget::generateRepetitionString(const QString &repetitionType,
         const QVariantList days = jsonArrayStringToVariantList(strDays);
         QTextStream ts(&retVal);
         for (const auto &day : days) {
-            ts << day.toInt() + 1 << ", ";
+            ts << day.toInt() << ", ";
         }
         retVal = retVal.trimmed();
         if (retVal.endsWith(",")) {

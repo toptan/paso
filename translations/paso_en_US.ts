@@ -280,21 +280,31 @@
     </message>
     <message>
         <location filename="../admin/activityform.cpp" line="38"/>
-        <source>Duration</source>
+        <source>Scheduled days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/activityform.cpp" line="39"/>
-        <source>Start date</source>
+        <source>Duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/activityform.cpp" line="40"/>
-        <source>Finish date</source>
+        <source>Start date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/activityform.cpp" line="41"/>
+        <source>Start time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="42"/>
+        <source>Finish date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="43"/>
         <source>Can overlap</source>
         <translation type="unfinished"></translation>
     </message>
@@ -594,18 +604,18 @@
 <context>
     <name>paso::admin::ActivityEditorWidget</name>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="150"/>
-        <location filename="../admin/activityeditorwidget.cpp" line="162"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="153"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="165"/>
         <source>and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="163"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="166"/>
         <source>Every </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="163"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="166"/>
         <source>in month</source>
         <translation type="unfinished"></translation>
     </message>
@@ -613,7 +623,7 @@
 <context>
     <name>paso::admin::ActivityForm</name>
     <message>
-        <location filename="../admin/activityform.cpp" line="85"/>
+        <location filename="../admin/activityform.cpp" line="89"/>
         <source>Do you want to delete selected activity from the system?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1840,18 +1850,18 @@
 <context>
     <name>paso::model::ActivityQueryModel</name>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="68"/>
-        <location filename="../admin/activitytablemodel.cpp" line="81"/>
+        <location filename="../admin/activitytablemodel.cpp" line="71"/>
+        <location filename="../admin/activitytablemodel.cpp" line="84"/>
         <source>and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="82"/>
+        <location filename="../admin/activitytablemodel.cpp" line="85"/>
         <source>Every </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="82"/>
+        <location filename="../admin/activitytablemodel.cpp" line="85"/>
         <source>in month</source>
         <translation type="unfinished"></translation>
     </message>

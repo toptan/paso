@@ -29,7 +29,7 @@ QList<int> ItemsPicker::selectedItems() const {
     QList<int> retVal;
     for (auto i = 0; i < mCheckBoxes.size(); i++) {
         if (mCheckBoxes[i]->isChecked()) {
-            retVal.push_back(i);
+            retVal.push_back(i + 1);
         }
     }
     return retVal;
@@ -78,7 +78,7 @@ void ItemsPicker::setItemLabels(const QStringList &itemLabels) {
 
 void ItemsPicker::setSelectedItems(const QList<int> &selectedItems) {
     for (auto i = 0; i < mCheckBoxes.size(); i++) {
-        mCheckBoxes[i]->setChecked(selectedItems.contains(i));
+        mCheckBoxes[i]->setChecked(selectedItems.contains(i + 1));
     }
     emit selectedItemsChanged();
 }

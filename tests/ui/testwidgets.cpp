@@ -615,8 +615,9 @@ void TestWidgets::testItemsPicker() {
     QCOMPARE(spy.count(), 2);
     auto selectedItems = picker1.selectedItems();
     QCOMPARE(selectedItems.size(), 2);
-    QVERIFY(selectedItems.contains(1));
-    QVERIFY(selectedItems.contains(3));
+    // Selected items returned are 1 based not zero based!
+    QVERIFY(selectedItems.contains(2));
+    QVERIFY(selectedItems.contains(4));
     picker1.hide();
     QApplication::processEvents();
 
@@ -626,18 +627,18 @@ void TestWidgets::testItemsPicker() {
     picker2.setItemLabels(itemLabels);
     QApplication::processEvents();
     QVERIFY(picker2.selectedItems().empty());
-    picker2.setSelectedItems({0, 3, 6});
+    picker2.setSelectedItems({1, 4, 7});
     QApplication::processEvents();
     selectedItems = picker2.selectedItems();
     QCOMPARE(selectedItems.size(), 2);
-    QVERIFY(selectedItems.contains(0));
-    QVERIFY(selectedItems.contains(3));
+    QVERIFY(selectedItems.contains(1));
+    QVERIFY(selectedItems.contains(4));
     picker2.setColumnCount(2);
     QApplication::processEvents();
     selectedItems = picker2.selectedItems();
     QCOMPARE(selectedItems.size(), 2);
-    QVERIFY(selectedItems.contains(0));
-    QVERIFY(selectedItems.contains(3));
+    QVERIFY(selectedItems.contains(1));
+    QVERIFY(selectedItems.contains(4));
     picker2.setItemLabels({"A", "B", "C"});
     QApplication::processEvents();
     selectedItems = picker2.selectedItems();

@@ -53,14 +53,16 @@ public:
 
     ///
     /// \brief Returns the list of currently selected items. Numbers in the list
-    /// represent item positions in previously set item labels.
+    /// represent item positions in previously set item labels. This list is 1
+    /// based not zero based!
     /// \return List of currently selected items.
     ///
     QList<int> selectedItems() const;
 
     ///
     /// \brief Sets currently selected items. Numbers in the list represent item
-    /// positions in previously set item labels.
+    /// positions in previously set item labels. This list is 1 based not zero
+    /// based!
     /// \note If any item in the list is bigger than item count, it will be
     /// ignored.
     /// \param selectedItems The list of items to be selected.

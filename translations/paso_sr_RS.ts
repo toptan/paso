@@ -37,12 +37,12 @@
     <message>
         <location filename="../admin/activitywizardlistsselectionpage.ui" line="14"/>
         <source>Activity Lists</source>
-        <translation type="unfinished"></translation>
+        <translation>Листе придружене активности</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardlistsselectionpage.ui" line="17"/>
         <source>Select lists that participate in this activity.</source>
-        <translation type="unfinished"></translation>
+        <translation>Одаберите листе које учествују у активности.</translation>
     </message>
 </context>
 <context>
@@ -75,22 +75,22 @@
     <message>
         <location filename="../admin/activitywizardnameandtypepage.ui" line="60"/>
         <source>Ativity happens more than once or during period of time</source>
-        <translation type="unfinished"></translation>
+        <translation>Активност се понавља током одређеног периода</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardnameandtypepage.ui" line="67"/>
         <source>Repeats on</source>
-        <translation type="unfinished"></translation>
+        <translation>Понавља се</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardnameandtypepage.ui" line="73"/>
         <source>Week days</source>
-        <translation type="unfinished"></translation>
+        <translation>Недељно</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardnameandtypepage.ui" line="86"/>
         <source>Specific days</source>
-        <translation type="unfinished"></translation>
+        <translation>Одређеним датумума</translation>
     </message>
 </context>
 <context>
@@ -98,38 +98,38 @@
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="14"/>
         <source>Activity Dates, Days, Time and Duration</source>
-        <translation type="unfinished"></translation>
+        <translation>Датуми, дани, време и трајање активности</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="17"/>
         <source>Pick activity days or dates and set its time and duration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Одаберите дане или датуме активности и подесите време трајање.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="36"/>
         <source>Start date</source>
-        <translation type="unfinished">Почетни датум</translation>
+        <translation>Почетни датум</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="53"/>
         <source>Finish date</source>
-        <translation type="unfinished">Крајњи датум</translation>
+        <translation>Крајњи датум</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="94"/>
         <source>Start time</source>
-        <translation type="unfinished"></translation>
+        <translation>Почетак</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="43"/>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="60"/>
         <source>dd.MM.yyyy</source>
-        <translation type="unfinished"></translation>
+        <translation>dd.MM.yyyy</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.ui" line="70"/>
         <source>Duration</source>
-        <translation type="unfinished">Трајање</translation>
+        <translation>Трајање</translation>
     </message>
 </context>
 <context>
@@ -137,12 +137,12 @@
     <message>
         <location filename="../admin/activitywizardroomsselectionpage.ui" line="14"/>
         <source>Activity Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Просторије у којима се одвија активност</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardroomsselectionpage.ui" line="17"/>
         <source>Select rooms where activity will happen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Одаберите просторије где ће се активност да се одвија.</translation>
     </message>
 </context>
 <context>
@@ -323,27 +323,37 @@
     <message>
         <location filename="../admin/activityform.cpp" line="37"/>
         <source>Schedule type</source>
-        <translation type="unfinished"></translation>
+        <translation>Понавља се</translation>
     </message>
     <message>
         <location filename="../admin/activityform.cpp" line="38"/>
+        <source>Scheduled days</source>
+        <translation>Када</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="39"/>
         <source>Duration</source>
         <translation>Трајање</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="39"/>
+        <location filename="../admin/activityform.cpp" line="40"/>
         <source>Start date</source>
         <translation>Почетни датум</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="40"/>
+        <location filename="../admin/activityform.cpp" line="41"/>
+        <source>Start time</source>
+        <translation>Почетак</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityform.cpp" line="42"/>
         <source>Finish date</source>
         <translation>Крајњи датум</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="41"/>
+        <location filename="../admin/activityform.cpp" line="43"/>
         <source>Can overlap</source>
-        <translation type="unfinished"></translation>
+        <translation>Може да се преклопи</translation>
     </message>
     <message>
         <location filename="../admin/roomform.cpp" line="36"/>
@@ -434,67 +444,67 @@
     <message>
         <location filename="../common/data.h" line="148"/>
         <source>Activity does not repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Не понавља се</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="150"/>
         <source>Repeats on certain week days</source>
-        <translation type="unfinished"></translation>
+        <translation>Понавља се недељно</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="152"/>
         <source>Repeats on certain days in month</source>
-        <translation type="unfinished"></translation>
+        <translation>Понавља се месечно</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="159"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Не понавља се</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="160"/>
         <source>Weekly</source>
-        <translation type="unfinished"></translation>
+        <translation>Недељно</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="161"/>
         <source>Monthly</source>
-        <translation type="unfinished"></translation>
+        <translation>Месечно</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="167"/>
         <source>Monday</source>
-        <translation type="unfinished"></translation>
+        <translation>понедељком</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="167"/>
         <source>Tuesday</source>
-        <translation type="unfinished"></translation>
+        <translation>уторком</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="167"/>
         <source>Wednesday</source>
-        <translation type="unfinished"></translation>
+        <translation>средом</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="168"/>
         <source>Thursday</source>
-        <translation type="unfinished"></translation>
+        <translation>четвртком</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="168"/>
         <source>Friday</source>
-        <translation type="unfinished"></translation>
+        <translation>петком</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="168"/>
         <source>Saturday</source>
-        <translation type="unfinished"></translation>
+        <translation>суботом</translation>
     </message>
     <message>
         <location filename="../common/data.h" line="169"/>
         <source>Sunday</source>
-        <translation type="unfinished"></translation>
+        <translation>недељом</translation>
     </message>
     <message>
         <location filename="../admin/listform.cpp" line="47"/>
@@ -598,26 +608,26 @@
 <context>
     <name>paso::admin::ActivityEditorWidget</name>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="150"/>
-        <location filename="../admin/activityeditorwidget.cpp" line="162"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="153"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="165"/>
         <source>and</source>
-        <translation type="unfinished"></translation>
+        <translation>и</translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="163"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="166"/>
         <source>Every </source>
-        <translation type="unfinished"></translation>
+        <translation>Сваког </translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="163"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="166"/>
         <source>in month</source>
-        <translation type="unfinished"></translation>
+        <translation>у месецу</translation>
     </message>
 </context>
 <context>
     <name>paso::admin::ActivityForm</name>
     <message>
-        <location filename="../admin/activityform.cpp" line="85"/>
+        <location filename="../admin/activityform.cpp" line="89"/>
         <source>Do you want to delete selected activity from the system?</source>
         <translation>Да ли стварно желите да обришете одабрану активност из система?</translation>
     </message>
@@ -627,22 +637,22 @@
     <message>
         <location filename="../admin/activitywizard.cpp" line="69"/>
         <source>There was an error while loading activity from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дошло је до грешке приликом учитавања активности из базе.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizard.cpp" line="80"/>
         <source>The requested activity does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Тражена активност не постоји.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizard.cpp" line="81"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Можда је неко или систем сам обрисао активност. Покушајте да освежите податке.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizard.cpp" line="131"/>
         <source>There was an error while saving activity to the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дошло је до грешко прилимо снимања активности у базу.</translation>
     </message>
 </context>
 <context>
@@ -650,17 +660,17 @@
     <message>
         <location filename="../admin/activitywizardfixeddatepage.cpp" line="43"/>
         <source>There was an error while loading activity from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дошло је до грешке приликом учитавања активности из базе.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardfixeddatepage.cpp" line="54"/>
         <source>The requested activity does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Тражена активност не постоји.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardfixeddatepage.cpp" line="56"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Можда је неко или систем сам обрисао активност. Покушајте да освежите податке.</translation>
     </message>
 </context>
 <context>
@@ -668,22 +678,22 @@
     <message>
         <location filename="../admin/activitywizardlistsselectionpage.cpp" line="38"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Име</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardlistsselectionpage.cpp" line="48"/>
         <source>Non participating lists</source>
-        <translation type="unfinished"></translation>
+        <translation>Листе које не учествују</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardlistsselectionpage.cpp" line="49"/>
         <source>Participating lists</source>
-        <translation type="unfinished"></translation>
+        <translation>Листе које учествују</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardlistsselectionpage.cpp" line="53"/>
         <source>There was an error while loading activity lists from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дошло је до грешке приликом учитавања листи које учествују у активности из базе.</translation>
     </message>
 </context>
 <context>
@@ -691,17 +701,17 @@
     <message>
         <location filename="../admin/activitywizardnameandtypepage.cpp" line="74"/>
         <source>There was an error while loading activity from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дошло је до грешке приликом учитавања активности из базе.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardnameandtypepage.cpp" line="85"/>
         <source>The requested activity does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Тражена активност не постоји.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardnameandtypepage.cpp" line="87"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Можда је неко или систем сам обрисао активност. Покушајте да освежите податке.</translation>
     </message>
 </context>
 <context>
@@ -709,62 +719,62 @@
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="61"/>
         <source>There was an error while loading activity from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дошло је до грешке приликом учитавања активности из базе.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="72"/>
         <source>The requested activity does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Тражена активност не постоји.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="74"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
-        <translation type="unfinished"></translation>
+        <translation>Можда је неко или систем сам обрисао активност. Покушајте да освежите податке.</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
         <source>Mo</source>
-        <translation type="unfinished"></translation>
+        <translation>по</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
         <source>Tu</source>
-        <translation type="unfinished"></translation>
+        <translation>ут</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
         <source>We</source>
-        <translation type="unfinished"></translation>
+        <translation>ср</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
         <source>Th</source>
-        <translation type="unfinished"></translation>
+        <translation>че</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="135"/>
         <source>Fr</source>
-        <translation type="unfinished"></translation>
+        <translation>пе</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="135"/>
         <source>Sa</source>
-        <translation type="unfinished"></translation>
+        <translation>су</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="135"/>
         <source>Su</source>
-        <translation type="unfinished"></translation>
+        <translation>не</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="136"/>
         <source>Week days</source>
-        <translation type="unfinished"></translation>
+        <translation>Дани у недељи</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="145"/>
         <source>Month days</source>
-        <translation type="unfinished"></translation>
+        <translation>Дани у месецу</translation>
     </message>
 </context>
 <context>
@@ -772,22 +782,22 @@
     <message>
         <location filename="../admin/activitywizardroomsselectionpage.cpp" line="38"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Име</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardroomsselectionpage.cpp" line="47"/>
         <source>Non assigned rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Просторије у којима се не одвија активност</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardroomsselectionpage.cpp" line="48"/>
         <source>Assigned rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Просторије у којима се одвија активност</translation>
     </message>
     <message>
         <location filename="../admin/activitywizardroomsselectionpage.cpp" line="53"/>
         <source>There was an error while loading activity rooms from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дошло је до грешке приликом учитавања просторија у којима се одвија активност.</translation>
     </message>
 </context>
 <context>
@@ -1856,20 +1866,20 @@
 <context>
     <name>paso::model::ActivityQueryModel</name>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="68"/>
-        <location filename="../admin/activitytablemodel.cpp" line="81"/>
+        <location filename="../admin/activitytablemodel.cpp" line="71"/>
+        <location filename="../admin/activitytablemodel.cpp" line="84"/>
         <source>and</source>
-        <translation type="unfinished"></translation>
+        <translation>и</translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="82"/>
+        <location filename="../admin/activitytablemodel.cpp" line="85"/>
         <source>Every </source>
-        <translation type="unfinished"></translation>
+        <translation>Сваког </translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="82"/>
+        <location filename="../admin/activitytablemodel.cpp" line="85"/>
         <source>in month</source>
-        <translation type="unfinished"></translation>
+        <translation>у месецу</translation>
     </message>
 </context>
 <context>
