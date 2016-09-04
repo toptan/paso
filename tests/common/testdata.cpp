@@ -194,7 +194,9 @@ void TestData::testConversionToVariantMap() {
                              "START_DATE",
                              "START_TIME",
                              "FINISH_DATE",
-                             "CAN_OVERLAP"};
+                             "CAN_OVERLAP",
+                             "ACTIVITY_ROOMS",
+                             "ACTIVITY_LISTS"};
 
     QCOMPARE(systemUser.toVariantMap().keys().size(), systemUserKeys.size());
     QCOMPARE(student.toVariantMap().keys().size(), studentKeys.size());

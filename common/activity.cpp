@@ -9,7 +9,7 @@ namespace entity {
 Activity::Activity(const QString &name, ActivityType type, quint64 id)
     : Entity(id), mName(name), mType(type),
       mScheduleType(ActivityScheduleType::INVALID), mDuration(), mStartDate(),
-      mStartTime(), mFinishDate(), mCanOverlap(false) {}
+      mStartTime(), mFinishDate(), mCanOverlap(false), mRoomIds(), mListIds() {}
 
 Activity::Activity(const QVariantMap &map)
     : Entity(map["ID"].toULongLong()), mName(map["NAME"].toString()),
@@ -22,7 +22,10 @@ Activity::Activity(const QVariantMap &map)
       mStartDate(map["START_DATE"].toDate()),
       mStartTime(map["START_TIME"].toTime()),
       mFinishDate(map["FINISH_DATE"].toDate()),
-      mCanOverlap(map["CAN_OVERLAP"].toBool()) {}
+      mCanOverlap(map["CAN_OVERLAP"].toBool()),
+      mRoomIds(jsonArrayStringToVariantList(map["ACTIVITY_ROOMS"].toString())),
+      mListIds(jsonArrayStringToVariantList(map["ACTIVITY_LISTS"].toString())) {
+}
 
 bool Activity::operator==(const Activity &other) const {
     if (this == &other) {
@@ -79,6 +82,14 @@ bool Activity::canOverlap() const { return mCanOverlap; }
 
 void Activity::setCanOverlap(bool canOverlap) { mCanOverlap = canOverlap; }
 
+QVariantList Activity::roomIds() const { return mRoomIds; }
+
+void Activity::setRoomIds(const QVariantList &roomIds) { mRoomIds = roomIds; }
+
+QVariantList Activity::listIds() const { return mListIds; }
+
+void Activity::setListIds(const QVariantList &listIds) { mListIds = listIds; }
+
 QVariantMap Activity::toVariantMap() const {
     auto retVal = Entity::toVariantMap();
     retVal.insert("NAME", mName);
@@ -90,6 +101,8 @@ QVariantMap Activity::toVariantMap() const {
     retVal.insert("START_TIME", mStartTime);
     retVal.insert("FINISH_DATE", mFinishDate);
     retVal.insert("CAN_OVERLAP", mCanOverlap);
+    retVal.insert("ACTIVITY_ROOMS", mRoomIds);
+    retVal.insert("ACTIVITY_LISTS", mListIds);
     return retVal;
 }
 
@@ -112,6 +125,10 @@ QVariant Activity::value(const QString &property) const {
         return mFinishDate;
     } else if (property == "CAN_OVERLAP") {
         return mCanOverlap;
+    } else if (property == "ACTIVITY_ROOMS") {
+        return mRoomIds;
+    } else if (property == "ACTIVITY_LISTS") {
+        return mListIds;
     }
 
     return Entity::value(property);
@@ -131,6 +148,10 @@ void Activity::read(const QJsonObject &jsonObject) {
     mStartTime = jsonObject["START_TIME"].toVariant().toTime();
     mFinishDate = jsonObject["FINISH_DATE"].toVariant().toDate();
     mCanOverlap = jsonObject["CAN_OVERLAP"].toBool();
+    tmp = jsonObject["ACTIVITY_ROOMS"].toString();
+    mRoomIds = jsonArrayStringToVariantList(tmp);
+    tmp = jsonObject["ACTIVITY_LISTS"].toString();
+    mListIds = jsonArrayStringToVariantList(tmp);
 }
 
 void Activity::write(QJsonObject &jsonObject) const {
@@ -144,6 +165,8 @@ void Activity::write(QJsonObject &jsonObject) const {
     jsonObject["START_TIME"] = QVariant(mStartTime).toJsonValue();
     jsonObject["FINISH_DATE"] = QVariant(mFinishDate).toJsonValue();
     jsonObject["CAN_OVERLAP"] = mCanOverlap;
+    jsonObject["ACTIVITY_ROOMS"] = variantListToJsonArrayString(mRoomIds);
+    jsonObject["ACTIVITY_LISTS"] = variantListToJsonArrayString(mListIds);
 }
 
 QSqlQuery Activity::insertQuery(const QSqlDatabase &database,
@@ -152,7 +175,7 @@ QSqlQuery Activity::insertQuery(const QSqlDatabase &database,
     query.prepare(
         "SELECT insert_activity(:name, :type, :schedule_type, "
         ":scheduled_days, :duration, :start_date, :start_time, :finish_date, "
-        ":can_overlap) AS ID");
+        ":can_overlap, :rooms, :lists) AS ID");
     query.bindValue(":name", activity.name());
     query.bindValue(":type", activityTypeToString(activity.type()));
     query.bindValue(":schedule_type",
@@ -163,11 +186,23 @@ QSqlQuery Activity::insertQuery(const QSqlDatabase &database,
     query.bindValue(":finish_date", activity.finishDate());
     query.bindValue(":can_overlap", activity.canOverlap());
     QString strDays;
-    QTextStream ts(&strDays);
+    QTextStream tsDays(&strDays);
     for (auto i = 0; i < activity.scheduledDays().size(); i++) {
-        ts << activity.scheduledDays()[i].toInt() << " ";
+        tsDays << activity.scheduledDays()[i].toInt() << " ";
     }
     query.bindValue(":scheduled_days", strDays.trimmed());
+    QString strRooms;
+    QTextStream tsRooms(&strRooms);
+    for (auto i = 0; i < activity.roomIds().size(); i++) {
+        tsRooms << activity.roomIds()[i].toInt() << " ";
+    }
+    query.bindValue(":rooms", strRooms.trimmed());
+    QString strLists;
+    QTextStream tsLists(&strLists);
+    for (auto i = 0; i < activity.listIds().size(); i++) {
+        tsLists << activity.listIds()[i].toInt() << " ";
+    }
+    query.bindValue(":lists", strLists.trimmed());
     return query;
 }
 
@@ -177,7 +212,7 @@ QSqlQuery Activity::updateQuery(const QSqlDatabase &database,
     query.prepare(
         "SELECT update_activity(:id, :name, :type, :schedule_type, "
         ":scheduled_days, :duration, :start_date, :start_time, :finish_date, "
-        ":can_overlap)");
+        ":can_overlap, :rooms, :lists)");
     query.bindValue(":id", activity.id());
     query.bindValue(":name", activity.name());
     query.bindValue(":type", activityTypeToString(activity.type()));
@@ -194,6 +229,18 @@ QSqlQuery Activity::updateQuery(const QSqlDatabase &database,
         ts << activity.scheduledDays()[i].toInt() << " ";
     }
     query.bindValue(":scheduled_days", strDays.trimmed());
+    QString strRooms;
+    QTextStream tsRooms(&strRooms);
+    for (auto i = 0; i < activity.roomIds().size(); i++) {
+        tsRooms << activity.roomIds()[i].toInt() << " ";
+    }
+    query.bindValue(":rooms", strRooms.trimmed());
+    QString strLists;
+    QTextStream tsLists(&strLists);
+    for (auto i = 0; i < activity.listIds().size(); i++) {
+        tsLists << activity.listIds()[i].toInt() << " ";
+    }
+    query.bindValue(":lists", strLists.trimmed());
     return query;
 }
 
@@ -208,7 +255,14 @@ QSqlQuery Activity::deleteQuery(const QSqlDatabase &database,
 QSqlQuery Activity::findActivityByIdQuery(const QSqlDatabase &database,
                                           quint64 activityId) {
     QSqlQuery query(database);
-    query.prepare("SELECT * FROM ACTIVITY WHERE ID = :activity_id");
+    query.prepare("SELECT A.*, "
+                  "     (SELECT array_agg(ID_ROOM::text)"
+                  "      FROM ACTIVITY_ROOMS"
+                  "     WHERE ID_ACTIVITY = A.ID) AS ACTIVITY_ROOM_IDS,"
+                  "     (SELECT array_agg(ID_LIST::text)"
+                  "      FROM ACTIVITY_LISTS"
+                  "     WHERE ID_ACTIVITY = A.ID) AS ACTIVITY_LIST_IDS"
+                  " FROM ACTIVITY A WHERE ID = :activity_id");
     query.bindValue(":activity_id", activityId);
     return query;
 }

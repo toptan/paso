@@ -250,7 +250,7 @@ CREATE OR REPLACE FUNCTION insert_activity(a_name           VARCHAR, a_type VARC
                                            a_scheduled_days TEXT,
                                            a_duration       TIME, a_start_date DATE, a_start_time TIME,
                                            a_finish_date    DATE,
-                                           a_can_overlap    BOOLEAN)
+                                           a_can_overlap    BOOLEAN, an_activity_rooms TEXT, an_activity_lists TEXT)
     RETURNS BIGINT AS $$
 DECLARE
     str_days_array TEXT [];
@@ -314,6 +314,10 @@ BEGIN
         tmp_finish := tmp_start + a_duration;
         INSERT INTO activity_slots (id_activity, start, finish) VALUES (v_id, tmp_start, tmp_finish);
     END IF;
+
+    PERFORM set_activity_rooms(v_id, an_activity_rooms);
+    PERFORM set_activity_lists(v_id, an_activity_lists);
+
     RETURN v_id;
 END $$ LANGUAGE plpgsql VOLATILE;
 
@@ -322,7 +326,7 @@ CREATE OR REPLACE FUNCTION update_activity(an_id            BIGINT, a_name VARCH
                                            a_scheduled_days TEXT,
                                            a_duration       TIME, a_start_date DATE, a_start_time TIME,
                                            a_finish_date    DATE,
-                                           a_can_overlap    BOOLEAN)
+                                           a_can_overlap    BOOLEAN, an_activity_rooms TEXT, an_activity_lists TEXT)
     RETURNS VOID AS $$
 DECLARE
     str_days_array TEXT [];
@@ -387,6 +391,10 @@ BEGIN
         tmp_finish := tmp_start + a_duration;
         INSERT INTO activity_slots (id_activity, start, finish) VALUES (an_id, tmp_start, tmp_finish);
     END IF;
+
+    PERFORM set_activity_rooms(an_id, an_activity_rooms);
+    PERFORM set_activity_lists(an_id, an_activity_lists);
+
 END $$ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION set_activity_rooms(activity_id BIGINT, room_ids TEXT)
@@ -401,9 +409,12 @@ BEGIN
     DELETE FROM activity_rooms
     WHERE id_activity = activity_id;
 
-    FOR i IN 1 .. array_size LOOP
-        INSERT INTO activity_rooms (id_activity, id_room) VALUES (activity_id, CAST(room_id_array [i] AS BIGINT));
-    END LOOP;
+    IF array_size IS NOT NULL
+    THEN
+        FOR i IN 1 .. array_size LOOP
+            INSERT INTO activity_rooms (id_activity, id_room) VALUES (activity_id, CAST(room_id_array [i] AS BIGINT));
+        END LOOP;
+    END IF;
 END $$ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION set_activity_lists(activity_id BIGINT, list_ids TEXT)
@@ -418,9 +429,13 @@ BEGIN
     DELETE FROM activity_lists
     WHERE id_activity = activity_id;
 
-    FOR i IN 1 .. array_size LOOP
-        INSERT INTO activity_lists (id_activity, id_list) VALUES (activity_id, CAST(list_id_array [i] AS BIGINT));
-    END LOOP;
+    IF array_size IS NOT NULL
+    THEN
+        FOR i IN 1 .. array_size LOOP
+            INSERT INTO activity_lists (id_activity, id_list) VALUES (activity_id, CAST(list_id_array [i] AS BIGINT));
+        END LOOP;
+    END IF;
+
 END $$ LANGUAGE plpgsql VOLATILE;
 
 -- INSERTING INITIAL DATA --
