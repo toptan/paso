@@ -1,5 +1,6 @@
 #include "activityeditorwidget.h"
 
+#include "activitywizard.h"
 #include "data.h"
 
 #include <QApplication>
@@ -41,15 +42,43 @@ QComboBox *ActivityEditorWidget::createComboBox(const QString &field) {
 }
 
 void ActivityEditorWidget::onEditExistingRecord(QSqlRecord record) {
-    // We are read only widget, so we should set all fields read only.
+    // We are read only widget, so we should set all fields read only and
+    // delegate work to the wizard.
     RecordEditorWidget::onEditExistingRecord(record);
     setFieldsReadOnly();
+    ActivityWizard *wizard = new ActivityWizard(record, this);
+    connect(wizard, &ActivityWizard::accepted, this,
+            &ActivityEditorWidget::accepted);
+    connect(wizard, &ActivityWizard::rejected, this,
+            &ActivityEditorWidget::rejected);
+    connect(wizard, &ActivityWizard::accepted, wizard, &QObject::deleteLater);
+    connect(wizard, &ActivityWizard::rejected, wizard, &QObject::deleteLater);
+    wizard->setModal(true);
+    wizard->show();
 }
 
 void ActivityEditorWidget::onEditNewRecord(QSqlRecord record) {
-    // We are read only widget, so we should set all fields read only.
+    // We are read only widget, so we should set all fields read only and
+    // delegate work to the wizard.
     RecordEditorWidget::onEditNewRecord(record);
     setFieldsReadOnly();
+    ActivityWizard *wizard = new ActivityWizard(record, this);
+    connect(wizard, &ActivityWizard::accepted, this,
+            &ActivityEditorWidget::accepted);
+    connect(wizard, &ActivityWizard::rejected, this,
+            &ActivityEditorWidget::rejected);
+    connect(wizard, &ActivityWizard::accepted, wizard, &QObject::deleteLater);
+    connect(wizard, &ActivityWizard::rejected, wizard, &QObject::deleteLater);
+    wizard->setModal(true);
+    wizard->show();
+}
+
+void ActivityEditorWidget::accepted() {
+    if (mNewRecord) {
+        emit requestSave(mRecord);
+    } else {
+        emit requestUpdate(mRecord);
+    }
 }
 }
 }

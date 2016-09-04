@@ -29,6 +29,7 @@ ActivityWizardRepetitiveDatesPage::ActivityWizardRepetitiveDatesPage(
     registerField("startDate*", ui->startDateEdit);
     registerField("finishDate*", ui->finishDateEdit);
     registerField("repetitiveDuration*", ui->durationTimeEdit);
+    registerField("startTime", ui->startTimeEdit);
     connect(ui->itemsPicker, &ItemsPicker::selectedItemsChanged, [this]() {
         emit selectedDaysChanged();
         emit completeChanged();
@@ -98,6 +99,7 @@ void ActivityWizardRepetitiveDatesPage::initializePage() {
     ui->startDateEdit->setDate(activity->startDate());
     ui->startTimeEdit->setTime(activity->startTime());
     ui->finishDateEdit->setDate(activity->finishDate());
+    ui->durationTimeEdit->setTime(activity->duration());
 }
 
 bool ActivityWizardRepetitiveDatesPage::isComplete() const {

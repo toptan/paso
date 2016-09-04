@@ -604,6 +604,25 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::ActivityWizard</name>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="69"/>
+        <location filename="../admin/activitywizard.cpp" line="129"/>
+        <source>There was an error while loading activity from the database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="80"/>
+        <source>The requested activity does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="81"/>
+        <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::ActivityWizardFixedDatePage</name>
     <message>
         <location filename="../admin/activitywizardfixeddatepage.cpp" line="43"/>
@@ -665,62 +684,62 @@
 <context>
     <name>paso::admin::ActivityWizardRepetitiveDatesPage</name>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="60"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="61"/>
         <source>There was an error while loading activity from the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="71"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="72"/>
         <source>The requested activity does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="73"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="74"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="132"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
         <source>Mo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="132"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
         <source>Tu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="132"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
         <source>We</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="132"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
         <source>Th</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="133"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="135"/>
         <source>Fr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="133"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="135"/>
         <source>Sa</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="133"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="135"/>
         <source>Su</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="134"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="136"/>
         <source>Week days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="143"/>
+        <location filename="../admin/activitywizardrepetitivedatespage.cpp" line="145"/>
         <source>Month days</source>
         <translation type="unfinished"></translation>
     </message>

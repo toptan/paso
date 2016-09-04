@@ -86,7 +86,20 @@ void TestActivityAdministration::testActivityEditorWidget() {
     editor->show();
     QTest::qWaitForWindowExposed(editor.get());
     editor->onEditNewRecord(record);
+    int attempt = 0;
+    ActivityWizard *wizard;
+    while ((wizard = dynamic_cast<ActivityWizard *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(wizard != nullptr);
+    wizard->button(QWizard::CancelButton)->click();
     QApplication::processEvents();
+    attempt = 0;
+    wizard = nullptr;
+
     auto nameEdit = dynamic_cast<QLineEdit *>(editor->fieldEditors()["name"]);
     auto typeEdit = dynamic_cast<QComboBox *>(editor->fieldEditors()["type"]);
     auto scheduleEdit =
@@ -110,6 +123,17 @@ void TestActivityAdministration::testActivityEditorWidget() {
     editor->saveSuccessfull();
     QApplication::processEvents();
     editor->onEditExistingRecord(record);
+    while ((wizard = dynamic_cast<ActivityWizard *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(wizard != nullptr);
+    wizard->button(QWizard::CancelButton)->click();
+    QApplication::processEvents();
+    attempt = 0;
+    wizard = nullptr;
     QApplication::processEvents();
     QVERIFY(nameEdit->isReadOnly());
     QVERIFY(!typeEdit->isEnabled());
@@ -126,10 +150,9 @@ void TestActivityAdministration::testActivityQueryModel() {
     QSqlError error;
     db.exec("DELETE FROM ACTIVITY");
 
-    const QVariantList scheduledDates{1, 3, 5};
+    const QVariantList scheduledDays{1, 3, 5};
     Activity activity("A1", ActivityType::EXAM);
     activity.setScheduleType(ActivityScheduleType::ONCE);
-    activity.setScheduledDays(scheduledDates);
     activity.setDuration(QTime(3, 0));
     activity.setStartDate(QDate(2016, 8, 15));
     activity.setStartTime(QTime(8, 0));
@@ -140,6 +163,7 @@ void TestActivityAdministration::testActivityQueryModel() {
     activity.setName("A2");
     activity.setType(ActivityType::INDIVIDUAL_WORK);
     activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
+    activity.setScheduledDays(scheduledDays);
     activity.setDuration(QTime(1, 30));
     activity.setStartTime(QTime(9, 0));
     activity.setFinishDate(QDate(2016, 9, 15));
@@ -149,6 +173,7 @@ void TestActivityAdministration::testActivityQueryModel() {
     activity.setName("A3");
     activity.setType(ActivityType::LECTURE);
     activity.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    activity.setScheduledDays(scheduledDays);
     activity.setStartTime(QTime(10, 0));
     activity.setFinishDate(QDate(2017, 9, 15));
     activity.setCanOverlap(false);
@@ -318,24 +343,33 @@ void TestActivityAdministration::testActivityForm() {
     QVERIFY(deleteAction->isEnabled());
     QVERIFY(refreshAction->isEnabled());
 
-    bool wizardShown = false;
-    auto timerCallback = [&wizardShown]() {
-        ActivityWizard *wizard =
-            dynamic_cast<ActivityWizard *>(QApplication::activeModalWidget());
-        auto cancelButton = wizard->button(QWizard::CancelButton);
-        QTest::mouseClick(cancelButton, Qt::LeftButton);
-        wizardShown = true;
-    };
-    QTimer::singleShot(200, timerCallback);
     newAction->trigger();
+    int attempt = 0;
+    ActivityWizard *wizard;
+    while ((wizard = dynamic_cast<ActivityWizard *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(wizard != nullptr);
+    wizard->button(QWizard::CancelButton)->click();
     QApplication::processEvents();
-    QVERIFY(wizardShown);
+    attempt = 0;
+    wizard = nullptr;
 
-    wizardShown = false;
-    QTimer::singleShot(200, timerCallback);
     editAction->trigger();
+    while ((wizard = dynamic_cast<ActivityWizard *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(wizard != nullptr);
+    wizard->button(QWizard::CancelButton)->click();
     QApplication::processEvents();
-    QVERIFY(wizardShown);
+    attempt = 0;
+    wizard = nullptr;
 }
 
 void TestActivityAdministration::testNameAndTypePage() {
@@ -1037,4 +1071,446 @@ void TestActivityAdministration::testActivityWizard() {
 
     wizard.reject();
     QApplication::processEvents();
+}
+
+void TestActivityAdministration::testActivityWizardLoadingErrorHandling() {
+    auto db = QSqlDatabase::database(dbName);
+    const QVariantMap columnLabels{{"name", "Name"},
+                                   {"type", "Type"},
+                                   {"schedule_type", "Repeats"},
+                                   {"scheduled_days", "When"},
+                                   {"duration", "Duration"},
+                                   {"start_date", "Start date"},
+                                   {"start_time", "Start time"},
+                                   {"finish_date", "Finish date"},
+                                   {"can_overlap", "Can overlap"}};
+
+    ActivityQueryModel model(columnLabels, db);
+    auto record = model.record();
+    record.setValue("ID", 123);
+    std::unique_ptr<ActivityWizard> wizard(new ActivityWizard(record));
+    bool messageBoxShown = false;
+    auto messageBoxCallback = [&messageBoxShown]() {
+        auto msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Return);
+        messageBoxShown = true;
+    };
+
+    QTimer::singleShot(200, messageBoxCallback);
+    wizard->show();
+    QTest::qWaitForWindowExposed(wizard.get());
+    QVERIFY(messageBoxShown);
+
+    messageBoxShown = false;
+    db.exec("DROP TABLE ACTIVITY CASCADE");
+    wizard.reset(new ActivityWizard(record));
+    QTimer::singleShot(400, messageBoxCallback);
+    wizard->show();
+    QTest::qWaitForWindowExposed(wizard.get());
+    QVERIFY(messageBoxShown);
+}
+
+void TestActivityAdministration::testActivityFormSaveActivity() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    db.exec("DELETE FROM ACTIVITY");
+    const QVariantList scheduledDates{1, 3, 5};
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A2");
+    activity.setType(ActivityType::INDIVIDUAL_WORK);
+    activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
+    activity.setDuration(QTime(1, 30));
+    activity.setFinishDate(QDate(2016, 9, 15));
+    activity.setCanOverlap(true);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A3");
+    activity.setType(ActivityType::LECTURE);
+    activity.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    activity.setFinishDate(QDate(2017, 9, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+
+    unique_ptr<ActivityForm> form(new ActivityForm);
+    form->show();
+    QTest::qWaitForWindowExposed(form.get());
+    auto tableView = form->findChild<QTableView *>();
+    auto editor = form->findChild<ActivityEditorWidget *>();
+    auto model = dynamic_cast<ActivityQueryModel *>(form->model());
+    QAction *newAction = nullptr;
+    QAction *editAction = nullptr;
+    QAction *deleteAction = nullptr;
+    QAction *refreshAction = nullptr;
+    for (auto action : form->toolBarActions()) {
+        if (action->objectName() == "NEW_RECORD_ACTION") {
+            newAction = action;
+            continue;
+        }
+        if (action->objectName() == "EDIT_RECORD_ACTION") {
+            editAction = action;
+            continue;
+        }
+        if (action->objectName() == "DELETE_RECORD_ACTION") {
+            deleteAction = action;
+            continue;
+        }
+        if (action->objectName() == "REFRESH_ACTION") {
+            refreshAction = action;
+            continue;
+        }
+    }
+
+    QVERIFY(tableView != nullptr);
+    QVERIFY(editor != nullptr);
+    QCOMPARE(tableView->model()->rowCount(), 3);
+
+    newAction->trigger();
+    int attempt = 0;
+    ActivityWizard *wizard;
+    while ((wizard = dynamic_cast<ActivityWizard *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(wizard != nullptr);
+
+    auto nextButton = wizard->button(QWizard::NextButton);
+    auto finishButton = wizard->button(QWizard::FinishButton);
+    auto nameEdit = wizard->currentPage()->findChild<QLineEdit *>();
+    nameEdit->setText("A4");
+    QApplication::processEvents();
+    nextButton->click();
+    QApplication::processEvents();
+    nextButton->click();
+
+    auto addRemoveForm =
+        wizard->currentPage()->findChild<AddRemoveEntitiesForm *>();
+    auto sourceTable =
+        addRemoveForm->findChild<QTableView *>("sourceTableView");
+    auto addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    nextButton->click();
+    addRemoveForm = wizard->currentPage()->findChild<AddRemoveEntitiesForm *>();
+    sourceTable = addRemoveForm->findChild<QTableView *>("sourceTableView");
+    addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    finishButton->click();
+    QApplication::processEvents();
+    QCOMPARE(tableView->model()->rowCount(), 4);
+
+    attempt = 0;
+    wizard = nullptr;
+    newAction->trigger();
+    while ((wizard = dynamic_cast<ActivityWizard *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(wizard != nullptr);
+
+    nextButton = wizard->button(QWizard::NextButton);
+    finishButton = wizard->button(QWizard::FinishButton);
+    nameEdit = wizard->currentPage()->findChild<QLineEdit *>();
+    auto comboBox = wizard->currentPage()->findChild<QComboBox *>();
+    auto overlapCheckBox =
+        wizard->currentPage()->findChild<QCheckBox *>("overlapCheckBox");
+    auto moreThanOnceCheckBox =
+        wizard->currentPage()->findChild<QCheckBox *>("moreThanOnceCheckBox");
+    nameEdit->setText("A5");
+    comboBox->setCurrentIndex(comboBox->findData(QString("INDIVIDUAL_WORK")));
+    overlapCheckBox->setChecked(true);
+    moreThanOnceCheckBox->setChecked(true);
+    QApplication::processEvents();
+    nextButton->click();
+    QApplication::processEvents();
+    // Multi slot page
+    auto itemsPicker = wizard->currentPage()->findChild<ItemsPicker *>();
+    itemsPicker->setSelectedItems({1, 2, 3});
+    QApplication::processEvents();
+    nextButton->click();
+    addRemoveForm = wizard->currentPage()->findChild<AddRemoveEntitiesForm *>();
+    sourceTable = addRemoveForm->findChild<QTableView *>("sourceTableView");
+    addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    nextButton->click();
+    addRemoveForm = wizard->currentPage()->findChild<AddRemoveEntitiesForm *>();
+    sourceTable = addRemoveForm->findChild<QTableView *>("sourceTableView");
+    addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    finishButton->click();
+    QApplication::processEvents();
+    QCOMPARE(tableView->model()->rowCount(), 5);
+
+    attempt = 0;
+    wizard = nullptr;
+    newAction->trigger();
+    while ((wizard = dynamic_cast<ActivityWizard *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(wizard != nullptr);
+
+    nextButton = wizard->button(QWizard::NextButton);
+    finishButton = wizard->button(QWizard::FinishButton);
+    nameEdit = wizard->currentPage()->findChild<QLineEdit *>();
+    comboBox = wizard->currentPage()->findChild<QComboBox *>();
+    overlapCheckBox =
+        wizard->currentPage()->findChild<QCheckBox *>("overlapCheckBox");
+    moreThanOnceCheckBox =
+        wizard->currentPage()->findChild<QCheckBox *>("moreThanOnceCheckBox");
+    nameEdit->setText("A5");
+    comboBox->setCurrentIndex(comboBox->findData(QString("INDIVIDUAL_WORK")));
+    overlapCheckBox->setChecked(true);
+    moreThanOnceCheckBox->setChecked(true);
+    QApplication::processEvents();
+    nextButton->click();
+    QApplication::processEvents();
+    // Multi slot page
+    itemsPicker = wizard->currentPage()->findChild<ItemsPicker *>();
+    itemsPicker->setSelectedItems({1, 2, 3});
+    QApplication::processEvents();
+    nextButton->click();
+    addRemoveForm = wizard->currentPage()->findChild<AddRemoveEntitiesForm *>();
+    sourceTable = addRemoveForm->findChild<QTableView *>("sourceTableView");
+    addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    nextButton->click();
+    addRemoveForm = wizard->currentPage()->findChild<AddRemoveEntitiesForm *>();
+    sourceTable = addRemoveForm->findChild<QTableView *>("sourceTableView");
+    addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    db.exec("DROP TABLE ACTIVITY CASCADE");
+    bool messageBoxShown = false;
+    auto timerCallback = [&messageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Enter);
+        messageBoxShown = true;
+    };
+    QTimer::singleShot(200, timerCallback);
+    finishButton->click();
+    QApplication::processEvents();
+    QVERIFY(messageBoxShown);
+}
+
+void TestActivityAdministration::testActivityFormUpdateActivity() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    db.exec("DELETE FROM ACTIVITY");
+    const QVariantList scheduledDates{1, 3, 5};
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A2");
+    activity.setType(ActivityType::INDIVIDUAL_WORK);
+    activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
+    activity.setDuration(QTime(1, 30));
+    activity.setFinishDate(QDate(2016, 9, 15));
+    activity.setCanOverlap(true);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A3");
+    activity.setType(ActivityType::LECTURE);
+    activity.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    activity.setFinishDate(QDate(2017, 9, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+
+    unique_ptr<ActivityForm> form(new ActivityForm);
+    form->show();
+    QTest::qWaitForWindowExposed(form.get());
+    auto tableView = form->findChild<QTableView *>();
+    auto editor = form->findChild<ActivityEditorWidget *>();
+    auto model = dynamic_cast<ActivityQueryModel *>(form->model());
+    QAction *newAction = nullptr;
+    QAction *editAction = nullptr;
+    QAction *deleteAction = nullptr;
+    QAction *refreshAction = nullptr;
+    for (auto action : form->toolBarActions()) {
+        if (action->objectName() == "NEW_RECORD_ACTION") {
+            newAction = action;
+            continue;
+        }
+        if (action->objectName() == "EDIT_RECORD_ACTION") {
+            editAction = action;
+            continue;
+        }
+        if (action->objectName() == "DELETE_RECORD_ACTION") {
+            deleteAction = action;
+            continue;
+        }
+        if (action->objectName() == "REFRESH_ACTION") {
+            refreshAction = action;
+            continue;
+        }
+    }
+
+    QVERIFY(tableView != nullptr);
+    QVERIFY(editor != nullptr);
+    QCOMPARE(tableView->model()->rowCount(), 3);
+
+    tableView->selectRow(0);
+    QApplication::processEvents();
+    editAction->trigger();
+    int attempt = 0;
+    ActivityWizard *wizard;
+    while ((wizard = dynamic_cast<ActivityWizard *>(
+                QApplication::activeModalWidget())) == nullptr &&
+           attempt < 10) {
+        QTest::qWait(100);
+        attempt++;
+    }
+    QVERIFY(wizard != nullptr);
+
+    auto nextButton = wizard->button(QWizard::NextButton);
+    auto finishButton = wizard->button(QWizard::FinishButton);
+    auto nameEdit = wizard->currentPage()->findChild<QLineEdit *>();
+    nameEdit->setText("A0");
+    QApplication::processEvents();
+    nextButton->click();
+    QApplication::processEvents();
+    nextButton->click();
+
+    auto addRemoveForm =
+        wizard->currentPage()->findChild<AddRemoveEntitiesForm *>();
+    auto sourceTable =
+        addRemoveForm->findChild<QTableView *>("sourceTableView");
+    auto addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    nextButton->click();
+    addRemoveForm = wizard->currentPage()->findChild<AddRemoveEntitiesForm *>();
+    sourceTable = addRemoveForm->findChild<QTableView *>("sourceTableView");
+    addButton = addRemoveForm->findChild<QPushButton *>("addButton");
+    sourceTable->selectRow(0);
+    QApplication::processEvents();
+    addButton->click();
+    QApplication::processEvents();
+    finishButton->click();
+    QApplication::processEvents();
+    auto index = tableView->model()->index(0, 1);
+    QCOMPARE(tableView->model()->data(index).toString(), QString("A0"));
+}
+
+void TestActivityAdministration::testActivityFormDeleteActivity() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    db.exec("DELETE FROM ACTIVITY");
+    const QVariantList scheduledDates{1, 3, 5};
+    Activity activity("A1", ActivityType::EXAM);
+    activity.setScheduleType(ActivityScheduleType::ONCE);
+    activity.setScheduledDays(scheduledDates);
+    activity.setDuration(QTime(3, 0));
+    activity.setStartDate(QDate(2016, 8, 15));
+    activity.setStartTime(QTime(8, 0));
+    activity.setFinishDate(QDate(2016, 8, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A2");
+    activity.setType(ActivityType::INDIVIDUAL_WORK);
+    activity.setScheduleType(ActivityScheduleType::WEEK_DAYS);
+    activity.setDuration(QTime(1, 30));
+    activity.setFinishDate(QDate(2016, 9, 15));
+    activity.setCanOverlap(true);
+    manager.saveActivity(activity, error);
+    activity.setId(0);
+    activity.setName("A3");
+    activity.setType(ActivityType::LECTURE);
+    activity.setScheduleType(ActivityScheduleType::MONTH_DAYS);
+    activity.setFinishDate(QDate(2017, 9, 15));
+    activity.setCanOverlap(false);
+    manager.saveActivity(activity, error);
+
+    unique_ptr<ActivityForm> form(new ActivityForm);
+    form->show();
+    QTest::qWaitForWindowExposed(form.get());
+    auto tableView = form->findChild<QTableView *>();
+    auto editor = form->findChild<ActivityEditorWidget *>();
+    auto model = dynamic_cast<ActivityQueryModel *>(form->model());
+    QAction *newAction = nullptr;
+    QAction *editAction = nullptr;
+    QAction *deleteAction = nullptr;
+    QAction *refreshAction = nullptr;
+    for (auto action : form->toolBarActions()) {
+        if (action->objectName() == "NEW_RECORD_ACTION") {
+            newAction = action;
+            continue;
+        }
+        if (action->objectName() == "EDIT_RECORD_ACTION") {
+            editAction = action;
+            continue;
+        }
+        if (action->objectName() == "DELETE_RECORD_ACTION") {
+            deleteAction = action;
+            continue;
+        }
+        if (action->objectName() == "REFRESH_ACTION") {
+            refreshAction = action;
+            continue;
+        }
+    }
+
+    QVERIFY(tableView != nullptr);
+    QVERIFY(editor != nullptr);
+    QCOMPARE(tableView->model()->rowCount(), 3);
+
+    tableView->selectRow(0);
+    QApplication::processEvents();
+    bool deleteMessageBoxShown = false;
+    auto deleteMessageCallback = [&deleteMessageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::mouseClick(msgBox->button(QMessageBox::Yes), Qt::LeftButton);
+        deleteMessageBoxShown = true;
+    };
+    QTimer::singleShot(200, deleteMessageCallback);
+    deleteAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(deleteMessageBoxShown);
+    QCOMPARE(tableView->model()->rowCount(), 2);
 }

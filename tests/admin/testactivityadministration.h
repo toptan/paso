@@ -21,6 +21,10 @@ private slots:
     void testListsSelectionPage();
     void testRepetitiveDatesPage();
     void testActivityWizard();
+    void testActivityWizardLoadingErrorHandling();
+    void testActivityFormSaveActivity();
+    void testActivityFormUpdateActivity();
+    void testActivityFormDeleteActivity();
 };
 
 #endif // TESTACTIVITYADMINISTRATION_H

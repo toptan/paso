@@ -20,8 +20,8 @@ using namespace std;
 
 RecordEditorWidget::RecordEditorWidget(const FieldTypes &fieldTypes,
                                        QWidget *parent)
-    : QWidget(parent), mFieldTypes(fieldTypes), mButtonBox(nullptr),
-      mValidator(nullptr), mNewRecord(false) {}
+    : QWidget(parent), mNewRecord(false), mFieldTypes(fieldTypes),
+      mButtonBox(nullptr), mValidator(nullptr) {}
 
 RecordEditorWidget::~RecordEditorWidget() {}
 

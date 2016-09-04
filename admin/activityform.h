@@ -18,10 +18,6 @@ public:
     explicit ActivityForm(QWidget *parent = 0);
     virtual ~ActivityForm();
 
-protected slots:
-    virtual void onNewRecord() override;
-    virtual void onEditRecord() override;
-
 protected:
     virtual void prepareRecordForSaving(QSqlRecord &record) override;
 

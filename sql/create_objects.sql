@@ -76,6 +76,14 @@ CREATE TABLE ACTIVITY (
     CAN_OVERLAP    BOOLEAN     NOT NULL DEFAULT FALSE
 );
 
+CREATE TABLE ACTIVITY_SLOTS (
+    ID_ACTIVITY BIGINT    NOT NULL,
+    START       TIMESTAMP NOT NULL,
+    FINISH      TIMESTAMP NOT NULL,
+    PRIMARY KEY (ID_ACTIVITY, START, FINISH),
+    FOREIGN KEY (ID_ACTIVITY) REFERENCES ACTIVITY (ID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 CREATE TABLE ACTIVITY_LISTS (
     ID_ACTIVITY INTEGER NOT NULL,
     ID_LIST     INTEGER NOT NULL,
@@ -249,6 +257,10 @@ DECLARE
     days_array     INTEGER [];
     array_size     INTEGER;
     v_id           BIGINT;
+    tmp_date       TIMESTAMP;
+    tmp_start      TIMESTAMP;
+    tmp_finish     TIMESTAMP;
+    tmp_day        INTEGER [];
 BEGIN
     str_days_array := string_to_array(a_scheduled_days, ' ');
     array_size := array_length(str_days_array, 1);
@@ -268,8 +280,41 @@ BEGIN
     RETURNING id
         INTO v_id;
 
+    IF a_schedule_type = 'WEEK_DAYS'
+    THEN
+        tmp_date := a_start_date;
+        WHILE tmp_date < a_finish_date LOOP
+            tmp_start := tmp_date + a_start_time;
+            tmp_finish := tmp_start + a_duration;
+            tmp_day [0] := extract(ISODOW FROM tmp_date);
+            IF tmp_day <@ days_array
+            THEN
+                INSERT INTO activity_slots (id_activity, start, finish) VALUES (v_id, tmp_start, tmp_finish);
+            END IF;
+            tmp_date := tmp_date + (INTERVAL '1 day');
+        END LOOP;
+    END IF;
+    IF a_schedule_type = 'MONTH_DAYS'
+    THEN
+        tmp_date := a_start_date;
+        WHILE tmp_date < a_finish_date LOOP
+            tmp_start := tmp_date + a_start_time;
+            tmp_finish := tmp_start + a_duration;
+            tmp_day [0] := extract(DAY FROM tmp_date);
+            IF tmp_day <@ days_array
+            THEN
+                INSERT INTO activity_slots (id_activity, start, finish) VALUES (v_id, tmp_start, tmp_finish);
+            END IF;
+            tmp_date := tmp_date + (INTERVAL '1 day');
+        END LOOP;
+    END IF;
+    IF a_schedule_type = 'ONCE'
+    THEN
+        tmp_start := a_start_date + a_start_time;
+        tmp_finish := tmp_start + a_duration;
+        INSERT INTO activity_slots (id_activity, start, finish) VALUES (v_id, tmp_start, tmp_finish);
+    END IF;
     RETURN v_id;
-
 END $$ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION update_activity(an_id            BIGINT, a_name VARCHAR, a_type VARCHAR,
@@ -283,6 +328,10 @@ DECLARE
     str_days_array TEXT [];
     days_array     INTEGER [];
     array_size     INTEGER;
+    tmp_date       TIMESTAMP;
+    tmp_start      TIMESTAMP;
+    tmp_finish     TIMESTAMP;
+    tmp_day        INTEGER [];
 BEGIN
     str_days_array := string_to_array(a_scheduled_days, ' ');
     array_size := array_length(str_days_array, 1);
@@ -302,6 +351,42 @@ BEGIN
         can_overlap = a_can_overlap
     WHERE id = an_id;
 
+    DELETE FROM activity_slots
+    WHERE id_activity = an_id;
+    IF a_schedule_type = 'WEEK_DAYS'
+    THEN
+        tmp_date := a_start_date;
+        WHILE tmp_date < a_finish_date LOOP
+            tmp_start := tmp_date + a_start_time;
+            tmp_finish := tmp_start + a_duration;
+            tmp_day [0] = extract(ISODOW FROM tmp_date);
+            IF tmp_day <@ days_array
+            THEN
+                INSERT INTO activity_slots (id_activity, start, finish) VALUES (an_id, tmp_start, tmp_finish);
+            END IF;
+            tmp_date := tmp_date + (INTERVAL '1 day');
+        END LOOP;
+    END IF;
+    IF a_schedule_type = 'MONTH_DAYS'
+    THEN
+        tmp_date := a_start_date;
+        WHILE tmp_date < a_finish_date LOOP
+            tmp_start := tmp_date + a_start_time;
+            tmp_finish := tmp_start + a_duration;
+            tmp_day [0] = extract(DAY FROM tmp_date);
+            IF tmp_day <@ days_array
+            THEN
+                INSERT INTO activity_slots (id_activity, start, finish) VALUES (an_id, tmp_start, tmp_finish);
+            END IF;
+            tmp_date := tmp_date + (INTERVAL '1 day');
+        END LOOP;
+    END IF;
+    IF a_schedule_type = 'ONCE'
+    THEN
+        tmp_start := a_start_date + a_start_time;
+        tmp_finish := tmp_start + a_duration;
+        INSERT INTO activity_slots (id_activity, start, finish) VALUES (an_id, tmp_start, tmp_finish);
+    END IF;
 END $$ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION set_activity_rooms(activity_id BIGINT, room_ids TEXT)

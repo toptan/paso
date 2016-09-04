@@ -93,31 +93,25 @@ void ActivityForm::updateActions(const QSqlRecord &record) {
 }
 
 bool ActivityForm::insertRecord(QSqlRecord &record, QSqlError &error) {
-    // Insert is done via wizard so we just return true here.
+    // Insert is done via wizard so we just refresh model and return true.
+    refreshModel();
     return true;
 }
 
 bool ActivityForm::updateRecord(int, const QSqlRecord &record,
                                 QSqlError &error) {
-    // Update is done via wizard so we just return true here.
-    return false;
+    // Update is done via wizard so we just refresh model and return true.
+    refreshModel();
+    return true;
 }
 
 bool ActivityForm::removeRow(int row, QSqlError &error) {
-    // TODO: Implement activity deletion.
-    return false;
-}
-
-void ActivityForm::onNewRecord() {
-    auto record = model()->record();
-    ActivityWizard wizard(record, this);
-    wizard.exec();
-}
-
-void ActivityForm::onEditRecord() {
-    auto record = selectedRecord();
-    ActivityWizard wizard(record, this);
-    wizard.exec();
+    auto activityId = model()->record(row).value("id").toULongLong();
+    auto success = manager().deleteActivity(activityId, error);
+    if (success) {
+        refreshModel();
+    }
+    return success;
 }
 }
 }

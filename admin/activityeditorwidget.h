@@ -18,6 +18,9 @@ public slots:
     virtual void onEditExistingRecord(QSqlRecord record) override;
     virtual void onEditNewRecord(QSqlRecord record) override;
 
+protected slots:
+    virtual void accepted() override;
+
 protected:
     virtual void prepareEdit(QSqlRecord &record) override;
     virtual bool fieldReadOnly(const QString &key) override;

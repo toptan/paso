@@ -61,21 +61,23 @@ protected:
 
     void setFieldsReadOnly();
 
+protected slots:
+    virtual void rejected();
+    virtual void accepted();
+
+protected:
+    QSqlRecord mRecord;
+    bool mNewRecord;
+
 private:
     const FieldTypes mFieldTypes;
     FieldEditors mFieldEditors;
-    QSqlRecord mRecord;
     QDialogButtonBox *mButtonBox;
     RecordValidator *mValidator;
-    bool mNewRecord;
 
     QWidget *createWidgetForField(const QSqlRecord &record, int index);
     void setFieldsEditable();
     void focusFirstEditable();
-
-private slots:
-    void rejected();
-    void accepted();
 };
 }
 }
