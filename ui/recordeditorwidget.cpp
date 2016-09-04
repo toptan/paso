@@ -41,6 +41,11 @@ void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
         QWidget *edit = createWidgetForField(record, i);
         label->setBuddy(edit);
         mFieldEditors[record.fieldName(i)] = edit;
+        auto checkBox = dynamic_cast<QCheckBox *>(edit);
+        if (checkBox != nullptr) {
+            checkBox->setText(columnLabels[record.fieldName(i)].toString());
+            label->setVisible(false);
+        }
         l->addRow(label, edit);
     }
     mButtonBox = new QDialogButtonBox(

@@ -292,6 +292,8 @@ void TestData::testPropertyValues() {
     activity.setStartTime(QTime(8, 0));
     activity.setFinishDate(QDate::currentDate().addMonths(1));
     activity.setCanOverlap(true);
+    activity.setRoomIds({1, 2, 3});
+    activity.setListIds({7, 8, 9});
 
     QCOMPARE(activity["FOO"], QVariant());
     QCOMPARE(activity["ID"], QVariant(activity.id()));
@@ -305,6 +307,8 @@ void TestData::testPropertyValues() {
     QCOMPARE(activity["START_TIME"], QVariant(activity.startTime()));
     QCOMPARE(activity["FINISH_DATE"], QVariant(activity.finishDate()));
     QCOMPARE(activity["CAN_OVERLAP"], QVariant(activity.canOverlap()));
+    QCOMPARE(activity["ACTIVITY_ROOMS"], QVariant(activity.roomIds()));
+    QCOMPARE(activity["ACTIVITY_LISTS"], QVariant(activity.listIds()));
 }
 
 void TestData::testDifferenceInMonths() {
