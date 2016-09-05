@@ -1,5 +1,8 @@
 #include "room.h"
 
+#include "data.h"
+
+#include <QTextStream>
 #include <QVariantMap>
 
 namespace paso {
@@ -8,11 +11,14 @@ namespace entity {
 
 Room::Room(const QString &roomUUID, const QString &name, const QString &number,
            quint64 id)
-    : Entity(id), mRoomUUID(roomUUID), mName(name), mNumber(number) {}
+    : Entity(id), mRoomUUID(roomUUID), mName(name), mNumber(number),
+      mBarredIds() {}
 
 Room::Room(const QVariantMap &map)
     : Entity(map["ID"].toULongLong()), mRoomUUID(map["ROOM_UUID"].toString()),
-      mName(map["NAME"].toString()), mNumber(map["ROOM_NUMBER"].toString()) {}
+      mName(map["NAME"].toString()), mNumber(map["ROOM_NUMBER"].toString()),
+      mBarredIds(
+          jsonArrayStringToVariantList(map["BARRED_STUDENTS"].toString())) {}
 
 bool Room::operator==(const Room &other) const {
     if (this == &other) {
@@ -38,6 +44,7 @@ QVariantMap Room::toVariantMap() const {
     retVal.insert("ROOM_UUID", mRoomUUID);
     retVal.insert("NAME", mName);
     retVal.insert("ROOM_NUMBER", mNumber);
+    retVal.insert("BARRED_STUDENTS", mBarredIds);
     return retVal;
 }
 
@@ -48,6 +55,8 @@ QVariant Room::value(const QString &property) const {
         return mName;
     } else if (property == "ROOM_NUMBER") {
         return mNumber;
+    } else if (property == "BARRED_STUDENTS") {
+        return mBarredIds;
     }
 
     return Entity::value(property);
@@ -58,6 +67,8 @@ void Room::read(const QJsonObject &jsonObject) {
     mRoomUUID = jsonObject["ROOM_UUID"].toString();
     mName = jsonObject["NAME"].toString();
     mNumber = jsonObject["ROOM_NUMBER"].toString();
+    auto tmp = jsonObject["BARRED_STUDENTS"].toString();
+    mBarredIds = jsonArrayStringToVariantList(tmp);
 }
 
 void Room::write(QJsonObject &jsonObject) const {
@@ -65,33 +76,50 @@ void Room::write(QJsonObject &jsonObject) const {
     jsonObject["ROOM_UUID"] = mRoomUUID;
     jsonObject["NAME"] = mName;
     jsonObject["ROOM_NUMBER"] = mNumber;
+    jsonObject["BARRED_STUDENTS"] = variantListToJsonArrayString(mBarredIds);
 }
 
 QSqlQuery Room::insertQuery(const QSqlDatabase &database, const Room &room) {
     QSqlQuery query(database);
-    query.prepare("INSERT INTO ROOM (ROOM_UUID, NAME, ROOM_NUMBER) VALUES "
-                  "(:uuid, :name, :number) RETURNING ID");
+    query.prepare(
+        "SELECT insert_room(:uuid, :name, :number, :barredStudents) AS ID");
     query.bindValue(":uuid", room.roomUUID());
     query.bindValue(":name", room.name());
     query.bindValue(":number", room.number());
+    QString strIds;
+    QTextStream ts(&strIds);
+    for (auto i = 0; i < room.barredIds().size(); i++) {
+        ts << room.barredIds()[i].toInt() << " ";
+    }
+    query.bindValue(":barredStudents", strIds.trimmed());
     return query;
 }
 
 QSqlQuery Room::updateQuery(const QSqlDatabase &database, const Room &room) {
     QSqlQuery query(database);
-    query.prepare("UPDATE ROOM SET ROOM_UUID = :uuid, NAME = :name, "
-                  "ROOM_NUMBER = :number WHERE ID = :id");
+    query.prepare(
+        "SELECT update_room(:id, :uuid, :name, :number, :barredStudents)");
     query.bindValue(":id", room.id());
     query.bindValue(":uuid", room.roomUUID());
     query.bindValue(":name", room.name());
     query.bindValue(":number", room.number());
+    QString strIds;
+    QTextStream ts(&strIds);
+    for (auto i = 0; i < room.barredIds().size(); i++) {
+        ts << room.barredIds()[i].toInt() << " ";
+    }
+    query.bindValue(":barredStudents", strIds.trimmed());
     return query;
 }
 
 QSqlQuery Room::findByUuidQuery(const QSqlDatabase &database,
                                 const QUuid &uuid) {
     QSqlQuery query(database);
-    query.prepare("SELECT * FROM ROOM WHERE ROOM_UUID = :uuid");
+    query.prepare("SELECT R.*, "
+                  "       (SELECT array_agg(ID_STUDENT::text) "
+                  "         FROM BARRED_STUDENTS "
+                  "         WHERE ID_ROOM = R.ID) AS BARRED_STUDENTS "
+                  "  FROM ROOM R WHERE R.ROOM_UUID = :uuid");
     query.bindValue(":uuid", uuid);
     return query;
 }
@@ -99,14 +127,21 @@ QSqlQuery Room::findByUuidQuery(const QSqlDatabase &database,
 QSqlQuery Room::findByNumberQuery(const QSqlDatabase &database,
                                   const QString &number) {
     QSqlQuery query(database);
-    query.prepare("SELECT * FROM ROOM WHERE ROOM_NUMBER = :number");
+    query.prepare("SELECT R.*, "
+                  "       (SELECT array_agg(ID_STUDENT::text) "
+                  "          FROM BARRED_STUDENTS "
+                  "         WHERE ID_ROOM = R.ID) AS BARRED_STUDENTS "
+                  "  FROM ROOM R WHERE R.ROOM_NUMBER = :number");
     query.bindValue(":number", number);
     return query;
 }
 
 QSqlQuery Room::findAllQuery(const QSqlDatabase &database) {
     QSqlQuery query(database);
-    query.prepare("SELECT * FROM ROOM");
+    query.prepare("SELECT R.*, (SELECT array_agg(ID_STUDENT::text) "
+                  "               FROM BARRED_STUDENTS "
+                  "              WHERE ID_ROOM = R.ID) AS BARRED_STUDENTS "
+                  "  FROM ROOM R");
     return query;
 }
 
@@ -116,6 +151,32 @@ QSqlQuery Room::deleteByUuidQuery(const QSqlDatabase &database,
     query.prepare("DELETE FROM ROOM WHERE ROOM_UUID = :uuid");
     query.bindValue(":uuid", uuid);
     return query;
+}
+
+QSqlQuery Room::barredStudentsQuery(const QSqlDatabase &database,
+                                    quint64 roomId) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM BARRED_STUDENTS_VIEW WHERE ID_ROOM = :roomId");
+    query.bindValue(":roomId", roomId);
+    return query;
+}
+
+QSqlQuery Room::allowedStudentsQuery(const QSqlDatabase &database,
+                                     quint64 roomId) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM BARRED_STUDENTS_VIEW "
+                  " WHERE COALESCE(ID_ROOM, -1) <> :roomId1 "
+                  "  AND ID NOT IN (SELECT ID FROM ENLISTED_STUDENTS WHERE "
+                  " ID_ROOM = :roomId2)");
+    query.bindValue(":roomId1", roomId);
+    query.bindValue(":roomId2", roomId);
+    return query;
+}
+
+QVariantList Room::barredIds() const { return mBarredIds; }
+
+void Room::setBarredIds(const QVariantList &barredIds) {
+    mBarredIds = barredIds;
 }
 }
 }

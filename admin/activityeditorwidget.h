@@ -19,14 +19,15 @@ class ActivityEditorWidget : public widget::RecordEditorWidget {
     Q_OBJECT
 public:
     static QString generateRepetitionString(const QString &repetitionType,
-                                     const QString &strDays);
+                                            const QString &strDays);
     static QString translateScheduleType(const QString &strScheduleType);
 
     ActivityEditorWidget(const widget::FieldTypes &fieldTypes,
                          QWidget *parent = nullptr);
 
     virtual void setupUi(const QVariantMap &columnLabels,
-                         const QSqlRecord &record) override;
+                         const QSqlRecord &record,
+                         const QStringList &filterFields = {}) override;
 
 public slots:
     virtual void onDisplayRecord(const QSqlRecord &record) override;
@@ -50,7 +51,6 @@ private:
     paso::model::EntityTableModel *mActivityRoomsModel;
     paso::model::EntityTableModel *mActivityListsModel;
     QSqlQueryModel *mActivitySlotsModel;
-
 };
 }
 }

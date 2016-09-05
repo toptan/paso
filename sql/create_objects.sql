@@ -37,6 +37,14 @@ CREATE TABLE STUDENT (
     FOREIGN KEY (ID) REFERENCES PERSON (ID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE BARRED_STUDENTS (
+    ID_ROOM    BIGINT NOT NULL,
+    ID_STUDENT BIGINT NOT NULL,
+    PRIMARY KEY (ID_ROOM, ID_STUDENT),
+    FOREIGN KEY (ID_ROOM) REFERENCES ROOM (ID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (ID_STUDENT) REFERENCES STUDENT (ID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 CREATE TABLE LIST (
     ID          BIGSERIAL PRIMARY KEY,
     NAME        VARCHAR(64) UNIQUE NOT NULL,
@@ -114,6 +122,29 @@ CREATE VIEW ENLISTED_STUDENTS AS
         JOIN STUDENT S USING (ID)
         LEFT OUTER JOIN ENLISTED E ON E.ID_STUDENT = S.ID
         LEFT OUTER JOIN COURSE C ON E.ID_COURSE = C.ID;
+
+CREATE VIEW ROOMS_VIEW AS
+    SELECT
+        R.*,
+        (SELECT array_agg(ID_STUDENT :: TEXT)
+         FROM BARRED_STUDENTS
+         WHERE ID_ROOM = R.ID) AS BARRED_STUDENTS
+    FROM ROOM R;
+
+CREATE VIEW BARRED_STUDENTS_VIEW AS
+    SELECT
+        P.ID,
+        P.LAST_NAME,
+        P.FIRST_NAME,
+        P.EMAIL,
+        P.RFID,
+        S.INDEX_NUMBER,
+        S.YEAR_OF_STUDY,
+        R.ID AS ID_ROOM
+    FROM PERSON P
+        JOIN STUDENT S USING (ID)
+        LEFT OUTER JOIN BARRED_STUDENTS B ON B.ID_STUDENT = S.ID
+        LEFT OUTER JOIN ROOM R ON B.ID_ROOM = R.ID;
 
 CREATE VIEW LIST_MEMBERS AS
     SELECT
@@ -246,11 +277,38 @@ $BODY$;
 CREATE TRIGGER B_IU_LIST BEFORE INSERT OR UPDATE ON LIST FOR EACH ROW
 EXECUTE PROCEDURE B_IU_LIST_FUNCTION();
 
-CREATE OR REPLACE FUNCTION insert_activity(a_name           VARCHAR, a_type VARCHAR, a_schedule_type VARCHAR,
-                                           a_scheduled_days VARCHAR,
-                                           a_duration       TIME, a_start_date DATE, a_start_time TIME,
-                                           a_finish_date    DATE,
-                                           a_can_overlap    BOOLEAN, an_activity_rooms VARCHAR, an_activity_lists VARCHAR)
+CREATE OR REPLACE FUNCTION insert_room(a_room_uuid UUID, a_name VARCHAR, a_number VARCHAR, a_barred_students VARCHAR)
+    RETURNS BIGINT AS $$
+DECLARE
+    v_id BIGINT;
+BEGIN
+    INSERT INTO room (room_uuid, name, room_number) VALUES (a_room_uuid, a_name, a_number)
+    RETURNING id
+        INTO v_id;
+
+    PERFORM set_barred_students(v_id, a_barred_students);
+
+    RETURN v_id;
+END $$ LANGUAGE plpgsql VOLATILE;
+
+CREATE OR REPLACE FUNCTION update_room(an_id             BIGINT, a_room_uuid UUID, a_name VARCHAR, a_number VARCHAR,
+                                       a_barred_students VARCHAR)
+    RETURNS VOID AS $$
+BEGIN
+    UPDATE room
+    SET room_uuid = a_room_uuid, name = a_name, room_number = a_number
+    WHERE id = an_id;
+
+    PERFORM set_barred_students(an_id, a_barred_students);
+
+END $$ LANGUAGE plpgsql VOLATILE;
+
+CREATE OR REPLACE FUNCTION insert_activity(a_name            VARCHAR, a_type VARCHAR, a_schedule_type VARCHAR,
+                                           a_scheduled_days  VARCHAR,
+                                           a_duration        TIME, a_start_date DATE, a_start_time TIME,
+                                           a_finish_date     DATE,
+                                           a_can_overlap     BOOLEAN, an_activity_rooms VARCHAR,
+                                           an_activity_lists VARCHAR)
 
     RETURNS BIGINT AS $$
 DECLARE
@@ -322,12 +380,13 @@ BEGIN
     RETURN v_id;
 END $$ LANGUAGE plpgsql VOLATILE;
 
-CREATE OR REPLACE FUNCTION update_activity(an_id            BIGINT, a_name VARCHAR, a_type VARCHAR,
-                                           a_schedule_type  VARCHAR,
-                                           a_scheduled_days VARCHAR,
-                                           a_duration       TIME, a_start_date DATE, a_start_time TIME,
-                                           a_finish_date    DATE,
-                                           a_can_overlap    BOOLEAN, an_activity_rooms VARCHAR, an_activity_lists VARCHAR)
+CREATE OR REPLACE FUNCTION update_activity(an_id             BIGINT, a_name VARCHAR, a_type VARCHAR,
+                                           a_schedule_type   VARCHAR,
+                                           a_scheduled_days  VARCHAR,
+                                           a_duration        TIME, a_start_date DATE, a_start_time TIME,
+                                           a_finish_date     DATE,
+                                           a_can_overlap     BOOLEAN, an_activity_rooms VARCHAR,
+                                           an_activity_lists VARCHAR)
 
     RETURNS VOID AS $$
 DECLARE
@@ -435,6 +494,27 @@ BEGIN
     THEN
         FOR i IN 1 .. array_size LOOP
             INSERT INTO activity_lists (id_activity, id_list) VALUES (activity_id, CAST(list_id_array [i] AS BIGINT));
+        END LOOP;
+    END IF;
+
+END $$ LANGUAGE plpgsql VOLATILE;
+
+CREATE OR REPLACE FUNCTION set_barred_students(room_id BIGINT, student_ids TEXT)
+    RETURNS VOID AS $$
+DECLARE
+    student_id_array TEXT [];
+    array_size       INTEGER;
+BEGIN
+    student_id_array := string_to_array(student_ids, ' ');
+    array_size := array_length(student_id_array, 1);
+
+    DELETE FROM barred_students
+    WHERE ID_ROOM = room_id;
+
+    IF array_size IS NOT NULL
+    THEN
+        FOR i IN 1 .. array_size LOOP
+            INSERT INTO barred_students (id_room, id_student) VALUES (room_id, CAST(student_id_array [i] AS BIGINT));
         END LOOP;
     END IF;
 

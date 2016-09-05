@@ -17,12 +17,6 @@ public:
         std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
         QWidget *parent = nullptr);
     virtual ~QueryForm();
-
-protected:
-    db::DBManager &manager();
-
-private:
-    db::DBManager mManager; //!< The database manager to use.
 };
 }
 }

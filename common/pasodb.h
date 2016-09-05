@@ -563,6 +563,26 @@ public:
     bool setActivityRooms(quint64 activityId, const QList<quint64> &roomIds,
                           QSqlError &error) const;
 
+    ///
+    /// \brief Returns list of students barred from the given room.
+    /// \param roomId The room id.
+    /// \param error The SQL error if any.
+    /// \return Vector of students barred from the given room.
+    ///
+    data::entity::EntityVector barredStudents(quint64 roomId,
+                                              QSqlError &error) const;
+
+    ///
+    /// \brief Returns list of students that are potentially allowed to enter
+    /// given room.
+    /// \param roomId The room id.
+    /// \param error The SQL error if any.
+    /// \return Vector of students that are potentially allowed to enter the
+    /// room.
+    ///
+    data::entity::EntityVector allowedStudents(quint64 roomId,
+                                               QSqlError &error) const;
+
 private:
     const QString mDbName;
 };

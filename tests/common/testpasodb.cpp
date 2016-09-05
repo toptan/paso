@@ -137,17 +137,42 @@ void TestPasoDB::testSaveRoom() {
     auto db = QSqlDatabase::database(dbName);
     DBManager manager(dbName);
     QSqlError error;
+    Student student1("Pera", "Perić", "", "222/11", 2);
+    Student student2("Jovan", "Jovanovic", "", "333/11", 3);
+    QVERIFY(manager.saveStudent(student1, error));
+    QVERIFY(manager.saveStudent(student2, error));
+
     auto roomUUID =
         QUuid::createUuid().toString().replace("{", "").replace("}", "");
     Room room(roomUUID, "Demo Room 1", "3");
+
+    QVariantList barredStudentsIds{student1.id()};
+    QCOMPARE(manager.allowedStudents(0, error).size(), size_t(2));
+    QCOMPARE(manager.barredStudents(0, error).size(), size_t(0));
+    room.setBarredIds(barredStudentsIds);
     QVERIFY(manager.saveRoom(room, error));
+    auto barredStudents = manager.barredStudents(room.id(), error);
+    auto allowedStudents = manager.allowedStudents(room.id(), error);
+    QCOMPARE(barredStudents.size(), size_t(1));
+    QCOMPARE(barredStudents[0]->id(), student1.id());
+    QCOMPARE(allowedStudents.size(), size_t(1));
+    QCOMPARE(allowedStudents[0]->id(), student2.id());
+
     auto loadedRoom = manager.getRoom(roomUUID, error);
     QCOMPARE(room, *loadedRoom);
+
     loadedRoom->setName("Demo Lab 1");
     loadedRoom->setNumber("DL1");
+    barredStudentsIds << student2.id();
+    loadedRoom->setBarredIds(barredStudentsIds);
     QVERIFY(manager.saveRoom(*loadedRoom, error));
     auto updatedRoom = manager.getRoom(roomUUID, error);
     QCOMPARE(*updatedRoom, *loadedRoom);
+    barredStudents = manager.barredStudents(updatedRoom->id(), error);
+    allowedStudents = manager.allowedStudents(updatedRoom->id(), error);
+    QCOMPARE(barredStudents.size(), size_t(2));
+    QCOMPARE(updatedRoom->barredIds().size(), 2);
+
     db.exec("DROP TABLE ROOM CASCADE");
     roomUUID = QUuid::createUuid().toString().replace("{", "").replace("}", "");
     Room anotherRoom(roomUUID, "Demo Room 2", "DR2");

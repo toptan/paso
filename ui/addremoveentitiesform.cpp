@@ -220,5 +220,10 @@ void AddRemoveEntitiesForm::updateDestinationIds() {
         mDestinationIds.append(entity->id());
     }
 }
+
+EntityVector AddRemoveEntitiesForm::destinationEntities() const {
+    return mDestinationModel->data();
+}
+
 }
 }

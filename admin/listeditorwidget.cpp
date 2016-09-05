@@ -13,8 +13,9 @@ ListEditorWidget::ListEditorWidget(const widget::FieldTypes &fieldTypes,
     : RecordEditorWidget(fieldTypes, parent) {}
 
 void ListEditorWidget::setupUi(const QVariantMap &columnLabels,
-                               const QSqlRecord &record) {
-    RecordEditorWidget::setupUi(columnLabels, record);
+                               const QSqlRecord &record,
+                               const QStringList &filterFields) {
+    RecordEditorWidget::setupUi(columnLabels, record, filterFields);
     auto expiryEdit = dynamic_cast<QDateEdit *>(fieldEditors()["expiry_date"]);
     for (auto &label : findChildren<QLabel *>()) {
         if (label->buddy() == expiryEdit) {

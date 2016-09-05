@@ -34,10 +34,10 @@ ActivityEditorWidget::ActivityEditorWidget(const FieldTypes &fieldTypes,
     : RecordEditorWidget(fieldTypes, parent) {}
 
 void ActivityEditorWidget::setupUi(const QVariantMap &columnLabels,
-                                   const QSqlRecord &record) {
-    RecordEditorWidget::setupUi(columnLabels, record);
+                                   const QSqlRecord &record,
+                                   const QStringList &filterFields) {
+    RecordEditorWidget::setupUi(columnLabels, record, filterFields);
     QFormLayout *l = dynamic_cast<QFormLayout *>(layout());
-    QDialogButtonBox *buttonBox = findChild<QDialogButtonBox *>();
     mActivityRoomsView = new QListView(this);
     mActivityListsView = new QListView(this);
     mActivitySlotsView = new QListView(this);

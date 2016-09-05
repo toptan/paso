@@ -12,10 +12,8 @@ namespace widget {
 QueryForm::QueryForm(
     std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
     QWidget *parent)
-    : AbstractForm(modelAndEditor, parent), mManager(DEFAULT_DB_NAME) {}
+    : AbstractForm(modelAndEditor, parent) {}
 
 QueryForm::~QueryForm() {}
-
-DBManager &QueryForm::manager() { return mManager; }
 }
 }

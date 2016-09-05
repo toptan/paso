@@ -183,7 +183,8 @@ void TestData::testConversionToVariantMap() {
                             "EMAIL", "INDEX_NUMBER", "YEAR_OF_STUDY",
                             "RFID"};
     QStringList courseKeys{"ID", "CODE", "NAME"};
-    QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER"};
+    QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER",
+                         "BARRED_STUDENTS"};
     QStringList listKeys{"ID", "NAME", "SYSTEM", "PERMANENT", "EXPIRY_DATE"};
     QStringList activityKeys{"ID",
                              "NAME",

@@ -15,9 +15,10 @@
 #include <QTimer>
 #include <QUuid>
 
-using namespace paso::data::entity;
-using namespace paso::widget;
 using namespace paso::admin;
+using namespace paso::data::entity;
+using namespace paso::model;
+using namespace paso::widget;
 
 TestRoomAdministration::TestRoomAdministration() : TestBase() {}
 
@@ -139,7 +140,7 @@ void TestRoomAdministration::testRoomEditorWidget() {
     record.append(QSqlField("name", QVariant::String));
     record.append(QSqlField("room_number", QVariant::String));
     RoomEditorWidget editor(fieldTypes);
-    editor.setupUi(columnLabels, record);
+    editor.setupUi(columnLabels, record, {});
     editor.onEditNewRecord(record);
     QApplication::processEvents();
     auto uuidEdit =
@@ -163,13 +164,15 @@ void TestRoomAdministration::testRoomTableModel() {
                              {"name", "Name"},
                              {"room_number", "Room Number"}};
     RoomTableModel model(columnLabels, QSqlDatabase::database(dbName));
-    QCOMPARE(model.columnCount(), 4);
+    QCOMPARE(model.columnCount(), 5);
     QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(),
              QString("Room Number"));
     QCOMPARE(model.headerData(3, Qt::Horizontal).toString(),
              QString("Room UUID"));
+    QCOMPARE(model.headerData(4, Qt::Horizontal).toString(),
+             QString("barred_students"));
 }
 
 void TestRoomAdministration::testRoomForm() {

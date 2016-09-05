@@ -11,6 +11,8 @@
 
 using namespace paso::db;
 using namespace paso::data;
+using namespace paso::data::entity;
+using namespace paso::model;
 using namespace paso::widget;
 
 using namespace std;
@@ -19,18 +21,20 @@ namespace paso {
 namespace admin {
 
 RoomForm::RoomForm(QWidget *parent)
-    : TableForm(createModelAndEditor(), parent), ui(new Ui::RoomForm) {
+    : QueryForm(createModelAndEditor(), parent), ui(new Ui::RoomForm) {
     ui->setupUi(this);
     setupWidgets(ui->tableView);
     ui->tableView->hideColumn(0);
+    ui->tableView->hideColumn(4);
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 3);
-    ui->horizontalLayout->setStretch(1, 1);
+    ui->horizontalLayout->setStretch(1, 2);
 }
 
 RoomForm::~RoomForm() { delete ui; }
 
-pair<QSqlTableModel *, RecordEditorWidget *> RoomForm::createModelAndEditor() {
+std::pair<QSqlQueryModel *, RecordEditorWidget *>
+RoomForm::createModelAndEditor() {
     QVariantMap columnLabels = {{"room_uuid", QObject::tr("Room UUID")},
                                 {"name", QObject::tr("Name")},
                                 {"room_number", QObject::tr("Number")}};
@@ -42,12 +46,12 @@ pair<QSqlTableModel *, RecordEditorWidget *> RoomForm::createModelAndEditor() {
                              {"room_number", FieldType::LineEdit}};
 
     auto editor = new RoomEditorWidget(fieldTypes);
-    editor->setupUi(columnLabels, model->record());
+    editor->setupUi(columnLabels, model->record(), {"barred_students"});
     editor->setValidator(new RoomValidator(editor->fieldTypes(),
                                            editor->fieldEditors(), editor));
     editor->clearData();
 
-    return make_pair<QSqlTableModel *, RecordEditorWidget *>(model, editor);
+    return make_pair<QSqlQueryModel *, RecordEditorWidget *>(model, editor);
 }
 
 void RoomForm::prepareRecordForSaving(QSqlRecord &record) {
@@ -79,6 +83,38 @@ bool RoomForm::shouldDeleteRecord(const QSqlRecord &record) const {
 
 void RoomForm::updateActions(const QSqlRecord &record) {
     // No form specific actions.
+}
+
+bool RoomForm::insertRecord(QSqlRecord &record, QSqlError &error) {
+    auto map = DBManager::recordToVariantMap(record);
+    map.remove("id");
+    Room room(map);
+    auto success = manager().saveRoom(room, error);
+    if (success) {
+        refreshModel();
+        record.setValue("id", room.id());
+    }
+    return success;
+}
+
+bool RoomForm::updateRecord(int row, const QSqlRecord &record,
+                            QSqlError &error) {
+    auto map = DBManager::recordToVariantMap(record);
+    Room room(map);
+    auto success = manager().saveRoom(room, error);
+    if (success) {
+        refreshModel();
+    }
+    return success;
+}
+
+bool RoomForm::removeRow(int row, QSqlError &error) {
+    auto roomUUID = model()->record(row).value("room_uuid").toUuid();
+    auto success = manager().deleteRoom(roomUUID, error);
+    if (success) {
+        refreshModel();
+    }
+    return success;
 }
 }
 }

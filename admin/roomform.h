@@ -1,7 +1,7 @@
 #ifndef ROOMFORM_H
 #define ROOMFORM_H
 
-#include "tableform.h"
+#include "queryform.h"
 #include "roomeditorwidget.h"
 #include "roomtablemodel.h"
 
@@ -16,7 +16,7 @@ class RoomForm;
 namespace paso {
 namespace admin {
 
-class RoomForm : public widget::TableForm {
+class RoomForm : public widget::QueryForm {
     Q_OBJECT
 
 public:
@@ -36,10 +36,15 @@ protected:
 
     virtual void updateActions(const QSqlRecord &record) override;
 
+    virtual bool insertRecord(QSqlRecord &record, QSqlError &error) override;
+    virtual bool updateRecord(int row, const QSqlRecord &record,
+                              QSqlError &error) override;
+    virtual bool removeRow(int row, QSqlError &error) override;
+
 private:
     Ui::RoomForm *ui;
 
-    static std::pair<QSqlTableModel *, widget::RecordEditorWidget *>
+    static std::pair<QSqlQueryModel *, widget::RecordEditorWidget *>
     createModelAndEditor();
 };
 }

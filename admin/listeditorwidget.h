@@ -12,7 +12,8 @@ public:
                      QWidget *parent = nullptr);
 
     virtual void setupUi(const QVariantMap &columnLabels,
-                         const QSqlRecord &record) override;
+                         const QSqlRecord &record,
+                         const QStringList &filterFields = {}) override;
 
 protected:
     virtual void prepareEdit(QSqlRecord &record) override;

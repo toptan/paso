@@ -6,6 +6,7 @@
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QLabel>
+#include <QPushButton>
 #include <QToolTip>
 #include <QVariantMap>
 
@@ -26,13 +27,18 @@ RecordEditorWidget::RecordEditorWidget(const FieldTypes &fieldTypes,
 RecordEditorWidget::~RecordEditorWidget() {}
 
 void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
-                                 const QSqlRecord &record) {
+                                 const QSqlRecord &record,
+                                 const QStringList &filterFields) {
+    mFilterFields = filterFields;
     setLayout(new QFormLayout(this));
     layout()->setMargin(0);
     setMinimumWidth(400);
     auto l = dynamic_cast<QFormLayout *>(layout());
     l->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
     for (int i = 0; i < record.count(); i++) {
+        if (filterFields.contains(record.fieldName(i))) {
+            continue;
+        }
         if (record.fieldName(i) == "id" || record.fieldName(i) == "id_course") {
             continue;
         }
@@ -50,6 +56,8 @@ void RecordEditorWidget::setupUi(const QVariantMap &columnLabels,
     }
     mButtonBox = new QDialogButtonBox(
         QDialogButtonBox::Save | QDialogButtonBox::Cancel, this);
+    mButtonBox->button(QDialogButtonBox::Save)->setText(tr("Save"));
+    mButtonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     l->addWidget(mButtonBox);
     mButtonBox->setVisible(false);
     connect(mButtonBox, &QDialogButtonBox::accepted, this,
@@ -150,6 +158,9 @@ QWidget *RecordEditorWidget::createWidgetForField(const QSqlRecord &record,
 void RecordEditorWidget::onDisplayRecord(const QSqlRecord &record) {
     for (int i = 0; i < record.count(); i++) {
         auto fieldName = record.fieldName(i);
+        if (mFilterFields.contains(fieldName)) {
+            continue;
+        }
         if (fieldName.toUpper() == "ID" || fieldName.toUpper() == "ID_COURSE") {
             continue;
         }
@@ -292,6 +303,11 @@ void RecordEditorWidget::accepted() {
     } else {
         emit requestUpdate(mRecord);
     }
+}
+
+RecordValidator *RecordEditorWidget::validator() const
+{
+    return mValidator;
 }
 
 void RecordEditorWidget::rejected() {

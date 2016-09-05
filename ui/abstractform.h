@@ -1,11 +1,12 @@
 #ifndef ABSTRACTFORM_H
 #define ABSTRACTFORM_H
 
+#include "pasodb.h"
 #include "recordeditorwidget.h"
 
-#include <utility>
 #include <QList>
 #include <QWidget>
+#include <utility>
 
 class QAction;
 class QSqlQueryModel;
@@ -134,7 +135,14 @@ protected:
     ///
     QSqlRecord selectedRecord() const;
 
+    ///
+    /// \brief Returns database manager to use.
+    /// \return The database manager to use.
+    ///
+    db::DBManager &manager();
+
 private:
+    db::DBManager mManager; //!< The database manager to use.
     QList<QAction *> mActions;
     QAction *mNewRecordAction;
     QAction *mEditRecordAction;

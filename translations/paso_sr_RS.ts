@@ -277,20 +277,20 @@
         <translation>Лозинка</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="60"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="61"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="62"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>
@@ -300,14 +300,14 @@
         <translation>Улога</translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="34"/>
+        <location filename="../admin/roomform.cpp" line="38"/>
         <source>Room UUID</source>
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/activityform.cpp" line="35"/>
+        <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/roomform.cpp" line="39"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
@@ -356,7 +356,7 @@
         <translation>Може да се преклопи</translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="36"/>
+        <location filename="../admin/roomform.cpp" line="40"/>
         <source>Number</source>
         <translation>Број</translation>
     </message>
@@ -1538,9 +1538,61 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::RoomEditorWidget</name>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="68"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="117"/>
+        <source>Barred students</source>
+        <translation>Забрањен улазак</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="43"/>
+        <source>Change barring</source>
+        <translation>Измени забране</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="52"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="105"/>
+        <source>Index number</source>
+        <translation>Број индекса</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="53"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="106"/>
+        <source>Last name</source>
+        <translation>Презиме</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="54"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="107"/>
+        <source>First name</source>
+        <translation>Име</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="116"/>
+        <source>Allowed students</source>
+        <translation>Дозвољен улазак</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="120"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="121"/>
+        <source>Cancel</source>
+        <translation>Одустани</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="125"/>
+        <source>Change room barring</source>
+        <translation>Измена забрана</translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::RoomForm</name>
     <message>
-        <location filename="../admin/roomform.cpp" line="74"/>
+        <location filename="../admin/roomform.cpp" line="78"/>
         <source>Do you want to delete selected room from the system?</source>
         <translation>Да ли стварно желите да обришете одабрану просторију из система?</translation>
     </message>
@@ -1905,33 +1957,33 @@
 <context>
     <name>paso::widget::AbstractForm</name>
     <message>
-        <location filename="../ui/abstractform.cpp" line="68"/>
+        <location filename="../ui/abstractform.cpp" line="70"/>
         <source>New</source>
         <translation>Нов запис</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="74"/>
+        <location filename="../ui/abstractform.cpp" line="76"/>
         <source>Edit</source>
         <translation>Уреди</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="81"/>
+        <location filename="../ui/abstractform.cpp" line="83"/>
         <source>Delete</source>
         <translation>Обриши</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="92"/>
+        <location filename="../ui/abstractform.cpp" line="94"/>
         <source>Refresh data</source>
         <translation>Освежи податке</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="135"/>
+        <location filename="../ui/abstractform.cpp" line="137"/>
         <source>There was an error while deleting record from the database.</source>
         <translation>Дошло је то грешке приликом брисања записа из базе.</translation>
     </message>
     <message>
-        <location filename="../ui/abstractform.cpp" line="187"/>
-        <location filename="../ui/abstractform.cpp" line="211"/>
+        <location filename="../ui/abstractform.cpp" line="189"/>
+        <location filename="../ui/abstractform.cpp" line="213"/>
         <source>There was an error while saving data.</source>
         <translation>Дошло је до грешке приликом снимања података.</translation>
     </message>
@@ -1945,6 +1997,19 @@
         <location filename="../ui/addremoveentitiesform.cpp" line="115"/>
         <source>Total %1</source>
         <translation>Укупно %1</translation>
+    </message>
+</context>
+<context>
+    <name>paso::widget::RecordEditorWidget</name>
+    <message>
+        <location filename="../ui/recordeditorwidget.cpp" line="59"/>
+        <source>Save</source>
+        <translation>Сними</translation>
+    </message>
+    <message>
+        <location filename="../ui/recordeditorwidget.cpp" line="60"/>
+        <source>Cancel</source>
+        <translation>Одустани</translation>
     </message>
 </context>
 </TS>

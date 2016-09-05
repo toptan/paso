@@ -72,6 +72,18 @@ public:
     void setNumber(const QString &number);
 
     ///
+    /// \brief Returns a list of barred students ids.
+    /// \return The list of barred students ids.
+    ///
+    QVariantList barredIds() const;
+
+    ///
+    /// \brief Sets new list of barred students ids.
+    /// \param barredIds The new list of barred students ids.
+    ///
+    void setBarredIds(const QVariantList &barredIds);
+
+    ///
     /// \copydoc paso::data::entity::Entity::toVariantMap()
     ///
     virtual QVariantMap toVariantMap() const override;
@@ -97,8 +109,7 @@ public:
     /// \param room The room to insert.
     /// \return The query.
     ///
-    static QSqlQuery insertQuery(const QSqlDatabase &database,
-                                 const Room &room);
+    static QSqlQuery insertQuery(const QSqlDatabase &database, const Room &room);
 
     ///
     /// \brief Returns update query for given course with values bound.
@@ -106,8 +117,7 @@ public:
     /// \param room The room to update.
     /// \return The query.
     ///
-    static QSqlQuery updateQuery(const QSqlDatabase &database,
-                                 const Room &room);
+    static QSqlQuery updateQuery(const QSqlDatabase &database, const Room &room);
 
     ///
     /// \brief Returns find by UUID query with bound UUID value.
@@ -143,10 +153,30 @@ public:
     static QSqlQuery deleteByUuidQuery(const QSqlDatabase &database,
                                        const QUuid &uuid);
 
+    ///
+    /// \brief Returns query that finds all students barred from the room.
+    /// \param database The database to use.
+    /// \param roomId The roomId.
+    /// \return The query.
+    ///
+    static QSqlQuery barredStudentsQuery(const QSqlDatabase &database,
+                                         quint64 roomId);
+
+    ///
+    /// \brief Returns query that finds all students that are potentially
+    /// allowed to enter the room.
+    /// \param database The database to use.
+    /// \param roomId The room id.
+    /// \return The query.
+    ///
+    static QSqlQuery allowedStudentsQuery(const QSqlDatabase &database,
+                                          quint64 roomId);
+
 private:
-    QString mRoomUUID; //!< The room UUID
-    QString mName;     //!< The room name
-    QString mNumber;   //!< The room number, i.e. 56, P25
+    QString mRoomUUID;       //!< The room UUID
+    QString mName;           //!< The room name
+    QString mNumber;         //!< The room number, i.e. 56, P25
+    QVariantList mBarredIds; //!< The list of barred students ids.
 };
 }
 }

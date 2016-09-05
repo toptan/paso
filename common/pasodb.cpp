@@ -1023,5 +1023,36 @@ bool DBManager::setActivityRooms(quint64 activityId,
     commit();
     return true;
 }
+
+EntityVector DBManager::barredStudents(quint64 roomId, QSqlError &error) const {
+    auto query =
+        Room::barredStudentsQuery(QSqlDatabase::database(mDbName), roomId);
+    query.exec();
+    error = query.lastError();
+    EntityVector retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal.emplace_back(
+                make_shared<Student>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
+
+EntityVector DBManager::allowedStudents(quint64 roomId,
+                                        QSqlError &error) const {
+    auto query =
+        Room::allowedStudentsQuery(QSqlDatabase::database(mDbName), roomId);
+    query.exec();
+    error = query.lastError();
+    EntityVector retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal.emplace_back(
+                make_shared<Student>(recordToVariantMap(query.record())));
+        }
+    }
+    return retVal;
+}
 }
 }

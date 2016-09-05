@@ -73,6 +73,12 @@ public:
     std::set<std::shared_ptr<data::entity::Entity>> removedEntities() const;
 
     ///
+    /// \brief Returns a vector of entities that are in the destination model.
+    /// \return A vector of entities that are in the destination model.
+    ///
+    data::entity::EntityVector destinationEntities() const;
+
+    ///
     /// \brief Prepares widget to operate by giving necessary data.
     ///
     /// \param sourceLabel The label text for the source table.

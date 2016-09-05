@@ -27,7 +27,8 @@ public:
     virtual ~RecordEditorWidget();
 
     virtual void setupUi(const QVariantMap &columnLabels,
-                         const QSqlRecord &record);
+                         const QSqlRecord &record,
+                         const QStringList &filterFields = {});
 
     const FieldTypes &fieldTypes() const;
     const FieldEditors &fieldEditors() const;
@@ -60,6 +61,7 @@ protected:
     virtual QTimeEdit *createTimeEdit(const QString &field);
 
     void setFieldsReadOnly();
+    RecordValidator *validator() const;
 
 protected slots:
     virtual void rejected();
@@ -68,6 +70,7 @@ protected slots:
 protected:
     QSqlRecord mRecord;
     bool mNewRecord;
+    QStringList mFilterFields;
 
 private:
     const FieldTypes mFieldTypes;

@@ -15,6 +15,7 @@
 #include <QTableView>
 
 using namespace paso::model;
+using namespace paso::db;
 
 namespace paso {
 namespace widget {
@@ -22,9 +23,9 @@ namespace widget {
 AbstractForm::AbstractForm(
     std::pair<QSqlQueryModel *, RecordEditorWidget *> modelAndEditor,
     QWidget *parent)
-    : QWidget(parent), mActions(), mModel(modelAndEditor.first),
-      mProxyModel(nullptr), mRecordEditor(modelAndEditor.second),
-      mTableView(nullptr) {
+    : QWidget(parent), mManager(DEFAULT_DB_NAME), mActions(),
+      mModel(modelAndEditor.first), mProxyModel(nullptr),
+      mRecordEditor(modelAndEditor.second), mTableView(nullptr) {
     mModel->setParent(this);
     mRecordEditor->setParent(this);
 }
@@ -45,7 +46,8 @@ void AbstractForm::setupWidgets(QTableView *tableView) {
 
     mTableView->setModel(mProxyModel);
     mTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    mTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    mTableView->horizontalHeader()->setSectionResizeMode(
+        QHeaderView::ResizeToContents);
     mTableView->horizontalHeader()->setCascadingSectionResizes(true);
     mTableView->horizontalHeader()->setStretchLastSection(true);
     mTableView->sortByColumn(1, Qt::SortOrder::AscendingOrder);
@@ -267,5 +269,7 @@ int AbstractForm::findRecord(const QSqlRecord &record) const {
     }
     return -1;
 }
+
+DBManager &AbstractForm::manager() { return mManager; }
 }
 }
