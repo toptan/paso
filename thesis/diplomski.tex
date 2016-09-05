@@ -5,6 +5,11 @@
 \usepackage{polyglossia}
 \usepackage[document]{ragged2e}
 \usepackage{indentfirst}
+\usepackage{enumitem}
+\usepackage{scrextend}
+\usepackage{etoolbox}
+
+\addtokomafont{labelinglabel}{\textbf}
 
 \setdefaultlanguage[script=Cyrillic]{serbian}
 \newfontfamily{\cyrillicfont}{Times New Roman}
@@ -14,25 +19,48 @@
 \setmonofont{Courier New}
 
 \renewcommand*\contentsname{Садржај}
-\renewenvironment{justify}{%
-	\trivlist
-	\justifying
-	\itemindent\JustifyingParindent
-	\item\relax
-}{%
-\endtrivlist
+
+\newcommand{\indentfirstparagraphon}{
+    \renewenvironment{justify}{%
+    	\trivlist
+    	\justifying
+    	\itemindent\JustifyingParindent
+    	\item\relax
+    }{
+        \endtrivlist
+    }
 }
+
+\newcommand{\indentfirstparagraphoff}{
+    \renewenvironment{justify}{%
+        \trivlist
+        \justifying
+        \item\relax
+    }{
+        \endtrivlist
+    }
+}
+
+\makeatletter
+\gdef\tshortstack{\@ifnextchar[\@tshortstack{\@tshortstack[c]}}
+\let\@tshortstack\@shortstack
+\patchcmd\@tshortstack\vbox\vtop{}{}
+\makeatother
+
+\indentfirstparagraphon
+
 \addto\captionsserbian{%
   \renewcommand{\bibname}%
     {Литература}%
 }
+
 \setlength{\parindent}{4em}
 \setlength{\JustifyingParindent}{4em}
 
 \title{Паметна соба - контрола уласка} 
 \author{Топлица Танасковић}
 \indeks{164/1996}
-\date{август 2016.}
+\date{септембар 2016.}
 \mentor{Саша Стојановић}
 \predmet{Системско програмирање}
 
@@ -79,18 +107,65 @@
 		\begin{justify}
 			Пре него што будемо могли да опишемо начине на које се лабораторије користе, морамо увести неке дефиниције и успоставити релације између њих.
 		\end{justify}
-		
-		\subsubsection{Активност}
-		
-		\begin{justify}
-			Активност је било који процес који се одвија у лабораторији, без обзира на његово трајање, евентуалну периодичност или конкретан тип.
-		\end{justify}
 
-		\subsubsection{Тип активности}
 
-		\begin{justify}
-			Тип активности ближе дефинише активност, и одређује њен приоритет у односу на друге.
-		\end{justify}
-		
+   		\begin{labeling}{\smash{\tshortstack[l]{Корисник\\лабораторије}}}
+            \indentfirstparagraphoff            
+            
+            \item [Активност] 
+                \begin{justify}
+                    Активност је било који процес који се одвија у лабораторији, без обзира на његово трајање, евентуалну периодичност или конкретан тип.
+                \end{justify}
 
+            \item[\smash{\tshortstack[l]{Тип\\активности}}]
+                \begin{justify}
+                   Тип активности ближе дефинише активност, и одређује њен приоритет у односу на друге. Постоје следећи типови активности.
+                   \begin{enumerate}[noitemsep]
+                       \item Испит
+                       \item Колоквијум
+                       \item Предавања или вежбе
+                       \item Лабораторијске вежбе
+                       \item Посебни догађаји
+                       \item Индивидуални рад
+                    \end{enumerate}
+                \end{justify}
+
+            \item[\smash{\tshortstack[l]{Приоритет\\активности}}]
+                \begin{justify}
+                Приоритет активности одређује да ли је дозвољен улаз у просторију уколико се у њој преклапају активности, а једна од њих је битнија. Не желимо да допустимо да људи улазе и излазе из просторије док је у току испит. Приоритет активност је дефинисан типом активности како је наведено у претходној дефиницији.
+
+                \indent Индивидуални рад је посебан случај. Приликом заказивања такве активности може се посебно дозволити улазак без обзира на то да ли се у просторији већ одвија нека активност вишег приоритета. Ово се углавном користи за студенте који раде дипломски или неки други важан пројекат.
+                
+                \end{justify}
+
+
+            \item[\smash{\tshortstack[l]{Корисник\\лабораторије}}]
+                \begin{justify}
+                    Корисник лабораторије је било која особа којој се може дозволити улаз у лабораторију. Постоје две врсте корисника:
+                    \begin{enumerate}[noitemsep]
+                        \item Професор
+                        \item Студент
+                    \end{enumerate}
+                    Можда би се могао увести и студент демонстратор као засебан тип корисника, али како он нема посебна права, довољно је да буде члан листе како би могао да приступи лабораторији.
+                \end{justify}
+            
+            \item [Листа]
+                \begin{justify}
+                    Листе су групе особа-корисника лабораторија које служе зарад лакше манипулације током заказивања активности и доделе права уласка у лабораторију.
+                    \begin{enumerate}[noitemsep]
+                        \item Системске листе
+                        \item Трајне листе
+                        \item Привремене листе
+                    \end{enumerate}
+                    Привремене листе имају свој рок трајања и након тога се аутоматски бришу из система. Системске листе су посебан случај трајних листа, оне се не могу мењати и о њима систем сам води рачуна. Пример системске листе је листа студената друге године.
+                \end{justify}
+            
+            \item [Просторија]
+                \begin{justify}
+                    Просторија је било која лабораторија, кабинет или учионица у којој се одвијају неке активности у за коју желимо да имамо контролу уласка.
+                \end{justify}
+            
+            \indentfirstparagraphon
+    	\end{labeling}
+        
 \end{document}

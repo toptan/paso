@@ -324,7 +324,7 @@
 	\ifmaster  \rmfamily \fi
 	\fi
 \newcommand*\chaptermark[1]{}
-\setcounter{secnumdepth}{2}
+\setcounter{secnumdepth}{3}
 \newcounter {part}
 \newcounter {chapter}
 \newcounter {section}[chapter]
@@ -335,10 +335,10 @@
 \renewcommand \thepart {\@Roman\c@part}
 \renewcommand \thechapter {\@arabic\c@chapter}
 \renewcommand \thesection {\thechapter.\@arabic\c@section}
-\renewcommand\thesubsection   {\thesection.\@arabic\c@subsection}
-\renewcommand\thesubsubsection{\thesubsection.\@arabic\c@subsubsection}
-\renewcommand\theparagraph    {\thesubsubsection.\@arabic\c@paragraph}
-\renewcommand\thesubparagraph {\theparagraph.\@arabic\c@subparagraph}
+\renewcommand \thesubsection   {\thesection.\@arabic\c@subsection}
+\renewcommand \thesubsubsection{\thesubsection.\@arabic\c@subsubsection}
+\renewcommand \theparagraph    {\thesubsubsection.\@arabic\c@paragraph}
+\renewcommand \thesubparagraph {\theparagraph.\@arabic\c@subparagraph}
 \newcommand\@chapapp{\chaptername}
 \newcommand\part{%
   \if@openright
