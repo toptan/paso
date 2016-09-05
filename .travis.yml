@@ -2,7 +2,7 @@ sudo: required
 
 env:
     matrix:
-        - OS_TYPE=centos
+        #        - OS_TYPE=centos
         - OS_TYPE=ubuntu
 
 services:
@@ -25,4 +25,4 @@ script:
 
 after_success:
     # Upload coverage only for Ubuntu which is reference implementation.
-  - if [ "${OS_TYPE}" = "ubuntu" ]; then coveralls-lcov coverage.info; fi
+  - if [ "${OS_TYPE}" = "centos" ]; then coveralls-lcov coverage.info; fi
