@@ -306,8 +306,8 @@
     </message>
     <message>
         <location filename="../admin/activityform.cpp" line="35"/>
-        <location filename="../admin/listform.cpp" line="46"/>
         <location filename="../admin/roomform.cpp" line="39"/>
+        <location filename="../admin/listform.cpp" line="46"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
@@ -1540,8 +1540,8 @@
 <context>
     <name>paso::admin::RoomEditorWidget</name>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="68"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="117"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="69"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="118"/>
         <source>Barred students</source>
         <translation>Забрањен улазак</translation>
     </message>
@@ -1551,40 +1551,40 @@
         <translation>Измени забране</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="52"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="105"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="53"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="106"/>
         <source>Index number</source>
         <translation>Број индекса</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="53"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="106"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="54"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="107"/>
         <source>Last name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="54"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="107"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="55"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="108"/>
         <source>First name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="116"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="117"/>
         <source>Allowed students</source>
         <translation>Дозвољен улазак</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="120"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="121"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="121"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="122"/>
         <source>Cancel</source>
         <translation>Одустани</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="125"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="126"/>
         <source>Change room barring</source>
         <translation>Измена забрана</translation>
     </message>

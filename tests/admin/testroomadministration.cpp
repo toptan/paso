@@ -7,6 +7,8 @@
 #include "roomvalidator.h"
 
 #include <QDebug>
+#include <QDialog>
+#include <QDialogButtonBox>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QSqlError>
@@ -140,7 +142,9 @@ void TestRoomAdministration::testRoomEditorWidget() {
     record.append(QSqlField("name", QVariant::String));
     record.append(QSqlField("room_number", QVariant::String));
     RoomEditorWidget editor(fieldTypes);
-    editor.setupUi(columnLabels, record, {});
+    editor.setupUi(columnLabels, record);
+    RoomValidator validator(fieldTypes, editor.fieldEditors(), this);
+    editor.setValidator(&validator);
     editor.onEditNewRecord(record);
     QApplication::processEvents();
     auto uuidEdit =
@@ -148,15 +152,47 @@ void TestRoomAdministration::testRoomEditorWidget() {
     auto nameEdit = dynamic_cast<QLineEdit *>(editor.fieldEditors()["name"]);
     auto numberEdit =
         dynamic_cast<QLineEdit *>(editor.fieldEditors()["room_number"]);
+    auto buttonBox = editor.findChild<QDialogButtonBox *>();
+    auto saveButton = buttonBox->button(QDialogButtonBox::Save);
+    auto cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
+    auto barringButton = buttonBox->findChild<QPushButton *>("barringButton");
+
     QVERIFY(uuidEdit->isReadOnly());
     QVERIFY(!nameEdit->isReadOnly());
     QCOMPARE(nameEdit->maxLength(), 64);
     QVERIFY(!numberEdit->isReadOnly());
     QCOMPARE(numberEdit->maxLength(), 8);
+    bool errorShown = false;
+    auto timerCallback = [&errorShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        QTest::keyClick(msgBox, Qt::Key_Enter);
+        errorShown = true;
+
+    };
+    QTimer::singleShot(200, timerCallback);
+    saveButton->click();
+    QApplication::processEvents();
+    QVERIFY(errorShown);
+
+    cancelButton->click();
+    QApplication::processEvents();
     editor.onEditExistingRecord(record);
     QVERIFY(uuidEdit->isReadOnly());
     QVERIFY(!nameEdit->isReadOnly());
     QVERIFY(!numberEdit->isReadOnly());
+
+    bool dialogShown = false;
+    auto dialogCallback = [&dialogShown]() {
+        QDialog *dialog =
+            dynamic_cast<QDialog *>(QApplication::activeModalWidget());
+        dialog->accept();
+        dialogShown = true;
+    };
+    QTimer::singleShot(200, dialogCallback);
+    barringButton->click();
+    QApplication::processEvents();
+    QVERIFY(dialogShown);
 }
 
 void TestRoomAdministration::testRoomTableModel() {

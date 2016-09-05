@@ -41,6 +41,7 @@ void RoomEditorWidget::setupUi(const QVariantMap &columnLabels,
     QFormLayout *l = dynamic_cast<QFormLayout *>(layout());
 
     mChangeBarringButton = new QPushButton(tr("Change barring"), this);
+    mChangeBarringButton->setObjectName("barringButton");
     connect(mChangeBarringButton, &QPushButton::clicked, this,
             &RoomEditorWidget::onChangeBarringButtonClicked);
 
@@ -152,29 +153,7 @@ void RoomEditorWidget::accepted() {
     for (const auto &key : fieldEditors().keys()) {
         auto field = fieldEditors()[key];
         auto fieldType = fieldTypes()[key];
-        QVariant value;
-        switch (fieldType) {
-        case FieldType::ComboBox:
-            value = dynamic_cast<QComboBox *>(field)->currentData().toString();
-            break;
-        case FieldType::LineEdit:
-        case FieldType::PasswordEdit:
-        case FieldType::MaskedLineEdit:
-            value = dynamic_cast<QLineEdit *>(field)->text().trimmed();
-            break;
-        case FieldType::NumberEdit:
-            value = dynamic_cast<QSpinBox *>(field)->text().trimmed();
-            break;
-        case FieldType::CheckBox:
-            value = dynamic_cast<QCheckBox *>(field)->isChecked();
-            break;
-        case FieldType::DateEdit:
-            value = dynamic_cast<QDateEdit *>(field)->date();
-            break;
-        case FieldType::TimeEdit:
-            value = dynamic_cast<QTimeEdit *>(field)->time();
-            break;
-        }
+        QVariant value = dynamic_cast<QLineEdit *>(field)->text().trimmed();
         mRecord.setValue(key, value);
     }
     QVariantList ids;
@@ -182,6 +161,7 @@ void RoomEditorWidget::accepted() {
         ids << entity->id();
     }
     mRecord.setValue("barred_students", variantListToJsonArrayString(ids));
+
     if (mNewRecord) {
         emit requestSave(mRecord);
     } else {

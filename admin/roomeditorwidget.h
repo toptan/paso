@@ -25,7 +25,7 @@ public:
 
     virtual void setupUi(const QVariantMap &columnLabels,
                          const QSqlRecord &record,
-                         const QStringList &filterFields) override;
+                         const QStringList &filterFields = {}) override;
 
 public slots:
     void onChangeBarringButtonClicked();
