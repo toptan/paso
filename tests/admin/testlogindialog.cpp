@@ -117,7 +117,8 @@ void TestLoginDialog::testLogin() {
     qRegisterMetaType<LoginResponse>("LoginResponse");
     QEventLoop loop;
     LoginDialog dialog;
-    connect(&dialog, &LoginDialog::loginAttemptFailed, &loop, &QEventLoop::quit);
+    connect(&dialog, &LoginDialog::loginAttemptFailed, &loop,
+            &QEventLoop::quit);
     connect(&dialog, &LoginDialog::loginFinished, &loop, &QEventLoop::quit);
     dialog.show();
     QTest::qWaitForWindowExposed(&dialog);

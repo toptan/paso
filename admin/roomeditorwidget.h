@@ -30,7 +30,7 @@ public:
 public slots:
     void onChangeBarringButtonClicked();
 
-    virtual void clearData();
+    virtual void clearData() override;
     virtual void onDisplayRecord(const QSqlRecord &record) override;
 
 protected:
@@ -40,7 +40,7 @@ protected:
     virtual QLineEdit *createLineEdit(const QString &field) override;
 
 protected slots:
-    virtual void accepted();
+    virtual void accepted() override;
 
 private:
     paso::db::DBManager mManager;

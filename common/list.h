@@ -74,6 +74,20 @@ public:
     void setPermanent(bool permanent);
 
     ///
+    /// \brief Returns whether members of this list are treated as
+    /// demonstrators.
+    /// \return \c true if members are treated as demonstrators.
+    ///
+    bool demonstrators() const;
+
+    ///
+    /// \brief Sets whether members of this list should be treated as
+    /// demonstrators.
+    /// \param demonstrators Whether members should be treated as demonstrators.
+    ///
+    void setDemonstrators(bool demonstrators);
+
+    ///
     /// \brief Returns the date when this list expires.
     /// \return The date when this list expires.
     ///
@@ -168,10 +182,11 @@ public:
                                    quint64 listId);
 
 private:
-    QString mName;     //!< The list name.
-    bool mSystem;      //!< Whether this is a system list.
-    bool mPermanent;   //!< Whether this list is permanent.
-    QDate mExpiryDate; //!< The date when this list will be expired.
+    QString mName;       //!< The list name.
+    bool mSystem;        //!< Whether this is a system list.
+    bool mPermanent;     //!< Whether this list is permanent.
+    bool mDemonstrators; //!< Whether this list members are demonstrators.
+    QDate mExpiryDate;   //!< The date when this list will be expired.
 };
 }
 }

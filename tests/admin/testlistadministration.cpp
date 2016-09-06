@@ -128,16 +128,19 @@ void TestListAdministration::testListEditorWidget() {
     FieldTypes fieldTypes{{"name", FieldType::LineEdit},
                           {"system", FieldType::CheckBox},
                           {"permanent", FieldType::CheckBox},
+                          {"demonstrators", FieldType::CheckBox},
                           {"expiry_date", FieldType::DateEdit}};
     QVariantMap columnLabels = {{"name", "Name"},
                                 {"system", "System"},
                                 {"permanent", "Permanent"},
+                                {"demonstrators", "Demonstrators"},
                                 {"expiry_date", "Expiry date"}};
     QSqlRecord record;
     record.append(QSqlField("id", QVariant::ULongLong));
     record.append(QSqlField("name", QVariant::String));
     record.append(QSqlField("permanent", QVariant::Bool));
     record.append(QSqlField("system", QVariant::Bool));
+    record.append(QSqlField("demonstrators", QVariant::Bool));
     record.append(QSqlField("expiry_date", QVariant::Date));
     ListEditorWidget editor(fieldTypes);
     editor.setupUi(columnLabels, record);
@@ -148,17 +151,22 @@ void TestListAdministration::testListEditorWidget() {
         dynamic_cast<QCheckBox *>(editor.fieldEditors()["permanent"]);
     auto systemCheck =
         dynamic_cast<QCheckBox *>(editor.fieldEditors()["system"]);
+    auto demonstratorsCheck =
+        dynamic_cast<QCheckBox *>(editor.fieldEditors()["demonstrators"]);
     auto expiryEdit =
         dynamic_cast<QDateEdit *>(editor.fieldEditors()["expiry_date"]);
 
     QVERIFY(!nameEdit->isReadOnly());
     QCOMPARE(nameEdit->maxLength(), 64);
     QVERIFY(permanentCheck->isEnabled());
+    QVERIFY(demonstratorsCheck->isEnabled());
     QVERIFY(!systemCheck->isEnabled());
     QVERIFY(!expiryEdit->isReadOnly());
     QCOMPARE(expiryEdit->minimumDate(), QDate::currentDate());
 
     permanentCheck->setChecked(true);
+    systemCheck->setEnabled(true);
+    systemCheck->setChecked(true);
     QApplication::processEvents();
     QVERIFY(expiryEdit->isReadOnly());
 
@@ -170,56 +178,71 @@ void TestListAdministration::testListEditorWidget() {
 void TestListAdministration::testListTableModel() {
     auto db = QSqlDatabase::database(dbName);
     db.exec("DELETE FROM LIST");
-    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L1', false, false, '1977-01-05')");
-    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L2', false, true, '1978-01-05')");
-    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L3', true, false, '1979-01-05')");
-    db.exec("INSERT INTO LIST(NAME, SYSTEM, PERMANENT, EXPIRY_DATE)"
-            "          VALUES('L4', true, true, '1980-01-05')");
+    db.exec(
+        "INSERT INTO LIST(NAME, SYSTEM, PERMANENT, DEMONSTRATORS, EXPIRY_DATE)"
+        "          VALUES('L1', false, false, false, '1977-01-05')");
+    db.exec(
+        "INSERT INTO LIST(NAME, SYSTEM, PERMANENT, DEMONSTRATORS, EXPIRY_DATE)"
+        "          VALUES('L2', false, true, false, '1978-01-05')");
+    db.exec(
+        "INSERT INTO LIST(NAME, SYSTEM, PERMANENT, DEMONSTRATORS, EXPIRY_DATE)"
+        "          VALUES('L3', true, false, true, '1979-01-05')");
+    db.exec(
+        "INSERT INTO LIST(NAME, SYSTEM, PERMANENT, DEMONSTRATORS, EXPIRY_DATE)"
+        "          VALUES('L4', true, true, true, '1980-01-05')");
 
     const QVariantMap columnLabels{{"name", "Name"},
                                    {"permanent", "Permanent"},
                                    {"system", "System"},
+                                   {"demonstrators", "Demonstrators"},
                                    {"expiry_date", "Expiry Date"}};
     ListTableModel model(columnLabels, db);
     model.sort(1, Qt::AscendingOrder);
     QApplication::processEvents();
-    QCOMPARE(model.columnCount(), 6);
+    QCOMPARE(model.columnCount(), 7);
     QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));
     QCOMPARE(model.headerData(2, Qt::Horizontal).toString(), QString("System"));
     QCOMPARE(model.headerData(3, Qt::Horizontal).toString(),
              QString("Permanent"));
     QCOMPARE(model.headerData(4, Qt::Horizontal).toString(),
-             QString("Expiry Date"));
+             QString("Demonstrators"));
     QCOMPARE(model.headerData(5, Qt::Horizontal).toString(),
+             QString("Expiry Date"));
+    QCOMPARE(model.headerData(6, Qt::Horizontal).toString(),
              QString("id_course"));
 
     auto index = model.index(0, 2);
     QCOMPARE(model.data(index).toString(), QString("No"));
     index = model.index(0, 3);
     QCOMPARE(model.data(index).toString(), QString("No"));
+    index = model.index(0, 4);
+    QCOMPARE(model.data(index).toString(), QString("No"));
     index = model.index(1, 2);
     QCOMPARE(model.data(index).toString(), QString("No"));
     index = model.index(1, 3);
     QCOMPARE(model.data(index).toString(), QString("Yes"));
+    index = model.index(1, 4);
+    QCOMPARE(model.data(index).toString(), QString("No"));
     index = model.index(2, 2);
     QCOMPARE(model.data(index).toString(), QString("Yes"));
     index = model.index(2, 3);
     QCOMPARE(model.data(index).toString(), QString("No"));
+    index = model.index(2, 4);
+    QCOMPARE(model.data(index).toString(), QString("Yes"));
     index = model.index(3, 2);
     QCOMPARE(model.data(index).toString(), QString("Yes"));
     index = model.index(3, 3);
     QCOMPARE(model.data(index).toString(), QString("Yes"));
-    index = model.index(0, 4);
-    QCOMPARE(model.data(index).toString(), QString("05.01.1977."));
-    index = model.index(1, 4);
-    QVERIFY(model.data(index).isNull());
-    index = model.index(2, 4);
-    QVERIFY(model.data(index).isNull());
     index = model.index(3, 4);
+    QCOMPARE(model.data(index).toString(), QString("Yes"));
+    index = model.index(0, 5);
+    QCOMPARE(model.data(index).toString(), QString("05.01.1977."));
+    index = model.index(1, 5);
+    QVERIFY(model.data(index).isNull());
+    index = model.index(2, 5);
+    QVERIFY(model.data(index).isNull());
+    index = model.index(3, 5);
     QVERIFY(model.data(index).isNull());
 }
 

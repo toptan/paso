@@ -24,4 +24,4 @@ docker ps -a
 # Fix coverage report paths
 cat combined-coverage.info | sed "s|/paso/|`pwd`/|g" > coverage.info
 docker stop $DOCKER_CONTAINER_ID
-docker rm -v $DOCKER_CONTAINER_ID
+#docker rm -v $DOCKER_CONTAINER_ID

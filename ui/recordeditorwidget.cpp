@@ -215,29 +215,45 @@ void RecordEditorWidget::onEditNewRecord(QSqlRecord record) {
 void RecordEditorWidget::clearData() {
     for (const auto &key : mFieldTypes.keys()) {
         switch (mFieldTypes[key]) {
-        case FieldType::ComboBox:
-            dynamic_cast<QComboBox *>(mFieldEditors[key])->setCurrentIndex(-1);
-            break;
+        case FieldType::ComboBox: {
+            auto comboBox = dynamic_cast<QComboBox *>(mFieldEditors[key]);
+            if (comboBox != nullptr) {
+                comboBox->setCurrentIndex(-1);
+            }
+        } break;
         case FieldType::LineEdit:
         case FieldType::PasswordEdit:
-        case FieldType::MaskedLineEdit:
-            dynamic_cast<QLineEdit *>(mFieldEditors[key])->clear();
-            break;
-        case FieldType::NumberEdit:
-            dynamic_cast<QSpinBox *>(mFieldEditors[key])->setValue(0);
-            dynamic_cast<QSpinBox *>(mFieldEditors[key])->clear();
-            break;
-        case FieldType::CheckBox:
-            dynamic_cast<QCheckBox *>(mFieldEditors[key])->setChecked(false);
-            break;
-        case FieldType::DateEdit:
-            dynamic_cast<QDateEdit *>(mFieldEditors[key])
-                ->setDate(QDate::currentDate());
-            break;
-        case FieldType::TimeEdit:
-            dynamic_cast<QTimeEdit *>(mFieldEditors[key])
-                ->setTime(QTime(0, 0, 0));
-            break;
+        case FieldType::MaskedLineEdit: {
+            auto lineEdit = dynamic_cast<QLineEdit *>(mFieldEditors[key]);
+            if (lineEdit != nullptr) {
+                lineEdit->clear();
+            }
+        } break;
+        case FieldType::NumberEdit: {
+            auto spinBox = dynamic_cast<QSpinBox *>(mFieldEditors[key]);
+            if (spinBox != nullptr) {
+                spinBox->setValue(0);
+                spinBox->clear();
+            }
+        } break;
+        case FieldType::CheckBox: {
+            auto checkBox = dynamic_cast<QCheckBox *>(mFieldEditors[key]);
+            if (checkBox != nullptr) {
+                checkBox->setChecked(false);
+            }
+        } break;
+        case FieldType::DateEdit: {
+            auto dateEdit = dynamic_cast<QDateEdit *>(mFieldEditors[key]);
+            if (dateEdit != nullptr) {
+                dateEdit->setDate(QDate::currentDate());
+            }
+        } break;
+        case FieldType::TimeEdit: {
+            auto timeEdit = dynamic_cast<QTimeEdit *>(mFieldEditors[key]);
+            if (timeEdit != nullptr) {
+                timeEdit->setTime(QTime(0, 0, 0));
+            }
+        } break;
         }
     }
 }
@@ -305,10 +321,7 @@ void RecordEditorWidget::accepted() {
     }
 }
 
-RecordValidator *RecordEditorWidget::validator() const
-{
-    return mValidator;
-}
+RecordValidator *RecordEditorWidget::validator() const { return mValidator; }
 
 void RecordEditorWidget::rejected() {
     if (mNewRecord) {

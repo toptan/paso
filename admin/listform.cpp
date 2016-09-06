@@ -22,7 +22,7 @@ ListForm::ListForm(QWidget *parent)
     ui->setupUi(this);
     setupWidgets(ui->tableView);
     ui->tableView->hideColumn(0);
-    ui->tableView->hideColumn(5);
+    ui->tableView->hideColumn(6);
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 3);
     ui->horizontalLayout->setStretch(1, 1);
@@ -46,6 +46,7 @@ pair<QSqlTableModel *, RecordEditorWidget *> ListForm::createModelAndEditor() {
     const QVariantMap columnLabels{{"name", QObject::tr("Name")},
                                    {"system", QObject::tr("System list")},
                                    {"permanent", QObject::tr("Permanent list")},
+                                   {"demonstrators", QObject::tr("Demonstrators")},
                                    {"expiry_date", QObject::tr("Expiry date")}};
 
     auto model = new ListTableModel(columnLabels,
@@ -54,6 +55,7 @@ pair<QSqlTableModel *, RecordEditorWidget *> ListForm::createModelAndEditor() {
     const FieldTypes fieldTypes{{"name", FieldType::LineEdit},
                                 {"system", FieldType::CheckBox},
                                 {"permanent", FieldType::CheckBox},
+                                {"demonstrators", FieldType::CheckBox},
                                 {"expiry_date", FieldType::DateEdit}};
 
     auto editor = new ListEditorWidget(fieldTypes);

@@ -21,17 +21,17 @@ ListTableModel::ListTableModel(const QVariantMap &columnLabels, QSqlDatabase db,
 
 QVariant ListTableModel::data(const QModelIndex &idx, int role) const {
     if (role == Qt::DisplayRole) {
-        if (idx.column() == 2 || idx.column() == 3) {
+        if (idx.column() == 2 || idx.column() == 3 || idx.column() == 4) {
             return QSqlTableModel::data(idx, role).toBool() ? tr("Yes")
                                                             : tr("No");
         }
-        if (idx.column() == 4) {
+        if (idx.column() == 5) {
             return QSqlTableModel::data(idx, role).toDate().toString(
                 "dd.MM.yyyy.");
         }
     }
     if (role == Qt::TextAlignmentRole) {
-        if (idx.column() == 2 || idx.column() == 3) {
+        if (idx.column() == 2 || idx.column() == 3 || idx.column() == 4) {
             return Qt::AlignCenter;
         }
     }

@@ -61,7 +61,8 @@ void ActivityWizardListsSelectionPage::initializePage() {
 }
 
 bool ActivityWizardListsSelectionPage::isComplete() const {
-    return !field("activityLists").toList().isEmpty();
+    auto specialEvent = wizard()->field("type").toString() == "SPECIAL_EVENT";
+    return specialEvent || !field("activityLists").toList().isEmpty();
 }
 
 void ActivityWizardListsSelectionPage::cleanupPage() {

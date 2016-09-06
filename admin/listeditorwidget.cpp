@@ -80,7 +80,7 @@ QDateEdit *ListEditorWidget::createDateEdit(const QString &field) {
     if (field == "expiry_date") {
         retVal->setMinimumDate(QDate::currentDate());
     }
-
+    retVal->setReadOnly(true);
     return retVal;
 }
 }

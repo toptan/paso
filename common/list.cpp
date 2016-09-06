@@ -6,11 +6,13 @@ namespace entity {
 
 List::List(const QString &name, bool permanent, quint64 id,
            const QDate &expiryDate)
-    : Entity(id), mName(name), mSystem(false), mPermanent(permanent) {}
+    : Entity(id), mName(name), mSystem(false), mPermanent(permanent),
+      mDemonstrators(false) {}
 
 List::List(const QVariantMap &map)
     : Entity(map["ID"].toULongLong()), mName(map["NAME"].toString()),
       mSystem(map["SYSTEM"].toBool()), mPermanent(map["PERMANENT"].toBool()),
+      mDemonstrators(map["DEMONSTRATORS"].toBool()),
       mExpiryDate(map["EXPIRY_DATE"].toDate()) {}
 
 bool List::operator==(const List &other) const {
@@ -19,7 +21,8 @@ bool List::operator==(const List &other) const {
     }
 
     return id() == other.id() && mName == other.mName &&
-           mSystem == other.mSystem && mPermanent == other.mPermanent;
+           mSystem == other.mSystem && mPermanent == other.mPermanent &&
+           mDemonstrators == other.mDemonstrators;
 }
 
 QString List::name() const { return mName; }
@@ -32,6 +35,12 @@ bool List::permanent() const { return mPermanent; }
 
 void List::setPermanent(bool permanent) { mPermanent = permanent; }
 
+bool List::demonstrators() const { return mDemonstrators; }
+
+void List::setDemonstrators(bool demonstrators) {
+    mDemonstrators = demonstrators;
+}
+
 QDate List::expiryDate() const { return mExpiryDate; }
 
 void List::setExpiryDate(const QDate &expiryDate) { mExpiryDate = expiryDate; }
@@ -41,6 +50,7 @@ QVariantMap List::toVariantMap() const {
     retVal.insert("NAME", mName);
     retVal.insert("SYSTEM", mSystem);
     retVal.insert("PERMANENT", mPermanent);
+    retVal.insert("DEMONSTRATORS", mDemonstrators);
     retVal.insert("EXPIRY_DATE", mExpiryDate);
     return retVal;
 }
@@ -52,6 +62,8 @@ QVariant List::value(const QString &property) const {
         return mSystem;
     } else if (property == "PERMANENT") {
         return mPermanent;
+    } else if (property == "DEMONSTRATORS") {
+        return mDemonstrators;
     } else if (property == "EXPIRY_DATE") {
         return mExpiryDate;
     }
@@ -64,6 +76,7 @@ void List::read(const QJsonObject &jsonObject) {
     mName = jsonObject["NAME"].toString();
     mSystem = jsonObject["SYSTEM"].toBool();
     mPermanent = jsonObject["PERMANENT"].toBool();
+    mDemonstrators = jsonObject["DEMONSTRATORS"].toBool();
     mExpiryDate = jsonObject["EXPIRY_DATE"].toVariant().toDate();
 }
 
@@ -72,6 +85,7 @@ void List::write(QJsonObject &jsonObject) const {
     jsonObject["NAME"] = mName;
     jsonObject["SYSTEM"] = mSystem;
     jsonObject["PERMANENT"] = mPermanent;
+    jsonObject["DEMONSTRATORS"] = mDemonstrators;
     jsonObject["EXPIRY_DATE"] = QVariant(mExpiryDate).toJsonValue();
 }
 

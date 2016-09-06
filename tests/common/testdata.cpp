@@ -47,6 +47,7 @@ void TestData::testComparingStudentWithPersonOrProfessorIsAlwaysFalse() {
 
 void TestData::testRoomSerialization() {
     Room expected(QUuid::createUuid().toString(), "Room 42", "42");
+    expected.setBarredIds({2, 4 ,6});
     QString jsonString = expected.toJsonString();
     Room deserialized("", "", "");
     deserialized.fromJsonString(jsonString);
@@ -150,6 +151,7 @@ void TestData::testStudentSerialization() {
 
 void TestData::testListSerialization() {
     List expected("Demo lista", true, 4);
+    expected.setDemonstrators(true);
     QString jsonString = expected.toJsonString();
     List deserialized((QVariantMap()));
     deserialized.fromJsonString(jsonString);
@@ -185,7 +187,8 @@ void TestData::testConversionToVariantMap() {
     QStringList courseKeys{"ID", "CODE", "NAME"};
     QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER",
                          "BARRED_STUDENTS"};
-    QStringList listKeys{"ID", "NAME", "SYSTEM", "PERMANENT", "EXPIRY_DATE"};
+    QStringList listKeys{"ID",        "NAME",          "SYSTEM",
+                         "PERMANENT", "DEMONSTRATORS", "EXPIRY_DATE"};
     QStringList activityKeys{"ID",
                              "NAME",
                              "TYPE",
@@ -264,23 +267,27 @@ void TestData::testPropertyValues() {
 
     QString uuid = QUuid::createUuid().toString();
     Room room(uuid, "Room 42", "42");
+    room.setBarredIds({1, 2, 3});
     QCOMPARE(room.value("FOO"), QVariant());
     QCOMPARE(room.value("ID"), QVariant(room.id()));
     QCOMPARE(room.value("ROOM_UUID"), QVariant(uuid));
     QCOMPARE(room.value("ROOM_UUID"), QVariant(room.roomUUID()));
     QCOMPARE(room.value("NAME"), QVariant(room.name()));
     QCOMPARE(room.value("ROOM_NUMBER"), QVariant(room.number()));
+    QCOMPARE(room.value("BARRED_STUDENTS"), QVariant(room.barredIds()));
 
     List list;
     list.setName("Demo lista");
     list.setPermanent(true);
     list.setId(4);
     list.setExpiryDate(QDate());
+    list.setDemonstrators(true);
     QCOMPARE(list.value("FOO"), QVariant());
     QCOMPARE(list.value("ID"), QVariant(list.id()));
     QCOMPARE(list.value("NAME"), QVariant(list.name()));
     QCOMPARE(list.value("SYSTEM"), QVariant(list.system()));
     QCOMPARE(list.value("PERMANENT"), QVariant(list.permanent()));
+    QCOMPARE(list.value("DEMONSTRATORS"), QVariant(list.demonstrators()));
     QCOMPARE(list.value("EXPIRY_DATE"), QVariant::fromValue(QDate()));
 
     Activity activity;

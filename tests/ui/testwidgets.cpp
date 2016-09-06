@@ -639,6 +639,13 @@ void TestWidgets::testItemsPicker() {
     QCOMPARE(selectedItems.size(), 2);
     QVERIFY(selectedItems.contains(1));
     QVERIFY(selectedItems.contains(4));
+    // Setting the same column count does not change anything.
+    picker2.setColumnCount(2);
+    QApplication::processEvents();
+    selectedItems = picker2.selectedItems();
+    QCOMPARE(selectedItems.size(), 2);
+    QVERIFY(selectedItems.contains(1));
+    QVERIFY(selectedItems.contains(4));
     picker2.setItemLabels({"A", "B", "C"});
     QApplication::processEvents();
     selectedItems = picker2.selectedItems();

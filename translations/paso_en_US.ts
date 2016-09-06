@@ -262,9 +262,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="35"/>
         <location filename="../admin/roomform.cpp" line="39"/>
         <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="35"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -314,20 +314,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="60"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="60"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="61"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="61"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="62"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="62"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -358,6 +358,11 @@
     </message>
     <message>
         <location filename="../admin/listform.cpp" line="49"/>
+        <source>Demonstrators</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/listform.cpp" line="50"/>
         <source>Expiry date</source>
         <translation type="unfinished"></translation>
     </message>
@@ -651,22 +656,22 @@
 <context>
     <name>paso::admin::ActivityWizard</name>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="69"/>
+        <location filename="../admin/activitywizard.cpp" line="73"/>
         <source>There was an error while loading activity from the database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="80"/>
+        <location filename="../admin/activitywizard.cpp" line="84"/>
         <source>The requested activity does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="81"/>
+        <location filename="../admin/activitywizard.cpp" line="85"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="131"/>
+        <location filename="../admin/activitywizard.cpp" line="139"/>
         <source>There was an error while saving activity to the database.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1329,7 +1334,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/listform.cpp" line="93"/>
+        <location filename="../admin/listform.cpp" line="95"/>
         <source>Do you want to delete selected list from the system?</source>
         <translation type="unfinished"></translation>
     </message>

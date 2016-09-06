@@ -46,7 +46,11 @@ int ActivityWizard::nextId() const {
         }
     case SingleSlot:
     case MultipleSlots:
-        return ListSelection;
+        if (field("type").toString() != "SPECIAL_EVENT") {
+            return ListSelection;
+        } else {
+            return RoomSelection;
+        }
     case ListSelection:
         return RoomSelection;
     case RoomSelection:
@@ -121,7 +125,11 @@ void ActivityWizard::accept() {
         mActivity->setScheduledDays(field("selectedDays").toList());
     }
     mActivity->setRoomIds(field("activityRooms").toList());
-    mActivity->setListIds(field("activityLists").toList());
+    if (mActivity->type() == ActivityType::SPECIAL_EVENT) {
+        mActivity->setListIds({});
+    } else {
+        mActivity->setListIds(field("activityLists").toList());
+    }
     QSqlError error;
     DBManager manager;
 
