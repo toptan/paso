@@ -30,3 +30,5 @@ target_link_libraries(${PROJECT_NAME} Qt5::Sql)
 target_link_libraries(${PROJECT_NAME} pasocommon)
 add_dependencies(${PROJECT_NAME} translations)
 enable_coverage(${PROJECT_NAME} FALSE)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
