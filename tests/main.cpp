@@ -11,7 +11,6 @@
 #include "entity.h"
 #include "testactivityadministration.h"
 #include "testcommdata.h"
-#include "testcommmanager.h"
 #include "testcourseadministration.h"
 #include "testcoursedetailsdialog.h"
 #include "testdata.h"
@@ -118,7 +117,6 @@ int main(int argc, char **argv) {
     QTEST_DISABLE_KEYPAD_NAVIGATION
     QTEST_ADD_GPU_BLACKLIST_SUPPORT
     QTEST_SET_MAIN_SOURCE_PATH
-    qRegisterMetaType<paso::comm::LoginResponse>("LoginResponse");
     qRegisterMetaType<QList<QPersistentModelIndex>>();
     qRegisterMetaType<QAbstractItemModel::LayoutChangeHint>();
     qRegisterMetaType<QSqlRecord>("QSqlRecord");
@@ -134,7 +132,6 @@ int main(int argc, char **argv) {
     testCases.push_back(new TestActivityAdministration);
     testCases.push_back(new TestLoginDialog);
     testCases.push_back(new TestCommData);
-    testCases.push_back(new TestCommManager);
     testCases.push_back(new TestData);
     testCases.push_back(new TestModels);
     testCases.push_back(new TestPasoDB);

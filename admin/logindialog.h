@@ -4,7 +4,6 @@
 #include <QDialog>
 
 #include "commdata.h"
-#include "commmanager.h"
 #include "data.h"
 
 #include <memory>
