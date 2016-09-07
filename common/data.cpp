@@ -20,10 +20,6 @@ const QString roleToString(SystemRole role) {
         return "ADMINISTRATOR";
     case SystemRole::MANAGER:
         return "MANAGER";
-    case SystemRole::ROOM_MANAGER:
-        return "ROOM_MANAGER";
-    case SystemRole::SCHEDULER:
-        return "SCHEDULER";
     case SystemRole::SUPER_USER:
         return "SUPER_USER";
     default:
@@ -34,12 +30,8 @@ const QString roleToString(SystemRole role) {
 SystemRole stringToRole(const QString &role) {
     if (role == "ADMINISTRATOR") {
         return SystemRole::ADMINISTRATOR;
-    } else if (role == "ROOM_MANAGER") {
-        return SystemRole::ROOM_MANAGER;
     } else if (role == "MANAGER") {
         return SystemRole::MANAGER;
-    } else if (role == "SCHEDULER") {
-        return SystemRole::SCHEDULER;
     } else if (role == "SUPER_USER") {
         return SystemRole::SUPER_USER;
     } else {

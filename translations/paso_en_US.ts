@@ -392,133 +392,121 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="102"/>
-        <location filename="../common/data.h" line="113"/>
+        <location filename="../common/data.h" line="100"/>
+        <location filename="../common/data.h" line="109"/>
         <source>Administrator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="103"/>
-        <location filename="../common/data.h" line="114"/>
+        <location filename="../common/data.h" line="101"/>
+        <location filename="../common/data.h" line="110"/>
         <source>Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="104"/>
-        <location filename="../common/data.h" line="115"/>
-        <source>Room manager</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../common/data.h" line="105"/>
-        <location filename="../common/data.h" line="116"/>
-        <source>Scheduler</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../common/data.h" line="106"/>
-        <location filename="../common/data.h" line="117"/>
+        <location filename="../common/data.h" line="102"/>
+        <location filename="../common/data.h" line="111"/>
         <source>Super user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="124"/>
-        <location filename="../common/data.h" line="136"/>
+        <location filename="../common/data.h" line="118"/>
+        <location filename="../common/data.h" line="130"/>
         <source>Lecture or excercise</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="125"/>
-        <location filename="../common/data.h" line="137"/>
+        <location filename="../common/data.h" line="119"/>
+        <location filename="../common/data.h" line="131"/>
         <source>Exam</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="126"/>
-        <location filename="../common/data.h" line="138"/>
+        <location filename="../common/data.h" line="120"/>
+        <location filename="../common/data.h" line="132"/>
         <source>Colloquium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="127"/>
-        <location filename="../common/data.h" line="139"/>
+        <location filename="../common/data.h" line="121"/>
+        <location filename="../common/data.h" line="133"/>
         <source>Lab excercise</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="128"/>
-        <location filename="../common/data.h" line="140"/>
+        <location filename="../common/data.h" line="122"/>
+        <location filename="../common/data.h" line="134"/>
         <source>Individual work</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="129"/>
-        <location filename="../common/data.h" line="141"/>
+        <location filename="../common/data.h" line="123"/>
+        <location filename="../common/data.h" line="135"/>
         <source>Special event</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="148"/>
+        <location filename="../common/data.h" line="142"/>
         <source>Activity does not repeat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="150"/>
+        <location filename="../common/data.h" line="144"/>
         <source>Repeats on certain week days</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="152"/>
+        <location filename="../common/data.h" line="146"/>
         <source>Repeats on certain days in month</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="159"/>
+        <location filename="../common/data.h" line="153"/>
         <source>Never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="160"/>
+        <location filename="../common/data.h" line="154"/>
         <source>Weekly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="161"/>
+        <location filename="../common/data.h" line="155"/>
         <source>Monthly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="167"/>
+        <location filename="../common/data.h" line="161"/>
         <source>Monday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="167"/>
+        <location filename="../common/data.h" line="161"/>
         <source>Tuesday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="167"/>
+        <location filename="../common/data.h" line="161"/>
         <source>Wednesday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="168"/>
+        <location filename="../common/data.h" line="162"/>
         <source>Thursday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="168"/>
+        <location filename="../common/data.h" line="162"/>
         <source>Friday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="168"/>
+        <location filename="../common/data.h" line="162"/>
         <source>Saturday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../common/data.h" line="169"/>
+        <location filename="../common/data.h" line="163"/>
         <source>Sunday</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1453,32 +1441,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="135"/>
+        <location filename="../admin/mainwindow.cpp" line="131"/>
         <source>System users administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="141"/>
+        <location filename="../admin/mainwindow.cpp" line="134"/>
         <source>Room administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="147"/>
+        <location filename="../admin/mainwindow.cpp" line="140"/>
         <source>Course administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="150"/>
+        <location filename="../admin/mainwindow.cpp" line="143"/>
         <source>Student administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="153"/>
+        <location filename="../admin/mainwindow.cpp" line="146"/>
         <source>List administration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="156"/>
+        <location filename="../admin/mainwindow.cpp" line="149"/>
         <source>Activity administration</source>
         <translation type="unfinished"></translation>
     </message>

@@ -2,6 +2,7 @@
 #define PASOSERVER_H
 
 #include "pasodb.h"
+#include "sslserver.h"
 
 #include <QObject>
 #include <QTcpServer>
@@ -24,7 +25,7 @@ private slots:
     void handleRequest();
 
 private:
-    QTcpServer *mTcpServer;
+    SslServer *mTcpServer;
     std::shared_ptr<db::DBManager> mDbManager;
 
     unsigned short mPort;

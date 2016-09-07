@@ -38,7 +38,7 @@ void TestPasoDB::testOperationsShouldFailOnDatabaseErrors() {
     user.setFirstName("Toplica");
     user.setLastName("Tanasković");
     user.setEmail("toptan@server.com");
-    user.setRole(SystemRole::SCHEDULER);
+    user.setRole(SystemRole::ADMINISTRATOR);
     QVERIFY(!manager.saveSystemUser(user, error));
     db.exec("DROP TABLE SYSTEM_USERS CASCADE");
 }
@@ -83,7 +83,7 @@ void TestPasoDB::testSaveSystemUser() {
     user.setFirstName("Toplica");
     user.setLastName("Tanasković");
     user.setEmail("toptan@server.com");
-    user.setRole(SystemRole::SCHEDULER);
+    user.setRole(SystemRole::MANAGER);
     QVERIFY(manager.saveSystemUser(user, error));
     auto temp = manager.getSystemUser("toptan", error);
     QCOMPARE(user, *temp);
@@ -92,15 +92,6 @@ void TestPasoDB::testSaveSystemUser() {
     QVERIFY(manager.saveSystemUser(user, error));
     temp = manager.getSystemUser("toptan", error);
     QCOMPARE(user, *temp);
-    temp = manager.getSystemUser("toptan", error);
-    temp->setRole(SystemRole::ROOM_MANAGER);
-    QVERIFY(manager.saveSystemUser(*temp, error));
-    auto temp2 = manager.getSystemUser("toptan", error);
-    QCOMPARE(*temp2, *temp);
-    temp2->setRole(SystemRole::MANAGER);
-    QVERIFY(manager.saveSystemUser(*temp2, error));
-    temp = manager.getSystemUser("toptan", error);
-    QCOMPARE(*temp2, *temp);
 }
 
 void TestPasoDB::testDeleteSystemUser() {

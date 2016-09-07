@@ -99,14 +99,10 @@ void MainWindow::createWidgets() {
     switch (mRole) {
     case SystemRole::SUPER_USER:
         setupAdministratorUI();
-        setupRoomManagerUI();
         setupManagerUI();
         break;
     case SystemRole::ADMINISTRATOR:
         setupAdministratorUI();
-        break;
-    case SystemRole::ROOM_MANAGER:
-        setupRoomManagerUI();
         break;
     case SystemRole::MANAGER:
         setupManagerUI();
@@ -130,14 +126,11 @@ void MainWindow::createWidgets() {
 }
 
 void MainWindow::setupAdministratorUI() {
-    auto form = new SystemUsersForm(this);
-    mMainWidget->addWidget(form);
+    auto systemUsersForm = new SystemUsersForm(this);
+    mMainWidget->addWidget(systemUsersForm);
     mWidgetChooserComboBox->addItem(tr("System users administration"));
-}
-
-void MainWindow::setupRoomManagerUI() {
-    auto form = new RoomForm(this);
-    mMainWidget->addWidget(form);
+    auto roomForm = new RoomForm(this);
+    mMainWidget->addWidget(roomForm);
     mWidgetChooserComboBox->addItem(tr("Room administration"));
 }
 

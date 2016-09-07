@@ -48,7 +48,6 @@ private:
     void createWidgets();
 
     void setupAdministratorUI();
-    void setupRoomManagerUI();
     void setupManagerUI();
 };
 }

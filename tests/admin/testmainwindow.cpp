@@ -85,20 +85,9 @@ void TestMainWindow::testRolesForms() {
         make_shared<LoginResponse>(user, "QSQLITE", ":memory:", "", "", "", 0);
     window->loginFinished(*response);
     stackedWidget = window->findChild<QStackedWidget *>();
-    QCOMPARE(stackedWidget->count(), 1);
+    QCOMPARE(stackedWidget->count(), 2);
     systemUsersForm = stackedWidget->findChild<SystemUsersForm *>();
     QVERIFY(systemUsersForm != nullptr);
-    window->hide();
-    QApplication::processEvents();
-    delete window;
-
-    window = new MainWindow();
-    user.setRole(SystemRole::ROOM_MANAGER);
-    response =
-        make_shared<LoginResponse>(user, "QSQLITE", ":memory:", "", "", "", 0);
-    window->loginFinished(*response);
-    stackedWidget = window->findChild<QStackedWidget *>();
-    QCOMPARE(stackedWidget->count(), 1);
     roomForm = stackedWidget->findChild<RoomForm *>();
     QVERIFY(roomForm != nullptr);
     window->hide();

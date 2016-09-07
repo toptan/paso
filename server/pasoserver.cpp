@@ -6,7 +6,7 @@
 #include <QFile>
 #include <QSettings>
 #include <QSqlError>
-#include <QTcpSocket>
+#include <QSslSocket>
 
 using namespace paso::comm;
 using namespace paso::db;
@@ -16,7 +16,7 @@ namespace server {
 
 PasoServer::PasoServer(QObject *parent)
     : QObject(parent), mPort(6789), mTimeout(5000), mDatabaseName("paso") {
-    mTcpServer = new QTcpServer(this);
+    mTcpServer = new SslServer(this);
     connect(mTcpServer, &QTcpServer::newConnection, this,
             &PasoServer::handleRequest);
 }
@@ -104,23 +104,32 @@ bool PasoServer::startServer() {
 }
 
 void PasoServer::handleRequest() {
-    auto clientSocket = mTcpServer->nextPendingConnection();
-    connect(clientSocket, &QTcpSocket::disconnected, clientSocket,
+    auto serverSocket = mTcpServer->nextPendingConnection();
+    connect(serverSocket, &QTcpSocket::disconnected, serverSocket,
             &QObject::deleteLater);
+//    QSslSocket *serverSocket = new QSslSocket;
+//    serverSocket->setSocketDescriptor(clientSocket->socketDescriptor());
+//    serverSocket->startServerEncryption();
+//    if (!serverSocket->waitForEncrypted(mTimeout)) {
+//        serverSocket->disconnectFromHost();
+//        qCritical() << serverSocket->errorString();
+//        return;
+//    }
 
-    if (!clientSocket->waitForReadyRead(mTimeout)) {
-        clientSocket->disconnectFromHost();
+    if (!serverSocket->waitForReadyRead(mTimeout)) {
+        serverSocket->disconnectFromHost();
+        qCritical() << serverSocket->errorString();
         return;
     }
 
     quint16 blockSize;
-    QDataStream in(clientSocket);
+    QDataStream in(serverSocket);
     in.setVersion(QDataStream::Qt_5_5);
     in >> blockSize;
 
-    while (clientSocket->bytesAvailable() < blockSize) {
-        if (!clientSocket->waitForReadyRead(mTimeout)) {
-            clientSocket->disconnectFromHost();
+    while (serverSocket->bytesAvailable() < blockSize) {
+        if (!serverSocket->waitForReadyRead(mTimeout)) {
+            serverSocket->disconnectFromHost();
             return;
         }
     }
@@ -128,9 +137,9 @@ void PasoServer::handleRequest() {
     in >> request;
     Base base(request);
     if (base.operation() == Operation::LOGIN) {
-        handleLoginRequest(clientSocket, request);
+        handleLoginRequest(serverSocket, request);
     } else {
-        clientSocket->disconnectFromHost();
+        serverSocket->disconnectFromHost();
     }
 }
 

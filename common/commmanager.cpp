@@ -3,7 +3,7 @@
 #include <QThread>
 #include <QtConcurrent>
 #include <QDebug>
-#include <QTcpSocket>
+#include <QSslSocket>
 
 namespace paso {
 namespace comm {
@@ -15,9 +15,10 @@ CommManager::CommManager(const QString &server, unsigned short port,
 void CommManager::login(const QString &username, const QString &password) {
     QtConcurrent::run([this, username, password]() {
         LoginRequest request(username, password);
-        QTcpSocket socket;
-        socket.connectToHost(mServer, mPort);
-        if (!socket.waitForConnected(mTimeout)) {
+        QSslSocket socket;
+        socket.connectToHostEncrypted(mServer, mPort);
+        if (!socket.waitForEncrypted(mTimeout)) {
+            qWarning() << socket.errorString();
             emit communicationError(socket.errorString());
             return;
         }

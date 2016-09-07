@@ -47,7 +47,7 @@ void TestData::testComparingStudentWithPersonOrProfessorIsAlwaysFalse() {
 
 void TestData::testRoomSerialization() {
     Room expected(QUuid::createUuid().toString(), "Room 42", "42");
-    expected.setBarredIds({2, 4 ,6});
+    expected.setBarredIds({2, 4, 6});
     QString jsonString = expected.toJsonString();
     Room deserialized("", "", "");
     deserialized.fromJsonString(jsonString);
@@ -71,18 +71,10 @@ void TestData::testSystemRoleSerialization() {
     SystemUser deserialized("");
     deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized.role(), SystemRole::ADMINISTRATOR);
-    expected.setRole(SystemRole::ROOM_MANAGER);
-    jsonString = expected.toJsonString();
-    deserialized.fromJsonString(jsonString);
-    QCOMPARE(deserialized.role(), SystemRole::ROOM_MANAGER);
     expected.setRole(SystemRole::MANAGER);
     jsonString = expected.toJsonString();
     deserialized.fromJsonString(jsonString);
     QCOMPARE(deserialized.role(), SystemRole::MANAGER);
-    expected.setRole(SystemRole::SCHEDULER);
-    jsonString = expected.toJsonString();
-    deserialized.fromJsonString(jsonString);
-    QCOMPARE(deserialized.role(), SystemRole::SCHEDULER);
     expected.setRole(SystemRole::SUPER_USER);
     jsonString = expected.toJsonString();
     deserialized.fromJsonString(jsonString);

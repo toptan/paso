@@ -19,9 +19,7 @@ namespace data {
 ///
 enum class SystemRole {
     ADMINISTRATOR = 0, //!< The system administrator.
-    ROOM_MANAGER,      //!< The room manager.
     MANAGER,           //!< The general manager.
-    SCHEDULER,         //!< The activity scheduler.
     SUPER_USER,        //!< The almighty user.
     INVALID_ROLE       //!< Invalid role.
 };
@@ -101,8 +99,6 @@ enum class ListStudentImportError {
 const QMap<SystemRole, QString> enumeratedRoles{
     {SystemRole::ADMINISTRATOR, QObject::tr("Administrator")},
     {SystemRole::MANAGER, QObject::tr("Manager")},
-    {SystemRole::ROOM_MANAGER, QObject::tr("Room manager")},
-    {SystemRole::SCHEDULER, QObject::tr("Scheduler")},
     {SystemRole::SUPER_USER, QObject::tr("Super user")}};
 
 ///
@@ -112,8 +108,6 @@ const QMap<SystemRole, QString> enumeratedRoles{
 const QMap<QString, QString> stringEnumeratedRoles{
     {"ADMINISTRATOR", QObject::tr("Administrator")},
     {"MANAGER", QObject::tr("Manager")},
-    {"ROOM_MANAGER", QObject::tr("Room manager")},
-    {"SCHEDULER", QObject::tr("Scheduler")},
     {"SUPER_USER", QObject::tr("Super user")}};
 
 ///
