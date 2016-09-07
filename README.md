@@ -13,6 +13,7 @@
     - [**Building binaries**](#building-binaries)
     - [**Important make targets**](#important-make-targets)
     - [**Coverage report**](#coverage-report)
+    - [**Using docker for running tests**](#using-docker-for-running-tests)
 - [**Running**](#running)
     - [**Configuring database**](#configuring-database)
     - [**Configuring server**](#configuring-server)
@@ -40,6 +41,17 @@ To satisfy all build and run requirements the following Ubuntu packages must be 
 ```
 gcc g++ libboost-dev cmake git tar gzip make python cppcheck doxygen lcov gcovr graphviz postgresql
 qttools5-dev-tools qt5-default psmisc mwm xauth sudo xvfb libqt5sql5-sqlite libqt5sql5-psql
+```
+
+If you are using CentOS the follwing packages will satisfy requirements:
+```
+rpm-build gcc gcc-c++ boost-devel cmake3 git tar gzip make python cppcheck doxygen lcov python-pip
+graphviz qt5-linguist qt5-qtbase-devel qt5-qtbase-gui xorg-x11-server-Xvfb sysvinit-tools
+glibc-static psmisc motif which xauth postgresql-server qt5-qtbase-postgresql
+```
+On CentOS gcovr is not available as RPM package but can be installed via pip:
+```
+pip install gcovr==3.2
 ```
 
 ## Source code access
@@ -76,6 +88,13 @@ To be able to run tests and coverage report, a running PostgreSQL database is ne
 
 ### Coverage report
 The coverage report, if generated, is available by opening `<build_dir>/coverage/index.html`
+
+### Using docker for running tests
+If you don't want to run tests on your physicall machine, you can use docker. To run tests inside docker position yourself in the root of the source tree and execute:
+```
+./tests/setup_test.sh <os_flavor>
+```
+The **os_flavor** argument can be either ubuntu or centos, depending whether you want to run tests on ubuntu or centos docker container.
 
 ## Running
 The build produces two executables, the PaSo server and administration utility. The server is required for authentication and
