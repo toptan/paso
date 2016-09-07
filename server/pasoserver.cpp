@@ -142,14 +142,6 @@ void PasoServer::handleRequest() {
     auto serverSocket = mTcpServer->nextPendingConnection();
     connect(serverSocket, &QTcpSocket::disconnected, serverSocket,
             &QObject::deleteLater);
-    //    QSslSocket *serverSocket = new QSslSocket;
-    //    serverSocket->setSocketDescriptor(clientSocket->socketDescriptor());
-    //    serverSocket->startServerEncryption();
-    //    if (!serverSocket->waitForEncrypted(mTimeout)) {
-    //        serverSocket->disconnectFromHost();
-    //        qCritical() << serverSocket->errorString();
-    //        return;
-    //    }
 
     if (!serverSocket->waitForReadyRead(mTimeout)) {
         serverSocket->disconnectFromHost();

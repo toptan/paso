@@ -10,6 +10,7 @@
 #include "roomform.h"
 #include "studentform.h"
 #include "systemusersform.h"
+#include "teacherform.h"
 
 #include <QComboBox>
 #include <QDebug>
@@ -141,6 +142,9 @@ void MainWindow::setupManagerUI() {
     auto studentForm = new StudentForm(this);
     mMainWidget->addWidget(studentForm);
     mWidgetChooserComboBox->addItem(tr("Student administration"));
+    auto teacherForm = new TeacherForm(this);
+    mMainWidget->addWidget(teacherForm);
+    mWidgetChooserComboBox->addItem(tr("Teacher administration"));
     auto listForm = new ListForm(this);
     mMainWidget->addWidget(listForm);
     mWidgetChooserComboBox->addItem(tr("List administration"));

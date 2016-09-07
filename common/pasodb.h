@@ -9,6 +9,7 @@
 #include "room.h"
 #include "student.h"
 #include "systemuser.h"
+#include "teacher.h"
 
 #include <QObject>
 #include <QSqlDatabase>
@@ -187,6 +188,24 @@ public:
     bool deleteStudent(const QString &indexNumber, QSqlError &error) const;
 
     ///
+    /// \brief Adds new or updates existing teacher. If adding new teacher the
+    /// id property of the teacher will be updated.
+    /// \param teacher The teacher.
+    /// \param error The SQL error if any.
+    /// \return \c true if teacher is successfully saved.
+    ///
+    bool saveTeacher(data::entity::Teacher &teacher, QSqlError &error) const;
+
+    ///
+    /// \brief Deletes teacher with given \c employeeNumber. Deleting non
+    /// existant teacher will not result in error.
+    /// \param employeeNumber The employee number of the teacher to delete.
+    /// \param error The SQL error if any.
+    /// \return \c true if teacher is successfully deleted.
+    ///
+    bool deleteTeacher(const QString &employeeNumber, QSqlError &error) const;
+
+    ///
     /// \brief Checks if given username is unique.
     /// \param username The username to check.
     /// \param error The SQL error if any.
@@ -225,6 +244,15 @@ public:
     /// \return \c true if the index number does not exist in the database.
     ///
     bool indexNumberUnique(const QString &indexNumber, QSqlError &error) const;
+
+    ///
+    /// \brief Checks if given employee number is unique.
+    /// \param employeeNumber The employee number to check.
+    /// \param error The SQL error if any.
+    /// \return \c true if the employee number does not exist in the database.
+    ///
+    bool employeeNumberUnique(const QString &employeeNumber,
+                              QSqlError &error) const;
 
     ///
     /// \brief listNameUnique check is given list name is unique.

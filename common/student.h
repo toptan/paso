@@ -104,7 +104,7 @@ public:
     ///
     /// \brief Returns delete query for given student.
     /// \param database The database to use.
-    /// \param indexNumber The student to delete.
+    /// \param indexNumber The index number of the student to delete.
     /// \return The query.
     ///
     static QSqlQuery deleteQuery(const QSqlDatabase &database,

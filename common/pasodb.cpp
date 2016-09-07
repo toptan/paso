@@ -287,6 +287,19 @@ bool DBManager::indexNumberUnique(const QString &indexNumber,
     return true;
 }
 
+bool DBManager::employeeNumberUnique(const QString &employeeNumber,
+                                     QSqlError &error) const {
+    auto query = Teacher::findByEmployeeNumberQuery(
+        QSqlDatabase::database(mDbName), employeeNumber);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError || query.next()) {
+        return false;
+    }
+
+    return true;
+}
+
 bool DBManager::listNameUnique(const QString &listName,
                                QSqlError &error) const {
     auto query =
@@ -349,6 +362,53 @@ bool DBManager::deleteStudent(const QString &indexNumber,
                               QSqlError &error) const {
     auto query =
         Student::deleteQuery(QSqlDatabase::database(mDbName), indexNumber);
+    beginTransaction();
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+
+    error = commit();
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::saveTeacher(Teacher &teacher, QSqlError &error) const {
+    auto db = QSqlDatabase::database(mDbName);
+    auto newTeacher = teacher.id() == 0;
+    auto query = newTeacher ? Person::insertQuery(db, teacher)
+                            : Person::updateQuery(db, teacher);
+    beginTransaction();
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+    if (newTeacher) {
+        query.next();
+        teacher.setId(query.record().value("ID").toULongLong());
+    }
+    query = newTeacher ? Teacher::insertQuery(db, teacher)
+                       : Teacher::updateQuery(db, teacher);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        if (newTeacher) {
+            teacher.setId(0);
+        }
+        rollback();
+        return false;
+    }
+    error = commit();
+    return error.type() == QSqlError::NoError;
+}
+
+bool DBManager::deleteTeacher(const QString &employeeNumber,
+                              QSqlError &error) const {
+    auto query =
+        Teacher::deleteQuery(QSqlDatabase::database(mDbName), employeeNumber);
     beginTransaction();
     query.exec();
     error = query.lastError();

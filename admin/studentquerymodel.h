@@ -12,8 +12,8 @@ namespace model {
 class StudentQueryModel : public RefreshableSqlQueryModel {
     Q_OBJECT
 public:
-    explicit StudentQueryModel(const QVariantMap &columnLabels, QSqlDatabase db,
-                               QObject *parent = nullptr);
+    StudentQueryModel(const QVariantMap &columnLabels, QSqlDatabase db,
+                      QObject *parent = nullptr);
 
     virtual QVariant data(const QModelIndex &item, int role) const override;
 

@@ -22,8 +22,8 @@ void SslServer::incomingConnection(qintptr socketDescriptor) {
         addPendingConnection(serverSocket);
         serverSocket->startServerEncryption();
         if (!serverSocket->waitForEncrypted()) {
-            qCritical() << "FAK:" << serverSocket->errorString()
-                        << serverSocket->sslErrors();
+            serverSocket->disconnectFromHost();
+            delete serverSocket;
         }
     } else {
         delete serverSocket;

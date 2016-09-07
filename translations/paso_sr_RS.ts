@@ -277,22 +277,35 @@
         <translation>Лозинка</translation>
     </message>
     <message>
+        <location filename="../admin/teacherform.cpp" line="37"/>
         <location filename="../admin/studentform.cpp" line="60"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
+        <location filename="../admin/teacherform.cpp" line="38"/>
         <location filename="../admin/studentform.cpp" line="61"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
+        <location filename="../admin/teacherform.cpp" line="39"/>
         <location filename="../admin/studentform.cpp" line="62"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
+    </message>
+    <message>
+        <location filename="../admin/teacherform.cpp" line="41"/>
+        <source>Employee Number</source>
+        <translation>Број запосленог</translation>
+    </message>
+    <message>
+        <location filename="../admin/teacherform.cpp" line="42"/>
+        <source>Office Number</source>
+        <translation>Број канцеларије</translation>
     </message>
     <message>
         <location filename="../admin/systemusersform.cpp" line="45"/>
@@ -361,6 +374,7 @@
         <translation>Број</translation>
     </message>
     <message>
+        <location filename="../admin/teacherform.cpp" line="40"/>
         <location filename="../admin/studentform.cpp" line="63"/>
         <source>RFID</source>
         <translation>РФИД</translation>
@@ -604,6 +618,14 @@
         <location filename="../admin/systemusersform.ui" line="14"/>
         <source>System users</source>
         <translation>Системски корисници</translation>
+    </message>
+</context>
+<context>
+    <name>TeacherForm</name>
+    <message>
+        <location filename="../admin/teacherform.ui" line="14"/>
+        <source>Teachers</source>
+        <translation>Наставници</translation>
     </message>
 </context>
 <context>
@@ -1450,47 +1472,52 @@
 <context>
     <name>paso::admin::MainWindow</name>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="62"/>
+        <location filename="../admin/mainwindow.cpp" line="63"/>
         <source>Critical error</source>
         <translation>Критична грешка</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="63"/>
+        <location filename="../admin/mainwindow.cpp" line="64"/>
         <source>Could not establish database connection.</source>
         <translation>Није могуће успоставити везу са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="84"/>
+        <location filename="../admin/mainwindow.cpp" line="85"/>
         <source>Main Toolbar</source>
         <translation>Главна трака са алаткама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="131"/>
+        <location filename="../admin/mainwindow.cpp" line="132"/>
         <source>System users administration</source>
         <translation>Управљање системским корисницима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="134"/>
+        <location filename="../admin/mainwindow.cpp" line="135"/>
         <source>Room administration</source>
         <translation>Управљање просторијама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="140"/>
+        <location filename="../admin/mainwindow.cpp" line="141"/>
         <source>Course administration</source>
         <translation>Управљање предметима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="143"/>
+        <location filename="../admin/mainwindow.cpp" line="144"/>
         <source>Student administration</source>
         <translation>Управљање студентима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="146"/>
+        <location filename="../admin/mainwindow.cpp" line="147"/>
+        <source>Teacher administration</source>
+        <translation>Управљање наставницима</translation>
+    </message>
+    <message>
+        <location filename="../admin/mainwindow.cpp" line="150"/>
         <source>List administration</source>
         <translation>Управљање листама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="149"/>
+        <location filename="../admin/mainwindow.cpp" line="153"/>
         <source>Activity administration</source>
         <translation>Управљање активностима</translation>
     </message>
@@ -1934,6 +1961,49 @@
         <location filename="../admin/systemusersform.cpp" line="92"/>
         <source>Do you want to delete selected system user?</source>
         <translation>Да ли стварно желите да обришете одабраног корисника?</translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::TeacherForm</name>
+    <message>
+        <location filename="../admin/teacherform.cpp" line="75"/>
+        <source>Do you want to delete selected teacher from the system?</source>
+        <translation>Да ли стварно желите да обришете одабраног наставника из система?</translation>
+    </message>
+</context>
+<context>
+    <name>paso::admin::TeacherValidator</name>
+    <message>
+        <location filename="../admin/teachervalidator.cpp" line="50"/>
+        <source>Critical error</source>
+        <translation>Критична грешка</translation>
+    </message>
+    <message>
+        <location filename="../admin/teachervalidator.cpp" line="51"/>
+        <source>There was an error working with the database.</source>
+        <translation>Дошло је до грешке при раду са базом података.</translation>
+    </message>
+    <message>
+        <location filename="../admin/teachervalidator.cpp" line="42"/>
+        <location filename="../admin/teachervalidator.cpp" line="57"/>
+        <location filename="../admin/teachervalidator.cpp" line="72"/>
+        <source>Invalid data entered</source>
+        <translation>Унешени су неисправни подаци</translation>
+    </message>
+    <message>
+        <location filename="../admin/teachervalidator.cpp" line="43"/>
+        <source>The employee number cannot be left empty.</source>
+        <translation>Морате унети број запосленог.</translation>
+    </message>
+    <message>
+        <location filename="../admin/teachervalidator.cpp" line="59"/>
+        <source>The teacher with employee number %1 already exists in the system.</source>
+        <translation>Наставник за бројем запосленог %1 већ постоји у систему.</translation>
+    </message>
+    <message>
+        <location filename="../admin/teachervalidator.cpp" line="73"/>
+        <source>The office number cannot be left empty.</source>
+        <translation>Морате инети број канцеларије.</translation>
     </message>
 </context>
 <context>
