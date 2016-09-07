@@ -8,6 +8,7 @@
 #include "mainwindow.h"
 #include "roomform.h"
 #include "studentform.h"
+#include "teacherform.h"
 #include "systemuser.h"
 #include "systemusersform.h"
 
@@ -61,10 +62,11 @@ void TestMainWindow::testRolesForms() {
     window->loginFinished(*response);
     QApplication::processEvents();
     auto stackedWidget = window->findChild<QStackedWidget *>();
-    QCOMPARE(stackedWidget->count(), 6);
+    QCOMPARE(stackedWidget->count(), 7);
     auto courseForm = stackedWidget->findChild<CourseForm *>();
     auto roomForm = stackedWidget->findChild<RoomForm *>();
     auto studentForm = stackedWidget->findChild<StudentForm *>();
+    auto teacherForm = stackedWidget->findChild<TeacherForm *>();
     auto systemUsersForm = stackedWidget->findChild<SystemUsersForm *>();
     auto listForm = stackedWidget->findChild<ListForm *>();
     auto activityForm = stackedWidget->findChild<ActivityForm *>();
@@ -72,6 +74,7 @@ void TestMainWindow::testRolesForms() {
     QVERIFY(courseForm != nullptr);
     QVERIFY(roomForm != nullptr);
     QVERIFY(studentForm != nullptr);
+    QVERIFY(teacherForm != nullptr);
     QVERIFY(systemUsersForm != nullptr);
     QVERIFY(listForm != nullptr);
     QVERIFY(activityForm != nullptr);
@@ -100,16 +103,17 @@ void TestMainWindow::testRolesForms() {
         make_shared<LoginResponse>(user, "QSQLITE", ":memory:", "", "", "", 0);
     window->loginFinished(*response);
     stackedWidget = window->findChild<QStackedWidget *>();
-    QCOMPARE(stackedWidget->count(), 4);
+    QCOMPARE(stackedWidget->count(), 5);
     courseForm = stackedWidget->findChild<CourseForm *>();
     studentForm = stackedWidget->findChild<StudentForm *>();
     listForm = stackedWidget->findChild<ListForm *>();
     activityForm = stackedWidget->findChild<ActivityForm *>();
+    teacherForm = stackedWidget->findChild<TeacherForm *>();
     QVERIFY(roomForm != nullptr);
     QVERIFY(studentForm != nullptr);
     QVERIFY(listForm != nullptr);
     QVERIFY(activityForm != nullptr);
-
+    QVERIFY(teacherForm != nullptr);
     window->hide();
     QApplication::processEvents();
     delete window;
