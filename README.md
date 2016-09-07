@@ -134,6 +134,8 @@ The default server configuration is provided in `<src_dir>/conf/pasoserver.conf`
 [server]
 port=6789
 timeout=5000
+keyFile=/tmp/server.key
+certFile/tmp/server.csr
 
 [database]
 database=paso
@@ -143,6 +145,11 @@ username=paso
 password=paso
 ```
 The first section defines on which port the server will listen as well as timeout in milliseconds for all network operations.
+It also contans locations of the server private key and certificate. To generate key and certificate use openssl command like this:
+```
+openssl req -x509 -newkey rsa:2048 -keyout server.key -nodes -days 365 -out server.csr
+```
+
 The second section gives required info for database connection.
 
 ### Running the server
