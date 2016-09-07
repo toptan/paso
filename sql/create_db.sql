@@ -1,1 +1,1 @@
-CREATE DATABASE pasotest;
+CREATE DATABASE pasotest ENCODING 'UTF-8' TEMPLATE template0;

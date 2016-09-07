@@ -6,13 +6,18 @@ case "$1" in
             apt --yes update
             apt --yes dist-upgrade
 
+            # Generate locale
+            locale-gen en_US.UTF-8
+
+            # Set locale
+            export LANG=en_US.UTF-8
+            export LANGUAGE=en_US.UTF-8
+            export LC_ALL=en_US.UTF-8
+
             # Install needed packages
             apt --yes install gcc g++ libboost-dev cmake git tar gzip make python cppcheck \
                       doxygen lcov gcovr graphviz qttools5-dev-tools qt5-default psmisc \
                       mwm xauth sudo xvfb libqt5sql5-sqlite libqt5sql5-psql postgresql
-
-            # Generate locale
-            locale-gen en_US.UTF-8
 
             # Setup database for tests
             service postgresql start
@@ -48,6 +53,11 @@ case "$1" in
             # Fix dbus inside docker
             dbus-uuidgen > /etc/machine-id
 
+            # Set locale
+            export LANG=en_US.UTF-8
+            export LANGUAGE=en_US.UTF-8
+            export LC_ALL=en_US.UTF-8
+
             # Setup database for tests
             su - postgres -c "initdb --pgdata=/var/lib/pgsql/data --auth-host=md5 --encoding=UTF8"
             su - postgres -c "pg_ctl -D /var/lib/pgsql/data -l logfile start"
@@ -63,11 +73,6 @@ case "$1" in
             exit 1
 
 esac
-
-# Set locale
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
 
 # Prepare dirs and configure build
 mkdir -p /tmp/build

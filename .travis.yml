@@ -3,7 +3,7 @@ sudo: required
 env:
     matrix:
         - OS_TYPE=centos
-          #        - OS_TYPE=ubuntu
+        - OS_TYPE=ubuntu
 
 services:
     - docker

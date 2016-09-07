@@ -262,9 +262,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="35"/>
         <location filename="../admin/roomform.cpp" line="39"/>
         <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="35"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -314,20 +314,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="60"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="60"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="61"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="61"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/studentform.cpp" line="62"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="62"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
