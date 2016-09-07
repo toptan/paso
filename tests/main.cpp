@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QProcess>
 #include <QSqlDatabase>
+#include <QSqlRecord>
 #include <QStyleFactory>
 #include <QtTest>
 #include <list>
@@ -120,6 +121,7 @@ int main(int argc, char **argv) {
     qRegisterMetaType<paso::comm::LoginResponse>("LoginResponse");
     qRegisterMetaType<QList<QPersistentModelIndex>>();
     qRegisterMetaType<QAbstractItemModel::LayoutChangeHint>();
+    qRegisterMetaType<QSqlRecord>("QSqlRecord");
     list<QObject *> testCases;
     createDatabase();
 

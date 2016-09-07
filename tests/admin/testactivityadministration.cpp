@@ -143,8 +143,12 @@ void TestActivityAdministration::testActivityEditorWidget() {
     QVERIFY(finishEditor->isReadOnly());
     QVERIFY(!canOverlapEditor->isEnabled());
 
-    QCOMPARE(ActivityEditorWidget::generateRepetitionString("WEEK_DAYS", "{1, 3}"), QString("Monday and Wednesday"));
-    QCOMPARE(ActivityEditorWidget::generateRepetitionString("MONTH_DAYS", "{1, 3}"), QString("Every 1 and 3 in month"));
+    QCOMPARE(
+        ActivityEditorWidget::generateRepetitionString("WEEK_DAYS", "{1, 3}"),
+        QString("Monday and Wednesday"));
+    QCOMPARE(
+        ActivityEditorWidget::generateRepetitionString("MONTH_DAYS", "{1, 3}"),
+        QString("Every 1 and 3 in month"));
 }
 
 void TestActivityAdministration::testActivityQueryModel() {
@@ -793,6 +797,7 @@ void TestActivityAdministration::testListsSelectionPage() {
     QWizard wizard;
     auto mock = new MockActivityWizardPage;
     mock->setActivityId(0);
+    mock->setType("INDIVIDUAL_WORK");
     QApplication::processEvents();
     wizard.setPage(0, mock);
     auto page = new ActivityWizardListsSelectionPage;
@@ -1031,6 +1036,7 @@ void TestActivityAdministration::testActivityWizard() {
     QCOMPARE(wizard.pageIds().size(), 5);
     QCOMPARE(wizard.currentId(), static_cast<int>(ActivityWizard::NameAndType));
     auto nameEdit = wizard.currentPage()->findChild<QLineEdit *>("nameEdit");
+    auto typeCombo = wizard.currentPage()->findChild<QComboBox *>();
     auto moreThanOnceCheckBox =
         wizard.currentPage()->findChild<QCheckBox *>("moreThanOnceCheckBox");
     nameEdit->setText("A1");
@@ -1066,13 +1072,24 @@ void TestActivityAdministration::testActivityWizard() {
     QApplication::processEvents();
 
     moreThanOnceCheckBox->setChecked(true);
+    typeCombo->setCurrentIndex(typeCombo->findData("SPECIAL_EVENT"));
     QApplication::processEvents();
     nextButton->click();
     QApplication::processEvents();
     QCOMPARE(wizard.currentId(),
              static_cast<int>(ActivityWizard::MultipleSlots));
-
-    wizard.reject();
+    auto itemsPicker = wizard.currentPage()->findChild<ItemsPicker *>();
+    itemsPicker->setSelectedItems({1, 3});
+    QApplication::processEvents();
+    nextButton->click();
+    QApplication::processEvents();
+    QCOMPARE(wizard.currentId(),
+             static_cast<int>(ActivityWizard::RoomSelection));
+    auto roomPage =
+        dynamic_cast<ActivityWizardRoomsSelectionPage *>(wizard.currentPage());
+    roomPage->setRoomIds({1});
+    QApplication::processEvents();
+    wizard.accept();
     QApplication::processEvents();
 }
 

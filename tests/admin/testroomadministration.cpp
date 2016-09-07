@@ -1,5 +1,6 @@
 #include "testroomadministration.h"
 
+#include "pasodb.h"
 #include "room.h"
 #include "roomeditorwidget.h"
 #include "roomform.h"
@@ -11,6 +12,7 @@
 #include <QDialogButtonBox>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSignalSpy>
 #include <QSqlError>
 #include <QSqlField>
 #include <QTableView>
@@ -19,6 +21,7 @@
 
 using namespace paso::admin;
 using namespace paso::data::entity;
+using namespace paso::db;
 using namespace paso::model;
 using namespace paso::widget;
 
@@ -130,6 +133,18 @@ void TestRoomAdministration::testRoomValidator() {
 }
 
 void TestRoomAdministration::testRoomEditorWidget() {
+    auto db = QSqlDatabase::database(dbName);
+    DBManager manager(dbName);
+    QSqlError error;
+    Student student1("Pera", "Perić", "", "222/11", 2);
+    Student student2("Jovan", "Jovanovic", "", "333/11", 3);
+    manager.saveStudent(student1, error);
+    manager.saveStudent(student2, error);
+    auto roomUUID =
+        QUuid::createUuid().toString().replace("{", "").replace("}", "");
+    Room room(roomUUID, "Demo Room 1", "3");
+    room.setBarredIds({student1.id(), student2.id()});
+    manager.saveRoom(room, error);
     FieldTypes fieldTypes{{"room_uuid", FieldType::LineEdit},
                           {"name", FieldType::LineEdit},
                           {"room_number", FieldType::LineEdit}};
@@ -141,6 +156,7 @@ void TestRoomAdministration::testRoomEditorWidget() {
     record.append(QSqlField("room_uuid", QVariant::String));
     record.append(QSqlField("name", QVariant::String));
     record.append(QSqlField("room_number", QVariant::String));
+    record.append(QSqlField("barred_students", QVariant::String));
     RoomEditorWidget editor(fieldTypes);
     editor.setupUi(columnLabels, record);
     RoomValidator validator(fieldTypes, editor.fieldEditors(), this);
@@ -156,6 +172,7 @@ void TestRoomAdministration::testRoomEditorWidget() {
     auto saveButton = buttonBox->button(QDialogButtonBox::Save);
     auto cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     auto barringButton = buttonBox->findChild<QPushButton *>("barringButton");
+    auto barredTableView = editor.findChild<QTableView *>();
 
     QVERIFY(uuidEdit->isReadOnly());
     QVERIFY(!nameEdit->isReadOnly());
@@ -177,11 +194,15 @@ void TestRoomAdministration::testRoomEditorWidget() {
 
     cancelButton->click();
     QApplication::processEvents();
+    auto query = db.exec(
+        QString("SELECT * FROM ROOMS_VIEW WHERE ID = %1").arg(room.id()));
+    query.next();
+    record = query.record();
     editor.onEditExistingRecord(record);
     QVERIFY(uuidEdit->isReadOnly());
     QVERIFY(!nameEdit->isReadOnly());
     QVERIFY(!numberEdit->isReadOnly());
-
+    QCOMPARE(barredTableView->model()->rowCount(), 2);
     bool dialogShown = false;
     auto dialogCallback = [&dialogShown]() {
         QDialog *dialog =
@@ -193,6 +214,10 @@ void TestRoomAdministration::testRoomEditorWidget() {
     barringButton->click();
     QApplication::processEvents();
     QVERIFY(dialogShown);
+    QSignalSpy spy(&editor, SIGNAL(requestUpdate(QSqlRecord)));
+    saveButton->click();
+    QApplication::processEvents();
+    QCOMPARE(spy.count(), 1);
 }
 
 void TestRoomAdministration::testRoomTableModel() {
@@ -224,11 +249,16 @@ void TestRoomAdministration::testRoomForm() {
     tableView->selectRow(0);
     QApplication::processEvents();
     QAction *newAction = nullptr;
+    QAction *editAction = nullptr;
     QAction *deleteAction = nullptr;
     for (auto action : form.toolBarActions()) {
         QVERIFY(action->isEnabled());
         if (action->objectName() == "NEW_RECORD_ACTION") {
             newAction = action;
+            continue;
+        }
+        if (action->objectName() == "EDIT_RECORD_ACTION") {
+            editAction = action;
             continue;
         }
         if (action->objectName() == "DELETE_RECORD_ACTION") {
@@ -237,24 +267,9 @@ void TestRoomAdministration::testRoomForm() {
         }
     }
     QVERIFY(newAction != nullptr);
+    QVERIFY(editAction != nullptr);
     QVERIFY(deleteAction != nullptr);
 
-    bool deleteMessageBoxShown = false;
-    auto timerCallback = [&deleteMessageBoxShown]() {
-        QMessageBox *msgBox =
-            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
-        QTest::keyClick(msgBox, Qt::Key_Escape);
-        deleteMessageBoxShown = true;
-    };
-
-    QTimer::singleShot(200, timerCallback);
-    deleteAction->trigger();
-    QApplication::processEvents();
-    QVERIFY(deleteMessageBoxShown);
-
-    auto oldRowCount = tableView->model()->rowCount();
-    newAction->trigger();
-    QApplication::processEvents();
     auto uuidEdit = dynamic_cast<QLineEdit *>(
         roomEditorWidget->fieldEditors()["room_uuid"]);
     auto nameEdit =
@@ -264,6 +279,34 @@ void TestRoomAdministration::testRoomForm() {
     auto saveButton = dynamic_cast<QDialogButtonBox *>(
                           roomEditorWidget->findChild<QDialogButtonBox *>())
                           ->button(QDialogButtonBox::Save);
+    editAction->trigger();
+    QApplication::processEvents();
+    nameEdit->setText("AAAAA");
+    QApplication::processEvents();
+    saveButton->click();
+    QApplication::processEvents();
+    auto index = tableView->model()->index(0, 1);
+    QCOMPARE(tableView->model()->data(index).toString(), QString("AAAAA"));
+
+    bool deleteMessageBoxShown = false;
+    auto timerCallback = [&deleteMessageBoxShown]() {
+        QMessageBox *msgBox =
+            dynamic_cast<QMessageBox *>(QApplication::activeModalWidget());
+        auto yesButton = msgBox->button(QMessageBox::Yes);
+        QTest::keyClick(yesButton, Qt::Key_Enter);
+        deleteMessageBoxShown = true;
+    };
+
+    tableView->selectRow(0);
+    QApplication::processEvents();
+    QTimer::singleShot(200, timerCallback);
+    deleteAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(deleteMessageBoxShown);
+
+    auto oldRowCount = tableView->model()->rowCount();
+    newAction->trigger();
+    QApplication::processEvents();
     uuidEdit->setText(QUuid::createUuid().toString());
     nameEdit->setText("XXXXX");
     numberEdit->setText("YYYYY");

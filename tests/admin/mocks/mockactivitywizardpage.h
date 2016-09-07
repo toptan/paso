@@ -9,6 +9,7 @@ class MockActivityWizardPage : public QWizardPage {
                    activityIdChanged)
     Q_PROPERTY(
         bool weekDays READ weekDays WRITE setWeekDays NOTIFY weekDaysChanged)
+    Q_PROPERTY(QString type READ type WRITE setType NOTIFY typeChanged)
 public:
     MockActivityWizardPage(QWidget *parent = nullptr);
 
@@ -18,13 +19,18 @@ public:
     bool weekDays() const;
     void setWeekDays(bool weekDays);
 
+    QString type() const;
+    void setType(const QString &type);
+
 signals:
     void activityIdChanged();
     void weekDaysChanged();
+    void typeChanged();
 
 private:
     quint64 mActivityId;
     bool mWeekDays;
+    QString mType;
 };
 
 #endif // MOCKACTIVITYWIZARDPAGE_H
