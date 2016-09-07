@@ -15,11 +15,8 @@ namespace paso {
 namespace server {
 
 PasoServer::PasoServer(QObject *parent)
-    : QObject(parent), mPort(6789), mTimeout(5000), mDatabaseName("paso") {
-    mTcpServer = new SslServer(this);
-    connect(mTcpServer, &QTcpServer::newConnection, this,
-            &PasoServer::handleRequest);
-}
+    : QObject(parent), mTcpServer(nullptr), mPort(6789), mTimeout(5000),
+      mDatabaseName("paso") {}
 
 bool PasoServer::loadConfiguration(const QString &configFile) {
     if (!QFile::exists(configFile)) {
@@ -33,6 +30,22 @@ bool PasoServer::loadConfiguration(const QString &configFile) {
     settings.beginGroup("server");
     mPort = settings.value("port", 6789).toInt();
     mTimeout = settings.value("timeout", 5000).toInt();
+
+    if (!settings.contains("keyFile")) {
+        qCritical() << "No server private key defined in configuration file. "
+                       "The server will not start.";
+        return false;
+    }
+
+    if (!settings.contains("certFile")) {
+        qCritical() << "No server certificate defined in configuration file. "
+                       "The server will not start.";
+        return false;
+    }
+
+    mKeyFile = settings.value("keyFile").toString();
+    mCertFile = settings.value("certFile").toString();
+
     settings.endGroup();
 
     settings.beginGroup("database");
@@ -94,6 +107,28 @@ bool PasoServer::initDatabaseSystem() {
 }
 
 bool PasoServer::startServer() {
+    QFile keyFile(mKeyFile);
+    QFile certFile(mCertFile);
+
+    if (!keyFile.open(QIODevice::ReadOnly)) {
+        qCritical() << "Could not open server key '" << mKeyFile
+                    << "'. The server will not start.";
+        return false;
+    }
+
+    if (!certFile.open(QIODevice::ReadOnly)) {
+        qCritical() << "Could not open server certificate '" << mCertFile
+                    << "'. The server will not start.";
+        return false;
+    }
+
+    auto key = std::make_shared<QSslKey>(&keyFile, QSsl::Rsa, QSsl::Pem,
+                                         QSsl::PrivateKey);
+    auto cert = std::make_shared<QSslCertificate>(&certFile);
+
+    mTcpServer = new SslServer(cert, key, this);
+    connect(mTcpServer, &QTcpServer::newConnection, this,
+            &PasoServer::handleRequest);
     if (!mTcpServer->listen(QHostAddress::Any, mPort)) {
         qCritical() << "Cannot start server on port " << mPort;
         qCritical() << mTcpServer->errorString();
@@ -107,14 +142,14 @@ void PasoServer::handleRequest() {
     auto serverSocket = mTcpServer->nextPendingConnection();
     connect(serverSocket, &QTcpSocket::disconnected, serverSocket,
             &QObject::deleteLater);
-//    QSslSocket *serverSocket = new QSslSocket;
-//    serverSocket->setSocketDescriptor(clientSocket->socketDescriptor());
-//    serverSocket->startServerEncryption();
-//    if (!serverSocket->waitForEncrypted(mTimeout)) {
-//        serverSocket->disconnectFromHost();
-//        qCritical() << serverSocket->errorString();
-//        return;
-//    }
+    //    QSslSocket *serverSocket = new QSslSocket;
+    //    serverSocket->setSocketDescriptor(clientSocket->socketDescriptor());
+    //    serverSocket->startServerEncryption();
+    //    if (!serverSocket->waitForEncrypted(mTimeout)) {
+    //        serverSocket->disconnectFromHost();
+    //        qCritical() << serverSocket->errorString();
+    //        return;
+    //    }
 
     if (!serverSocket->waitForReadyRead(mTimeout)) {
         serverSocket->disconnectFromHost();

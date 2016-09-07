@@ -277,20 +277,20 @@
         <translation>Лозинка</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="42"/>
         <location filename="../admin/studentform.cpp" line="60"/>
+        <location filename="../admin/systemusersform.cpp" line="42"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="43"/>
         <location filename="../admin/studentform.cpp" line="61"/>
+        <location filename="../admin/systemusersform.cpp" line="43"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
-        <location filename="../admin/systemusersform.cpp" line="44"/>
         <location filename="../admin/studentform.cpp" line="62"/>
+        <location filename="../admin/systemusersform.cpp" line="44"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>
@@ -305,9 +305,9 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
+        <location filename="../admin/activityform.cpp" line="35"/>
         <location filename="../admin/roomform.cpp" line="39"/>
         <location filename="../admin/listform.cpp" line="46"/>
-        <location filename="../admin/activityform.cpp" line="35"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
@@ -385,7 +385,7 @@
         <location filename="../common/data.h" line="101"/>
         <location filename="../common/data.h" line="110"/>
         <source>Manager</source>
-        <translation>Управник</translation>
+        <translation>Менаџер</translation>
     </message>
     <message>
         <source>Room manager</source>
@@ -515,7 +515,7 @@
     <message>
         <location filename="../admin/listform.cpp" line="49"/>
         <source>Demonstrators</source>
-        <translation type="unfinished"></translation>
+        <translation>Демонстратори</translation>
     </message>
     <message>
         <location filename="../admin/listform.cpp" line="50"/>
@@ -1416,33 +1416,33 @@
 <context>
     <name>paso::admin::LoginDialog</name>
     <message>
-        <location filename="../admin/logindialog.cpp" line="23"/>
+        <location filename="../admin/logindialog.cpp" line="25"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="24"/>
+        <location filename="../admin/logindialog.cpp" line="26"/>
         <source>Cancel</source>
         <translation>Одустани</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="32"/>
+        <location filename="../admin/logindialog.cpp" line="34"/>
         <source>You need to provide username.</source>
         <translation>Морате унети корисничко име.</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="37"/>
+        <location filename="../admin/logindialog.cpp" line="39"/>
         <source>You need to provide password.</source>
         <translation>Морате унети лозинку.</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="42"/>
+        <location filename="../admin/logindialog.cpp" line="44"/>
         <source>You need to provide server name.</source>
         <translation>Морате унети име сервера.</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="70"/>
-        <location filename="../admin/logindialog.cpp" line="74"/>
+        <location filename="../admin/logindialog.cpp" line="117"/>
+        <location filename="../admin/logindialog.cpp" line="121"/>
         <source>Login failed.</source>
         <translation>Неуспешна пријава.</translation>
     </message>

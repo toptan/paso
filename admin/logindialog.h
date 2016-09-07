@@ -25,17 +25,17 @@ public:
 
 public slots:
     virtual void accept() override;
-    void loginSuccessfull(const comm::LoginResponse &loginResponse);
-    void loginFailed();
-    void communicationError(const QString &reason);
+    void onLoginSuccessfull(const paso::comm::LoginResponse &loginResponse);
+    void onLoginFailed();
+    void onCommunicationError(const QString &reason);
 
 signals:
-    void loginFinished(const comm::LoginResponse &loginResponse);
+    void loginFinished(const paso::comm::LoginResponse loginResponse);
     void loginAttemptFailed(const QString &reason);
+    void communicationError(const QString &reason);
 
 private:
     Ui::LoginDialog *ui;
-    std::shared_ptr<paso::comm::CommManager> commManager;
 
     void performLogin();
 };

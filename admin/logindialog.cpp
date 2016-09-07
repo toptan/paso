@@ -3,6 +3,8 @@
 
 #include <QDebug>
 #include <QPushButton>
+#include <QSslSocket>
+#include <QtConcurrent>
 
 namespace paso {
 namespace admin {
@@ -47,26 +49,71 @@ void LoginDialog::accept() {
 }
 
 void LoginDialog::performLogin() {
-    commManager = std::make_shared<CommManager>(ui->serverLineEdit->text());
-    connect(commManager.get(), &CommManager::loginSuccessfull, this,
-            &LoginDialog::loginSuccessfull);
-    connect(commManager.get(), &CommManager::loginFailed, this,
-            &LoginDialog::loginFailed);
-    connect(commManager.get(), &CommManager::communicationError, this,
-            &LoginDialog::communicationError);
-    commManager->login(ui->usernameLineEdit->text(),
-                       ui->passwordLineEdit->text());
+    connect(this, &LoginDialog::communicationError, this,
+            &LoginDialog::onCommunicationError);
+
+    QtConcurrent::run([this]() {
+        LoginRequest request(ui->usernameLineEdit->text(),
+                             ui->passwordLineEdit->text());
+        QSslSocket socket;
+        socket.setPeerVerifyMode(QSslSocket::VerifyNone);
+        socket.connectToHostEncrypted(ui->serverLineEdit->text(), 6789);
+        if (!socket.waitForEncrypted()) {
+            qWarning() << socket.errorString();
+            emit communicationError(socket.errorString());
+            return;
+        }
+        QByteArray block;
+        QDataStream out(&block, QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_5_5);
+        out << (quint16)0;
+        out << request.toJsonString();
+        out.device()->seek(0);
+        out << (quint16)(block.size() - sizeof(quint16));
+        socket.write(block);
+        if (!socket.waitForBytesWritten()) {
+            emit communicationError(socket.errorString());
+            return;
+        }
+        if (!socket.waitForReadyRead()) {
+            emit communicationError(socket.errorString());
+            return;
+        }
+        quint16 blockSize;
+        QDataStream in(&socket);
+        in.setVersion(QDataStream::Qt_5_5);
+        in >> blockSize;
+
+        while (socket.bytesAvailable() < blockSize) {
+            if (!socket.waitForReadyRead()) {
+                emit communicationError(socket.errorString());
+                return;
+            }
+        }
+
+        QString response;
+        in >> response;
+        LoginResponse loginResponse;
+        loginResponse.fromJsonString(response);
+        if (loginResponse.dbServer().isEmpty()) {
+            onLoginFailed();
+        } else {
+            onLoginSuccessfull(loginResponse);
+        }
+
+    });
+
     ui->usernameLineEdit->setEnabled(false);
     ui->passwordLineEdit->setEnabled(false);
     ui->serverLineEdit->setEnabled(false);
 }
 
-void LoginDialog::loginSuccessfull(const LoginResponse &loginResponse) {
+void LoginDialog::onLoginSuccessfull(const LoginResponse &loginResponse) {
     QDialog::accept();
     emit loginFinished(loginResponse);
 }
 
-void LoginDialog::loginFailed() {
+void LoginDialog::onLoginFailed() {
     ui->messageLabel->setText(tr("Login failed."));
     ui->usernameLineEdit->setEnabled(true);
     ui->passwordLineEdit->setEnabled(true);
@@ -74,7 +121,7 @@ void LoginDialog::loginFailed() {
     emit loginAttemptFailed(tr("Login failed."));
 }
 
-void LoginDialog::communicationError(const QString &reason) {
+void LoginDialog::onCommunicationError(const QString &reason) {
     ui->messageLabel->setText(reason);
     ui->usernameLineEdit->setEnabled(true);
     ui->passwordLineEdit->setEnabled(true);

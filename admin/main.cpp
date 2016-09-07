@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
     QLocale::setDefault(QLocale(QLocale::Serbian, QLocale::Serbia));
     QApplication app(argc, argv);
     QApplication::setStyle(QStyleFactory::create("Fusion"));
-    qRegisterMetaType<paso::comm::LoginResponse>("LoginResponse");
+    qRegisterMetaType<paso::comm::LoginResponse>("paso::comm::LoginResponse");
     qRegisterMetaType<QList<QPersistentModelIndex>>();
     qRegisterMetaType<QAbstractItemModel::LayoutChangeHint>();
     QTranslator translator;

@@ -1,29 +1,29 @@
 #include "sslserver.h"
 
-#include <QSslSocket>
-#include <QSslConfiguration>
 #include <QSslCipher>
+#include <QSslConfiguration>
+#include <QSslSocket>
 
-SslServer::SslServer(QObject *parent) : QTcpServer(parent) {
-}
+SslServer::SslServer(std::shared_ptr<QSslCertificate> certificate,
+                     std::shared_ptr<QSslKey> key, QObject *parent)
+    : QTcpServer(parent), mCertificate(certificate), mKey(key) {}
 
 SslServer::~SslServer() {}
 
 void SslServer::incomingConnection(qintptr socketDescriptor) {
-    qDebug() << QSslConfiguration::supportedCiphers();
     QSslSocket *serverSocket = new QSslSocket;
-    connect(serverSocket, static_cast<void(QSslSocket::*)(const QList<QSslError> &)>(&QSslSocket::sslErrors),
-        [=](const QList<QSslError> &errors){
-        qDebug() << errors;
-    });
     serverSocket->ignoreSslErrors();
     if (serverSocket->setSocketDescriptor(socketDescriptor)) {
+        connect(serverSocket, &QAbstractSocket::disconnected, serverSocket,
+                &QObject::deleteLater);
+        serverSocket->setPrivateKey(*mKey);
+        serverSocket->setLocalCertificate(*mCertificate);
+        serverSocket->setPeerVerifyMode(QSslSocket::VerifyNone);
         addPendingConnection(serverSocket);
-//        connect(serverSocket, &QSslSocket::encrypted, this, &SslServer::ready);
         serverSocket->startServerEncryption();
-        if(!serverSocket->waitForEncrypted()) {
-            qCritical() << "FAK:" << serverSocket->errorString() <<
-            serverSocket->sslErrors();
+        if (!serverSocket->waitForEncrypted()) {
+            qCritical() << "FAK:" << serverSocket->errorString()
+                        << serverSocket->sslErrors();
         }
     } else {
         delete serverSocket;

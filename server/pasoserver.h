@@ -37,6 +37,8 @@ private:
     QString mDbPassword;
     QString mDbServer;
     unsigned short mDbPort;
+    QString mKeyFile;
+    QString mCertFile;
 
     void handleLoginRequest(QTcpSocket *clientSocket,
                             const QString &requestString);

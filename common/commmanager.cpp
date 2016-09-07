@@ -16,6 +16,7 @@ void CommManager::login(const QString &username, const QString &password) {
     QtConcurrent::run([this, username, password]() {
         LoginRequest request(username, password);
         QSslSocket socket;
+        socket.setPeerVerifyMode(QSslSocket::VerifyNone);
         socket.connectToHostEncrypted(mServer, mPort);
         if (!socket.waitForEncrypted(mTimeout)) {
             qWarning() << socket.errorString();
