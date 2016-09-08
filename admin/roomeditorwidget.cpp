@@ -58,6 +58,7 @@ void RoomEditorWidget::setupUi(const QVariantMap &columnLabels,
         {"FIRST_NAME", tr("First name")}};
 
     mOccupancyTableView = new QTableView();
+    mOccupancyTableView->setObjectName("occupancyTableView");
     mExportOccupancy = new QPushButton(tr("Export"), this);
     mExportOccupancy->setEnabled(false);
     auto vLayout = new QVBoxLayout;
@@ -95,6 +96,7 @@ void RoomEditorWidget::setupUi(const QVariantMap &columnLabels,
 
     EntityVector emptyData;
     mBarredStudentsTableView = new QTableView(this);
+    mBarredStudentsTableView->setObjectName("barredTableView");
     mBarredStudentsModel =
         new EntityTableModel(columns, columnNames, emptyData, this);
     auto barredStudentsSortModel = new QSortFilterProxyModel(this);

@@ -1114,5 +1114,19 @@ EntityVector DBManager::allowedStudents(quint64 roomId,
     }
     return retVal;
 }
+
+QStringList DBManager::emergencyData(QSqlError &error) const {
+    auto query = Teacher::emergencyDataQuery(QSqlDatabase::database(mDbName));
+    query.exec();
+    error = query.lastError();
+    QStringList retVal;
+    if (error.type() == QSqlError::NoError) {
+        while (query.next()) {
+            retVal << query.value(0).toString();
+        }
+    }
+
+    return retVal;
+}
 }
 }

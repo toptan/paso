@@ -111,6 +111,15 @@ QSqlQuery Teacher::findByEmployeeNumberQuery(const QSqlDatabase &database,
     query.bindValue(":employee_number", employeeNumber);
     return query;
 }
+
+QSqlQuery Teacher::emergencyDataQuery(const QSqlDatabase &database) {
+    QSqlQuery query(database);
+    query.prepare("SELECT P.RFID "
+                  "  FROM PERSON P "
+                  "  JOIN TEACHER T USING(ID) "
+                  " WHERE P.RFID IS NOT NULL");
+    return query;
+}
 }
 }
 }

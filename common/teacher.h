@@ -120,6 +120,13 @@ public:
     static QSqlQuery findByEmployeeNumberQuery(const QSqlDatabase &database,
                                                const QString &employeeNumber);
 
+    ///
+    /// \brief Returns query that finds all teachers RFID data.
+    /// \param database The database to use.
+    /// \return The query.
+    ///
+    static QSqlQuery emergencyDataQuery(const QSqlDatabase &database);
+
 private:
     QString mEmployeeNumber; //!< The teacher employee number.
     QString mOffice;         //!< The teachers office number.

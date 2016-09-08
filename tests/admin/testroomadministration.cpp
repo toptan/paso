@@ -172,7 +172,7 @@ void TestRoomAdministration::testRoomEditorWidget() {
     auto saveButton = buttonBox->button(QDialogButtonBox::Save);
     auto cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
     auto barringButton = buttonBox->findChild<QPushButton *>("barringButton");
-    auto barredTableView = editor.findChild<QTableView *>();
+    auto barredTableView = editor.findChild<QTableView *>("barredTableView");
 
     QVERIFY(uuidEdit->isReadOnly());
     QVERIFY(!nameEdit->isReadOnly());

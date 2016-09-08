@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1024</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>PaSo Simulator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -19,19 +19,6 @@
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <layout class="QFormLayout" name="formLayout">
-        <item row="1" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Room UUID</string>
-          </property>
-          <property name="buddy">
-           <cstring>uuidEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="uuidEdit"/>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
@@ -44,6 +31,103 @@
         </item>
         <item row="0" column="1">
          <widget class="QLineEdit" name="serverEdit"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="uuidEdit"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Simulator status</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="statusLabel">
+          <property name="text">
+           <string>Unregistered</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>RFID</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QLineEdit" name="cardEdit">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Room UUID</string>
+          </property>
+          <property name="buddy">
+           <cstring>uuidEdit</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QRadioButton" name="normalRadioButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Normal operation</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">operationModeGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="QRadioButton" name="nonCritialFailureRadioButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Non Critical Failure</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">operationModeGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="9" column="1">
+         <widget class="QRadioButton" name="criticalFailureRadioButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Critical Failure (Not Responding)</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">operationModeGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Server status</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLabel" name="serverLabel">
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -59,7 +143,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="sentMessagesEdit"/>
+           <widget class="QPlainTextEdit" name="sentMessagesEdit">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -73,7 +161,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="receivedMessagesEdit"/>
+           <widget class="QPlainTextEdit" name="receivedMessagesEdit">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -87,6 +179,23 @@
        <widget class="QPushButton" name="registerButton">
         <property name="text">
          <string>Register</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="clearButton">
+        <property name="text">
+         <string>Clear Messages</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="readCardButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Read Card</string>
         </property>
        </widget>
       </item>
@@ -111,7 +220,13 @@
  <tabstops>
   <tabstop>serverEdit</tabstop>
   <tabstop>uuidEdit</tabstop>
+  <tabstop>cardEdit</tabstop>
+  <tabstop>normalRadioButton</tabstop>
+  <tabstop>nonCritialFailureRadioButton</tabstop>
+  <tabstop>criticalFailureRadioButton</tabstop>
   <tabstop>registerButton</tabstop>
+  <tabstop>clearButton</tabstop>
+  <tabstop>readCardButton</tabstop>
   <tabstop>sentMessagesEdit</tabstop>
   <tabstop>receivedMessagesEdit</tabstop>
  </tabstops>
@@ -124,7 +239,7 @@
    <slot>onRegisterButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>737</x>
+     <x>961</x>
      <y>29</y>
     </hint>
     <hint type="destinationlabel">
@@ -165,9 +280,47 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>clearButton</sender>
+   <signal>clicked()</signal>
+   <receiver>SimulatorMainWindow</receiver>
+   <slot>onClearButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>924</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>665</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>readCardButton</sender>
+   <signal>clicked()</signal>
+   <receiver>SimulatorMainWindow</receiver>
+   <slot>onReadCardButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>989</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>984</x>
+     <y>185</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onRegisterButtonClicked()</slot>
   <slot>onServerOrUUIDTextChanged(QString)</slot>
+  <slot>onDeregisterButtonClicked()</slot>
+  <slot>onClearButtonClicked()</slot>
+  <slot>onReadCardButtonClicked()</slot>
  </slots>
+ <buttongroups>
+  <buttongroup name="operationModeGroup"/>
+ </buttongroups>
 </ui>

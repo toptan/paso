@@ -611,6 +611,13 @@ public:
     data::entity::EntityVector allowedStudents(quint64 roomId,
                                                QSqlError &error) const;
 
+    ///
+    /// \brief Returns all teachers RFID data to be used by controllers.
+    /// \param error The SQL error if any.
+    /// \return List of all teachers RFID data.
+    ///
+    QStringList emergencyData(QSqlError &error) const;
+
 private:
     const QString mDbName;
 };

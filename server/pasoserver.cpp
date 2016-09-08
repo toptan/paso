@@ -178,7 +178,9 @@ void PasoServer::handleRequest() {
 }
 
 void PasoServer::writeResponse(QTcpSocket *clientSocket,
-                               const QString &responseData) const {
+                               const paso::comm::Base &response) const {
+
+    QString responseData = response.toJsonString();
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_5);
@@ -200,25 +202,56 @@ void PasoServer::handleLoginRequest(QTcpSocket *clientSocket,
     if (sysUser && sysUser->password() == request.password()) {
         LoginResponse response(*sysUser, "QPSQL", mDbName, mDbServer,
                                mDbUsername, mDbPassword, mDbPort);
-        responseData = response.toJsonString();
+        writeResponse(clientSocket, response);
     } else {
         LoginResponse response;
-        responseData = response.toJsonString();
+        writeResponse(clientSocket, response);
     }
-    writeResponse(clientSocket, responseData);
 }
 
 void PasoServer::handleRegisterRequest(QTcpSocket *clientSocket,
                                        const QString &requestString) {
+    QSqlError error;
     QString responseData;
     RegisterRequest request;
     request.fromJsonString(requestString);
     RegisterResponse response(request.roomId());
+    response.setSuccess(false);
+    auto room = mDbManager->getRoom(request.roomId(), error);
+    if (error.type() != QSqlError::NoError) {
+        qCritical() << "Problem loading room data:" << error;
+        writeResponse(clientSocket, response);
+        return;
+    }
+    if (!room) {
+        qWarning() << "Unauthorized controller " << request.roomId().toString()
+                   << "from" << clientSocket->peerAddress().toString();
+        writeResponse(clientSocket, response);
+        return;
+    }
+    auto emergencyData = mDbManager->emergencyData(error);
+    if (error.type() != QSqlError::NoError) {
+        qCritical() << "Problem loading emergency data:" << error;
+        writeResponse(clientSocket, response);
+        return;
+    }
+
+    ControllerInfo info;
+    if (mControllers.contains(request.roomId())) {
+        info = mControllers[request.roomId()];
+    } else {
+        info.controllerUuid = request.roomId();
+        info.controllerAddress = clientSocket->peerAddress();
+        info.controllerPort = 12000 + mControllers.size();
+        mControllers.insert(info.controllerUuid, info);
+    }
     response.setSuccess(true);
-    response.setPort(5001);
-    response.setEmergencyData({"A", "B", "C"});
+    response.setPort(info.controllerPort);
+    response.setEmergencyData(emergencyData);
     responseData = response.toJsonString();
-    writeResponse(clientSocket, responseData);
+    writeResponse(clientSocket, response);
+    qInfo() << "Registered controller" << response.roomId().toString() << "from"
+            << info.controllerAddress.toString();
 }
 }
 }

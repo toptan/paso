@@ -1,6 +1,7 @@
 #ifndef PASOSERVER_H
 #define PASOSERVER_H
 
+#include "commdata.h"
 #include "pasodb.h"
 #include "sslserver.h"
 
@@ -10,6 +11,12 @@
 
 namespace paso {
 namespace server {
+
+struct ControllerInfo {
+    QHostAddress controllerAddress;
+    quint16 controllerPort;
+    QUuid controllerUuid;
+};
 
 class PasoServer : public QObject {
     Q_OBJECT
@@ -39,8 +46,10 @@ private:
     QString mKeyFile;
     QString mCertFile;
 
+    QMap<QUuid, ControllerInfo> mControllers;
+
     void writeResponse(QTcpSocket *clientSocket,
-                       const QString &responseData) const;
+                       const paso::comm::Base &responseData) const;
 
     void handleLoginRequest(QTcpSocket *clientSocket,
                             const QString &requestString);
