@@ -109,7 +109,8 @@ public:
     /// \param room The room to insert.
     /// \return The query.
     ///
-    static QSqlQuery insertQuery(const QSqlDatabase &database, const Room &room);
+    static QSqlQuery insertQuery(const QSqlDatabase &database,
+                                 const Room &room);
 
     ///
     /// \brief Returns update query for given course with values bound.
@@ -117,7 +118,8 @@ public:
     /// \param room The room to update.
     /// \return The query.
     ///
-    static QSqlQuery updateQuery(const QSqlDatabase &database, const Room &room);
+    static QSqlQuery updateQuery(const QSqlDatabase &database,
+                                 const Room &room);
 
     ///
     /// \brief Returns find by UUID query with bound UUID value.
@@ -171,6 +173,15 @@ public:
     ///
     static QSqlQuery allowedStudentsQuery(const QSqlDatabase &database,
                                           quint64 roomId);
+
+    ///
+    /// \brief Returns the query that finds all time slots when room is occupied by activity.
+    /// \param database The database to use.
+    /// \param roomId The room id.
+    /// \return The query.
+    ///
+    static QSqlQuery occupancyQuery(const QSqlDatabase &database,
+                                    quint64 roomId);
 
 private:
     QString mRoomUUID;       //!< The room UUID

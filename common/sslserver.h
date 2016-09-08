@@ -9,6 +9,8 @@
 
 #include <memory>
 
+namespace paso {
+namespace comm {
 class SslServer : public QTcpServer {
 public:
     explicit SslServer(std::shared_ptr<QSslCertificate> certificate,
@@ -22,5 +24,6 @@ private:
     std::shared_ptr<QSslCertificate> mCertificate;
     std::shared_ptr<QSslKey> mKey;
 };
-
+}
+}
 #endif // SSLSERVER_H

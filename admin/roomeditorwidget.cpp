@@ -9,13 +9,16 @@
 
 #include <QCheckBox>
 #include <QDebug>
+#include <QFileDialog>
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
+#include <QLabel>
 #include <QPushButton>
 #include <QPushButton>
 #include <QSqlError>
 #include <QSqlField>
+#include <QSqlQueryModel>
 #include <QSqlRecord>
 #include <QTableView>
 #include <QUuid>
@@ -53,29 +56,86 @@ void RoomEditorWidget::setupUi(const QVariantMap &columnLabels,
         {"INDEX_NUMBER", tr("Index number")},
         {"LAST_NAME", tr("Last name")},
         {"FIRST_NAME", tr("First name")}};
+
+    mOccupancyTableView = new QTableView();
+    mExportOccupancy = new QPushButton(tr("Export"), this);
+    mExportOccupancy->setEnabled(false);
+    auto vLayout = new QVBoxLayout;
+    auto hLayout = new QHBoxLayout;
+    hLayout->addStretch(1);
+    hLayout->addWidget(mExportOccupancy);
+    vLayout->addWidget(mOccupancyTableView);
+    vLayout->addItem(hLayout);
+    l->insertRow(l->rowCount() - 1, new QLabel(tr("Occupancy"), this), vLayout);
+    mOccupancyTableModel = new QSqlQueryModel(this);
+    auto query =
+        Room::occupancyQuery(QSqlDatabase::database(DEFAULT_DB_NAME), 0);
+    query.exec();
+    auto occupancySortModel = new QSortFilterProxyModel(this);
+    occupancySortModel->setSourceModel(mOccupancyTableModel);
+    mOccupancyTableModel->setQuery(query);
+    mOccupancyTableView->setModel(occupancySortModel);
+    mOccupancyTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mOccupancyTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    mOccupancyTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mOccupancyTableView->horizontalHeader()->setSectionResizeMode(
+        QHeaderView::ResizeToContents);
+    mOccupancyTableView->horizontalHeader()->setCascadingSectionResizes(true);
+    mOccupancyTableView->horizontalHeader()->setStretchLastSection(true);
+    mOccupancyTableView->horizontalHeader()->model()->setHeaderData(
+        0, Qt::Horizontal, tr("From"), Qt::DisplayRole);
+    mOccupancyTableView->horizontalHeader()->model()->setHeaderData(
+        1, Qt::Horizontal, tr("To"), Qt::DisplayRole);
+    mOccupancyTableView->horizontalHeader()->model()->setHeaderData(
+        2, Qt::Horizontal, tr("Activity"), Qt::DisplayRole);
+    mOccupancyTableView->setSortingEnabled(true);
+    mOccupancyTableView->setAlternatingRowColors(true);
+    mOccupancyTableView->hideColumn(3);
+    mOccupancyTableView->sortByColumn(0, Qt::SortOrder::AscendingOrder);
+
     EntityVector emptyData;
     mBarredStudentsTableView = new QTableView(this);
     mBarredStudentsModel =
         new EntityTableModel(columns, columnNames, emptyData, this);
-    mBarredStudentsTableView->setModel(mBarredStudentsModel);
+    auto barredStudentsSortModel = new QSortFilterProxyModel(this);
+    barredStudentsSortModel->setSourceModel(mBarredStudentsModel);
+    mBarredStudentsTableView->setModel(barredStudentsSortModel);
     mBarredStudentsTableView->setEditTriggers(
         QAbstractItemView::NoEditTriggers);
+    mBarredStudentsTableView->setSelectionMode(
+        QAbstractItemView::SingleSelection);
+    mBarredStudentsTableView->setSelectionBehavior(
+        QAbstractItemView::SelectRows);
     mBarredStudentsTableView->horizontalHeader()->setSectionResizeMode(
         QHeaderView::ResizeToContents);
     mBarredStudentsTableView->horizontalHeader()->setCascadingSectionResizes(
         true);
     mBarredStudentsTableView->horizontalHeader()->setStretchLastSection(true);
+    mBarredStudentsTableView->setSortingEnabled(true);
+    mBarredStudentsTableView->setAlternatingRowColors(true);
     mBarredStudentsTableView->sortByColumn(1, Qt::SortOrder::AscendingOrder);
     l->insertRow(l->rowCount() - 1, tr("Barred students"),
                  mBarredStudentsTableView);
+    connect(this, &RecordEditorWidget::editFinished, [this]() {
+        mExportOccupancy->setEnabled(true);
+        mOccupancyTableView->setEnabled(true);
+        mBarredStudentsTableView->setEnabled(true);
+    });
+    connect(mExportOccupancy, &QPushButton::clicked, this,
+            &RoomEditorWidget::onExportOccupancyClicked);
 }
 
 void RoomEditorWidget::onDisplayRecord(const QSqlRecord &record) {
     RecordEditorWidget::onDisplayRecord(record);
     QSqlError error;
-    auto roomId = record.value("id").toULongLong();
-    auto barred = mManager.barredStudents(roomId, error);
+    mRoomId = record.value("id").toULongLong();
+    auto barred = mManager.barredStudents(mRoomId, error);
     mBarredStudentsModel->setEntityData(barred);
+    auto query =
+        Room::occupancyQuery(QSqlDatabase::database(DEFAULT_DB_NAME), mRoomId);
+    query.exec();
+    mOccupancyTableModel->setQuery(query);
+    mExportOccupancy->setEnabled(mOccupancyTableModel->rowCount() != 0);
 }
 
 void RoomEditorWidget::prepareEdit(QSqlRecord &record) {
@@ -167,6 +227,55 @@ void RoomEditorWidget::accepted() {
     } else {
         emit requestUpdate(mRecord);
     }
+    mExportOccupancy->setEnabled(true);
+    mOccupancyTableView->setEnabled(true);
+    mBarredStudentsTableView->setEnabled(true);
+}
+
+void RoomEditorWidget::onEditExistingRecord(QSqlRecord record) {
+    RecordEditorWidget::onEditExistingRecord(record);
+    mExportOccupancy->setEnabled(false);
+    mOccupancyTableView->setEnabled(false);
+    mBarredStudentsTableView->setEnabled(false);
+}
+
+void RoomEditorWidget::onEditNewRecord(QSqlRecord record) {
+    RecordEditorWidget::onEditNewRecord(record);
+    mExportOccupancy->setEnabled(false);
+    mOccupancyTableView->setEnabled(false);
+    mBarredStudentsTableView->setEnabled(false);
+}
+
+void RoomEditorWidget::onExportOccupancyClicked() {
+    QString fileName = QFileDialog::getSaveFileName(
+        this, tr("Export Room Occupancy"), QString(), QString(), nullptr,
+        QFileDialog::DontUseNativeDialog);
+    if (fileName.isEmpty()) {
+        return;
+    }
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly)) {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle(tr("Error"));
+        msgBox.setText(
+            tr("The export file '%1' could not be created.").arg(fileName));
+        msgBox.setDetailedText(file.errorString());
+        msgBox.exec();
+        return;
+    }
+    auto roomNumber = mRecord.value("room_number").toString();
+    auto query =
+        Room::occupancyQuery(QSqlDatabase::database(DEFAULT_DB_NAME), mRoomId);
+    query.exec();
+    QTextStream out(&file);
+    while (query.next()) {
+        out << query.value("room_number").toString() << ","
+            << query.value("name").toString() << ","
+            << query.value("start").toDateTime().toString(Qt::ISODate) << ","
+            << query.value("finish").toDateTime().toString(Qt::ISODate) << "\n";
+    }
+    out.flush();
+    file.close();
 }
 }
 }

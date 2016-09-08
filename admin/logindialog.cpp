@@ -100,7 +100,6 @@ void LoginDialog::performLogin() {
         } else {
             onLoginSuccessfull(loginResponse);
         }
-
     });
 
     ui->usernameLineEdit->setEnabled(false);

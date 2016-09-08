@@ -29,9 +29,12 @@ public:
 
 public slots:
     void onChangeBarringButtonClicked();
+    void onExportOccupancyClicked();
 
     virtual void clearData() override;
     virtual void onDisplayRecord(const QSqlRecord &record) override;
+    virtual void onEditExistingRecord(QSqlRecord record) override;
+    virtual void onEditNewRecord(QSqlRecord record) override;
 
 protected:
     virtual void prepareEdit(QSqlRecord &record) override;
@@ -45,9 +48,14 @@ protected slots:
 private:
     paso::db::DBManager mManager;
     QTableView *mBarredStudentsTableView;
+    QTableView *mOccupancyTableView;
+    QSqlQueryModel *mOccupancyTableModel;
+
     QPushButton *mChangeBarringButton;
+    QPushButton *mExportOccupancy;
 
     paso::model::EntityTableModel *mBarredStudentsModel;
+    quint64 mRoomId;
 };
 }
 }

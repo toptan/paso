@@ -24,6 +24,9 @@ link_libraries(Qt5::Network)
 link_libraries(Qt5::Sql)
 link_libraries(Qt5::Test)
 
+set(SERVER_KEY_PATH "${PROJECT_BINARY_DIR}/test_server.key")
+set(SERVER_CERT_PATH "${PROJECT_BINARY_DIR}/test_server.csr")
+
 aux_source_directory(${PROJECT_SOURCE_DIR} BASE_SOURCES)
 aux_source_directory(${PROJECT_SOURCE_DIR}/ui/mocks UI_MOCK_SOURCES)
 aux_source_directory(${PROJECT_SOURCE_DIR}/admin/mocks ADMIN_MOCK_SOURCES)
@@ -35,6 +38,8 @@ add_executable(${PROJECT_NAME} ${BASE_SOURCES} ${UI_MOCK_SOURCES} ${ADMIN_MOCK_S
 add_dependencies(${PROJECT_NAME} pasocommon)
 add_dependencies(${PROJECT_NAME} pasoui)
 add_dependencies(${PROJECT_NAME} pasoadminlib)
+target_compile_definitions(${PROJECT_NAME} PUBLIC -DSERVER_KEY_PATH="${SERVER_KEY_PATH}")
+target_compile_definitions(${PROJECT_NAME} PUBLIC -DSERVER_CERT_PATH="${SERVER_CERT_PATH}")
 target_link_libraries(${PROJECT_NAME} pasocommon)
 target_link_libraries(${PROJECT_NAME} pasoui)
 target_link_libraries(${PROJECT_NAME} pasoadminlib)
@@ -53,4 +58,25 @@ add_custom_target(check
 
 if (TARGET clean-coverage)
     add_dependencies(check clean-coverage)
+    if (TARGET coverage)
+        add_dependencies(coverage clean-coverage)
+    endif()
 endif()
+
+# Add custom target to generate server key and certificate for testing.
+add_custom_target(generate-test-keys COMMAND
+    ${OPENSSL}
+    req
+    -x509
+    -newkey rsa:2048
+    -keyout ${SERVER_KEY_PATH}
+    -nodes
+    -days 365
+    -out ${SERVER_CERT_PATH}
+    -subj '/C=RS/ST=./L=./CN=.'
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    BYPRODUCTS ${SERVER_KEY_PATH} ${SERVER_CERT_PATH}
+    COMMENT "Generating test server key and certificate."
+    )
+
+add_dependencies(${PROJECT_NAME} generate-test-keys)

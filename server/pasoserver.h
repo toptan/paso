@@ -10,6 +10,7 @@
 
 namespace paso {
 namespace server {
+
 class PasoServer : public QObject {
     Q_OBJECT
 public:
@@ -19,13 +20,11 @@ public:
     bool initDatabaseSystem();
     bool startServer();
 
-signals:
-
 private slots:
     void handleRequest();
 
 private:
-    SslServer *mTcpServer;
+    comm::SslServer *mTcpServer;
     std::shared_ptr<db::DBManager> mDbManager;
 
     unsigned short mPort;

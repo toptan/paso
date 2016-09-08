@@ -1,6 +1,5 @@
 # README
 [![Build Status](https://travis-ci.org/toptan/paso.svg?branch=master)](https://travis-ci.org/toptan/paso)
-[![Coverage Status](https://coveralls.io/repos/github/toptan/paso/badge.svg?branch=master)](https://coveralls.io/github/toptan/paso?branch=master)
 
 ### Table of Contents
 - [**Welcome**](#welcome)
@@ -56,8 +55,8 @@ pip install gcovr==3.2
 
 ## Source code access
 The complete source code is available via this github repository. The repository is configured to run automated build/unit 
-tests and produce code coverage report for each commit. Build and coverage reports are provided by 
-[Travis CI](https://travis-ci.org) and [Coveralls](https://coveralls.io) services.
+tests and produce code coverage report for each commit. Build reports are provided by 
+[Travis CI](https://travis-ci.org) service.
 
 Latest build and coverage reports are available by clicking on two badges at the top of this README file.
 

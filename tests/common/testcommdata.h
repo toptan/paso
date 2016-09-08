@@ -16,6 +16,7 @@ private slots:
     void testLoginRequestSerialization();
     void testLoginResponseCreation();
     void testLoginResponseSerialization();
+    void testSslServer();
 };
 
 #endif // TESTCOMMDATA_H

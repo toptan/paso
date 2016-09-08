@@ -23,7 +23,12 @@ find_package(Qt5Network 5.5 REQUIRED)
 find_package(Qt5Sql     5.5 REQUIRED)
 find_package(Qt5Test    5.5 REQUIRED)
 find_package(Qt5Widgets 5.5 REQUIRED)
-find_package(Qt5LinguistTools)
+find_package(Qt5LinguistTools REQUIRED)
+find_program(OPENSSL openssl DOC "Looking for openssl executable.")
+
+if(NOT OPENSSL)
+    message(FATAL_ERROR "The OpenSSL executable was not found.")
+endif(NOT OPENSSL)
 
 # Adding translations
 file(GLOB COMMON_HEADERS ${CMAKE_SOURCE_DIR}/common/*.h)

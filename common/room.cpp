@@ -39,6 +39,12 @@ QString Room::number() const { return mNumber; }
 
 void Room::setNumber(const QString &number) { mNumber = number; }
 
+QVariantList Room::barredIds() const { return mBarredIds; }
+
+void Room::setBarredIds(const QVariantList &barredIds) {
+    mBarredIds = barredIds;
+}
+
 QVariantMap Room::toVariantMap() const {
     auto retVal = Entity::toVariantMap();
     retVal.insert("ROOM_UUID", mRoomUUID);
@@ -173,10 +179,16 @@ QSqlQuery Room::allowedStudentsQuery(const QSqlDatabase &database,
     return query;
 }
 
-QVariantList Room::barredIds() const { return mBarredIds; }
-
-void Room::setBarredIds(const QVariantList &barredIds) {
-    mBarredIds = barredIds;
+QSqlQuery Room::occupancyQuery(const QSqlDatabase &database, quint64 roomId) {
+    QSqlQuery query(database);
+    query.prepare("SELECT s.start, s.finish, a.name, r.room_number"
+                  "  FROM room r"
+                  "  JOIN activity_rooms ar ON r.id = ar.id_room"
+                  "  JOIN activity a ON ar.id_activity = a.id"
+                  "  JOIN activity_slots s ON a.id = s.id_activity"
+                  " WHERE r.id = :roomId");
+    query.bindValue(":roomId", roomId);
+    return query;
 }
 }
 }

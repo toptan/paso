@@ -4,6 +4,9 @@
 #include <QSslConfiguration>
 #include <QSslSocket>
 
+namespace paso {
+namespace comm {
+
 SslServer::SslServer(std::shared_ptr<QSslCertificate> certificate,
                      std::shared_ptr<QSslKey> key, QObject *parent)
     : QTcpServer(parent), mCertificate(certificate), mKey(key) {}
@@ -28,4 +31,6 @@ void SslServer::incomingConnection(qintptr socketDescriptor) {
     } else {
         delete serverSocket;
     }
+}
+}
 }

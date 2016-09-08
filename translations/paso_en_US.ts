@@ -262,9 +262,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="35"/>
         <location filename="../admin/roomform.cpp" line="39"/>
         <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="35"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -315,22 +315,22 @@
     </message>
     <message>
         <location filename="../admin/teacherform.cpp" line="37"/>
-        <location filename="../admin/studentform.cpp" line="60"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="60"/>
         <source>First Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/teacherform.cpp" line="38"/>
-        <location filename="../admin/studentform.cpp" line="61"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="61"/>
         <source>Last Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/teacherform.cpp" line="39"/>
-        <location filename="../admin/studentform.cpp" line="62"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="62"/>
         <source>Email</source>
         <translation type="unfinished"></translation>
     </message>
@@ -619,38 +619,48 @@
 <context>
     <name>paso::admin::ActivityEditorWidget</name>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="44"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="46"/>
         <source>Rooms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="46"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="48"/>
         <source>Lists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="48"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="50"/>
         <source>Time slots</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="51"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="53"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="199"/>
-        <location filename="../admin/activityeditorwidget.cpp" line="211"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="74"/>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="76"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="215"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="227"/>
         <source>and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="212"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="228"/>
         <source>Every </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="212"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="228"/>
         <source>in month</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1439,8 +1449,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="117"/>
-        <location filename="../admin/logindialog.cpp" line="121"/>
+        <location filename="../admin/logindialog.cpp" line="116"/>
+        <location filename="../admin/logindialog.cpp" line="120"/>
         <source>Login failed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1544,51 +1554,91 @@
 <context>
     <name>paso::admin::RoomEditorWidget</name>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="69"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="118"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="117"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="178"/>
         <source>Barred students</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="43"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="46"/>
         <source>Change barring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="53"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="106"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="56"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="166"/>
         <source>Index number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="54"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="107"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="57"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="167"/>
         <source>Last name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="55"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="108"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="58"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="168"/>
         <source>First name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="117"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="61"/>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="69"/>
+        <source>Occupancy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="90"/>
+        <source>Activity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="251"/>
+        <source>Export Room Occupancy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="259"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="261"/>
+        <source>The export file &apos;%1&apos; could not be created.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="86"/>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="88"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="177"/>
         <source>Allowed students</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="121"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="181"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="122"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="182"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="126"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="186"/>
         <source>Change room barring</source>
         <translation type="unfinished"></translation>
     </message>

@@ -4,6 +4,7 @@
 #include "recordeditorwidget.h"
 
 class QListView;
+class QTableView;
 class QSqlQueryModel;
 
 namespace paso {
@@ -46,7 +47,7 @@ protected:
 private:
     QListView *mActivityRoomsView;
     QListView *mActivityListsView;
-    QListView *mActivitySlotsView;
+    QTableView *mActivitySlotsView;
 
     paso::model::EntityTableModel *mActivityRoomsModel;
     paso::model::EntityTableModel *mActivityListsModel;

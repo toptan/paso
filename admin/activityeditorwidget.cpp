@@ -12,10 +12,12 @@
 #include <QCheckBox>
 #include <QDebug>
 #include <QFormLayout>
+#include <QHeaderView>
 #include <QLabel>
 #include <QListView>
 #include <QSqlError>
 #include <QSqlQueryModel>
+#include <QTableView>
 #include <QTextStream>
 
 using namespace paso::data;
@@ -40,7 +42,7 @@ void ActivityEditorWidget::setupUi(const QVariantMap &columnLabels,
     QFormLayout *l = dynamic_cast<QFormLayout *>(layout());
     mActivityRoomsView = new QListView(this);
     mActivityListsView = new QListView(this);
-    mActivitySlotsView = new QListView(this);
+    mActivitySlotsView = new QTableView(this);
     l->insertRow(l->rowCount() - 1, new QLabel(tr("Rooms"), this),
                  mActivityRoomsView);
     l->insertRow(l->rowCount() - 1, new QLabel(tr("Lists"), this),
@@ -55,10 +57,24 @@ void ActivityEditorWidget::setupUi(const QVariantMap &columnLabels,
     mActivityListsModel =
         new EntityTableModel(columns, columnNames, emptyData, this);
     mActivitySlotsModel = new QSqlQueryModel(this);
+    auto query = Activity::timeSlotsQuery(
+        QSqlDatabase::database(DEFAULT_DB_NAME), 0);
+    query.exec();
+    mActivitySlotsModel->setQuery(query);
 
     mActivityRoomsView->setModel(mActivityRoomsModel);
     mActivityListsView->setModel(mActivityListsModel);
     mActivitySlotsView->setModel(mActivitySlotsModel);
+    mActivitySlotsView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mActivitySlotsView->setSelectionMode(QAbstractItemView::SingleSelection);
+    mActivitySlotsView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mActivitySlotsView->horizontalHeader()->setSectionResizeMode(
+        QHeaderView::Stretch);
+    mActivitySlotsView->horizontalHeader()->model()->setHeaderData(
+        0, Qt::Horizontal, tr("From"), Qt::DisplayRole);
+    mActivitySlotsView->horizontalHeader()->model()->setHeaderData(
+        1, Qt::Horizontal, tr("To"), Qt::DisplayRole);
+    mActivitySlotsView->sortByColumn(1, Qt::SortOrder::AscendingOrder);
 }
 
 void ActivityEditorWidget::prepareEdit(QSqlRecord &record) {
