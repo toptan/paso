@@ -190,6 +190,15 @@ QSqlQuery Room::occupancyQuery(const QSqlDatabase &database, quint64 roomId) {
     query.bindValue(":roomId", roomId);
     return query;
 }
+
+QSqlQuery Room::checkAccessQuery(const QSqlDatabase &database,
+                                 const QUuid &roomUuid, const QString &rfid) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM check_access(:uuid, :rfid)");
+    query.bindValue(":uuid", roomUuid);
+    query.bindValue(":rfid", rfid);
+    return query;
+}
 }
 }
 }

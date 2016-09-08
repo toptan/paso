@@ -1128,5 +1128,24 @@ QStringList DBManager::emergencyData(QSqlError &error) const {
 
     return retVal;
 }
+
+bool DBManager::checkAccess(const QUuid &roomUUID, const QString &rfid,
+                            QSqlError &error) const {
+    auto retVal = false;
+    auto query =
+        Room::checkAccessQuery(QSqlDatabase::database(mDbName), roomUUID, rfid);
+    beginTransaction();
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        rollback();
+        return false;
+    }
+    if (query.next()) {
+        retVal = query.value(0).toBool();
+    }
+    error = commit();
+    return retVal;
+}
 }
 }

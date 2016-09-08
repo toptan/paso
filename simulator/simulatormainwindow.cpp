@@ -1,6 +1,7 @@
 #include "simulatormainwindow.h"
 #include "ui_simulatormainwindow.h"
 
+#include "commaccess.h"
 #include "commregister.h"
 
 #include <QSslSocket>
@@ -30,7 +31,7 @@ void SimulatorMainWindow::onRegisterButtonClicked() {
     socket.setPeerVerifyMode(QSslSocket::VerifyNone);
     socket.connectToHostEncrypted(mServer, 6789);
     if (!socket.waitForEncrypted()) {
-        qWarning() << socket.errorString();
+        ui->sentMessagesEdit->appendPlainText("*** " + socket.errorString());
         socket.disconnectFromHost();
         return;
     }
@@ -43,14 +44,14 @@ void SimulatorMainWindow::onRegisterButtonClicked() {
     out << (quint16)(block.size() - sizeof(quint16));
     socket.write(block);
     if (!socket.waitForBytesWritten()) {
-        qWarning() << socket.errorString();
+        ui->sentMessagesEdit->appendPlainText("*** " + socket.errorString());
         socket.disconnectFromHost();
         return;
     }
-    ui->sentMessagesEdit->appendPlainText(request.toJsonString());
-    ui->sentMessagesEdit->appendPlainText("\n================================");
+    ui->sentMessagesEdit->appendPlainText(request.toJsonString().trimmed());
+    ui->sentMessagesEdit->appendPlainText("================================");
     if (!socket.waitForReadyRead()) {
-        qWarning() << socket.errorString();
+        ui->sentMessagesEdit->appendPlainText("*** " + socket.errorString());
         socket.disconnectFromHost();
         return;
     }
@@ -61,7 +62,8 @@ void SimulatorMainWindow::onRegisterButtonClicked() {
 
     while (socket.bytesAvailable() < blockSize) {
         if (!socket.waitForReadyRead()) {
-            qWarning() << socket.errorString();
+            ui->sentMessagesEdit->appendPlainText("*** " +
+                                                  socket.errorString());
             socket.disconnectFromHost();
             return;
         }
@@ -71,9 +73,9 @@ void SimulatorMainWindow::onRegisterButtonClicked() {
     in >> response;
     RegisterResponse registerResponse;
     registerResponse.fromJsonString(response);
-    ui->receivedMessagesEdit->appendPlainText(response);
+    ui->receivedMessagesEdit->appendPlainText(response.trimmed());
     ui->receivedMessagesEdit->appendPlainText(
-        "\n================================");
+        "================================");
     if (registerResponse.success()) {
         mRegistered = true;
         mPort = registerResponse.port();
@@ -90,6 +92,7 @@ void SimulatorMainWindow::onRegisterButtonClicked() {
         ui->criticalFailureRadioButton->setEnabled(true);
         ui->readCardButton->setEnabled(true);
         ui->cardEdit->setFocus();
+        mRoomUUID = registerResponse.roomId();
     }
 }
 
@@ -103,10 +106,61 @@ void SimulatorMainWindow::onClearButtonClicked() {
     ui->receivedMessagesEdit->clear();
 }
 
-void SimulatorMainWindow::onRadioButtonClicked(int id) {
-    mMode = Mode(id);
-}
+void SimulatorMainWindow::onRadioButtonClicked(int id) { mMode = Mode(id); }
 
 void SimulatorMainWindow::onReadCardButtonClicked() {
+    QString rfid = ui->cardEdit->text().trimmed();
+    AccessRequest request(mRoomUUID, rfid);
+    QSslSocket socket;
+    socket.setPeerVerifyMode(QSslSocket::VerifyNone);
+    socket.connectToHostEncrypted(mServer, 6789);
+    if (!socket.waitForEncrypted()) {
+        ui->sentMessagesEdit->appendPlainText("*** " + socket.errorString());
+        socket.disconnectFromHost();
+        return;
+    }
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_5);
+    out << (quint16)0;
+    out << request.toJsonString();
+    out.device()->seek(0);
+    out << (quint16)(block.size() - sizeof(quint16));
+    socket.write(block);
+    if (!socket.waitForBytesWritten()) {
+        ui->sentMessagesEdit->appendPlainText("*** " + socket.errorString());
+        socket.disconnectFromHost();
+        return;
+    }
+    ui->sentMessagesEdit->appendPlainText(request.toJsonString().trimmed());
+    ui->sentMessagesEdit->appendPlainText("================================");
+    if (!socket.waitForReadyRead()) {
+        ui->sentMessagesEdit->appendPlainText("*** " + socket.errorString());
+        socket.disconnectFromHost();
+        return;
+    }
+    quint16 blockSize;
+    QDataStream in(&socket);
+    in.setVersion(QDataStream::Qt_5_5);
+    in >> blockSize;
 
+    while (socket.bytesAvailable() < blockSize) {
+        if (!socket.waitForReadyRead()) {
+            ui->sentMessagesEdit->appendPlainText("*** " +
+                                                  socket.errorString());
+            socket.disconnectFromHost();
+            return;
+        }
+    }
+
+    QString response;
+    in >> response;
+    AccessResponse accessResponse;
+    accessResponse.fromJsonString(response);
+    ui->receivedMessagesEdit->appendPlainText(response.trimmed());
+    ui->receivedMessagesEdit->appendPlainText(
+        "================================");
+    if (accessResponse.granted()) {
+        ui->cardEdit->clear();
+    }
 }

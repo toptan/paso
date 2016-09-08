@@ -53,8 +53,12 @@ private:
 
     void handleLoginRequest(QTcpSocket *clientSocket,
                             const QString &requestString);
+
     void handleRegisterRequest(QTcpSocket *clientSocket,
                                const QString &requestString);
+
+    void handleAccessRequest(QTcpSocket *clientSocket,
+                             const QString &requestString);
 };
 }
 }

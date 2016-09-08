@@ -618,6 +618,17 @@ public:
     ///
     QStringList emergencyData(QSqlError &error) const;
 
+    ///
+    /// \brief Checks whether person should be grated to the room. If user was
+    /// granted with access the entry will be recorded.
+    /// \param roomUUID The room UUID.
+    /// \param rfid The person's RFID.
+    /// \param error The SQL error if any.
+    /// \return \c true if access was granted.
+    ///
+    bool checkAccess(const QUuid &roomUUID, const QString &rfid,
+                     QSqlError &error) const;
+
 private:
     const QString mDbName;
 };

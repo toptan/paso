@@ -175,13 +175,26 @@ public:
                                           quint64 roomId);
 
     ///
-    /// \brief Returns the query that finds all time slots when room is occupied by activity.
+    /// \brief Returns the query that finds all time slots when room is occupied
+    /// by activity.
     /// \param database The database to use.
     /// \param roomId The room id.
     /// \return The query.
     ///
     static QSqlQuery occupancyQuery(const QSqlDatabase &database,
                                     quint64 roomId);
+
+    ///
+    /// \brief Returns query that check whether person should be granted access
+    /// to the room. If access was granted, the room entry will be recorded too.
+    /// \param database The database to use.
+    /// \param roomUuid The room UUID.
+    /// \param rfid The persons RFID.
+    /// \return \c true if person was granted access.
+    ///
+    static QSqlQuery checkAccessQuery(const QSqlDatabase &database,
+                                      const QUuid &roomUuid,
+                                      const QString &rfid);
 
 private:
     QString mRoomUUID;       //!< The room UUID

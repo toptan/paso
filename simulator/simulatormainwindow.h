@@ -2,7 +2,9 @@
 #define SIMULATORMAINWINDOW_H
 
 #include "sslserver.h"
+
 #include <QMainWindow>
+#include <QUuid>
 
 namespace Ui {
 class SimulatorMainWindow;
@@ -32,7 +34,7 @@ private:
     bool mRegistered;
     quint16 mPort;
     QString mServer;
-
+    QUuid mRoomUUID;
     QStringList mEmergencyData;
 };
 

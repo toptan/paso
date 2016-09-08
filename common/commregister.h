@@ -20,6 +20,9 @@ public:
     explicit RegisterRequest(const QUuid &roomId);
 };
 
+///
+/// \brief The RegisterResponse class encapsulates room register responses.
+///
 class RegisterResponse : public Base {
 public:
     RegisterResponse();

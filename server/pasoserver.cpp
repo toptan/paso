@@ -1,5 +1,6 @@
 #include "pasoserver.h"
 
+#include "commaccess.h"
 #include "commdata.h"
 #include "commregister.h"
 
@@ -171,7 +172,12 @@ void PasoServer::handleRequest() {
     case Operation::REGISTER:
         handleRegisterRequest(serverSocket, request);
         break;
+    case Operation::ACCESS:
+        handleAccessRequest(serverSocket, request);
+        break;
     default:
+        qWarning() << "The controller" << base.roomId().toString()
+                   << "requested invalid operation.";
         serverSocket->disconnectFromHost();
         break;
     }
@@ -252,6 +258,33 @@ void PasoServer::handleRegisterRequest(QTcpSocket *clientSocket,
     writeResponse(clientSocket, response);
     qInfo() << "Registered controller" << response.roomId().toString() << "from"
             << info.controllerAddress.toString();
+}
+
+void PasoServer::handleAccessRequest(QTcpSocket *clientSocket,
+                                     const QString &requestString) {
+    QSqlError error;
+    QString responseData;
+    AccessRequest request;
+    request.fromJsonString(requestString);
+    AccessResponse response(request.roomId());
+    response.setGranted(false);
+    auto granted =
+        mDbManager->checkAccess(request.roomId(), request.rfid(), error);
+    if (error.type() != QSqlError::NoError) {
+        qCritical() << "Problem checking access:" << error;
+        writeResponse(clientSocket, response);
+        return;
+    }
+    if (!granted) {
+        qWarning() << "Access denied for" << request.rfid() << "for room"
+                   << request.roomId().toString();
+        writeResponse(clientSocket, response);
+        return;
+    }
+    qInfo() << "Access granted for" << request.rfid() << "for room"
+            << request.roomId().toString();
+    response.setGranted(true);
+    writeResponse(clientSocket, response);
 }
 }
 }
