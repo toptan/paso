@@ -43,7 +43,7 @@ case "$1" in
 
             # Install needed packages
             yum -y install rpm-build gcc gcc-c++ boost-devel cmake3 git tar gzip make \
-                   python cppcheck doxygen lcov python-pip graphviz qt5-linguist \
+                   python cppcheck doxygen lcov python-pip graphviz qt5-linguist openssl \
                    qt5-qtbase-devel qt5-qtbase-gui xorg-x11-server-Xvfb sysvinit-tools \
                    glibc-static psmisc motif which xauth postgresql-server qt5-qtbase-postgresql
 
