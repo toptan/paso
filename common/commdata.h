@@ -17,6 +17,7 @@ namespace comm {
 ///
 enum class Operation {
     LOGIN,            //<! Login operation.
+    REGISTER,         //<! Room register operation.
     UNKNOWN_OPERATION //<! Unknown operation, must be last always
 };
 
@@ -41,7 +42,7 @@ Operation operationFromString(const QString &operation);
 class Base : public data::JsonSerializable {
 public:
     ///
-    /// \brief Base constructs base object from give json string.
+    /// \brief Base constructs base object from given json string.
     /// \param jsonString the json string.
     ///
     explicit Base(const QString &jsonString);
@@ -196,12 +197,12 @@ public:
     ///
     /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
     ///
-    virtual void read(const QJsonObject &jsonObject);
+    virtual void read(const QJsonObject &jsonObject) override;
 
     ///
     /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const
     ///
-    virtual void write(QJsonObject &jsonObject) const;
+    virtual void write(QJsonObject &jsonObject) const override;
 
 private:
     data::entity::SystemUser mSystemUser; //!< The system user.

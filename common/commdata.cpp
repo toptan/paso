@@ -10,6 +10,8 @@ const QString operationToString(Operation operation) {
     switch (operation) {
     case Operation::LOGIN:
         return "login";
+    case Operation::REGISTER:
+        return "register";
     default:
         return "unknown_operation";
     }
@@ -18,6 +20,8 @@ const QString operationToString(Operation operation) {
 Operation operationFromString(const QString &operation) {
     if (operation == "login") {
         return Operation::LOGIN;
+    } else if (operation == "register") {
+        return Operation::REGISTER;
     } else {
         return Operation::UNKNOWN_OPERATION;
     }

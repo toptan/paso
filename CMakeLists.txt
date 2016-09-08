@@ -79,6 +79,7 @@ add_subdirectory(admin)
 add_subdirectory(common)
 add_subdirectory(server)
 add_subdirectory(ui)
+add_subdirectory(simulator)
 add_subdirectory(tests)
 
 configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_BINARY_DIR}/doc/Doxyfile @ONLY)

@@ -39,8 +39,13 @@ private:
     QString mKeyFile;
     QString mCertFile;
 
+    void writeResponse(QTcpSocket *clientSocket,
+                       const QString &responseData) const;
+
     void handleLoginRequest(QTcpSocket *clientSocket,
                             const QString &requestString);
+    void handleRegisterRequest(QTcpSocket *clientSocket,
+                               const QString &requestString);
 };
 }
 }

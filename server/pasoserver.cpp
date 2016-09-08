@@ -1,6 +1,7 @@
 #include "pasoserver.h"
 
 #include "commdata.h"
+#include "commregister.h"
 
 #include <QDataStream>
 #include <QFile>
@@ -163,28 +164,21 @@ void PasoServer::handleRequest() {
     QString request;
     in >> request;
     Base base(request);
-    if (base.operation() == Operation::LOGIN) {
+    switch (base.operation()) {
+    case Operation::LOGIN:
         handleLoginRequest(serverSocket, request);
-    } else {
+        break;
+    case Operation::REGISTER:
+        handleRegisterRequest(serverSocket, request);
+        break;
+    default:
         serverSocket->disconnectFromHost();
+        break;
     }
 }
 
-void PasoServer::handleLoginRequest(QTcpSocket *clientSocket,
-                                    const QString &requestString) {
-    QString responseData;
-    LoginRequest loginRequest;
-    loginRequest.fromJsonString(requestString);
-    QSqlError error;
-    auto sysUser = mDbManager->getSystemUser(loginRequest.username(), error);
-    if (sysUser && sysUser->password() == loginRequest.password()) {
-        LoginResponse response(*sysUser, "QPSQL", mDbName, mDbServer,
-                               mDbUsername, mDbPassword, mDbPort);
-        responseData = response.toJsonString();
-    } else {
-        LoginResponse response;
-        responseData = response.toJsonString();
-    }
+void PasoServer::writeResponse(QTcpSocket *clientSocket,
+                               const QString &responseData) const {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_5);
@@ -194,6 +188,37 @@ void PasoServer::handleLoginRequest(QTcpSocket *clientSocket,
     out << (quint16)(block.size() - sizeof(quint16));
     clientSocket->write(block);
     clientSocket->disconnectFromHost();
+}
+
+void PasoServer::handleLoginRequest(QTcpSocket *clientSocket,
+                                    const QString &requestString) {
+    QString responseData;
+    LoginRequest request;
+    request.fromJsonString(requestString);
+    QSqlError error;
+    auto sysUser = mDbManager->getSystemUser(request.username(), error);
+    if (sysUser && sysUser->password() == request.password()) {
+        LoginResponse response(*sysUser, "QPSQL", mDbName, mDbServer,
+                               mDbUsername, mDbPassword, mDbPort);
+        responseData = response.toJsonString();
+    } else {
+        LoginResponse response;
+        responseData = response.toJsonString();
+    }
+    writeResponse(clientSocket, responseData);
+}
+
+void PasoServer::handleRegisterRequest(QTcpSocket *clientSocket,
+                                       const QString &requestString) {
+    QString responseData;
+    RegisterRequest request;
+    request.fromJsonString(requestString);
+    RegisterResponse response(request.roomId());
+    response.setSuccess(true);
+    response.setPort(5001);
+    response.setEmergencyData({"A", "B", "C"});
+    responseData = response.toJsonString();
+    writeResponse(clientSocket, responseData);
 }
 }
 }
