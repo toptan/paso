@@ -56,11 +56,12 @@ AddRemoveEntitiesForm::AddRemoveEntitiesForm(QWidget *parent, bool readOnly)
             &AddRemoveEntitiesForm::removeButtonClicked);
     connect(ui->resetButton, &QPushButton::clicked, this,
             &AddRemoveEntitiesForm::resetButtonClicked);
-    connect(ui->sourceTableView, &QTableView::doubleClicked,
-            [this]() { addButtonClicked(); });
-    connect(ui->destinationTableView, &QTableView::doubleClicked,
-            [this]() { removeButtonClicked(); });
-
+    if (!mReadOnly) {
+        connect(ui->sourceTableView, &QTableView::doubleClicked,
+                [this]() { addButtonClicked(); });
+        connect(ui->destinationTableView, &QTableView::doubleClicked,
+                [this]() { removeButtonClicked(); });
+    }
     ui->addButton->setEnabled(!mReadOnly);
     ui->removeButton->setEnabled(!mReadOnly);
     ui->resetButton->setEnabled(!mReadOnly);
@@ -125,6 +126,9 @@ void AddRemoveEntitiesForm::setData(
 }
 
 void AddRemoveEntitiesForm::addButtonClicked() {
+    if (mReadOnly) {
+        return;
+    }
     auto indexes = ui->sourceTableView->selectionModel()->selectedRows();
     if (indexes.isEmpty()) {
         return;
@@ -154,6 +158,9 @@ void AddRemoveEntitiesForm::addButtonClicked() {
 }
 
 void AddRemoveEntitiesForm::removeButtonClicked() {
+    if (mReadOnly) {
+        return;
+    }
     auto indexes = ui->destinationTableView->selectionModel()->selectedRows();
     if (indexes.isEmpty()) {
         return;
@@ -224,6 +231,5 @@ void AddRemoveEntitiesForm::updateDestinationIds() {
 EntityVector AddRemoveEntitiesForm::destinationEntities() const {
     return mDestinationModel->data();
 }
-
 }
 }

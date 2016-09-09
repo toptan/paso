@@ -316,6 +316,12 @@ void PasoServer::handleAccessRequest(QTcpSocket *clientSocket,
 }
 
 void PasoServer::checkControllers() {
+    if (mControllers.isEmpty()) {
+        qInfo() << "No registered controllers. Skipping check.";
+        QTimer::singleShot(mControllerCheckPeriod, this,
+                           &PasoServer::checkControllers);
+        return;
+    }
     qInfo() << "Checking controllers.";
     QSqlError error;
     auto emergencyData = mDbManager->emergencyData(error);

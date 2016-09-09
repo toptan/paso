@@ -186,6 +186,21 @@ CREATE VIEW LIST_MEMBERS AS
         P.RFID,
         S.INDEX_NUMBER,
         S.YEAR_OF_STUDY,
+        L.ID AS LIST_ID
+    FROM PERSON P
+        JOIN STUDENT S USING (ID)
+        JOIN ENLISTED E ON S.ID = E.ID_STUDENT
+        JOIN COURSE C ON E.ID_COURSE = C.ID
+        JOIN LIST L ON C.ID = L.ID_COURSE
+    UNION
+    SELECT
+        P.ID,
+        P.LAST_NAME,
+        P.FIRST_NAME,
+        P.EMAIL,
+        P.RFID,
+        S.INDEX_NUMBER,
+        S.YEAR_OF_STUDY,
         1
     FROM PERSON P
         JOIN STUDENT S USING (ID)
@@ -537,14 +552,47 @@ BEGIN
 
 END $$ LANGUAGE plpgsql VOLATILE;
 
+CREATE OR REPLACE FUNCTION activity_priority(an_activity_id BIGINT)
+    RETURNS INTEGER AS $$
+DECLARE
+    priority INTEGER;
+    overlap  BOOLEAN;
+BEGIN
+    SELECT INTO priority, overlap
+        (CASE type
+         WHEN 'EXAM'
+             THEN 1
+         WHEN 'COLLOQUIUM'
+             THEN 2
+         WHEN 'LECTURE'
+             THEN 3
+         WHEN 'LAB_EXCERCISE'
+             THEN 4
+         WHEN 'INDIVIDUAL_WORK'
+             THEN 5
+         WHEN 'SPECIAL_EVENT'
+             THEN 6 END),
+        can_overlap
+    FROM ACTIVITY
+    WHERE ID = an_activity_id;
+
+    IF overlap
+    THEN
+        priority := 0;
+    END IF;
+
+    RETURN priority;
+END $$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION check_access(a_room_uuid UUID, a_rfid VARCHAR, a_teachers_only BOOLEAN)
     RETURNS BOOLEAN AS $$
 DECLARE
-    ret_val   BOOLEAN;
-    person_id BIGINT;
-    room_id   BIGINT;
+    person_id         BIGINT;
+    room_id           BIGINT;
+    student_priority  INTEGER;
+    required_priority INTEGER;
+    max_priority      INTEGER;
 BEGIN
-    ret_val := FALSE;
     person_id := NULL;
 
     SELECT INTO room_id r.id
@@ -560,9 +608,9 @@ BEGIN
     FROM person p
         JOIN teacher t USING (id)
     WHERE p.rfid = a_rfid;
+
     IF person_id IS NOT NULL
     THEN
-        ret_val := TRUE;
         INSERT INTO room_entry (id_room, id_person) VALUES (room_id, person_id);
         RETURN TRUE;
     END IF;
@@ -572,8 +620,73 @@ BEGIN
         RETURN FALSE;
     END IF;
 
-    RETURN FALSE;
+    SELECT INTO person_id p.id
+    FROM person p
+        JOIN student s USING (ID)
+    WHERE p.rfid = a_rfid;
+
+    -- Does the card exist in the system at all?
+    IF person_id IS NULL
+    THEN
+        RETURN FALSE;
+    END IF;
+
+
+    SELECT INTO max_priority max(priority)
+    FROM persons_priority
+    WHERE room_uuid = a_room_uuid;
+
+    -- Is there any activity at all?
+    IF max_priority IS NULL
+    THEN
+        RETURN FALSE;
+    END IF;
+
+    -- If there is special event then everyone is allowed.
+    IF max_priority = 6
+    THEN
+        INSERT INTO room_entry (id_room, id_person) VALUES (room_id, person_id);
+        RETURN TRUE;
+    END IF;
+
+    SELECT INTO required_priority min(priority)
+    FROM persons_priority
+    WHERE room_uuid = a_room_uuid AND priority > 0;
+
+    SELECT INTO student_priority min(priority)
+    FROM persons_priority
+    WHERE room_uuid = a_room_uuid AND rfid = a_rfid;
+
+    -- Check if student has any activity.
+    IF student_priority IS NULL
+    THEN
+        RETURN FALSE;
+    END IF;
+
+    IF student_priority > required_priority
+    THEN
+        RETURN FALSE;
+    ELSE
+        RETURN TRUE;
+    END IF;
 END $$ LANGUAGE plpgsql VOLATILE;
+
+CREATE VIEW PERSONS_PRIORITY AS
+    SELECT
+        r.room_uuid,
+        a.id                    AS activity_id,
+        activity_priority(a.id) AS priority,
+        l.id                    AS list_id,
+        lm.rfid
+    FROM room r
+        JOIN activity_rooms ON r.id = activity_rooms.id_room
+        JOIN activity a ON activity_rooms.id_activity = a.id
+        JOIN activity_slots sl ON a.id = sl.id_activity
+        LEFT OUTER JOIN activity_lists al ON a.id = al.id_activity
+        LEFT OUTER JOIN list l ON al.id_list = l.id
+        LEFT OUTER JOIN list_members lm ON l.id = lm.list_id
+    WHERE (lm.rfid IS NOT NULL OR activity_priority(a.id) = 6) AND
+          (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) OVERLAPS (sl.start, sl.finish);
 
 -- INSERTING INITIAL DATA --
 INSERT INTO SYSTEM_USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE)

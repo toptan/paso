@@ -25,8 +25,9 @@ SimulatorMainWindow::SimulatorMainWindow(QWidget *parent)
                                   NonCritical);
     ui->operationModeGroup->setId(ui->criticalFailureRadioButton, Critical);
 
-    QFile keyFile("/tmp/server.key");
-    QFile certFile("/tmp/server.csr");
+    auto keysDir = QApplication::applicationDirPath() + "/../share/paso/";
+    QFile keyFile(keysDir + "simulator.key");
+    QFile certFile(keysDir + "simulator.csr");
     bool keyAndCertOk = true;
     if (!keyFile.open(QIODevice::ReadOnly)) {
         QMessageBox::warning(
@@ -180,9 +181,8 @@ void SimulatorMainWindow::onClearButtonClicked() {
 void SimulatorMainWindow::onRadioButtonClicked(int id) {
     mMode = Mode(id);
     if (mSslServer != nullptr) {
-        if (mMode == Critical) {
-            mSslServer->close();
-        } else {
+        mSslServer->close();
+        if (mMode != Critical) {
             mSslServer->listen(QHostAddress::Any, mPort);
         }
     }

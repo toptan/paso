@@ -144,7 +144,9 @@ QSqlQuery List::membersQuery(const QSqlDatabase &database, quint64 listId) {
 
 QSqlQuery List::nonMembersQuery(const QSqlDatabase &database, quint64 listId) {
     QSqlQuery query(database);
-    query.prepare("SELECT * FROM LIST_MEMBERS "
+    query.prepare("SELECT DISTINCT ID, LAST_NAME, FIRST_NAME, EMAIL, "
+                  "                RFID, INDEX_NUMBER, YEAR_OF_STUDY "
+                  " FROM LIST_MEMBERS "
                   " WHERE COALESCE(LIST_ID, -1) <> :list_id_1 "
                   "  AND ID NOT IN (SELECT ID FROM LIST_MEMBERS WHERE "
                   "LIST_ID = :list_id_2)");
