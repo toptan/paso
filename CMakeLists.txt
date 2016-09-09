@@ -16,7 +16,6 @@ set(CMAKE_AUTOUIC ON)
 # Instruct CMake to run rcc when needed
 set(CMAKE_AUTORCC ON)
 
-
 # Tell compiler to use c++11
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -75,7 +74,7 @@ else()
     qt5_add_translation(QM_FILES ${TS_FILES})
 endif()
 
-add_custom_target(translations DEPENDS ${QM_FILES})
+add_custom_target(translations ALL DEPENDS ${QM_FILES})
 set_property(DIRECTORY PROPERTY CLEAN_NO_CUSTOM TRUE)
 
 file(STRINGS ${CMAKE_SOURCE_DIR}/VERSION COMPONENT_VERSION)

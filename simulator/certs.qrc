@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/keys">
+        <file>simulator.key</file>
+    </qresource>
+    <qresource prefix="/certs">
+        <file>simulator.csr</file>
+    </qresource>
+</RCC>

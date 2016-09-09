@@ -666,84 +666,80 @@
         <translation>Читај картицу</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="34"/>
-        <location filename="../simulator/simulatormainwindow.cpp" line="41"/>
-        <location filename="../simulator/simulatormainwindow.cpp" line="156"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="136"/>
         <source>Error</source>
         <translation>Грешка</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="35"/>
         <source>Could not open server key %1. Simulator will not be able to listen for communication check messages.</source>
-        <translation>Није могуће отворити серверски кључ %1. Симулатор неће моћи да прихвата поруке за проверу комуникације.</translation>
+        <translation type="vanished">Није могуће отворити серверски кључ %1. Симулатор неће моћи да прихвата поруке за проверу комуникације.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="42"/>
         <source>Could not open server certificate %1. Simulator will not be able to listen for communication check messages.</source>
-        <translation>Није могуће отворити серверски сертификат %1. Симулатор неће моћи да прихвата поруке за проверу комуникације.</translation>
+        <translation type="vanished">Није могуће отворити серверски сертификат %1. Симулатор неће моћи да прихвата поруке за проверу комуникације.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="60"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="41"/>
         <source>PaSo server %1 is not responding. Using emergency data.</source>
         <translation>ПаСо сервер %1 не одговара. Користе се нужни подаци.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="65"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="46"/>
         <source>Person %1 found in emergency data. The door is unlocked.</source>
         <translation>Особа %1 је пронађена у нужним подацима. Врата су откључана.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="69"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="50"/>
         <source>Person %1 was not found in emergency data. The door will remain locked.</source>
         <translation>Особа %1 није пронађена у нужним подацима. Врата ће остати закључана.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="140"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="120"/>
         <source>Registered and listening on port %1</source>
         <translation>Пријављен и слуша на порту %1</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="142"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="122"/>
         <source>Running</source>
         <translation>Ради</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="157"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="137"/>
         <source>Cannot listen to the port %1. Simulator will not be able to listen to communication check messages. Error is: %2</source>
         <translation>Није могуће слушати на порту %1. Симулатор неће моћи да прихвата поруке за проверу комуникације. Грешка је: %2</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="165"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="145"/>
         <source>Registered, but not listening for communication check messages.</source>
         <translation>Пријављен, али не прихвата поруке за проверу комуникације.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="257"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="237"/>
         <source>Got ping request from the server.</source>
         <translation>Пристигла је порука за проверу комуникације.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="264"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="244"/>
         <source>Failed to read server ping request: %1</source>
         <translation>Није било могуће прочитати поруку за проверз комуникације: %1</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="280"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="260"/>
         <source>The server ping request was incomplete. Error was: %1</source>
         <translation>Порука за проверу комуникације није комплетна. Грешка је: %1</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="294"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="274"/>
         <source>The server request is not ping request. Message was: %1</source>
         <translation>Примљена порука није порука за проверу комуникације. Порука је била: %1</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="324"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="304"/>
         <source>Respondend back to server that everything is OK.</source>
         <translation>Послат одговор да је све уреду.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="327"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="307"/>
         <source>Responded to the server with non critical fault &apos;%1&apos;</source>
         <translation>Послат одговор са не критичном грешком &apos;%1&apos;</translation>
     </message>

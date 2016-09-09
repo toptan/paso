@@ -79,9 +79,8 @@ mkdir -p /tmp/build
 cd /tmp/build
 $CMAKE_COMMAND -DCMAKE_BUILD_TYPE=Debug -DCMAKE_ENABLE_COVERAGE=ON /paso
 
-# Detect number of CPUs online
-CPU_COUNT="$(getconf _NPROCESSORS_ONLN | tr -d '\n')"
-make -j $CPU_COUNT
+# Build everything
+make
 
 # We need X to run GUI tests
 xvfb-run -n 77 -s "-screen 0 1024x768x24 -ac" mwm &

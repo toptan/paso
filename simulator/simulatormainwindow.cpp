@@ -25,32 +25,13 @@ SimulatorMainWindow::SimulatorMainWindow(QWidget *parent)
                                   NonCritical);
     ui->operationModeGroup->setId(ui->criticalFailureRadioButton, Critical);
 
-    auto keysDir = QApplication::applicationDirPath() + "/../share/paso/";
-    QFile keyFile(keysDir + "simulator.key");
-    QFile certFile(keysDir + "simulator.csr");
-    bool keyAndCertOk = true;
-    if (!keyFile.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(
-            this, tr("Error"),
-            tr("Could not open server key %1. Simulator will not be able to "
-               "listen for communication check messages.")
-                .arg("/tmp/server.key"));
-        keyAndCertOk = false;
-    }
-    if (!certFile.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(this, tr("Error"),
-                             tr("Could not open server certificate %1. "
-                                "Simulator will not be able to "
-                                "listen for communication check messages.")
-                                 .arg("/tmp/server.csr"));
-        keyAndCertOk = false;
-    }
-
-    if (keyAndCertOk) {
-        mSslKey = std::make_shared<QSslKey>(&keyFile, QSsl::Rsa, QSsl::Pem,
-                                            QSsl::PrivateKey);
-        mSslCert = std::make_shared<QSslCertificate>(&certFile);
-    }
+    QFile keyFile(":/keys/simulator.key");
+    QFile certFile(":/certs/simulator.csr");
+    keyFile.open(QIODevice::ReadOnly);
+    certFile.open(QIODevice::ReadOnly);
+    mSslKey = std::make_shared<QSslKey>(&keyFile, QSsl::Rsa, QSsl::Pem,
+                                        QSsl::PrivateKey);
+    mSslCert = std::make_shared<QSslCertificate>(&certFile);
 }
 
 SimulatorMainWindow::~SimulatorMainWindow() { delete ui; }
@@ -67,8 +48,7 @@ void SimulatorMainWindow::useEmergencyData() {
     } else {
         ui->sentMessagesEdit->appendPlainText(
             tr("Person %1 was not found in emergency data. The door will "
-               "remain "
-               "locked.")
+               "remain locked.")
                 .arg(rfid));
     }
     ui->sentMessagesEdit->appendPlainText("================================");
