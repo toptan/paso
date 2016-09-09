@@ -1,6 +1,7 @@
 #include "teacherform.h"
 #include "ui_teacherform.h"
 
+#include "entryreportdialog.h"
 #include "pasodb.h"
 #include "teachereditorwidget.h"
 #include "teacherquerymodel.h"
@@ -27,6 +28,16 @@ TeacherForm::TeacherForm(QWidget *parent)
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 3);
     ui->horizontalLayout->setStretch(1, 1);
+
+    auto separator = new QAction(this);
+    separator->setSeparator(true);
+    mReportAction = new QAction(tr("Entries"), this);
+    mReportAction->setObjectName("REPORT_ACTION");
+    toolBarActions().append(separator);
+    toolBarActions().append(mReportAction);
+
+    connect(mReportAction, &QAction::triggered, this, &TeacherForm::onReport);
+    mReportAction->setEnabled(false);
 }
 
 TeacherForm::~TeacherForm() { delete ui; }
@@ -80,6 +91,7 @@ bool TeacherForm::shouldDeleteRecord(const QSqlRecord &record) const {
 
 void TeacherForm::updateActions(const QSqlRecord &record) {
     // No actions to update
+    mReportAction->setEnabled(!record.isEmpty());
 }
 
 bool TeacherForm::insertRecord(QSqlRecord &record, QSqlError &error) {
@@ -113,6 +125,17 @@ bool TeacherForm::removeRow(int row, QSqlError &error) {
         refreshModel();
     }
     return success;
+}
+
+void TeacherForm::onReport() {
+    EntryReportDialog dlg(this);
+    dlg.setWindowTitle(
+        tr("%1 %2 (%3) - room entries report")
+            .arg(selectedRecord().value("last_name").toString(),
+                 selectedRecord().value("first_name").toString(),
+                 selectedRecord().value("employee_number").toString()));
+    dlg.setPersonNumber(selectedRecord().value("employee_number").toString());
+    dlg.exec();
 }
 }
 }

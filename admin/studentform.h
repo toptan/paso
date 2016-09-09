@@ -52,11 +52,13 @@ protected:
 private slots:
     void onImport();
     void onDetails();
+    void onReport();
 
 private:
     Ui::StudentForm *ui;
     QAction *mImportAction;
     QAction *mDetailsAction;
+    QAction *mReportAction;
 
     static std::pair<QSqlQueryModel *, widget::RecordEditorWidget *>
     createModelAndEditor();

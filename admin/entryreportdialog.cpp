@@ -76,7 +76,7 @@ void EntryReportDialog::onExportButtonClicked() {
     file.close();
     QMessageBox::information(
         this, tr("Information"),
-        tr("Exporting room entries to '%1' has finished.").arg(fileName));
+        tr("Exporting room entries to file '%1' has finished.").arg(fileName));
 }
 
 void EntryReportDialog::setRoomNumber(const QString &roomNumber) {
@@ -94,12 +94,12 @@ void EntryReportDialog::setPersonNumber(const QString &personNumber) {
 void EntryReportDialog::refreshData() {
     auto filterStr =
         QString("entry_time::date >= '%1' AND entry_time::date <= '%2' ")
-            .arg(mFrom.toString())
-            .arg(mTo.toString());
+            .arg(mFrom.toString(Qt::ISODate))
+            .arg(mTo.toString(Qt::ISODate));
     if (mMode == Room) {
         filterStr += QString("AND room_number ='%1'").arg(mFilter);
     } else if (mMode == Person) {
-        filterStr += QString("AND person_number = '%1").arg(mFilter);
+        filterStr += QString("AND person_number = '%1'").arg(mFilter);
     }
     mTableModel->setFilter(filterStr);
     mTableModel->select();

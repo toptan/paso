@@ -1,6 +1,7 @@
 #include "studentform.h"
 #include "ui_studentform.h"
 
+#include "entryreportdialog.h"
 #include "logdialog.h"
 #include "pasodb.h"
 #include "studentdetailsdialog.h"
@@ -46,8 +47,17 @@ StudentForm::StudentForm(QWidget *parent)
     toolBarActions().append(separator);
     toolBarActions().append(mDetailsAction);
     mDetailsAction->setEnabled(false);
+    separator = new QAction(this);
+    separator->setSeparator(true);
+    mReportAction = new QAction(tr("Entries"), this);
+    mReportAction->setObjectName("REPORT_ACTION");
+    toolBarActions().append(separator);
+    toolBarActions().append(mReportAction);
+    mReportAction->setEnabled(false);
+
     connect(mImportAction, &QAction::triggered, this, &StudentForm::onImport);
     connect(mDetailsAction, &QAction::triggered, this, &StudentForm::onDetails);
+    connect(mReportAction, &QAction::triggered, this, &StudentForm::onReport);
     connect(ui->tableView, &QTableView::doubleClicked,
             [this]() { onDetails(); });
 }
@@ -104,6 +114,7 @@ bool StudentForm::shouldDeleteRecord(const QSqlRecord &record) const {
 
 void StudentForm::updateActions(const QSqlRecord &record) {
     mDetailsAction->setEnabled(record.value("id") != 0);
+    mReportAction->setEnabled(!record.isEmpty());
 }
 
 bool StudentForm::insertRecord(QSqlRecord &record, QSqlError &error) {
@@ -276,6 +287,17 @@ void StudentForm::onImportFileSelected(const QString &fileName) {
 void StudentForm::onDetails() {
     Student student(DBManager::recordToVariantMap(selectedRecord()));
     StudentDetailsDialog dlg(student, this);
+    dlg.exec();
+}
+
+void StudentForm::onReport() {
+    EntryReportDialog dlg(this);
+    dlg.setWindowTitle(
+        tr("%1 %2 (%3) - room entries report")
+            .arg(selectedRecord().value("last_name").toString(),
+                 selectedRecord().value("first_name").toString(),
+                 selectedRecord().value("index_number").toString()));
+    dlg.setPersonNumber(selectedRecord().value("index_number").toString());
     dlg.exec();
 }
 }

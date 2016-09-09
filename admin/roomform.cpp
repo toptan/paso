@@ -33,7 +33,7 @@ RoomForm::RoomForm(QWidget *parent)
 
     auto separator = new QAction(this);
     separator->setSeparator(true);
-    mReportAction = new QAction(tr("Etries"), this);
+    mReportAction = new QAction(tr("Entries"), this);
     mReportAction->setObjectName("REPORT_ACTION");
     toolBarActions().append(separator);
     toolBarActions().append(mReportAction);

@@ -42,8 +42,12 @@ protected:
 
     virtual bool removeRow(int row, QSqlError &error) override;
 
+private slots:
+    void onReport();
+
 private:
     Ui::TeacherForm *ui;
+    QAction *mReportAction;
 
     static std::pair<QSqlQueryModel *, widget::RecordEditorWidget *>
     createModelAndEditor();
