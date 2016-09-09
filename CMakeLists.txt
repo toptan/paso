@@ -13,6 +13,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 # Instruct CMake to run uic when needed
 set(CMAKE_AUTOUIC ON)
+# Instruct CMake to run rcc when needed
+set(CMAKE_AUTORCC ON)
+
 
 # Tell compiler to use c++11
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -61,8 +64,7 @@ list(APPEND FILES_TO_TRANSLATE ${ADMIN_UIS})
 list(APPEND FILES_TO_TRANSLATE ${UI_UIS})
 list(APPEND FILES_TO_TRANSLATE ${SIMULATOR_UIS})
 
-set(TS_FILES translations/${PROJECT_NAME}_en_US.ts)
-list(APPEND TS_FILES translations/${PROJECT_NAME}_sr_RS.ts)
+set(TS_FILES translations/${PROJECT_NAME}_sr_RS.ts)
 
 option(UPDATE_TRANSLATIONS "Update source translation (files translations/*.ts)." ON)
 
@@ -79,6 +81,8 @@ set_property(DIRECTORY PROPERTY CLEAN_NO_CUSTOM TRUE)
 file(STRINGS ${CMAKE_SOURCE_DIR}/VERSION COMPONENT_VERSION)
 
 add_definitions(-DVERSION="${COMPONENT_VERSION}")
+
+configure_file(${CMAKE_SOURCE_DIR}/translations/translations.qrc ${CMAKE_BINARY_DIR}/translations.qrc @ONLY)
 
 # Add subdirectories
 add_subdirectory(admin)

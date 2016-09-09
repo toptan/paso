@@ -4,7 +4,7 @@ project(pasosimulator)
 # Administration module
 file(GLOB SIMULATOR_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
 
-add_executable(${PROJECT_NAME} ${SIMULATOR_SOURCES})
+add_executable(${PROJECT_NAME} ${SIMULATOR_SOURCES} ${CMAKE_BINARY_DIR}/translations.qrc)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/common)
 add_dependencies(${PROJECT_NAME} pasocommon)
 add_dependencies(${PROJECT_NAME} translations)

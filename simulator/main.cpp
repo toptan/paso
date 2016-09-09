@@ -14,15 +14,7 @@ int main(int argc, char **argv) {
     QApplication app(argc, argv);
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     QTranslator translator;
-    if (QSysInfo::kernelType() == "linux") {
-        translator.load(QLocale::Serbian,
-                        "/home/toptan/Documents/Work/diplomski/"
-                        "git/paso/build/Debug/paso_sr_RS.qm");
-    } else if (QSysInfo::kernelType() == "darwin") {
-        translator.load(QLocale::Serbian,
-                        "/Users/toptan/Documents/Work/diplomski/"
-                        "git/paso/build/Debug/paso_sr_RS.qm");
-    }
+    translator.load(QLocale::Serbian, ":/translations/paso_sr_RS.qm");
     app.installTranslator(&translator);
     SimulatorMainWindow mainWindow;
     mainWindow.show();

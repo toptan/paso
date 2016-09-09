@@ -16,15 +16,7 @@ int main(int argc, char **argv) {
     qRegisterMetaType<QList<QPersistentModelIndex>>();
     qRegisterMetaType<QAbstractItemModel::LayoutChangeHint>();
     QTranslator translator;
-    if (QSysInfo::kernelType() == "linux") {
-        translator.load(QLocale::Serbian,
-                        "/home/toptan/Documents/Work/diplomski/"
-                        "git/paso/build/Debug/paso_sr_RS.qm");
-    } else if (QSysInfo::kernelType() == "darwin") {
-        translator.load(QLocale::Serbian,
-                        "/Users/toptan/Documents/Work/diplomski/"
-                        "git/paso/build/Debug/paso_sr_RS.qm");
-    }
+    translator.load(QLocale::Serbian, ":/translations/paso_sr_RS.qm");
     app.installTranslator(&translator);
     paso::admin::MainWindow mainWindow;
     app.setStyleSheet("QLineEdit[error='true'] { color: #FF0000 }");

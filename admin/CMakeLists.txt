@@ -17,7 +17,7 @@ target_link_libraries(${PROJECT_NAME}lib pasocommon)
 target_link_libraries(${PROJECT_NAME}lib pasoui)
 enable_coverage(${PROJECT_NAME}lib FALSE)
 
-add_executable(${PROJECT_NAME} "${PROJECT_SOURCE_DIR}/main.cpp")
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/main.cpp ${CMAKE_BINARY_DIR}/translations.qrc)
 target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}lib)
 enable_coverage(${PROJECT_NAME} FALSE)
 
