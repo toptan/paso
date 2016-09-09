@@ -649,9 +649,13 @@ BEGIN
         RETURN TRUE;
     END IF;
 
-    SELECT INTO required_priority min(priority)
-    FROM persons_priority
-    WHERE room_uuid = a_room_uuid AND priority > 0;
+    SELECT INTO required_priority min(activity_priority(a.id))
+    FROM room r
+        JOIN activity_rooms ON r.id = activity_rooms.id_room
+        JOIN activity a ON activity_rooms.id_activity = a.id
+        JOIN activity_slots sl ON a.id = sl.id_activity
+    WHERE room_uuid = a_room_uuid AND
+          (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) OVERLAPS (sl.start, sl.finish);
 
     SELECT INTO student_priority min(priority)
     FROM persons_priority
@@ -674,9 +678,11 @@ END $$ LANGUAGE plpgsql VOLATILE;
 CREATE VIEW PERSONS_PRIORITY AS
     SELECT
         r.room_uuid,
-        a.id                    AS activity_id,
-        activity_priority(a.id) AS priority,
-        l.id                    AS list_id,
+        a.id                             AS activity_id,
+        CASE WHEN l.demonstrators
+            THEN 0
+        ELSE activity_priority(a.id) END AS priority,
+        l.id                             AS list_id,
         lm.rfid
     FROM room r
         JOIN activity_rooms ON r.id = activity_rooms.id_room
