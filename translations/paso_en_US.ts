@@ -544,6 +544,171 @@
     </message>
 </context>
 <context>
+    <name>SimulatorMainWindow</name>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="14"/>
+        <source>PaSo Simulator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="25"/>
+        <source>Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="41"/>
+        <source>Simulator status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="48"/>
+        <source>Unregistered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="55"/>
+        <source>RFID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="69"/>
+        <source>Room UUID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="82"/>
+        <source>Normal operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="98"/>
+        <source>Non Critical Failure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="111"/>
+        <source>Critical Failure (Not Responding)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="121"/>
+        <source>Server status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="128"/>
+        <source>Unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="141"/>
+        <source>Sent messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="159"/>
+        <source>Received messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="181"/>
+        <source>Register</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="188"/>
+        <source>Clear Messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.ui" line="198"/>
+        <source>Read Card</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="33"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="40"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="155"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="34"/>
+        <source>Could not open server key %1. Simulator will not be able to listen for communication check messages.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="41"/>
+        <source>Could not open server certificate %1. Simulator will not be able to listen for communication check messages.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="59"/>
+        <source>PaSo server %1 is not responding. Using emergency data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="64"/>
+        <source>Person %1 found in emergency data. The door is unlocked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="68"/>
+        <source>Person %1 was not found in emergency data. The door will remain locked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="139"/>
+        <source>Registered and listening on port %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="141"/>
+        <source>Running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="156"/>
+        <source>Cannot listen to the port %1. Simulator will not be able to listen to communication check messages. Error is: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="164"/>
+        <source>Registered, but not listening for communication check messages.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="257"/>
+        <source>Got ping request from the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="264"/>
+        <source>Failed to read server ping request: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="280"/>
+        <source>The server ping request was incomplete. Error was: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="294"/>
+        <source>The server request is not ping request. Message was: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="324"/>
+        <source>Respondend back to server that everything is OK.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../simulator/simulatormainwindow.cpp" line="327"/>
+        <source>Responded to the server with non critical fault &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StudentDetailsDialog</name>
     <message>
         <location filename="../admin/studentdetailsdialog.ui" line="14"/>

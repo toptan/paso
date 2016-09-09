@@ -2,15 +2,19 @@
 #include "ui_simulatormainwindow.h"
 
 #include "commaccess.h"
+#include "commping.h"
 #include "commregister.h"
 
+#include <QMessageBox>
 #include <QSslSocket>
 
 using namespace paso::comm;
+using namespace std;
 
 SimulatorMainWindow::SimulatorMainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::SimulatorMainWindow), mSslServer(nullptr),
-      mMode(Normal), mRegistered(false), mPort(0) {
+      mMode(Normal), mRegistered(false), mPort(0), mSslKey(nullptr),
+      mSslCert(nullptr) {
     ui->setupUi(this);
     ui->registerButton->setEnabled(false);
     connect(ui->operationModeGroup, static_cast<void (QButtonGroup::*)(int)>(
@@ -20,6 +24,32 @@ SimulatorMainWindow::SimulatorMainWindow(QWidget *parent)
     ui->operationModeGroup->setId(ui->nonCritialFailureRadioButton,
                                   NonCritical);
     ui->operationModeGroup->setId(ui->criticalFailureRadioButton, Critical);
+
+    QFile keyFile("/tmp/server.key");
+    QFile certFile("/tmp/server.csr");
+    bool keyAndCertOk = true;
+    if (!keyFile.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(
+            this, tr("Error"),
+            tr("Could not open server key %1. Simulator will not be able to "
+               "listen for communication check messages.")
+                .arg("/tmp/server.key"));
+        keyAndCertOk = false;
+    }
+    if (!certFile.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this, tr("Error"),
+                             tr("Could not open server certificate %1. "
+                                "Simulator will not be able to "
+                                "listen for communication check messages.")
+                                 .arg("/tmp/server.csr"));
+        keyAndCertOk = false;
+    }
+
+    if (keyAndCertOk) {
+        mSslKey = std::make_shared<QSslKey>(&keyFile, QSsl::Rsa, QSsl::Pem,
+                                            QSsl::PrivateKey);
+        mSslCert = std::make_shared<QSslCertificate>(&certFile);
+    }
 }
 
 SimulatorMainWindow::~SimulatorMainWindow() { delete ui; }
@@ -35,7 +65,8 @@ void SimulatorMainWindow::useEmergencyData() {
                 .arg(rfid));
     } else {
         ui->sentMessagesEdit->appendPlainText(
-            tr("Person %1 was not found in emergency data. The door will remain "
+            tr("Person %1 was not found in emergency data. The door will "
+               "remain "
                "locked.")
                 .arg(rfid));
     }
@@ -115,6 +146,24 @@ void SimulatorMainWindow::onRegisterButtonClicked() {
         ui->readCardButton->setEnabled(true);
         ui->cardEdit->setFocus();
         mRoomUUID = registerResponse.roomId();
+        if (mSslKey && mSslCert) {
+            mSslServer = new SslServer(mSslCert, mSslKey, this);
+            connect(mSslServer, &QTcpServer::newConnection, this,
+                    &SimulatorMainWindow::handlePingRequest);
+            if (!mSslServer->listen(QHostAddress::Any, mPort)) {
+                QMessageBox::warning(
+                    this, tr("Error"),
+                    tr("Cannot listen to the port %1. Simulator will not be "
+                       "able to listen to communication check messages. Error "
+                       "is: %2")
+                        .arg(mPort)
+                        .arg(mSslServer->errorString()));
+                delete mSslServer;
+            }
+        } else {
+            ui->statusLabel->setText(tr("Registered, but not listening for "
+                                        "communication check messages."));
+        }
     }
 }
 
@@ -128,7 +177,16 @@ void SimulatorMainWindow::onClearButtonClicked() {
     ui->receivedMessagesEdit->clear();
 }
 
-void SimulatorMainWindow::onRadioButtonClicked(int id) { mMode = Mode(id); }
+void SimulatorMainWindow::onRadioButtonClicked(int id) {
+    mMode = Mode(id);
+    if (mSslServer != nullptr) {
+        if (mMode == Critical) {
+            mSslServer->close();
+        } else {
+            mSslServer->listen(QHostAddress::Any, mPort);
+        }
+    }
+}
 
 void SimulatorMainWindow::onReadCardButtonClicked() {
     QString rfid = ui->cardEdit->text().trimmed();
@@ -192,4 +250,83 @@ void SimulatorMainWindow::onReadCardButtonClicked() {
     if (accessResponse.reRegister()) {
         onRegisterButtonClicked();
     }
+}
+
+void SimulatorMainWindow::handlePingRequest() {
+    ui->receivedMessagesEdit->appendPlainText(
+        tr("Got ping request from the server."));
+    auto serverSocket = mSslServer->nextPendingConnection();
+    connect(serverSocket, &QTcpSocket::disconnected, serverSocket,
+            &QObject::deleteLater);
+
+    if (!serverSocket->waitForReadyRead()) {
+        ui->receivedMessagesEdit->appendPlainText(
+            tr("Failed to read server ping request: %1")
+                .arg(serverSocket->errorString()));
+        ui->receivedMessagesEdit->appendPlainText(
+            "================================");
+        serverSocket->disconnectFromHost();
+        return;
+    }
+
+    quint16 blockSize;
+    QDataStream in(serverSocket);
+    in.setVersion(QDataStream::Qt_5_5);
+    in >> blockSize;
+
+    while (serverSocket->bytesAvailable() < blockSize) {
+        if (!serverSocket->waitForReadyRead()) {
+            ui->receivedMessagesEdit->appendPlainText(
+                tr("The server ping request was incomplete. Error was: %1")
+                    .arg(serverSocket->errorString()));
+            ui->receivedMessagesEdit->appendPlainText(
+                "================================");
+            serverSocket->disconnectFromHost();
+            return;
+        }
+    }
+    QString requestData;
+    in >> requestData;
+    PingRequest request;
+    request.fromJsonString(requestData);
+    if (request.operation() != Operation::PING) {
+        ui->receivedMessagesEdit->appendPlainText(
+            tr("The server request is not ping request. Message was: %1")
+                .arg(requestData));
+        ui->receivedMessagesEdit->appendPlainText(
+            "================================");
+        serverSocket->disconnectFromHost();
+        return;
+    }
+
+    ui->receivedMessagesEdit->appendPlainText(requestData);
+    ui->receivedMessagesEdit->appendPlainText(
+        "================================");
+
+    PingResponse response(mRoomUUID);
+    if (mMode == NonCritical) {
+        response.setResponse(false);
+        response.setFault("The device FOO malfunctions.");
+    }
+
+    QString responseData = response.toJsonString();
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_5);
+    out << (quint16)0;
+    out << responseData;
+    out.device()->seek(0);
+    out << (quint16)(block.size() - sizeof(quint16));
+    serverSocket->write(block);
+    serverSocket->disconnectFromHost();
+    if (mMode == Normal) {
+        ui->sentMessagesEdit->appendPlainText(
+            tr("Respondend back to server that everything is OK."));
+    } else {
+        ui->sentMessagesEdit->appendPlainText(
+            tr("Responded to the server with non critical fault '%1'")
+                .arg(response.fault()));
+    }
+    ui->sentMessagesEdit->appendPlainText(responseData);
+    ui->sentMessagesEdit->appendPlainText("================================");
 }

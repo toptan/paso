@@ -19,7 +19,8 @@ enum class Operation {
     LOGIN,            //<! Login operation.
     REGISTER,         //<! Room register operation.
     ACCESS,           //<! Room access operation.
-    UNKNOWN_OPERATION //<! Unknown operation, must be last always
+    PING,             //<! Communication check operation.
+    UNKNOWN_OPERATION //<! Unknown operation.
 };
 
 ///

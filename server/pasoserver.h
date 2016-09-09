@@ -36,6 +36,7 @@ private:
 
     unsigned short mPort;
     int mTimeout;
+    int mControllerCheckPeriod;
     const QString mDatabaseName;
 
     QString mDbName;
@@ -59,6 +60,10 @@ private:
 
     void handleAccessRequest(QTcpSocket *clientSocket,
                              const QString &requestString);
+
+    void checkControllers();
+
+    bool checkController(const QUuid &uuid, const QStringList &emergencyData);
 };
 }
 }

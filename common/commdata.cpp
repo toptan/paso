@@ -14,6 +14,8 @@ const QString operationToString(Operation operation) {
         return "register";
     case Operation::ACCESS:
         return "access";
+    case Operation::PING:
+        return "ping";
     default:
         return "unknown_operation";
     }
@@ -26,6 +28,8 @@ Operation operationFromString(const QString &operation) {
         return Operation::REGISTER;
     } else if (operation == "access") {
         return Operation::ACCESS;
+    } else if (operation == "ping") {
+        return Operation::PING;
     } else {
         return Operation::UNKNOWN_OPERATION;
     }

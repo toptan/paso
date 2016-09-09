@@ -2,6 +2,7 @@
 
 #include "commaccess.h"
 #include "commdata.h"
+#include "commping.h"
 #include "commregister.h"
 
 #include <QDataStream>
@@ -9,6 +10,7 @@
 #include <QSettings>
 #include <QSqlError>
 #include <QSslSocket>
+#include <QTimer>
 
 using namespace paso::comm;
 using namespace paso::db;
@@ -18,7 +20,7 @@ namespace server {
 
 PasoServer::PasoServer(QObject *parent)
     : QObject(parent), mTcpServer(nullptr), mPort(6789), mTimeout(5000),
-      mDatabaseName("paso") {}
+      mControllerCheckPeriod(300000), mDatabaseName("paso") {}
 
 bool PasoServer::loadConfiguration(const QString &configFile) {
     if (!QFile::exists(configFile)) {
@@ -32,6 +34,8 @@ bool PasoServer::loadConfiguration(const QString &configFile) {
     settings.beginGroup("server");
     mPort = settings.value("port", 6789).toInt();
     mTimeout = settings.value("timeout", 5000).toInt();
+    mControllerCheckPeriod =
+        settings.value("controllerCheckPeriod", 30).toInt() * 1000;
 
     if (!settings.contains("keyFile")) {
         qCritical() << "No server private key defined in configuration file. "
@@ -86,6 +90,8 @@ bool PasoServer::loadConfiguration(const QString &configFile) {
 
     qInfo() << "Server will start on port" << mPort;
     qInfo() << "Operation timeout set to" << mTimeout << "milliseconds.";
+    qInfo() << "Controller check period set to" << mControllerCheckPeriod / 1000
+            << "seconds.";
     return true;
 }
 
@@ -137,6 +143,8 @@ bool PasoServer::startServer() {
         return false;
     }
     qInfo() << "Server started and is listening for connections.";
+    QTimer::singleShot(mControllerCheckPeriod, this,
+                       &PasoServer::checkControllers);
     return true;
 }
 
@@ -248,7 +256,7 @@ void PasoServer::handleRegisterRequest(QTcpSocket *clientSocket,
         info.controllerUuid = request.roomId();
         info.controllerAddress = clientSocket->peerAddress();
         info.controllerPort = 12000 + mControllers.size();
-        mControllers.insert(info.controllerUuid, info);
+        mControllers[info.controllerUuid] = info;
     }
     response.setSuccess(true);
     response.setPort(info.controllerPort);
@@ -268,8 +276,14 @@ void PasoServer::handleAccessRequest(QTcpSocket *clientSocket,
     response.setGranted(false);
     auto teachersOnly = !mControllers.contains(request.roomId());
     response.setReRegister(teachersOnly);
-    qWarning() << "Got access query request from non registered controller"
-               << request.roomId();
+    if (teachersOnly) {
+        qWarning() << "Got access query request for" << request.rfid()
+                   << "from non registered controller"
+                   << request.roomId().toString();
+    } else {
+        qInfo() << "Got access query request for" << request.rfid() << "from"
+                << request.roomId().toString();
+    }
     auto granted = mDbManager->checkAccess(request.roomId(), request.rfid(),
                                            teachersOnly, error);
     if (error.type() != QSqlError::NoError) {
@@ -282,6 +296,9 @@ void PasoServer::handleAccessRequest(QTcpSocket *clientSocket,
             qWarning() << "Access denied for" << request.rfid() << "for room"
                        << request.roomId().toString()
                        << "and reregister notification sent.";
+        } else {
+            qInfo() << "Access denied for" << request.rfid() << "for room"
+                    << request.roomId().toString();
         }
         writeResponse(clientSocket, response);
         return;
@@ -296,6 +313,114 @@ void PasoServer::handleAccessRequest(QTcpSocket *clientSocket,
     }
     response.setGranted(true);
     writeResponse(clientSocket, response);
+}
+
+void PasoServer::checkControllers() {
+    qInfo() << "Checking controllers.";
+    QSqlError error;
+    auto emergencyData = mDbManager->emergencyData(error);
+    if (error.type() != QSqlError::NoError) {
+        qCritical() << "Problem loading emergency data. Controller check not "
+                       "possible. Error was:"
+                    << error;
+        return;
+    }
+    bool allOk = true;
+    for (const auto &uuid : mControllers.keys()) {
+        qInfo() << "Checking controller" << uuid.toString();
+        bool ok = checkController(uuid, emergencyData);
+        allOk = allOk && ok;
+    }
+    if (allOk) {
+        qInfo() << "All controllers reported that they are OK.";
+    } else {
+        qWarning() << "Some controllers are not OK!";
+    }
+    QTimer::singleShot(mControllerCheckPeriod, this,
+                       &PasoServer::checkControllers);
+}
+
+bool PasoServer::checkController(const QUuid &uuid,
+                                 const QStringList &emergencyData) {
+    auto controller = mControllers[uuid];
+    PingRequest request(uuid, emergencyData);
+    QSslSocket socket;
+    socket.setPeerVerifyMode(QSslSocket::VerifyNone);
+    socket.connectToHostEncrypted(controller.controllerAddress.toString(),
+                                  controller.controllerPort);
+    if (!socket.waitForEncrypted(mTimeout)) {
+        qWarning() << "The controller" << uuid.toString() << "at address"
+                   << controller.controllerAddress.toString()
+                   << "is either down or not listening on port"
+                   << controller.controllerPort
+                   << "error was:" << socket.errorString();
+        return false;
+    }
+
+    QByteArray block;
+    QDataStream out(&block, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_5);
+    out << quint16(0);
+    out << request.toJsonString();
+    out.device()->seek(0);
+    out << (quint16)(block.size() - sizeof(quint16));
+    socket.write(block);
+    if (!socket.waitForBytesWritten(mTimeout)) {
+        qWarning() << "The controller" << uuid.toString() << "at address"
+                   << controller.controllerAddress.toString()
+                   << "listening on port" << controller.controllerPort
+                   << "failed to accept ping request. Error was:"
+                   << socket.errorString();
+        return false;
+    }
+    if (!socket.waitForReadyRead(mTimeout)) {
+        qWarning() << "The controller" << uuid.toString() << "at address"
+                   << controller.controllerAddress.toString()
+                   << "listening on port" << controller.controllerPort
+                   << "failed to reply. Error was:" << socket.errorString();
+        return false;
+    }
+    quint16 blockSize;
+    QDataStream in(&socket);
+    in.setVersion(QDataStream::Qt_5_5);
+    in >> blockSize;
+
+    while (socket.bytesAvailable() < blockSize) {
+        if (!socket.waitForReadyRead()) {
+            qWarning() << "The controller" << uuid.toString() << "at address"
+                       << controller.controllerAddress.toString()
+                       << "listening on port" << controller.controllerPort
+                       << "failed to reply. Error was:" << socket.errorString();
+            return false;
+        }
+    }
+
+    QString response;
+    in >> response;
+    PingResponse pingResponse;
+    pingResponse.fromJsonString(response);
+    if (pingResponse.roomId() != request.roomId()) {
+        qWarning() << "The controller" << uuid.toString() << "at address"
+                   << controller.controllerAddress.toString()
+                   << "listening on port" << controller.controllerPort
+                   << "replied with wrong UUID"
+                   << pingResponse.roomId().toString();
+        return false;
+    }
+
+    if (!pingResponse.response()) {
+        qWarning() << "The controller" << uuid.toString() << "at address"
+                   << controller.controllerAddress.toString()
+                   << "listening on port" << controller.controllerPort
+                   << "reports that it has problems. The problem is"
+                   << pingResponse.fault();
+        return false;
+    }
+
+    qInfo() << "The controller" << uuid.toString() << "at address"
+            << controller.controllerAddress.toString() << "listening on port"
+            << controller.controllerPort << "reports that everything is OK.";
+    return true;
 }
 }
 }

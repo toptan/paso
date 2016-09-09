@@ -5,6 +5,10 @@
 
 #include <QMainWindow>
 #include <QUuid>
+#include <QSslKey>
+#include <QSslCertificate>
+
+#include <memory>
 
 namespace Ui {
 class SimulatorMainWindow;
@@ -37,7 +41,13 @@ private:
     QUuid mRoomUUID;
     QStringList mEmergencyData;
 
+    std::shared_ptr<QSslKey> mSslKey;
+    std::shared_ptr<QSslCertificate> mSslCert;
+
     void useEmergencyData();
+
+private slots:
+    void handlePingRequest();
 };
 
 #endif // SIMULATORMAINWINDOW_H
