@@ -96,7 +96,7 @@ void TestListDetailsDialog::testDataLoading() {
     QCOMPARE(sourceTable->model()->rowCount(), 2);
     QCOMPARE(destinationTable->model()->rowCount(), 2);
 
-    db.exec("DROP VIEW LIST_MEMBERS");
+    db.exec("DROP VIEW LIST_MEMBERS CASCADE");
     bool errorMessageBoxShown = false;
     auto errorMessageCallback = [&errorMessageBoxShown]() {
         auto msgBox =

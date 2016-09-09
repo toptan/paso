@@ -44,9 +44,11 @@ void TestStudentDetailsDialog::testDataRefresh() {
     QTest::mouseClick(refreshButton, Qt::LeftButton);
     QApplication::processEvents();
     QCOMPARE(coursesTableView->model()->rowCount(), 1);
-    QCOMPARE(listsTableView->model()->rowCount(), 2);
+    // Student is implicitly member of the list that is tied to the course.
+    // That is the reason why we compare with 3 not 2.
+    QCOMPARE(listsTableView->model()->rowCount(), 3);
 
-    db.exec("DROP VIEW LIST_MEMBERS");
+    db.exec("DROP VIEW LIST_MEMBERS CASCADE");
     bool errorMessageBoxShown = false;
     auto errorMessageCallback = [&errorMessageBoxShown]() {
         auto msgBox =
