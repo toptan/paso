@@ -2,6 +2,7 @@
 #include "ui_roomform.h"
 
 #include "data.h"
+#include "entryreportdialog.h"
 #include "pasodb.h"
 #include "recordeditorwidget.h"
 #include "roomeditorwidget.h"
@@ -29,6 +30,16 @@ RoomForm::RoomForm(QWidget *parent)
     ui->horizontalLayout->addWidget(recordEditor());
     ui->horizontalLayout->setStretch(0, 3);
     ui->horizontalLayout->setStretch(1, 2);
+
+    auto separator = new QAction(this);
+    separator->setSeparator(true);
+    mReportAction = new QAction(tr("Etries"), this);
+    mReportAction->setObjectName("REPORT_ACTION");
+    toolBarActions().append(separator);
+    toolBarActions().append(mReportAction);
+
+    connect(mReportAction, &QAction::triggered, this, &RoomForm::onReport);
+    mReportAction->setEnabled(false);
 }
 
 RoomForm::~RoomForm() { delete ui; }
@@ -83,6 +94,7 @@ bool RoomForm::shouldDeleteRecord(const QSqlRecord &record) const {
 
 void RoomForm::updateActions(const QSqlRecord &record) {
     // No form specific actions.
+    mReportAction->setEnabled(!record.isEmpty());
 }
 
 bool RoomForm::insertRecord(QSqlRecord &record, QSqlError &error) {
@@ -115,6 +127,14 @@ bool RoomForm::removeRow(int row, QSqlError &error) {
         refreshModel();
     }
     return success;
+}
+
+void RoomForm::onReport() {
+    EntryReportDialog dlg(this);
+    dlg.setWindowTitle(tr("Entry report for room %1")
+                           .arg(selectedRecord().value("name").toString()));
+    dlg.setRoomNumber(selectedRecord().value("room_number").toString());
+    dlg.exec();
 }
 }
 }

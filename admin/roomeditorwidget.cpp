@@ -250,8 +250,8 @@ void RoomEditorWidget::onEditNewRecord(QSqlRecord record) {
 
 void RoomEditorWidget::onExportOccupancyClicked() {
     QString fileName = QFileDialog::getSaveFileName(
-        this, tr("Export Room Occupancy"), QString(), QString(), nullptr,
-        QFileDialog::DontUseNativeDialog);
+        this, tr("Select file to export room occupancy"), QString(), QString(),
+        nullptr, QFileDialog::DontUseNativeDialog);
     if (fileName.isEmpty()) {
         return;
     }
@@ -278,6 +278,9 @@ void RoomEditorWidget::onExportOccupancyClicked() {
     }
     out.flush();
     file.close();
+    QMessageBox::information(
+        this, tr("Information"),
+        tr("Exporting room occupancy to '%1' has finished.").arg(fileName));
 }
 }
 }

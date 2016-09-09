@@ -190,6 +190,34 @@
     </message>
 </context>
 <context>
+    <name>EntryReportDialog</name>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="17"/>
+        <source>Entry Report</source>
+        <translation>Извештај о уласцима</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="33"/>
+        <source>From</source>
+        <translation>Од</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="53"/>
+        <source>To</source>
+        <translation>До</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="110"/>
+        <source>Close</source>
+        <translation>Затвори</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="117"/>
+        <source>Export</source>
+        <translation>Извези</translation>
+    </message>
+</context>
+<context>
     <name>ListDetailsDialog</name>
     <message>
         <location filename="../admin/listdetailsdialog.ui" line="14"/>
@@ -313,13 +341,13 @@
         <translation>Улога</translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="38"/>
+        <location filename="../admin/roomform.cpp" line="49"/>
         <source>Room UUID</source>
         <translation>УУИД собе</translation>
     </message>
     <message>
         <location filename="../admin/activityform.cpp" line="35"/>
-        <location filename="../admin/roomform.cpp" line="39"/>
+        <location filename="../admin/roomform.cpp" line="50"/>
         <location filename="../admin/listform.cpp" line="46"/>
         <source>Name</source>
         <translation>Назив</translation>
@@ -369,7 +397,7 @@
         <translation>Може да се преклопи</translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="40"/>
+        <location filename="../admin/roomform.cpp" line="51"/>
         <source>Number</source>
         <translation>Број</translation>
     </message>
@@ -1329,6 +1357,59 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::EntryReportDialog</name>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="47"/>
+        <source>Select file to export room entries</source>
+        <translation>Одаберите датотеку за извоз извештаја о уласцима</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="55"/>
+        <source>Error</source>
+        <translation>Грешка</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="57"/>
+        <source>The export file &apos;%1&apos; could not be created.</source>
+        <translation>Датотека за извоз &apos;%1&apos; не може да се креира.</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="78"/>
+        <source>Information</source>
+        <translation>Обевештење</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="79"/>
+        <source>Exporting room entries to &apos;%1&apos; has finished.</source>
+        <translation>Извоз извештаја о уласцима у &apos;%1&apos; је готов.</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="106"/>
+        <source>Room Number</source>
+        <translation>Број просторије</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="107"/>
+        <source>Ind. or Empl. Nr.</source>
+        <translation>Бр. инд. или зап.</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="108"/>
+        <source>First Name</source>
+        <translation>Име</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="109"/>
+        <source>Last Name</source>
+        <translation>Презиме</translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="110"/>
+        <source>Entry Time</source>
+        <translation>Време уласка</translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::ListDetailsDialog</name>
     <message>
         <location filename="../admin/listdetailsdialog.cpp" line="37"/>
@@ -1788,8 +1869,22 @@
     </message>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="253"/>
+        <source>Select file to export room occupancy</source>
+        <translation>Одаберите датотеку за извоз извештаја о заузећу просторије</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="282"/>
+        <source>Information</source>
+        <translation>Обевештење</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="283"/>
+        <source>Exporting room occupancy to &apos;%1&apos; has finished.</source>
+        <translation>Извоз извештаја о заузећу у &apos;%1&apos; је готов.</translation>
+    </message>
+    <message>
         <source>Export Room Occupancy</source>
-        <translation>Извоз заузећа просторије</translation>
+        <translation type="vanished">Извоз заузећа просторије</translation>
     </message>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="261"/>
@@ -1835,9 +1930,19 @@
 <context>
     <name>paso::admin::RoomForm</name>
     <message>
-        <location filename="../admin/roomform.cpp" line="78"/>
+        <location filename="../admin/roomform.cpp" line="36"/>
+        <source>Etries</source>
+        <translation>Уласци</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomform.cpp" line="89"/>
         <source>Do you want to delete selected room from the system?</source>
         <translation>Да ли стварно желите да обришете одабрану просторију из система?</translation>
+    </message>
+    <message>
+        <location filename="../admin/roomform.cpp" line="134"/>
+        <source>Entry report for room %1</source>
+        <translation>Извештај о уласцима у просторију %1</translation>
     </message>
 </context>
 <context>

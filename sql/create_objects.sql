@@ -258,6 +258,21 @@ CREATE VIEW LIST_MEMBERS AS
         JOIN STUDENT S USING (ID)
     WHERE S.YEAR_OF_STUDY = 5;
 
+CREATE VIEW ROOM_ENTRY_DATA AS
+    SELECT
+        r.room_number,
+        CASE WHEN s.index_number IS NULL
+            THEN t.employee_number
+        ELSE s.index_number END AS person_number,
+        p.first_name,
+        p.last_name,
+        re.entry_time
+    FROM person p
+        LEFT OUTER JOIN student s ON p.id = s.id
+        LEFT OUTER JOIN teacher t ON p.id = t.id
+        JOIN room_entry re ON p.id = re.id_person
+        JOIN room r ON re.id_room = r.id;
+
 -- After insert on course
 CREATE OR REPLACE FUNCTION a_i_course_function()
     RETURNS TRIGGER LANGUAGE plpgsql
@@ -671,6 +686,7 @@ BEGIN
     THEN
         RETURN FALSE;
     ELSE
+        INSERT INTO room_entry (id_room, id_person) VALUES (room_id, person_id);
         RETURN TRUE;
     END IF;
 END $$ LANGUAGE plpgsql VOLATILE;

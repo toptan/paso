@@ -190,6 +190,34 @@
     </message>
 </context>
 <context>
+    <name>EntryReportDialog</name>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="17"/>
+        <source>Entry Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="33"/>
+        <source>From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="53"/>
+        <source>To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="110"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.ui" line="117"/>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListDetailsDialog</name>
     <message>
         <location filename="../admin/listdetailsdialog.ui" line="14"/>
@@ -257,13 +285,13 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../admin/roomform.cpp" line="38"/>
+        <location filename="../admin/roomform.cpp" line="49"/>
         <source>Room UUID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../admin/activityform.cpp" line="35"/>
-        <location filename="../admin/roomform.cpp" line="39"/>
+        <location filename="../admin/roomform.cpp" line="50"/>
         <location filename="../admin/listform.cpp" line="46"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
@@ -309,7 +337,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../admin/roomform.cpp" line="40"/>
+        <location filename="../admin/roomform.cpp" line="51"/>
         <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1317,6 +1345,59 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::EntryReportDialog</name>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="47"/>
+        <source>Select file to export room entries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="55"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="57"/>
+        <source>The export file &apos;%1&apos; could not be created.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="78"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="79"/>
+        <source>Exporting room entries to &apos;%1&apos; has finished.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="106"/>
+        <source>Room Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="107"/>
+        <source>Ind. or Empl. Nr.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="108"/>
+        <source>First Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="109"/>
+        <source>Last Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/entryreportdialog.cpp" line="110"/>
+        <source>Entry Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::ListDetailsDialog</name>
     <message>
         <location filename="../admin/listdetailsdialog.cpp" line="37"/>
@@ -1764,7 +1845,17 @@
     </message>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="253"/>
-        <source>Export Room Occupancy</source>
+        <source>Select file to export room occupancy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="282"/>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomeditorwidget.cpp" line="283"/>
+        <source>Exporting room occupancy to &apos;%1&apos; has finished.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1811,8 +1902,18 @@
 <context>
     <name>paso::admin::RoomForm</name>
     <message>
-        <location filename="../admin/roomform.cpp" line="78"/>
+        <location filename="../admin/roomform.cpp" line="36"/>
+        <source>Etries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomform.cpp" line="89"/>
         <source>Do you want to delete selected room from the system?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../admin/roomform.cpp" line="134"/>
+        <source>Entry report for room %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
