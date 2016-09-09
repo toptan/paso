@@ -192,11 +192,12 @@ QSqlQuery Room::occupancyQuery(const QSqlDatabase &database, quint64 roomId) {
 }
 
 QSqlQuery Room::checkAccessQuery(const QSqlDatabase &database,
-                                 const QUuid &roomUuid, const QString &rfid) {
+                                 const QUuid &roomUuid, const QString &rfid, bool teachersOnly) {
     QSqlQuery query(database);
-    query.prepare("SELECT * FROM check_access(:uuid, :rfid)");
+    query.prepare("SELECT * FROM check_access(:uuid, :rfid, :teachersOnly)");
     query.bindValue(":uuid", roomUuid);
     query.bindValue(":rfid", rfid);
+    query.bindValue(":teachersOnly", teachersOnly);
     return query;
 }
 }

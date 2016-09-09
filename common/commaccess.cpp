@@ -28,7 +28,7 @@ void AccessRequest::write(QJsonObject &jsonObject) const {
 AccessResponse::AccessResponse()
     : Base(QString("{00000000-0000-0000-0000-000000000000}"),
            Operation::ACCESS),
-      mGranted(false) {}
+      mGranted(false), mReRegister(false) {}
 
 AccessResponse::AccessResponse(const QUuid &roomId, bool granted)
     : Base(roomId, Operation::ACCESS), mGranted(granted) {}
@@ -37,14 +37,21 @@ bool AccessResponse::granted() const { return mGranted; }
 
 void AccessResponse::setGranted(bool granted) { mGranted = granted; }
 
+bool AccessResponse::reRegister() const { return mReRegister; }
+
+void AccessResponse::setReRegister(bool reRegister) {
+    mReRegister = reRegister;
+}
 void AccessResponse::read(const QJsonObject &jsonObject) {
     Base::read(jsonObject);
     mGranted = jsonObject["GRANTED"].toBool();
+    mReRegister = jsonObject["REREGISTER"].toBool();
 }
 
 void AccessResponse::write(QJsonObject &jsonObject) const {
     Base::write(jsonObject);
     jsonObject["GRANTED"] = mGranted;
+    jsonObject["REREGISTER"] = mReRegister;
 }
 }
 }

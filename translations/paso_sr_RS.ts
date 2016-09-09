@@ -278,22 +278,22 @@
     </message>
     <message>
         <location filename="../admin/teacherform.cpp" line="37"/>
-        <location filename="../admin/studentform.cpp" line="60"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="60"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
         <location filename="../admin/teacherform.cpp" line="38"/>
-        <location filename="../admin/studentform.cpp" line="61"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="61"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
         <location filename="../admin/teacherform.cpp" line="39"/>
-        <location filename="../admin/studentform.cpp" line="62"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="62"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>
@@ -318,9 +318,9 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="35"/>
         <location filename="../admin/roomform.cpp" line="39"/>
         <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="35"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>

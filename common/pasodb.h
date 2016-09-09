@@ -623,10 +623,11 @@ public:
     /// granted with access the entry will be recorded.
     /// \param roomUUID The room UUID.
     /// \param rfid The person's RFID.
+    /// \param teachersOnly Allow access only to the teachers.
     /// \param error The SQL error if any.
     /// \return \c true if access was granted.
     ///
-    bool checkAccess(const QUuid &roomUUID, const QString &rfid,
+    bool checkAccess(const QUuid &roomUUID, const QString &rfid, bool teachersOnly,
                      QSqlError &error) const;
 
 private:

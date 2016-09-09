@@ -36,6 +36,8 @@ private:
     QString mServer;
     QUuid mRoomUUID;
     QStringList mEmergencyData;
+
+    void useEmergencyData();
 };
 
 #endif // SIMULATORMAINWINDOW_H

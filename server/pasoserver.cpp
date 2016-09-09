@@ -200,7 +200,6 @@ void PasoServer::writeResponse(QTcpSocket *clientSocket,
 
 void PasoServer::handleLoginRequest(QTcpSocket *clientSocket,
                                     const QString &requestString) {
-    QString responseData;
     LoginRequest request;
     request.fromJsonString(requestString);
     QSqlError error;
@@ -263,26 +262,38 @@ void PasoServer::handleRegisterRequest(QTcpSocket *clientSocket,
 void PasoServer::handleAccessRequest(QTcpSocket *clientSocket,
                                      const QString &requestString) {
     QSqlError error;
-    QString responseData;
     AccessRequest request;
     request.fromJsonString(requestString);
     AccessResponse response(request.roomId());
     response.setGranted(false);
-    auto granted =
-        mDbManager->checkAccess(request.roomId(), request.rfid(), error);
+    auto teachersOnly = !mControllers.contains(request.roomId());
+    response.setReRegister(teachersOnly);
+    qWarning() << "Got access query request from non registered controller"
+               << request.roomId();
+    auto granted = mDbManager->checkAccess(request.roomId(), request.rfid(),
+                                           teachersOnly, error);
     if (error.type() != QSqlError::NoError) {
         qCritical() << "Problem checking access:" << error;
         writeResponse(clientSocket, response);
         return;
     }
     if (!granted) {
-        qWarning() << "Access denied for" << request.rfid() << "for room"
-                   << request.roomId().toString();
+        if (teachersOnly) {
+            qWarning() << "Access denied for" << request.rfid() << "for room"
+                       << request.roomId().toString()
+                       << "and reregister notification sent.";
+        }
         writeResponse(clientSocket, response);
         return;
     }
-    qInfo() << "Access granted for" << request.rfid() << "for room"
-            << request.roomId().toString();
+    if (teachersOnly) {
+        qInfo() << "Access granted for" << request.rfid() << "for room"
+                << request.roomId().toString()
+                << "and reregister notification sent.";
+    } else {
+        qInfo() << "Access granted for" << request.rfid() << "for room"
+                << request.roomId().toString();
+    }
     response.setGranted(true);
     writeResponse(clientSocket, response);
 }

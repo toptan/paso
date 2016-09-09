@@ -537,7 +537,7 @@ BEGIN
 
 END $$ LANGUAGE plpgsql VOLATILE;
 
-CREATE OR REPLACE FUNCTION check_access(a_room_uuid UUID, a_rfid VARCHAR)
+CREATE OR REPLACE FUNCTION check_access(a_room_uuid UUID, a_rfid VARCHAR, a_teachers_only BOOLEAN)
     RETURNS BOOLEAN AS $$
 DECLARE
     ret_val   BOOLEAN;
@@ -567,6 +567,10 @@ BEGIN
         RETURN TRUE;
     END IF;
 
+    IF a_teachers_only
+    THEN
+        RETURN FALSE;
+    END IF;
 
     RETURN FALSE;
 END $$ LANGUAGE plpgsql VOLATILE;

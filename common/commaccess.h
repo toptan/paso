@@ -42,12 +42,17 @@ public:
 
     void setGranted(bool granted);
 
+    bool reRegister() const;
+
+    void setReRegister(bool reRegister);
+
     virtual void read(const QJsonObject &jsonObject) override;
 
     virtual void write(QJsonObject &jsonObject) const override;
 
 private:
     bool mGranted;
+    bool mReRegister;
 };
 }
 }

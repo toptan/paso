@@ -190,11 +190,12 @@ public:
     /// \param database The database to use.
     /// \param roomUuid The room UUID.
     /// \param rfid The persons RFID.
+    /// \param teachersOnly Allow access only if the person is teacher.
     /// \return \c true if person was granted access.
     ///
     static QSqlQuery checkAccessQuery(const QSqlDatabase &database,
                                       const QUuid &roomUuid,
-                                      const QString &rfid);
+                                      const QString &rfid, bool teachersOnly);
 
 private:
     QString mRoomUUID;       //!< The room UUID

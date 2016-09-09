@@ -9,8 +9,8 @@
 using namespace paso::comm;
 
 SimulatorMainWindow::SimulatorMainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::SimulatorMainWindow), mMode(Normal),
-      mRegistered(false), mPort(0) {
+    : QMainWindow(parent), ui(new Ui::SimulatorMainWindow), mSslServer(nullptr),
+      mMode(Normal), mRegistered(false), mPort(0) {
     ui->setupUi(this);
     ui->registerButton->setEnabled(false);
     connect(ui->operationModeGroup, static_cast<void (QButtonGroup::*)(int)>(
@@ -24,7 +24,29 @@ SimulatorMainWindow::SimulatorMainWindow(QWidget *parent)
 
 SimulatorMainWindow::~SimulatorMainWindow() { delete ui; }
 
+void SimulatorMainWindow::useEmergencyData() {
+    ui->sentMessagesEdit->appendPlainText(
+        tr("PaSo server %1 is not responding. Using emergency data.")
+            .arg(mServer));
+    auto rfid = ui->cardEdit->text().trimmed();
+    if (mEmergencyData.contains(rfid)) {
+        ui->sentMessagesEdit->appendPlainText(
+            tr("Person %1 found in emergency data. The door is unlocked.")
+                .arg(rfid));
+    } else {
+        ui->sentMessagesEdit->appendPlainText(
+            tr("Person %1 was not found in emergency data. The door will remain "
+               "locked.")
+                .arg(rfid));
+    }
+    ui->sentMessagesEdit->appendPlainText("================================");
+}
+
 void SimulatorMainWindow::onRegisterButtonClicked() {
+    if (mSslServer != nullptr) {
+        delete mSslServer;
+        mSslServer = nullptr;
+    }
     mServer = ui->serverEdit->text().trimmed();
     RegisterRequest request(ui->uuidEdit->text().trimmed());
     QSslSocket socket;
@@ -117,6 +139,7 @@ void SimulatorMainWindow::onReadCardButtonClicked() {
     if (!socket.waitForEncrypted()) {
         ui->sentMessagesEdit->appendPlainText("*** " + socket.errorString());
         socket.disconnectFromHost();
+        useEmergencyData();
         return;
     }
     QByteArray block;
@@ -130,6 +153,7 @@ void SimulatorMainWindow::onReadCardButtonClicked() {
     if (!socket.waitForBytesWritten()) {
         ui->sentMessagesEdit->appendPlainText("*** " + socket.errorString());
         socket.disconnectFromHost();
+        useEmergencyData();
         return;
     }
     ui->sentMessagesEdit->appendPlainText(request.toJsonString().trimmed());
@@ -137,6 +161,7 @@ void SimulatorMainWindow::onReadCardButtonClicked() {
     if (!socket.waitForReadyRead()) {
         ui->sentMessagesEdit->appendPlainText("*** " + socket.errorString());
         socket.disconnectFromHost();
+        useEmergencyData();
         return;
     }
     quint16 blockSize;
@@ -149,6 +174,7 @@ void SimulatorMainWindow::onReadCardButtonClicked() {
             ui->sentMessagesEdit->appendPlainText("*** " +
                                                   socket.errorString());
             socket.disconnectFromHost();
+            useEmergencyData();
             return;
         }
     }
@@ -162,5 +188,8 @@ void SimulatorMainWindow::onReadCardButtonClicked() {
         "================================");
     if (accessResponse.granted()) {
         ui->cardEdit->clear();
+    }
+    if (accessResponse.reRegister()) {
+        onRegisterButtonClicked();
     }
 }

@@ -1130,10 +1130,10 @@ QStringList DBManager::emergencyData(QSqlError &error) const {
 }
 
 bool DBManager::checkAccess(const QUuid &roomUUID, const QString &rfid,
-                            QSqlError &error) const {
+                            bool teachersOnly, QSqlError &error) const {
     auto retVal = false;
     auto query =
-        Room::checkAccessQuery(QSqlDatabase::database(mDbName), roomUUID, rfid);
+        Room::checkAccessQuery(QSqlDatabase::database(mDbName), roomUUID, rfid, teachersOnly);
     beginTransaction();
     query.exec();
     error = query.lastError();
