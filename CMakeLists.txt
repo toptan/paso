@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.4 FATAL_ERROR)
 project(paso)
 
+set(CMAKE_INSTALL_PREFIX /usr)
+
 option(CMAKE_ENABLE_COVERAGE "Controls whether to enable code coverage on Debug build." OFF)
 
 # Include our cmake macros and functions
@@ -84,7 +86,7 @@ add_definitions(-DVERSION="${COMPONENT_VERSION}")
 # Add translations as resource
 configure_file(${CMAKE_SOURCE_DIR}/translations/translations.qrc ${CMAKE_BINARY_DIR}/translations.qrc @ONLY)
 # Add simulator key and certificate as resources
-configure_file(${CMAKE_SOURCE_DIR}/certs.qrc ${CMAKE_BINARY_DIR}/certs.qrc @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/simulator/certs.qrc ${CMAKE_BINARY_DIR}/certs.qrc @ONLY)
 
 # Add custom command to generate server key and certificate for testing.
 add_custom_target(generate-simulator-keys ALL COMMAND
@@ -109,6 +111,13 @@ add_subdirectory(ui)
 add_subdirectory(simulator)
 add_subdirectory(tests)
 
-configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_BINARY_DIR}/doc/Doxyfile @ONLY)
-
 add_custom_target(doc COMMAND doxygen WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/doc)
+
+configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile.in ${CMAKE_BINARY_DIR}/doc/Doxyfile @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/conf/30-pasoserver.conf ${CMAKE_BINARY_DIR}/conf/30-pasoserver.conf @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/conf/pasoserver ${CMAKE_BINARY_DIR}/conf/pasoserver @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/conf/pasoserver.conf ${CMAKE_BINARY_DIR}/conf/pasoserver.conf @ONLY)
+
+install(FILES ${CMAKE_BINARY_DIR}/conf/30-pasoserver.conf DESTINATION /etc/rsyslog.d/)
+install(FILES ${CMAKE_BINARY_DIR}/conf/pasoserver DESTINATION /etc/logrotate.d/)
+install(FILES ${CMAKE_BINARY_DIR}/conf/pasoserver.conf DESTINATION /etc/)
