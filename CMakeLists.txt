@@ -81,7 +81,25 @@ file(STRINGS ${CMAKE_SOURCE_DIR}/VERSION COMPONENT_VERSION)
 
 add_definitions(-DVERSION="${COMPONENT_VERSION}")
 
+# Add translations as resource
 configure_file(${CMAKE_SOURCE_DIR}/translations/translations.qrc ${CMAKE_BINARY_DIR}/translations.qrc @ONLY)
+# Add simulator key and certificate as resources
+configure_file(${CMAKE_SOURCE_DIR}/certs.qrc ${CMAKE_BINARY_DIR}/certs.qrc @ONLY)
+
+# Add custom command to generate server key and certificate for testing.
+add_custom_target(generate-simulator-keys ALL COMMAND
+    ${OPENSSL}
+    req
+    -x509
+    -newkey rsa:2048
+    -keyout ${CMAKE_BINARY_DIR}/simulator.key
+    -nodes
+    -days 365
+    -out ${CMAKE_BINARY_DIR}/simulator.csr
+    -subj '/C=RS/ST=./L=./CN=.'
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMENT "Generating test server key and certificate."
+    )
 
 # Add subdirectories
 add_subdirectory(admin)
