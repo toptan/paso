@@ -43,6 +43,8 @@ thesis/*.lot
 thesis/*.pdf
 thesis/*.toc
 thesis/*.lol
+thesis/*.bbl
+thesis/*.blg
 
 # Coverage results
 *coverage.info
