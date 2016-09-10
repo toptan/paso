@@ -110,6 +110,7 @@ void ActivityEditorWidget::onEditExistingRecord(QSqlRecord record) {
     connect(wizard, &ActivityWizard::accepted, wizard, &QObject::deleteLater);
     connect(wizard, &ActivityWizard::rejected, wizard, &QObject::deleteLater);
     wizard->setModal(true);
+    wizard->setWindowTitle(tr("Edit activity wizard"));
     wizard->show();
 }
 
@@ -126,6 +127,7 @@ void ActivityEditorWidget::onEditNewRecord(QSqlRecord record) {
     connect(wizard, &ActivityWizard::accepted, wizard, &QObject::deleteLater);
     connect(wizard, &ActivityWizard::rejected, wizard, &QObject::deleteLater);
     wizard->setModal(true);
+    wizard->setWindowTitle(tr("New activity wizard"));
     wizard->show();
 }
 

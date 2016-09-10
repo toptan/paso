@@ -850,18 +850,28 @@
         <translation>До</translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="215"/>
-        <location filename="../admin/activityeditorwidget.cpp" line="227"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="113"/>
+        <source>Edit activity wizard</source>
+        <translation>Чаробњак за уређивање активности</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="130"/>
+        <source>New activity wizard</source>
+        <translation>Чаробњак за креирање нове активности</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityeditorwidget.cpp" line="217"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="229"/>
         <source>and</source>
         <translation>и</translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="228"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="230"/>
         <source>Every </source>
         <translation>Сваког </translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="228"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="230"/>
         <source>in month</source>
         <translation>у месецу</translation>
     </message>
@@ -877,22 +887,42 @@
 <context>
     <name>paso::admin::ActivityWizard</name>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="73"/>
+        <location filename="../admin/activitywizard.cpp" line="36"/>
+        <source>Back</source>
+        <translation>Назад</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="37"/>
+        <source>Next</source>
+        <translation>Даље</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="38"/>
+        <source>Cancel</source>
+        <translation>Одустани</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="39"/>
+        <source>Finish</source>
+        <translation>Заврши</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="78"/>
         <source>There was an error while loading activity from the database.</source>
         <translation>Дошло је до грешке приликом учитавања активности из базе.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="84"/>
+        <location filename="../admin/activitywizard.cpp" line="89"/>
         <source>The requested activity does not exist.</source>
         <translation>Тражена активност не постоји.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="85"/>
+        <location filename="../admin/activitywizard.cpp" line="90"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
         <translation>Можда је неко или систем сам обрисао активност. Покушајте да освежите податке.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="139"/>
+        <location filename="../admin/activitywizard.cpp" line="144"/>
         <source>There was an error while saving activity to the database.</source>
         <translation>Дошло је до грешко прилимо снимања активности у базу.</translation>
     </message>

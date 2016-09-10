@@ -9,6 +9,7 @@
 #include "data.h"
 #include "pasodb.h"
 
+#include <QAbstractButton>
 #include <QMessageBox>
 #include <QSqlError>
 #include <QTimer>
@@ -32,6 +33,10 @@ ActivityWizard::ActivityWizard(QSqlRecord &record, QWidget *parent)
     setPage(3, new ActivityWizardListsSelectionPage(this));
     setPage(4, new ActivityWizardRoomsSelectionPage(this));
     setMinimumSize(640, 480);
+    button(QWizard::BackButton)->setText(tr("Back"));
+    button(QWizard::NextButton)->setText(tr("Next"));
+    button(QWizard::CancelButton)->setText(tr("Cancel"));
+    button(QWizard::FinishButton)->setText(tr("Finish"));
 }
 
 ActivityWizard::~ActivityWizard() {}
