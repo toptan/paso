@@ -4,6 +4,8 @@
 
 #include "pasoserver.h"
 
+#include <unistd.h>
+#include <csignal>
 #include <syslog.h>
 
 using namespace paso::server;
@@ -38,7 +40,14 @@ void logMessageHandler(QtMsgType type, const QMessageLogContext &context,
     syslog(LOG_NOTICE, "%s", txt.toStdString().c_str());
 }
 
+void signalHandler(int) {
+    qInfo() << "Shutting down PaSo server.";
+    QCoreApplication::instance()->quit();
+}
+
 int main(int argc, char **argv) {
+    signal(SIGTERM, signalHandler);
+    signal(SIGINT, signalHandler);
     setlogmask(LOG_UPTO(LOG_DEBUG));
     openlog("pasoserver", LOG_CONS | LOG_PID | LOG_NDELAY, LOG_LOCAL1);
 
@@ -55,8 +64,42 @@ int main(int argc, char **argv) {
         {"c", "config"}, "Full path to the configuration file.\nDefaults to: "
                          "/etc/pasoserver.conf",
         "config_file", "/etc/pasoserver.conf");
+
+    const QCommandLineOption daemonizeOption(
+    {"d", "daemonize"}, "If given the process will fork in background and become deamon.");
     parser.addOption(configFileOption);
+    parser.addOption(daemonizeOption);
     parser.process(app);
+
+    if (parser.isSet(daemonizeOption)) {
+        qInfo() << "Forking in background.";
+        pid_t pid, sid;
+        // Fork the parrent process.
+        pid = fork();
+
+        if (pid < 0) {
+            qCritical() << "Failed to daemonize PaSo server.";
+            return EXIT_FAILURE;
+        }
+
+        if (pid > 0) {
+            // We are parent process and we should exit now.
+            return 0;
+        }
+
+        // Create unique signature for child process.
+        sid = setsid();
+
+        if (sid < 0) {
+            qCritical() << "Failed to create unique Signature Id for PaSo server.";
+            return EXIT_FAILURE;
+        }
+
+        // Close stdin, stdout and stderr
+        close(STDIN_FILENO);
+        close(STDOUT_FILENO);
+        close(STDERR_FILENO);
+    }
 
     PasoServer server(&app);
 
@@ -71,7 +114,7 @@ int main(int argc, char **argv) {
     }
 
     auto retVal = app.exec();
-    qInfo() << "Server exited.";
+    qInfo() << "Server shut down.";
     closelog();
 
     return retVal;

@@ -256,7 +256,33 @@ CREATE VIEW LIST_MEMBERS AS
         5
     FROM PERSON P
         JOIN STUDENT S USING (ID)
-    WHERE S.YEAR_OF_STUDY = 5;
+    WHERE S.YEAR_OF_STUDY = 5
+    UNION
+    SELECT
+        P.ID,
+        P.LAST_NAME,
+        P.FIRST_NAME,
+        P.EMAIL,
+        P.RFID,
+        S.INDEX_NUMBER,
+        S.YEAR_OF_STUDY,
+        6
+    FROM PERSON P
+        JOIN STUDENT S USING (ID)
+    WHERE S.YEAR_OF_STUDY = 6
+    UNION
+    SELECT
+        P.ID,
+        P.LAST_NAME,
+        P.FIRST_NAME,
+        P.EMAIL,
+        P.RFID,
+        S.INDEX_NUMBER,
+        S.YEAR_OF_STUDY,
+        7
+    FROM PERSON P
+        JOIN STUDENT S USING (ID)
+    WHERE S.YEAR_OF_STUDY = 7;
 
 CREATE VIEW ROOM_ENTRY_DATA AS
     SELECT
@@ -715,27 +741,37 @@ INSERT INTO SYSTEM_USER (USERNAME, PASSWORD, FIRST_NAME, LAST_NAME, EMAIL, ROLE)
 VALUES ('root', 'root', 'System', 'Administrator', 'root@paso.system', 'SUPER_USER');
 
 INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
-    'Студенти прве године',
+    'Студенти прве године основних студија',
     'true',
     'true');
 
 INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
-    'Студенти друге године',
+    'Студенти друге године основних студија',
     'true',
     'true');
 
 INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
-    'Студенти треће године',
+    'Студенти треће године основних студија',
     'true',
     'true');
 
 INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
-    'Студенти четврте године',
+    'Студенти четврте године основних студија',
     'true',
     'true');
 
 INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
-    'Студенти пете године',
+    'Студенти мастер студија',
+    'true',
+    'true');
+
+INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
+    'Студенти прве године докторских студија',
+    'true',
+    'true');
+
+INSERT INTO LIST (NAME, SYSTEM, PERMANENT) VALUES (
+    'Студенти друге године докторских студија',
     'true',
     'true');
 

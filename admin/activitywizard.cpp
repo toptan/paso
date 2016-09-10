@@ -81,6 +81,7 @@ void ActivityWizard::setVisible(bool visible) {
                 msgBox.setStandardButtons(QMessageBox::Ok);
                 msgBox.setDefaultButton(QMessageBox::Ok);
                 msgBox.exec();
+                reject();
                 return;
             }
             if (!mActivity) {
@@ -93,6 +94,7 @@ void ActivityWizard::setVisible(bool visible) {
                 msgBox.setStandardButtons(QMessageBox::Ok);
                 msgBox.setDefaultButton(QMessageBox::Ok);
                 msgBox.exec();
+                reject();
                 return;
             }
         } else {
@@ -147,7 +149,7 @@ void ActivityWizard::accept() {
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
-        QWizard::reject();
+        reject();
     }
     QWizard::accept();
 }

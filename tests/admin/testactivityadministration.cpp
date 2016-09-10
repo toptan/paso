@@ -819,7 +819,7 @@ void TestActivityAdministration::testListsSelectionPage() {
     auto addButton = addRemoveForm->findChild<QPushButton *>("addButton");
     auto removeButton = addRemoveForm->findChild<QPushButton *>("removeButton");
 
-    QCOMPARE(sourceTable->model()->rowCount(), 6);
+    QCOMPARE(sourceTable->model()->rowCount(), 8);
     QCOMPARE(destinationTable->model()->rowCount(), 0);
     QVERIFY(wizard.field("activityLists").toList().isEmpty());
     QVERIFY(!page->isComplete());
@@ -844,7 +844,7 @@ void TestActivityAdministration::testListsSelectionPage() {
     QApplication::processEvents();
     wizard.button(QWizard::NextButton)->click();
     QApplication::processEvents();
-    QCOMPARE(sourceTable->model()->rowCount(), 4);
+    QCOMPARE(sourceTable->model()->rowCount(), 6);
     QCOMPARE(destinationTable->model()->rowCount(), 2);
     QCOMPARE(wizard.field("activityLists").toList().size(), 2);
     QVERIFY(page->isComplete());

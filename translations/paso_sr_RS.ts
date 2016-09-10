@@ -912,17 +912,17 @@
         <translation>Дошло је до грешке приликом учитавања активности из базе.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="89"/>
+        <location filename="../admin/activitywizard.cpp" line="90"/>
         <source>The requested activity does not exist.</source>
         <translation>Тражена активност не постоји.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="90"/>
+        <location filename="../admin/activitywizard.cpp" line="91"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
         <translation>Можда је неко или систем сам обрисао активност. Покушајте да освежите податке.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="144"/>
+        <location filename="../admin/activitywizard.cpp" line="146"/>
         <source>There was an error while saving activity to the database.</source>
         <translation>Дошло је до грешко прилимо снимања активности у базу.</translation>
     </message>
