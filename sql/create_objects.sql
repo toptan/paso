@@ -633,6 +633,7 @@ DECLARE
     student_priority  INTEGER;
     required_priority INTEGER;
     max_priority      INTEGER;
+    barred            INTEGER;
 BEGIN
     person_id := NULL;
 
@@ -672,6 +673,15 @@ BEGIN
         RETURN FALSE;
     END IF;
 
+    -- Is student barred from entering the room?
+    SELECT INTO barred COUNT(1)
+    FROM barred_students
+    WHERE id_room = room_id AND id_student = person_id;
+
+    IF barred > 0
+    THEN
+        RETURN FALSE;
+    END IF;
 
     SELECT INTO max_priority max(priority)
     FROM persons_priority
