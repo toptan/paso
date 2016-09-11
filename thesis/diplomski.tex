@@ -1005,8 +1005,38 @@ $ kill -s SIGINT `pidof pasoserver`
 					\end{figure}
 				\end{justify}
 
-			\subsection{Управљање просторијама}
+			\newpage
 
+			\subsection{Управљање просторијама}
+				\begin{justify}
+					Модул који обрађује просторије, је нешто компликованији пошто поред стандарне функционалности нуди преглед заузећа, могућност да се одређеним студентима експлицитно забрани улазак као и два извештаја.
+					\begin{figure}[h]
+						\begin{center}
+							\includegraphics[width=1\textwidth]{manual/rooms_main_window.png}
+						\end{center}
+						\caption{Прозор управљања просторијама}
+						\label{figure:rooms_main_window}
+					\end{figure}\\
+					Забрана уласка одређеним студентима се може мењати у режиму уређивања података о просторији кликом на дугме \quote{Измени забране}, након чега ће се отворити прозор са слике \ref{figure:room_bans} у коме се могу додавати или избацивати сту-денти са листе забране.
+					\begin{figure}[h]
+						\begin{center}
+							\includegraphics[width=0.9\textwidth]{manual/room_bans.png}
+						\end{center}
+						\caption{Прозор управљања просторијама}
+						\label{figure:room_bans}
+					\end{figure}
+
+					Од извештаја у овом модулу се нуди извештај заузећа просторије, који се добија кликом на дугме \quote{Извези} у десном делу где су детаљи о просторији, и извештај о уласцима у просторију у одређеном временском периоду. Извештај о уласцима се добија одабиром акције \quote{Уласци} из главне траке са алатима која ће отворити прозор у коме се може бирати временски период који нас интересује и затражити извоз извештаја у датотеку.
+					\begin{figure}[h]
+						\begin{center}
+							\includegraphics[width=1\textwidth]{manual/room_entries.png}
+						\end{center}
+						\caption{Прозор са уласцима у просторију}
+						\label{figure:room_entries}
+					\end{figure}
+
+				\end{justify}
+				
 			\newpage
 
 			\subsection{Управљање предметима}
