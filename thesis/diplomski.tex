@@ -988,7 +988,7 @@ $ kill -s SIGINT `pidof pasoserver`
 						\label{figure:system_user_edit}
 					\end{figure}
 
-					Уколико неки од података нису исправни, или не задовољавају одређене критеријуме, приликом покушаја снимања систем ће вас обаве-стити који податак није исправан, свако брисање тражи потврду.
+					Уколико неки од података нису исправни, или не задовољавају одређене критеријуме, приликом покушаја снимања систем ће вас обаве-стити који податак није исправан, а свако брисање захтева потврду.
 					\begin{figure}[h]
 						\begin{center}
 							\includegraphics[width=1.0\textwidth]{manual/system_user_entry_error.png}
@@ -1069,6 +1069,47 @@ $ kill -s SIGINT `pidof pasoserver`
 				\end{justify}
 
 			\subsection{Управљање студентима}
+				\begin{justify}
+					Модул за управљање студентима омогућава администрацију пода-така о студентима, њихов увоз путем CSV датеке из другог система. Поред тога, могу се добити и подаци о томе које предмете студент слуша, којих је листи члан и извештај о уласцима у просторије.
+					\begin{figure}[h]
+						\begin{center}
+							\includegraphics[width=1.0\textwidth]{manual/students_main_window.png}
+						\end{center}
+						\caption{Екран управљања студентима}
+						\label{figure:students_main_window}
+					\end{figure}
+					Увоз студената је исти као података о предметима, и добија се одабиром акције \quote{Увоз} из траке са алатима. По одабиру датотеке из стандардног дијалога, приказаће се прозор са резултатима увоза\footnote{Увоз студената није деструктивна операција, већ само додаје оне студенте који нису у систему и евентуално мења податке постојећих, док број индекса увек остаје непромењен.} (слика \ref{figure:students_import_dialog}).
+
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=.4\textwidth]{manual/students_import_dialog.png}
+						\end{center}
+						\caption{Извештај о увозу предмета}
+						\label{figure:students_import_dialog}
+					\end{figure}
+
+					Акција \quote{Детаљи} отвара нов прозор у коме се поред општих генералија студента може видети које предмете слуша и којих је листи члан, док акција \quote{Уласци} као код просторија, отвара нов прозор у коме се види у које је све просторије студент улазио у жељеном временском периоду. Извоз извештаја о уласцима се такође добија из овог прозора.
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=1.0\textwidth]{manual/student_details_dialog.png}
+						\end{center}
+						\caption{Детаљи о студенту}
+						\label{figure:student_details_dialog}
+					\end{figure}
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=1.0\textwidth]{manual/student_entries.png}
+						\end{center}
+						\caption{Извештај о уласцима студента у просторије}
+						\label{figure:student_entries_dialog}
+					\end{figure}
+				\end{justify}
+
+
+
+
+
+
 
 			\subsection{Управљање наставницима}
 
