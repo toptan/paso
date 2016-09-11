@@ -1005,6 +1005,46 @@ $ kill -s SIGINT `pidof pasoserver`
 					\end{figure}
 				\end{justify}
 
+			\subsection{Управљање просторијама}
+
+			\newpage
+
+			\subsection{Управљање предметима}
+				\begin{justify}
+					Модул за управљање предметима, поред стандарне функциона-лности, додавања, измене и брисања, нуди и опције увоза списка предмета из датотека, као и могућност прегледа и измене списка студената који тај предмет слушају.
+					\begin{figure}[h]
+						\begin{center}
+							\includegraphics[width=1.0\textwidth]{manual/courses_main_window.png}
+						\end{center}
+						\caption{Екран управљања предметима}
+						\label{figure:courses_main_window}
+					\end{figure}
+					Поменуте две опције се налазе у траци са алатима, као што је приказано на слици \ref{figure:courses_main_window}. Избором опције за увоз, отвориће се стандардни дијалог за одабир датотеке, а затим и прозор у коме можете видети резултате увоза података о предметима\footnote{Увоз података о предметима није деструктивна операција, већ само додаје оне пре-дмете који нису у систему и евентуално мења назив неког од постојећих, док шифра пре-дмета увек остаје непромењена.}.
+					Одабиром опције \quote{Детаљи} отвориће се нов прозор (слика \ref{figure:courses_details_dialog}) у коме су приказани студенти који слушају и студенти који не слушају предмет. Овде се студенти могу ручно додавати и избацивати са списка, али је омогућено и да се списак студената увезе\footnote{За разлику од увоза предмета, увоз студената који слушају предмет је деструктивна операција, и стари списак ће једноставно бити замењен новим.}.
+
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=1.0\textwidth]{manual/courses_details_dialog.png}
+						\end{center}
+						\caption{Детаљи предмета}
+						\label{figure:courses_details_dialog}
+					\end{figure}
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=1.0\textwidth]{manual/courses_import_dialog.png}
+						\end{center}
+						\caption{Извештај о увозу предмета}
+						\label{figure:courses_import_dialog}
+					\end{figure}
+				\end{justify}
+
+			\subsection{Управљање студентима}
+
+			\subsection{Управљање наставницима}
+
+			\subsection{Управљање листама}
+
+			\subsection{Управљање активностима}
 
 
 		\section{Симулатор}
