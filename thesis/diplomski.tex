@@ -1080,15 +1080,7 @@ $ kill -s SIGINT `pidof pasoserver`
 						\caption{Екран управљања студентима}
 						\label{figure:students_main_window}
 					\end{figure}
-					Увоз студената је исти као података о предметима, и добија се одабиром акције \quote{Увоз} из траке са алатима. По одабиру датотеке из стандардног дијалога, приказаће се прозор са резултатима увоза\footnote{Увоз студената није деструктивна операција, већ само додаје оне студенте који нису у систему и евентуално мења податке постојећих, док број индекса увек остаје непромењен.} (слика \ref{figure:students_import_dialog}).
-
-					\begin{figure}[H]
-						\begin{center}
-							\includegraphics[width=.4\textwidth]{manual/students_import_dialog.png}
-						\end{center}
-						\caption{Извештај о увозу предмета}
-						\label{figure:students_import_dialog}
-					\end{figure}
+					Увоз студената је исти као података о предметима, и добија се одабиром акције \quote{Увоз} из траке са алатима. По одабиру датотеке из стандардног дијалога, приказаће се прозор са резултатима увоза\footnote{Увоз студената није деструктивна операција, већ само додаје оне студенте који нису у систему и евентуално мења податке постојећих, док број индекса увек остаје непромењен.} који је исти за све операције увоза.
 
 					Акција \quote{Детаљи} отвара нов прозор у коме се поред општих генералија студента може видети које предмете слуша и којих је листи члан, док акција \quote{Уласци} као код просторија, отвара нов прозор у коме се види у које је све просторије студент улазио у жељеном временском периоду. Извоз извештаја о уласцима се такође добија из овог прозора.
 					\begin{figure}[H]
@@ -1151,9 +1143,73 @@ $ kill -s SIGINT `pidof pasoserver`
 				\end{justify}
 
 			\newpage
-			
-			\subsection{Управљање активностима}
 
+			\subsection{Управљање активностима}
+				\begin{justify}
+					Активности су вероватно најважнији део целог система па звог своје сложености и количине података коју носе, екран за управљање њима нема могућност директног уређивања, већ се оно врши низом корака уз помоћ чаробњака.
+					\begin{figure}[h]
+						\begin{center}
+							\includegraphics[width=1.0\textwidth]{manual/activities_main_window.png}
+						\end{center}
+						\caption{Екран управљања листама}
+						\label{figure:activities_main_window}
+					\end{figure}\\
+					\noindent
+					Кораци односно странице којима се иде кроз чаробњак су следећи:
+					\begin{enumerate}[noitemsep]
+						\item Унос имена, одабир врсте, као и периодичности активности.
+						\item Одабир времена и трајања, или одабир када се активност понавља.
+						\item Везивање листи студената за активност.
+						\item Одабир просторија у којима ће се актовност обављати.
+					\end{enumerate}
+					Други корак се разликује у односу на изборе које корисник направи на првој страници чаробњака. Уколико је одабрано да се активност не понавља, други корак се своди на одабир датума и времена почетка активност као и њеног трајања. Ако се активност понавља, на недељном или месечном нивоу, онда се ради одабир почетка и краја периода, времена трајања појединачне активност и време њеног почетка, као и дани у недељи односно датуми у месецу када се понавља. Ово је илустровано на сликама \ref{figure:single_time} и \ref{figure:multiple_time}.
+					Уколико је активност посебног типа, као што су рецимо конференције или јавна предавања и трибине, корак одабира листи се прескаче.
+
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=0.75\textwidth]{manual/activity_wizard_name_and_type.png}
+						\end{center}
+						\caption{Унос имена и врсте активности која се не понавља}
+						\label{figure:single_name_and_type}
+					\end{figure}
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=0.75\textwidth]{manual/activity_wizard_name_and_type_repetitive.png}
+						\end{center}
+						\caption{Унос имена и врсте активности која се понавља}
+						\label{figure:repetitive_name_and_type}
+					\end{figure}
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=0.75\textwidth]{manual/activity_wizard_time.png}
+						\end{center}
+						\caption{Време и трајање активности која се не понавља}
+						\label{figure:single_time}
+					\end{figure}
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=0.75\textwidth]{manual/activity_wizard_time_slots.png}
+						\end{center}
+						\caption{Време и трајање активност која се понавља}
+						\label{figure:multiple_time}
+					\end{figure}
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=0.75\textwidth]{manual/activity_wizard_lists.png}
+						\end{center}
+						\caption{Одабир листи које су везане за активност}
+						\label{figure:activity_lists}
+					\end{figure}
+					\begin{figure}[H]
+						\begin{center}
+							\includegraphics[width=0.75\textwidth]{manual/activity_wizard_rooms.png}
+						\end{center}
+						\caption{Одабир просторија у којима ће се одвијати активност}
+						\label{figure:activity_rooms}
+					\end{figure}
+				\end{justify}
+
+		\newpage
 
 		\section{Симулатор}
 
