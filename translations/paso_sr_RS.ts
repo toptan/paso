@@ -841,11 +841,13 @@
     </message>
     <message>
         <location filename="../admin/activityeditorwidget.cpp" line="74"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="206"/>
         <source>From</source>
         <translation>Од</translation>
     </message>
     <message>
         <location filename="../admin/activityeditorwidget.cpp" line="76"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="208"/>
         <source>To</source>
         <translation>До</translation>
     </message>
@@ -860,18 +862,18 @@
         <translation>Чаробњак за креирање нове активности</translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="225"/>
-        <location filename="../admin/activityeditorwidget.cpp" line="237"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="230"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="242"/>
         <source>and</source>
         <translation>и</translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="238"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="243"/>
         <source>Every </source>
         <translation>Сваког </translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="238"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="243"/>
         <source>in month</source>
         <translation>у месецу</translation>
     </message>
@@ -1855,7 +1857,7 @@
     <name>paso::admin::RoomEditorWidget</name>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="119"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="180"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="188"/>
         <source>Barred students</source>
         <translation>Забрањен улазак</translation>
     </message>
@@ -1866,19 +1868,19 @@
     </message>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="56"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="168"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="176"/>
         <source>Index number</source>
         <translation>Број индекса</translation>
     </message>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="57"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="169"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="177"/>
         <source>Last name</source>
         <translation>Презиме</translation>
     </message>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="58"/>
-        <location filename="../admin/roomeditorwidget.cpp" line="170"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="178"/>
         <source>First name</source>
         <translation>Име</translation>
     </message>
@@ -1894,21 +1896,22 @@
     </message>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="91"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="146"/>
         <source>Activity</source>
         <translation>Активност</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="254"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="262"/>
         <source>Select file to export room occupancy</source>
         <translation>Одаберите датотеку за извоз извештаја о заузећу просторије</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="283"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="291"/>
         <source>Information</source>
         <translation>Обевештење</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="284"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="292"/>
         <source>Exporting room occupancy to &apos;%1&apos; has finished.</source>
         <translation>Извоз извештаја о заузећу у &apos;%1&apos; је готов.</translation>
     </message>
@@ -1917,42 +1920,44 @@
         <translation type="vanished">Извоз заузећа просторије</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="262"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="270"/>
         <source>Error</source>
         <translation>Грешка</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="264"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="272"/>
         <source>The export file &apos;%1&apos; could not be created.</source>
         <translation>Датотека за извоз &apos;%1&apos; не може да се креира.</translation>
     </message>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="87"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="142"/>
         <source>From</source>
         <translation>Од</translation>
     </message>
     <message>
         <location filename="../admin/roomeditorwidget.cpp" line="89"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="144"/>
         <source>To</source>
         <translation>До</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="179"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="187"/>
         <source>Allowed students</source>
         <translation>Дозвољен улазак</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="183"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="191"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="184"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="192"/>
         <source>Cancel</source>
         <translation>Одустани</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="188"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="196"/>
         <source>Change room barring</source>
         <translation>Измена забрана</translation>
     </message>

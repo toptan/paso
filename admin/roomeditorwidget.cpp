@@ -138,6 +138,14 @@ void RoomEditorWidget::onDisplayRecord(const QSqlRecord &record) {
     query.exec();
     mOccupancyTableModel->setQuery(query);
     mExportOccupancy->setEnabled(mOccupancyTableModel->rowCount() != 0);
+    mOccupancyTableView->horizontalHeader()->model()->setHeaderData(
+        0, Qt::Horizontal, tr("From"), Qt::DisplayRole);
+    mOccupancyTableView->horizontalHeader()->model()->setHeaderData(
+        1, Qt::Horizontal, tr("To"), Qt::DisplayRole);
+    mOccupancyTableView->horizontalHeader()->model()->setHeaderData(
+        2, Qt::Horizontal, tr("Activity"), Qt::DisplayRole);
+    mOccupancyTableView->hideColumn(3);
+    mOccupancyTableView->sortByColumn(0, Qt::SortOrder::AscendingOrder);
 }
 
 void RoomEditorWidget::prepareEdit(QSqlRecord &record) {

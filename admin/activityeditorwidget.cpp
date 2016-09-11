@@ -57,8 +57,8 @@ void ActivityEditorWidget::setupUi(const QVariantMap &columnLabels,
     mActivityListsModel =
         new EntityTableModel(columns, columnNames, emptyData, this);
     mActivitySlotsModel = new QSqlQueryModel(this);
-    auto query = Activity::timeSlotsQuery(
-        QSqlDatabase::database(DEFAULT_DB_NAME), 0);
+    auto query =
+        Activity::timeSlotsQuery(QSqlDatabase::database(DEFAULT_DB_NAME), 0);
     query.exec();
     mActivitySlotsModel->setQuery(query);
 
@@ -202,6 +202,11 @@ void ActivityEditorWidget::onDisplayRecord(const QSqlRecord &record) {
         QSqlDatabase::database(DEFAULT_DB_NAME), activityId);
     query.exec();
     mActivitySlotsModel->setQuery(query);
+    mActivitySlotsView->horizontalHeader()->model()->setHeaderData(
+        0, Qt::Horizontal, tr("From"), Qt::DisplayRole);
+    mActivitySlotsView->horizontalHeader()->model()->setHeaderData(
+        1, Qt::Horizontal, tr("To"), Qt::DisplayRole);
+    mActivitySlotsView->sortByColumn(1, Qt::SortOrder::AscendingOrder);
 }
 
 QString
