@@ -274,7 +274,7 @@
 				
 			\subsection{ПаСо Сервер}
 				\begin{justify}
-					ПаСо сервер је централна компонента система. Његова одговорност је да комуницира са контролерима просторија и са симулатором као алатом за тестирање. Сам сервер је имплементиран као стандардни UNIX сервер који прихвата TCP конекције на порту који је одређен подешавањима. Овај сервер није пасивна компонента која само чека захтеве и обрађује их, већ периодично шаље и ”јеси ли жив” сигнале пријављеним контролерима и симулаторима. Такође, одговоран је и за слање података које би контролери требало да користе уколико дође до прекида у комуникацији. Формат кому-никације, порука и података за случај прекида саме комуникације биће дефинисан касније.
+					ПаСо сервер је централна компонента система. Његова одговорност је да комуницира са контролерима просторија и са симулатором као алатом за тестирање. Сам сервер је имплементиран као стандардни UNIX сервер који прихвата TCP конекције на порту који је одређен подешавањима. Овај сервер није пасивна компонента која само чека захтеве и обрађује их, већ периодично шаље и ”јеси ли жив” сигнале пријављеним контролерима и симулаторима. Такође, одговоран је и за слање података које би контролери требало да користе уколико дође до прекида у комуникацији, као и за брисање листи којима је истекао рок. Формат комуникације, порука и података за случај прекида саме комуникације биће дефинисан касније.
 					Илустрација рада сервера дата је на слици \ref{figure:3}.
 					\begin{figure}[h]
 						\begin{center}
@@ -931,6 +931,32 @@ password=lozinka
 $ kill -s SIGINT `pidof pasoserver`
 					\end{verbatim}
 				\end{footnotesize}
+				\noindent
+				Сервер свој целокупан излаз записује у датотеку \textbf{/var/log/pasoserver.log}. Пример садржаја ове датотеке може се видети у наставку.
+				\begin{tiny}
+					\begin{verbatim}
+Sep 11 10:29:37 pasoserver[9650]: INFO    : Reading PaSo server configuration from "/etc/pasoserver.conf"
+Sep 11 10:29:37 pasoserver[9650]: INFO    : Server will start on port 6789
+Sep 11 10:29:37 pasoserver[9650]: INFO    : Operation timeout set to 5000 milliseconds.
+Sep 11 10:29:37 pasoserver[9650]: INFO    : Controller check period set to 300 seconds.
+Sep 11 10:29:37 pasoserver[9650]: INFO    : Database connection successfully establised.
+Sep 11 10:29:37 pasoserver[9650]: INFO    : Server started and is listening for connections.
+Sep 11 10:31:52 pasoserver[9650]: INFO    : Registered controller "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}" from "::ffff:127.0.0.1"
+Sep 11 10:31:59 pasoserver[9650]: INFO    : Got access query request for "VOJIN" from "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:31:59 pasoserver[9650]: INFO    : Access denied for "VOJIN" for room "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:32:10 pasoserver[9650]: INFO    : Got access query request for "RELJIN" from "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:32:10 pasoserver[9650]: INFO    : Access denied for "RELJIN" for room "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:33:23 pasoserver[9650]: INFO    : Got access query request for "RELJIN" from "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:33:23 pasoserver[9650]: INFO    : Access denied for "RELJIN" for room "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:33:32 pasoserver[9650]: INFO    : Got access query request for "VOJIN" from "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:33:32 pasoserver[9650]: INFO    : Access granted for "VOJIN" for room "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:33:39 pasoserver[9650]: INFO    : Got access query request for "RELJIN" from "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:33:39 pasoserver[9650]: INFO    : Access denied for "RELJIN" for room "{1dec6c4a-2d10-4e58-a91c-0e2908974cce}"
+Sep 11 10:34:04 pasoserver[9650]: INFO    : Shutting down PaSo server.
+Sep 11 10:34:04 pasoserver[9650]: INFO    : Server shut down.
+					\end{verbatim}
+				\end{tiny}
+
 			\end{justify}
 			
 		\section{Административна конзола}
