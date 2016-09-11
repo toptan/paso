@@ -16,6 +16,12 @@ private slots:
     void testLoginRequestSerialization();
     void testLoginResponseCreation();
     void testLoginResponseSerialization();
+    void testRegisterRequestSerialization();
+    void testRegisterResponseSerialization();
+    void testAccessRequestSerialization();
+    void testAccessResponseSerialization();
+    void testPingRequestSerialization();
+    void testPingResponseSerialization();
     void testSslServer();
 };
 

@@ -44,7 +44,7 @@ TeacherForm::~TeacherForm() { delete ui; }
 
 std::pair<QSqlQueryModel *, RecordEditorWidget *>
 TeacherForm::createModelAndEditor() {
-    QVariantMap columnLabels = {
+    const QVariantMap columnLabels = {
         {"first_name", QObject::tr("First Name")},
         {"last_name", QObject::tr("Last Name")},
         {"email", QObject::tr("Email")},
@@ -54,12 +54,12 @@ TeacherForm::createModelAndEditor() {
 
     TeacherQueryModel *model = new TeacherQueryModel(
         columnLabels, QSqlDatabase::database(DEFAULT_DB_NAME));
-    FieldTypes fieldTypes = {{"first_name", FieldType::LineEdit},
-                             {"last_name", FieldType::LineEdit},
-                             {"email", FieldType::LineEdit},
-                             {"rfid", FieldType::LineEdit},
-                             {"employee_number", FieldType::LineEdit},
-                             {"office", FieldType::LineEdit}};
+    const FieldTypes fieldTypes = {{"first_name", FieldType::LineEdit},
+                                   {"last_name", FieldType::LineEdit},
+                                   {"email", FieldType::LineEdit},
+                                   {"rfid", FieldType::LineEdit},
+                                   {"employee_number", FieldType::LineEdit},
+                                   {"office", FieldType::LineEdit}};
     auto editor = new TeacherEditorWidget(fieldTypes);
     editor->setupUi(columnLabels, model->record());
     editor->setValidator(new TeacherValidator(editor->fieldTypes(),

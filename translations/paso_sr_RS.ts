@@ -1724,33 +1724,33 @@
 <context>
     <name>paso::admin::LoginDialog</name>
     <message>
-        <location filename="../admin/logindialog.cpp" line="25"/>
+        <location filename="../admin/logindialog.cpp" line="23"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="26"/>
+        <location filename="../admin/logindialog.cpp" line="24"/>
         <source>Cancel</source>
         <translation>Одустани</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="34"/>
+        <location filename="../admin/logindialog.cpp" line="32"/>
         <source>You need to provide username.</source>
         <translation>Морате унети корисничко име.</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="39"/>
+        <location filename="../admin/logindialog.cpp" line="37"/>
         <source>You need to provide password.</source>
         <translation>Морате унети лозинку.</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="44"/>
+        <location filename="../admin/logindialog.cpp" line="42"/>
         <source>You need to provide server name.</source>
         <translation>Морате унети име сервера.</translation>
     </message>
     <message>
-        <location filename="../admin/logindialog.cpp" line="116"/>
-        <location filename="../admin/logindialog.cpp" line="120"/>
+        <location filename="../admin/logindialog.cpp" line="114"/>
+        <location filename="../admin/logindialog.cpp" line="118"/>
         <source>Login failed.</source>
         <translation>Неуспешна пријава.</translation>
     </message>

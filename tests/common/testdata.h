@@ -20,6 +20,7 @@ private slots:
     void testActivityScheduleTypeSerialization();
     void testCourseSerialization();
     void testStudentSerialization();
+    void testTeacherSerialization();
     void testListSerialization();
     void testActivitySerialization();
     void testConversionToVariantMap();

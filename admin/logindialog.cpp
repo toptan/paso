@@ -19,8 +19,6 @@ LoginDialog::LoginDialog(QWidget *parent)
     ui->setupUi(this);
     setWindowFlags((windowFlags() | Qt::CustomizeWindowHint) &
                    ~Qt::WindowMinMaxButtonsHint);
-    ui->usernameLineEdit->setText("root");
-    ui->passwordLineEdit->setText("root");
     ui->serverLineEdit->setText("localhost");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));

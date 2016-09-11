@@ -1,5 +1,6 @@
 #include "teststudentadministration.h"
 
+#include "entryreportdialog.h"
 #include "logdialog.h"
 #include "pasodb.h"
 #include "person.h"
@@ -321,6 +322,8 @@ void TestStudentAdministration::testStudentForm() {
     QAction *refreshAction = nullptr;
     QAction *importAction = nullptr;
     QAction *detailsAction = nullptr;
+    QAction *reportAction = nullptr;
+
     for (auto action : form.toolBarActions()) {
         QVERIFY(action->isEnabled());
         if (action->objectName() == "NEW_RECORD_ACTION") {
@@ -347,6 +350,10 @@ void TestStudentAdministration::testStudentForm() {
             detailsAction = action;
             continue;
         }
+        if (action->objectName() == "REPORT_ACTION") {
+            reportAction = action;
+            continue;
+        }
     }
     QVERIFY(newAction != nullptr);
     QVERIFY(editAction != nullptr);
@@ -354,6 +361,20 @@ void TestStudentAdministration::testStudentForm() {
     QVERIFY(deleteAction != nullptr);
     QVERIFY(importAction != nullptr);
     QVERIFY(detailsAction != nullptr);
+    QVERIFY(reportAction != nullptr);
+
+    bool entryReportDialogShown = false;
+    auto entryReportDialogCallback = [&entryReportDialogShown]() {
+        auto reportDialog = dynamic_cast<EntryReportDialog *>(
+            QApplication::activeModalWidget());
+        QTest::keyClick(reportDialog, Qt::Key_Escape);
+        entryReportDialogShown = true;
+    };
+
+    QTimer::singleShot(200, entryReportDialogCallback);
+    reportAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(entryReportDialogShown);
 
     bool deleteMessageBoxShown = false;
     auto deleteMessageCallback = [&deleteMessageBoxShown]() {

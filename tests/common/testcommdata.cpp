@@ -1,6 +1,9 @@
 #include "testcommdata.h"
 
+#include "commaccess.h"
 #include "commdata.h"
+#include "commping.h"
+#include "commregister.h"
 #include "sslserver.h"
 
 #include <QDebug>
@@ -23,8 +26,7 @@ TestCommData::TestCommData() : TestBase() {}
 
 void TestCommData::testBaseSerialization() {
     Base expected(QUuid::createUuid(), Operation::UNKNOWN_OPERATION);
-    Base deserialized("{00000000-0000-0000-0000-000000000000}",
-                      Operation::UNKNOWN_OPERATION);
+    Base deserialized("{00000000-0000-0000-0000-000000000000}");
     auto jsonString = expected.toJsonString();
     deserialized.fromJsonString(jsonString);
     QVERIFY(deserialized.roomId() == expected.roomId());
@@ -79,6 +81,72 @@ void TestCommData::testLoginResponseSerialization() {
     QVERIFY(deserialized.dbUsername() == expected.dbUsername());
     QVERIFY(deserialized.dbPassword() == expected.dbPassword());
     QVERIFY(deserialized.dbPort() == expected.dbPort());
+}
+
+void TestCommData::testRegisterRequestSerialization() {
+    RegisterRequest expected(QUuid::createUuid());
+    RegisterRequest deserialized;
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.operation(), expected.operation());
+    QCOMPARE(deserialized.roomId(), expected.roomId());
+}
+
+void TestCommData::testRegisterResponseSerialization() {
+    RegisterResponse expected(QUuid::createUuid());
+    expected.setSuccess(true);
+    expected.setPort(1234);
+    expected.setEmergencyData({"A", "B"});
+    RegisterResponse deserialized;
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.operation(), expected.operation());
+    QCOMPARE(deserialized.roomId(), expected.roomId());
+    QCOMPARE(deserialized.success(), expected.success());
+    QCOMPARE(deserialized.port(), expected.port());
+    QCOMPARE(deserialized.emergencyData(), expected.emergencyData());
+}
+
+void TestCommData::testAccessRequestSerialization() {
+    AccessRequest expected(QUuid::createUuid());
+    expected.setRfid("RRFFIIDD");
+    AccessRequest deserialized;
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.operation(), expected.operation());
+    QCOMPARE(deserialized.roomId(), expected.roomId());
+    QCOMPARE(deserialized.rfid(), expected.rfid());
+}
+
+void TestCommData::testAccessResponseSerialization() {
+    AccessResponse expected(QUuid::createUuid());
+    expected.setGranted(true);
+    expected.setReRegister(true);
+    AccessResponse deserialized;
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.operation(), expected.operation());
+    QCOMPARE(deserialized.roomId(), expected.roomId());
+    QCOMPARE(deserialized.granted(), expected.granted());
+    QCOMPARE(deserialized.reRegister(), expected.reRegister());
+}
+
+void TestCommData::testPingRequestSerialization() {
+    PingRequest expected(QUuid::createUuid());
+    expected.setEmergencyData({"A", "B", "C"});
+    PingRequest deserialized;
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.operation(), expected.operation());
+    QCOMPARE(deserialized.roomId(), expected.roomId());
+    QCOMPARE(deserialized.emergencyData(), expected.emergencyData());
+}
+
+void TestCommData::testPingResponseSerialization() {
+    PingResponse expected(QUuid::createUuid());
+    expected.setResponse(false);
+    expected.setFault("An error");
+    PingResponse deserialized;
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized.operation(), expected.operation());
+    QCOMPARE(deserialized.roomId(), expected.roomId());
+    QCOMPARE(deserialized.response(), expected.response());
+    QCOMPARE(deserialized.fault(), expected.fault());
 }
 
 void TestCommData::testSslServer() {

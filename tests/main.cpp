@@ -25,6 +25,7 @@
 #include "teststudentadministration.h"
 #include "teststudentdetailsdialog.h"
 #include "testsystemuseradministration.h"
+#include "testteacheradministration.h"
 #include "testwidgets.h"
 
 using namespace std;
@@ -142,6 +143,7 @@ int main(int argc, char **argv) {
     testCases.push_back(new TestRoomAdministration);
     testCases.push_back(new TestSystemUserAdministration);
     testCases.push_back(new TestStudentAdministration);
+    testCases.push_back(new TestTeacherAdministration);
     testCases.push_back(new TestCourseDetailsDialog);
     testCases.push_back(new TestListDetailsDialog);
     testCases.push_back(new TestStudentDetailsDialog);

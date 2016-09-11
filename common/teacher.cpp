@@ -57,7 +57,7 @@ QVariant Teacher::value(const QString &property) const {
 void Teacher::read(const QJsonObject &jsonObject) {
     Person::read(jsonObject);
     mEmployeeNumber = jsonObject["EMPLOYEE_NUMBER"].toString();
-    mOffice = jsonObject["OFFICE"].toInt();
+    mOffice = jsonObject["OFFICE"].toString();
 }
 
 void Teacher::write(QJsonObject &jsonObject) const {

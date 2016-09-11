@@ -7,6 +7,7 @@
 #include "room.h"
 #include "student.h"
 #include "systemuser.h"
+#include "teacher.h"
 
 #include <QDebug>
 #include <QJsonDocument>
@@ -141,6 +142,14 @@ void TestData::testStudentSerialization() {
     QCOMPARE(deserialized, expected);
 }
 
+void TestData::testTeacherSerialization() {
+    Teacher expected("Toplica", "Tanaskovic", "toptan@foo.com", "123456", "23",
+                     16, "RRFFIIDD");
+    Teacher deserialized((QVariantMap()));
+    deserialized.fromJsonString(expected.toJsonString());
+    QCOMPARE(deserialized, expected);
+}
+
 void TestData::testListSerialization() {
     List expected("Demo lista", true, 4);
     expected.setDemonstrators(true);
@@ -165,6 +174,8 @@ void TestData::testConversionToVariantMap() {
                           "john.doe@internet.com", SystemRole::MANAGER);
     Student student("Toplica", "Tanasković", "toptan@foo.com", "164/96", 5, 123,
                     "RRFFIIDD");
+    Teacher teacher("Petar", "Petrovic", "pera@foo.com", "123456", "17", 6,
+                    "RFID");
     Course course("IR3SP", "Sistemsko programiranje", 8);
     Room room(QUuid::createUuid().toString(), "Room 42", "42");
     List list("Demo lista", false, 4);
@@ -175,6 +186,9 @@ void TestData::testConversionToVariantMap() {
                                "ROLE"};
     QStringList studentKeys{"ID",    "FIRST_NAME",   "LAST_NAME",
                             "EMAIL", "INDEX_NUMBER", "YEAR_OF_STUDY",
+                            "RFID"};
+    QStringList teacherKeys{"ID",    "FIRST_NAME",      "LAST_NAME",
+                            "EMAIL", "EMPLOYEE_NUMBER", "OFFICE",
                             "RFID"};
     QStringList courseKeys{"ID", "CODE", "NAME"};
     QStringList roomKeys{"ID", "ROOM_UUID", "NAME", "ROOM_NUMBER",
@@ -196,6 +210,7 @@ void TestData::testConversionToVariantMap() {
 
     QCOMPARE(systemUser.toVariantMap().keys().size(), systemUserKeys.size());
     QCOMPARE(student.toVariantMap().keys().size(), studentKeys.size());
+    QCOMPARE(teacher.toVariantMap().keys().size(), teacherKeys.size());
     QCOMPARE(course.toVariantMap().keys().size(), courseKeys.size());
     QCOMPARE(room.toVariantMap().keys().size(), roomKeys.size());
     QCOMPARE(list.toVariantMap().keys().size(), listKeys.size());
@@ -205,22 +220,32 @@ void TestData::testConversionToVariantMap() {
         systemUserKeys.removeOne(key);
     }
     QVERIFY(systemUserKeys.empty());
+
     for (const auto &key : student.toVariantMap().keys()) {
         studentKeys.removeOne(key);
     }
     QVERIFY(studentKeys.empty());
+
+    for (const auto &key : teacher.toVariantMap().keys()) {
+        teacherKeys.removeOne(key);
+    }
+    QVERIFY(teacherKeys.empty());
+
     for (const auto &key : course.toVariantMap().keys()) {
         courseKeys.removeOne(key);
     }
     QVERIFY(courseKeys.empty());
+
     for (const auto &key : room.toVariantMap().keys()) {
         roomKeys.removeOne(key);
     }
     QVERIFY(roomKeys.empty());
+
     for (const auto &key : list.toVariantMap().keys()) {
         listKeys.removeOne(key);
     }
     QVERIFY(listKeys.empty());
+
     for (const auto &key : activity.toVariantMap().keys()) {
         activityKeys.removeOne(key);
     }
@@ -250,6 +275,18 @@ void TestData::testPropertyValues() {
     QCOMPARE(student.value("INDEX_NUMBER"), QVariant(student.indexNumber()));
     QCOMPARE(student.value("YEAR_OF_STUDY"), QVariant(student.yearOfStudy()));
     QCOMPARE(student.value("RFID"), QVariant(student.rfid()));
+
+    Teacher teacher("Toplica", "Tanasković", "toptan@foo.com", "512", "123",
+                    7, "RRFFIIDD");
+    QCOMPARE(teacher.value("FOO"), QVariant());
+    QCOMPARE(teacher.value("ID"), QVariant(teacher.id()));
+    QCOMPARE(teacher.value("FIRST_NAME"), QVariant(teacher.firstName()));
+    QCOMPARE(teacher.value("LAST_NAME"), QVariant(teacher.lastName()));
+    QCOMPARE(teacher.value("EMAIL"), QVariant(teacher.email()));
+    QCOMPARE(teacher.value("EMPLOYEE_NUMBER"),
+             QVariant(teacher.employeeNumber()));
+    QCOMPARE(teacher.value("OFFICE"), QVariant(teacher.office()));
+    QCOMPARE(teacher.value("RFID"), QVariant(teacher.rfid()));
 
     Course course("IR3SP", "Sistemsko programiranje", 8);
     QCOMPARE(course.value("FOO"), QVariant());

@@ -1,5 +1,6 @@
 #include "testroomadministration.h"
 
+#include "entryreportdialog.h"
 #include "pasodb.h"
 #include "room.h"
 #include "roomeditorwidget.h"
@@ -251,6 +252,7 @@ void TestRoomAdministration::testRoomForm() {
     QAction *newAction = nullptr;
     QAction *editAction = nullptr;
     QAction *deleteAction = nullptr;
+    QAction *reportAction = nullptr;
     for (auto action : form.toolBarActions()) {
         QVERIFY(action->isEnabled());
         if (action->objectName() == "NEW_RECORD_ACTION") {
@@ -265,10 +267,15 @@ void TestRoomAdministration::testRoomForm() {
             deleteAction = action;
             continue;
         }
+        if (action->objectName() == "REPORT_ACTION") {
+            reportAction = action;
+            continue;
+        }
     }
     QVERIFY(newAction != nullptr);
     QVERIFY(editAction != nullptr);
     QVERIFY(deleteAction != nullptr);
+    QVERIFY(reportAction != nullptr);
 
     auto uuidEdit = dynamic_cast<QLineEdit *>(
         roomEditorWidget->fieldEditors()["room_uuid"]);
@@ -287,6 +294,19 @@ void TestRoomAdministration::testRoomForm() {
     QApplication::processEvents();
     auto index = tableView->model()->index(0, 1);
     QCOMPARE(tableView->model()->data(index).toString(), QString("AAAAA"));
+
+    bool entryReportDialogShown = false;
+    auto entryReportDialogCallback = [&entryReportDialogShown]() {
+        auto reportDialog = dynamic_cast<EntryReportDialog *>(
+            QApplication::activeModalWidget());
+        QTest::keyClick(reportDialog, Qt::Key_Escape);
+        entryReportDialogShown = true;
+    };
+
+    QTimer::singleShot(200, entryReportDialogCallback);
+    reportAction->trigger();
+    QApplication::processEvents();
+    QVERIFY(entryReportDialogShown);
 
     bool deleteMessageBoxShown = false;
     auto timerCallback = [&deleteMessageBoxShown]() {
