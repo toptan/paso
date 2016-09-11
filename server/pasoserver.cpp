@@ -316,6 +316,7 @@ void PasoServer::handleAccessRequest(QTcpSocket *clientSocket,
 }
 
 void PasoServer::checkControllers() {
+    purgeLists();
     if (mControllers.isEmpty()) {
         qInfo() << "No registered controllers. Skipping check.";
         QTimer::singleShot(mControllerCheckPeriod, this,
@@ -428,5 +429,16 @@ bool PasoServer::checkController(const QUuid &uuid,
             << controller.controllerPort << "reports that everything is OK.";
     return true;
 }
+
+void PasoServer::purgeLists() {
+    qInfo() << "Purging expired lists.";
+    auto db = QSqlDatabase::database(mDatabaseName);
+    db.exec("DELETE FROM LIST WHERE EXPIRY_DATE < CURRENT_TIMESTAMP");
+    auto error = db.lastError();
+    if (error.type() != QSqlError::NoError) {
+        qWarning() << "Failed to purge lists. " << error;
+    }
+}
+
 }
 }

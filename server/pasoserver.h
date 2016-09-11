@@ -64,6 +64,8 @@ private:
     void checkControllers();
 
     bool checkController(const QUuid &uuid, const QStringList &emergencyData);
+
+    void purgeLists();
 };
 }
 }
