@@ -236,6 +236,8 @@ void CourseDetailsDialog::onImportFileSelected(const QString &fileName) {
             &LogDialog::appendLine);
     connect(this, &CourseDetailsDialog::importDone, logDialog,
             &LogDialog::processingDone);
+    connect(this, &CourseDetailsDialog::importFailed, logDialog,
+            &LogDialog::processingDone);
 
     auto work = [this, file, logDialog]() {
         QTextStream in(file);

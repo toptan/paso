@@ -1187,54 +1187,54 @@
         <translation>Увожење студената који слушају предмет...</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="246"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="248"/>
         <source>Importing line%1... %2</source>
         <translation>Увожење линије %1... %2</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="250"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="252"/>
         <source>Clearing old data has failed... %1</source>
         <translation>Брисање претходних података није било успешно... %1</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="253"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="298"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="255"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="300"/>
         <source>Importing course students has failed.</source>
         <translation>Увожење студената који слушају предмет није успело.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="254"/>
-        <location filename="../admin/coursedetailsdialog.cpp" line="299"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="256"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="301"/>
         <source>Data remains unchanged.</source>
         <translation>Подаци су остали непромењени.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="260"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="262"/>
         <source>Clearing old data... OK.</source>
         <translation>Брисање старих података... ОК.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="268"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="270"/>
         <source>OK.</source>
         <translation>ОК.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="272"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="274"/>
         <source>Index number is in wrong format or does not exist.</source>
         <translation>Број индекса је у погрешном формату или не постоји.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="277"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="279"/>
         <source>Student with given index does not exist.</source>
         <translation>Студент са датим индексом не постоји.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="292"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="294"/>
         <source>Import finished without errors.</source>
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/coursedetailsdialog.cpp" line="296"/>
+        <location filename="../admin/coursedetailsdialog.cpp" line="298"/>
         <source>Not all lines could be imported. Please see log messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
@@ -1530,54 +1530,54 @@
         <translation>Увожење чланова листе...</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="252"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="254"/>
         <source>Importing line%1... %2</source>
         <translation>Увожење линије %1... %2</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="255"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="257"/>
         <source>Clearing old data has failed... %1</source>
         <translation>Брисање претходних података није било успешно... %1</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="258"/>
-        <location filename="../admin/listdetailsdialog.cpp" line="303"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="260"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="305"/>
         <source>Importing list members has failed.</source>
         <translation>Увожење чланова листе није успело.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="259"/>
-        <location filename="../admin/listdetailsdialog.cpp" line="304"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="261"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="306"/>
         <source>Data remains unchanged.</source>
         <translation>Подаци су остали непромењени.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="265"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="267"/>
         <source>Clearing old data... OK.</source>
         <translation>Брисање старих података... ОК.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="273"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="275"/>
         <source>OK.</source>
         <translation>ОК.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="277"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="279"/>
         <source>Index number is in wrong format or does not exist.</source>
         <translation>Број индекса је у погрешном формату или не постоји.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="282"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="284"/>
         <source>Student with given index does not exist.</source>
         <translation>Студент са датим индексом не постоји.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="297"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="299"/>
         <source>Import finished without errors.</source>
         <translation>Увожење је завршено без грешака.</translation>
     </message>
     <message>
-        <location filename="../admin/listdetailsdialog.cpp" line="301"/>
+        <location filename="../admin/listdetailsdialog.cpp" line="303"/>
         <source>Not all lines could be imported. Please see log messages above.</source>
         <translation>Нису све линије могле да се увезу. Погледајте поруке изнад.</translation>
     </message>
