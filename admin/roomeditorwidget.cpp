@@ -198,6 +198,7 @@ void RoomEditorWidget::clearData() {
     RecordEditorWidget::clearData();
     EntityVector emptyData;
     mBarredStudentsModel->setEntityData(emptyData);
+    mOccupancyTableModel->clear();
 }
 
 void RoomEditorWidget::accepted() {

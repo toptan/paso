@@ -850,28 +850,28 @@
         <translation>До</translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="113"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="121"/>
         <source>Edit activity wizard</source>
         <translation>Чаробњак за уређивање активности</translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="130"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="138"/>
         <source>New activity wizard</source>
         <translation>Чаробњак за креирање нове активности</translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="217"/>
-        <location filename="../admin/activityeditorwidget.cpp" line="229"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="225"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="237"/>
         <source>and</source>
         <translation>и</translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="230"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="238"/>
         <source>Every </source>
         <translation>Сваког </translation>
     </message>
     <message>
-        <location filename="../admin/activityeditorwidget.cpp" line="230"/>
+        <location filename="../admin/activityeditorwidget.cpp" line="238"/>
         <source>in month</source>
         <translation>у месецу</translation>
     </message>
@@ -1898,17 +1898,17 @@
         <translation>Активност</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="253"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="254"/>
         <source>Select file to export room occupancy</source>
         <translation>Одаберите датотеку за извоз извештаја о заузећу просторије</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="282"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="283"/>
         <source>Information</source>
         <translation>Обевештење</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="283"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="284"/>
         <source>Exporting room occupancy to &apos;%1&apos; has finished.</source>
         <translation>Извоз извештаја о заузећу у &apos;%1&apos; је готов.</translation>
     </message>
@@ -1917,12 +1917,12 @@
         <translation type="vanished">Извоз заузећа просторије</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="261"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="262"/>
         <source>Error</source>
         <translation>Грешка</translation>
     </message>
     <message>
-        <location filename="../admin/roomeditorwidget.cpp" line="263"/>
+        <location filename="../admin/roomeditorwidget.cpp" line="264"/>
         <source>The export file &apos;%1&apos; could not be created.</source>
         <translation>Датотека за извоз &apos;%1&apos; не може да се креира.</translation>
     </message>

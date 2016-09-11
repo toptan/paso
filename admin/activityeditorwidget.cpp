@@ -77,6 +77,14 @@ void ActivityEditorWidget::setupUi(const QVariantMap &columnLabels,
     mActivitySlotsView->sortByColumn(1, Qt::SortOrder::AscendingOrder);
 }
 
+void ActivityEditorWidget::clearData() {
+    RecordEditorWidget::clearData();
+    EntityVector emptyData;
+    mActivityRoomsModel->setEntityData(emptyData);
+    mActivityListsModel->setEntityData(emptyData);
+    mActivitySlotsModel->clear();
+}
+
 void ActivityEditorWidget::prepareEdit(QSqlRecord &record) {
     // No action needed.
 }

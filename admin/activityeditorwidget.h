@@ -31,6 +31,7 @@ public:
                          const QStringList &filterFields = {}) override;
 
 public slots:
+    virtual void clearData() override;
     virtual void onDisplayRecord(const QSqlRecord &record) override;
     virtual void onEditExistingRecord(QSqlRecord record) override;
     virtual void onEditNewRecord(QSqlRecord record) override;
