@@ -10,19 +10,39 @@ class ActivityWizardFixedDatePage;
 namespace paso {
 namespace admin {
 
+///
+/// \brief The ActivityWizardFixedDatePage class is a page for selecting single
+/// ocurrence activity time and duration.
+///
 class ActivityWizardFixedDatePage : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit ActivityWizardFixedDatePage(QWidget *parent = 0);
+    ///
+    /// \brief Contructs the page.
+    /// \param parent The parent widget.
+    ///
+    explicit ActivityWizardFixedDatePage(QWidget *parent = nullptr);
+    /// Destructor.
     virtual ~ActivityWizardFixedDatePage();
 
+    ///
+    /// \brief Initializes the page.
+    ///
     virtual void initializePage() override;
+    ///
+    /// \brief Returns whether page data is valid and entry can be considered as
+    /// complete.
+    /// \return \c true if data is valid.
+    ///
     virtual bool isComplete() const override;
+    ///
+    /// \brief Cleans up the page.
+    ///
     virtual void cleanupPage() override;
 
 private:
-    Ui::ActivityWizardFixedDatePage *ui;
+    Ui::ActivityWizardFixedDatePage *ui; //!< Generated form object.
 };
 }
 }

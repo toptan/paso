@@ -565,12 +565,12 @@
         <translation>Датум истека</translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="45"/>
+        <location filename="../admin/activityquerymodel.cpp" line="45"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="46"/>
+        <location filename="../admin/activityquerymodel.cpp" line="46"/>
         <source>No</source>
         <translation>Не</translation>
     </message>
@@ -1770,42 +1770,42 @@
         <translation>Није могуће успоставити везу са базом података.</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="85"/>
+        <location filename="../admin/mainwindow.cpp" line="82"/>
         <source>Main Toolbar</source>
         <translation>Главна трака са алаткама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="132"/>
+        <location filename="../admin/mainwindow.cpp" line="129"/>
         <source>System users administration</source>
         <translation>Управљање системским корисницима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="135"/>
+        <location filename="../admin/mainwindow.cpp" line="132"/>
         <source>Room administration</source>
         <translation>Управљање просторијама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="141"/>
+        <location filename="../admin/mainwindow.cpp" line="138"/>
         <source>Course administration</source>
         <translation>Управљање предметима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="144"/>
+        <location filename="../admin/mainwindow.cpp" line="141"/>
         <source>Student administration</source>
         <translation>Управљање студентима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="147"/>
+        <location filename="../admin/mainwindow.cpp" line="144"/>
         <source>Teacher administration</source>
         <translation>Управљање наставницима</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="150"/>
+        <location filename="../admin/mainwindow.cpp" line="147"/>
         <source>List administration</source>
         <translation>Управљање листама</translation>
     </message>
     <message>
-        <location filename="../admin/mainwindow.cpp" line="153"/>
+        <location filename="../admin/mainwindow.cpp" line="150"/>
         <source>Activity administration</source>
         <translation>Управљање активностима</translation>
     </message>
@@ -2396,18 +2396,18 @@
 <context>
     <name>paso::model::ActivityQueryModel</name>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="71"/>
-        <location filename="../admin/activitytablemodel.cpp" line="84"/>
+        <location filename="../admin/activityquerymodel.cpp" line="71"/>
+        <location filename="../admin/activityquerymodel.cpp" line="84"/>
         <source>and</source>
         <translation>и</translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="85"/>
+        <location filename="../admin/activityquerymodel.cpp" line="85"/>
         <source>Every </source>
         <translation>Сваког </translation>
     </message>
     <message>
-        <location filename="../admin/activitytablemodel.cpp" line="85"/>
+        <location filename="../admin/activityquerymodel.cpp" line="85"/>
         <source>in month</source>
         <translation>у месецу</translation>
     </message>

@@ -50,7 +50,7 @@ RoomForm::createModelAndEditor() {
                                 {"name", QObject::tr("Name")},
                                 {"room_number", QObject::tr("Number")}};
 
-    auto model = new RoomTableModel(columnLabels,
+    auto model = new RoomQueryModel(columnLabels,
                                     QSqlDatabase::database(DEFAULT_DB_NAME));
     FieldTypes fieldTypes = {{"room_uuid", FieldType::LineEdit},
                              {"name", FieldType::LineEdit},

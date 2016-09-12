@@ -4,6 +4,7 @@
 #include <cstdint>
 
 #include "data.h"
+#include "jsonserializable.h"
 #include "systemuser.h"
 
 #include <QUuid>
@@ -41,7 +42,7 @@ Operation operationFromString(const QString &operation);
 ///
 /// \brief The Base class is a base class for all requests and responses.
 ///
-class Base : public data::JsonSerializable {
+class Base : public paso::data::JsonSerializable {
 public:
     ///
     /// \brief Base constructs base object from given json string.
@@ -69,18 +70,22 @@ public:
     Operation operation() const;
 
     ///
-    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
+    /// \brief This method reads data from given JSON object and populates
+    /// this object's properties.
+    /// \param jsonObject A JSON object to read data from.
     ///
-    virtual void read(const QJsonObject &jsonObject);
+    virtual void read(const QJsonObject &jsonObject) override;
 
     ///
-    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const
+    /// \brief This method writes data from this object to the given JSON
+    /// object.
+    /// \param jsonObject A JSON object to write data to.
     ///
-    virtual void write(QJsonObject &jsonObject) const;
+    virtual void write(QJsonObject &jsonObject) const override;
 
 private:
-    QUuid mRoomId;        //<! The room uuid.
-    Operation mOperation; //<! The requested operation.
+    QUuid mRoomId;        //!< The room uuid.
+    Operation mOperation; //!< The requested operation.
 };
 
 ///
@@ -114,18 +119,22 @@ public:
     QString password() const;
 
     ///
-    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
+    /// \brief This method reads data from given JSON object and populates
+    /// this object's properties.
+    /// \param jsonObject A JSON object to read data from.
     ///
-    virtual void read(const QJsonObject &jsonObject);
+    virtual void read(const QJsonObject &jsonObject) override;
 
     ///
-    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const
+    /// \brief This method writes data from this object to the given JSON
+    /// object.
+    /// \param jsonObject A JSON object to write data to.
     ///
-    virtual void write(QJsonObject &jsonObject) const;
+    virtual void write(QJsonObject &jsonObject) const override;
 
 private:
-    QString mUsername; //<! Username
-    QString mPassword; //<! Password
+    QString mUsername; //!< Username
+    QString mPassword; //!< Password
 };
 
 ///
@@ -197,12 +206,16 @@ public:
     uint16_t dbPort() const;
 
     ///
-    /// \copydoc paso::data::JsonSerializable::read(const QJsonObject&)
+    /// \brief This method reads data from given JSON object and populates
+    /// this object's properties.
+    /// \param jsonObject A JSON object to read data from.
     ///
     virtual void read(const QJsonObject &jsonObject) override;
 
     ///
-    /// \copydoc paso::data::JsonSerializable::write(QJsonObject&) const
+    /// \brief This method writes data from this object to the given JSON
+    /// object.
+    /// \param jsonObject A JSON object to write data to.
     ///
     virtual void write(QJsonObject &jsonObject) const override;
 

@@ -138,7 +138,7 @@ public:
     ///
     /// \brief Returns whether activity allows entry/overlap even if some other
     /// activity is in progress.
-    /// This applies only to \ref ActivityType::INDIVIDUAL_WORK activities.
+    /// This applies only to individual work activities.
     /// \return Whether entry/overlap is allowed.
     ///
     bool canOverlap() const;
@@ -146,8 +146,8 @@ public:
     ///
     /// \brief Sets whether activity allows entry/overlap even if some other
     /// activity is in progress.
-    /// This applies only to \ref ActivityType::INDIVIDUAL_WORK activities.
-    /// \param canOverlap Whether entry/overlap is allowe.d
+    /// This applies only to individual work activities.
+    /// \param canOverlap Whether entry/overlap is allowed.
     ///
     void setCanOverlap(bool canOverlap);
 
@@ -312,8 +312,7 @@ private:
     QTime mStartTime;                   //!< The activity start time.
     QDate mFinishDate;                  //!< The activity finish date.
     /// \brief Whether activity allows entry/overlap even if some other activity
-    /// is in progress. This applies only to \ref ActivityType::INDIVIDUAL_WORK
-    /// activities.
+    /// is in progress. This applies only to individual work activities.
     bool mCanOverlap;
     QVariantList mRoomIds; //!< The list of activity room ids.
     QVariantList mListIds; //!< The list of activiry list ids.

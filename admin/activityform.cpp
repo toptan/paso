@@ -1,7 +1,7 @@
 #include "activityform.h"
 #include "ui_activityform.h"
 
-#include "activitytablemodel.h"
+#include "activityquerymodel.h"
 #include "activityvalidator.h"
 #include "activitywizard.h"
 

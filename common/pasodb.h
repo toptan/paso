@@ -627,11 +627,11 @@ public:
     /// \param error The SQL error if any.
     /// \return \c true if access was granted.
     ///
-    bool checkAccess(const QUuid &roomUUID, const QString &rfid, bool teachersOnly,
-                     QSqlError &error) const;
+    bool checkAccess(const QUuid &roomUUID, const QString &rfid,
+                     bool teachersOnly, QSqlError &error) const;
 
 private:
-    const QString mDbName;
+    const QString mDbName; //!< The internal database connection name.
 };
 }
 }

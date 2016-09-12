@@ -5,7 +5,7 @@
 #include "room.h"
 #include "roomeditorwidget.h"
 #include "roomform.h"
-#include "roomtablemodel.h"
+#include "roomquerymodel.h"
 #include "roomvalidator.h"
 
 #include <QDebug>
@@ -225,7 +225,7 @@ void TestRoomAdministration::testRoomTableModel() {
     QVariantMap columnLabels{{"room_uuid", "Room UUID"},
                              {"name", "Name"},
                              {"room_number", "Room Number"}};
-    RoomTableModel model(columnLabels, QSqlDatabase::database(dbName));
+    RoomQueryModel model(columnLabels, QSqlDatabase::database(dbName));
     QCOMPARE(model.columnCount(), 5);
     QCOMPARE(model.headerData(0, Qt::Horizontal).toString(), QString("id"));
     QCOMPARE(model.headerData(1, Qt::Horizontal).toString(), QString("Name"));

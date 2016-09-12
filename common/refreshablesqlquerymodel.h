@@ -29,7 +29,7 @@ public:
 
     ///
     /// \brief Reexecutes the query to refresh the data.
-    /// \return \code true if query was executed without errors.
+    /// \return \c true if query was executed without errors.
     ///
     bool select();
 

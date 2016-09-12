@@ -1,13 +1,13 @@
-#include "roomtablemodel.h"
+#include "roomquerymodel.h"
 
 #include <QSqlRecord>
 
 namespace paso {
 namespace model {
 
-const QString RoomTableModel::QUERY = "SELECT * FROM ROOMS_VIEW";
+const QString RoomQueryModel::QUERY = "SELECT * FROM ROOMS_VIEW";
 
-RoomTableModel::RoomTableModel(const QVariantMap &columnLabels, QSqlDatabase db,
+RoomQueryModel::RoomQueryModel(const QVariantMap &columnLabels, QSqlDatabase db,
                                QObject *parent)
     : RefreshableSqlQueryModel(QUERY, db.connectionName(), parent) {
     const auto &rec = record();

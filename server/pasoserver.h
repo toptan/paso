@@ -38,19 +38,19 @@ public:
     ///
     /// \brief Loads server configuration from given file.
     /// \param configFile The configuration file.
-    /// \return \code true if configuration is sane.
+    /// \return \c true if configuration is sane.
     ///
     bool loadConfiguration(const QString &configFile);
 
     ///
     /// \brief Initializes database subsystem and connects to the database.
-    /// \return \code true on success.
+    /// \return \c true on success.
     ///
     bool initDatabaseSystem();
 
     ///
     /// \brief Starts the server and accepts connections.
-    /// \return \code true if server successfully started.
+    /// \return \c true if server successfully started.
     ///
     bool startServer();
 

@@ -4,28 +4,59 @@
 #include "recordvalidator.h"
 
 #include <QObject>
+#include <QSqlRecord>
+#include <memory>
 
 namespace paso {
 namespace admin {
 
-class PersonValidator : public widget::RecordValidator {
+///
+/// \brief The PersonValidator class is a class that validates common data for
+/// students and teachers.
+///
+class PersonValidator : public paso::widget::RecordValidator {
     Q_OBJECT
 public:
-    PersonValidator(const widget::FieldTypes &fieldTypes,
-                    const widget::FieldEditors &fieldEditors,
+    ///
+    /// \brief Contructs person validator.
+    /// \param fieldTypes Record field types.
+    /// \param fieldEditors Record field editors.
+    /// \param parent The parent widget.
+    ///
+    PersonValidator(const paso::widget::FieldTypes &fieldTypes,
+                    const paso::widget::FieldEditors &fieldEditors,
                     QObject *parent = nullptr);
+    ///
+    /// \brief Destructor.
+    ///
     virtual ~PersonValidator();
 
-    virtual std::shared_ptr<widget::ValidationError>
+    ///
+    /// \brief Validates person's data.
+    /// \param original The original record, before modifications, to use for
+    /// additional checking.
+    /// \return A validation error structure with the data of the first
+    /// validation check that failed or \c nullptr if no error.
+    ///
+    virtual std::shared_ptr<paso::widget::ValidationError>
     validate(const QSqlRecord &original) const override;
 
 private:
-    std::shared_ptr<widget::ValidationError>
-    validateFirstName() const;
-    std::shared_ptr<widget::ValidationError>
-    validateLastName() const;
-    std::shared_ptr<widget::ValidationError>
-    validateEmail() const;
+    ///
+    /// \brief Validates person's first name.
+    /// \return The validation error structure or \c nullptr if no error.
+    ///
+    std::shared_ptr<paso::widget::ValidationError> validateFirstName() const;
+    ///
+    /// \brief Validates person's last name.
+    /// \return The validation error structure or \c nullptr if no error.
+    ///
+    std::shared_ptr<paso::widget::ValidationError> validateLastName() const;
+    ///
+    /// \brief Validates person's email.
+    /// \return The validation error structure or \c nullptr if no error.
+    ///
+    std::shared_ptr<paso::widget::ValidationError> validateEmail() const;
 };
 }
 }

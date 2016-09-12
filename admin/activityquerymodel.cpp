@@ -1,4 +1,4 @@
-#include "activitytablemodel.h"
+#include "activityquerymodel.h"
 
 #include "data.h"
 

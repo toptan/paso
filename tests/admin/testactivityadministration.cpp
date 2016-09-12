@@ -5,7 +5,7 @@
 #include "activity.h"
 #include "activityeditorwidget.h"
 #include "activityform.h"
-#include "activitytablemodel.h"
+#include "activityquerymodel.h"
 #include "activityvalidator.h"
 #include "activitywizard.h"
 #include "activitywizardfixeddatepage.h"

@@ -72,14 +72,11 @@ void MainWindow::createDbConnection(const QString &connectionName,
 void MainWindow::loginFinished(const LoginResponse &response) {
     mRole = response.systemUser().role();
     createDbConnection(DEFAULT_DB_NAME, response);
-    createMenus();
     createWidgets();
     if (mMainWidget->count() > 0) {
         onWidgetChooserCurrentIndexChanged(0);
     }
 }
-
-void MainWindow::createMenus() {}
 
 void MainWindow::createWidgets() {
     auto toolBar = new QToolBar(tr("Main Toolbar"), this);
