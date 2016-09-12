@@ -16,6 +16,9 @@ namespace widget {
 ///
 class ItemsPicker : public QWidget {
     Q_OBJECT
+    ///
+    /// \brief Currently selected items.
+    ///
     Q_PROPERTY(QList<int> selectedItems READ selectedItems WRITE
                    setSelectedItems NOTIFY selectedItemsChanged)
 public:

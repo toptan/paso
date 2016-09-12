@@ -148,6 +148,7 @@ private slots:
     void resetButtonClicked();
 
 private:
+    /// The pointer to the generated UI class object.
     Ui::AddRemoveEntitiesForm *ui;
     /// Defines whether whis form is read only.
     bool mReadOnly;
