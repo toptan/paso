@@ -155,6 +155,7 @@ void ActivityWizard::accept() {
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
         reject();
+        return;
     }
 
     if (overlaps) {
@@ -183,6 +184,7 @@ void ActivityWizard::accept() {
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
         reject();
+        return;
     }
     QWizard::accept();
 }

@@ -962,32 +962,32 @@
         <translation>Дошло је до грешке приликом провере да ли се активност преклапа са другим активностима.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="161"/>
+        <location filename="../admin/activitywizard.cpp" line="162"/>
         <source>Activity has overlaps</source>
         <translation>Активност има преклапања</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="162"/>
+        <location filename="../admin/activitywizard.cpp" line="163"/>
         <source>The activity is overlaping with other activities. Do you want to see them?</source>
         <translation>Активност има преклапања са другим активностима. Желите ли да их погледате?</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="167"/>
+        <location filename="../admin/activitywizard.cpp" line="168"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="168"/>
+        <location filename="../admin/activitywizard.cpp" line="169"/>
         <source>No</source>
         <translation>Не</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="193"/>
+        <location filename="../admin/activitywizard.cpp" line="195"/>
         <source>Activity %1 overlaps</source>
         <translation>Преклапања активности %1</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="179"/>
+        <location filename="../admin/activitywizard.cpp" line="180"/>
         <source>There was an error while saving activity to the database.</source>
         <translation>Дошло је до грешко прилимо снимања активности у базу.</translation>
     </message>

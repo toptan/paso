@@ -1340,7 +1340,7 @@ void TestActivityAdministration::testActivityFormSaveActivity() {
         QTest::keyClick(msgBox, Qt::Key_Enter);
         messageBoxShown = true;
     };
-    QTimer::singleShot(200, timerCallback);
+    QTimer::singleShot(400, timerCallback);
     finishButton->click();
     QApplication::processEvents();
     QVERIFY(messageBoxShown);
