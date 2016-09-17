@@ -1132,8 +1132,8 @@ QStringList DBManager::emergencyData(QSqlError &error) const {
 bool DBManager::checkAccess(const QUuid &roomUUID, const QString &rfid,
                             bool teachersOnly, QSqlError &error) const {
     auto retVal = false;
-    auto query =
-        Room::checkAccessQuery(QSqlDatabase::database(mDbName), roomUUID, rfid, teachersOnly);
+    auto query = Room::checkAccessQuery(QSqlDatabase::database(mDbName),
+                                        roomUUID, rfid, teachersOnly);
     beginTransaction();
     query.exec();
     error = query.lastError();
@@ -1146,6 +1146,17 @@ bool DBManager::checkAccess(const QUuid &roomUUID, const QString &rfid,
     }
     error = commit();
     return retVal;
+}
+
+bool DBManager::hasOverlaps(const Activity &activity, QSqlError &error) const {
+    auto query =
+        Activity::hasOverlapsQuery(QSqlDatabase::database(mDbName), activity);
+    query.exec();
+    error = query.lastError();
+    if (error.type() != QSqlError::NoError) {
+        return false;
+    }
+    return query.size() > 0;
 }
 }
 }

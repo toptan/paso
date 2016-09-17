@@ -361,6 +361,34 @@ QSqlQuery Activity::timeSlotsQuery(const QSqlDatabase &database,
     query.bindValue(":activity_id", activityId);
     return query;
 }
+
+QSqlQuery Activity::hasOverlapsQuery(const QSqlDatabase &database,
+                                     const Activity &activity) {
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM check_overlaps(:activityId, :scheduleType, "
+                  ":scheduledDays, :duration, :startDate, :startTime, "
+                  ":finishDate, :activityRooms)");
+    query.bindValue(":activityId", activity.id());
+    query.bindValue(":scheduleType",
+                    activityScheduleTypeToString(activity.scheduleType()));
+    QString strDays;
+    QTextStream tsDays(&strDays);
+    for (auto i = 0; i < activity.scheduledDays().size(); i++) {
+        tsDays << activity.scheduledDays()[i].toInt() << " ";
+    }
+    query.bindValue(":scheduledDays", strDays.trimmed());
+    query.bindValue(":duration", activity.duration());
+    query.bindValue(":startDate", activity.startDate());
+    query.bindValue(":startTime", activity.startTime());
+    query.bindValue(":finishDate", activity.finishDate());
+    QString roomStrIds;
+    QTextStream tsRooms(&roomStrIds);
+    for (auto i = 0; i < activity.roomIds().size(); i++) {
+        tsRooms << activity.roomIds()[i].toString() << " ";
+    }
+    query.bindValue(":activityRooms", roomStrIds.trimmed());
+    return query;
+}
 }
 }
 }

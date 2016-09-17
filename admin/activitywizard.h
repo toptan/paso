@@ -53,6 +53,14 @@ public:
     ///
     virtual void setVisible(bool visible) override;
 
+    ///
+    /// \brief Presents user with the dialog that shows all overlaps that
+    /// current activity has with other.
+    /// \return Dialog exit code to deterimine whether to save activity or go
+    /// back.
+    ///
+    int showOverlapsDialog();
+
 public slots:
     ///
     /// \brief Overriden slot to save activity.

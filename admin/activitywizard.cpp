@@ -1,6 +1,7 @@
 #include "activitywizard.h"
 
 #include "activity.h"
+#include "activityoverlapsdialog.h"
 #include "activitywizardfixeddatepage.h"
 #include "activitywizardlistsselectionpage.h"
 #include "activitywizardnameandtypepage.h"
@@ -10,8 +11,11 @@
 #include "pasodb.h"
 
 #include <QAbstractButton>
+#include <QDebug>
+#include <QLayout>
 #include <QMessageBox>
 #include <QSqlError>
+#include <QTableView>
 #include <QTimer>
 #include <memory>
 
@@ -140,6 +144,35 @@ void ActivityWizard::accept() {
     QSqlError error;
     DBManager manager;
 
+    auto overlaps = manager.hasOverlaps(*mActivity, error);
+    if (error.type() != QSqlError::NoError) {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText(tr("There was an error while checking whether activity "
+                          "overlaps with some other one."));
+        msgBox.setDetailedText(error.text());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        reject();
+    }
+
+    if (overlaps) {
+        QMessageBox msgBox(QMessageBox::NoIcon, tr("Activity has overlaps"),
+                           tr("The activity is overlaping with other "
+                              "activities. Do you want to see them?"),
+                           QMessageBox::Yes | QMessageBox::No, this);
+        msgBox.setWindowModality(Qt::ApplicationModal);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        msgBox.setButtonText(QMessageBox::Yes, tr("Yes"));
+        msgBox.setButtonText(QMessageBox::No, tr("No"));
+        if (msgBox.exec() == QMessageBox::Yes) {
+            if (showOverlapsDialog() != QDialog::Accepted) {
+                return;
+            }
+        }
+    }
+
     if (!manager.saveActivity(*mActivity, error)) {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Warning);
@@ -152,6 +185,13 @@ void ActivityWizard::accept() {
         reject();
     }
     QWizard::accept();
+}
+
+int ActivityWizard::showOverlapsDialog() {
+    ActivityOverlapsDialog dlg(*mActivity, this);
+    dlg.setWindowModality(Qt::ApplicationModal);
+    dlg.setWindowTitle(tr("Activity %1 overlaps").arg(mActivity->name()));
+    return dlg.exec();
 }
 }
 }

@@ -306,22 +306,22 @@
     </message>
     <message>
         <location filename="../admin/teacherform.cpp" line="48"/>
-        <location filename="../admin/studentform.cpp" line="70"/>
         <location filename="../admin/systemusersform.cpp" line="42"/>
+        <location filename="../admin/studentform.cpp" line="70"/>
         <source>First Name</source>
         <translation>Име</translation>
     </message>
     <message>
         <location filename="../admin/teacherform.cpp" line="49"/>
-        <location filename="../admin/studentform.cpp" line="71"/>
         <location filename="../admin/systemusersform.cpp" line="43"/>
+        <location filename="../admin/studentform.cpp" line="71"/>
         <source>Last Name</source>
         <translation>Презиме</translation>
     </message>
     <message>
         <location filename="../admin/teacherform.cpp" line="50"/>
-        <location filename="../admin/studentform.cpp" line="72"/>
         <location filename="../admin/systemusersform.cpp" line="44"/>
+        <location filename="../admin/studentform.cpp" line="72"/>
         <source>Email</source>
         <translation>Е-пошта</translation>
     </message>
@@ -346,9 +346,9 @@
         <translation>УУИД собе</translation>
     </message>
     <message>
-        <location filename="../admin/activityform.cpp" line="35"/>
         <location filename="../admin/roomform.cpp" line="50"/>
         <location filename="../admin/listform.cpp" line="46"/>
+        <location filename="../admin/activityform.cpp" line="35"/>
         <source>Name</source>
         <translation>Назив</translation>
     </message>
@@ -887,44 +887,107 @@
     </message>
 </context>
 <context>
+    <name>paso::admin::ActivityOverlapsDialog</name>
+    <message>
+        <location filename="../admin/activityoverlapsdialog.cpp" line="33"/>
+        <source>Room</source>
+        <translation>Просторија</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityoverlapsdialog.cpp" line="35"/>
+        <source>Activity</source>
+        <translation>Активност</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityoverlapsdialog.cpp" line="37"/>
+        <source>Start time</source>
+        <translation>Почетак</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityoverlapsdialog.cpp" line="39"/>
+        <source>Finish time</source>
+        <translation>Крај</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityoverlapsdialog.cpp" line="41"/>
+        <source>Save activity</source>
+        <translation>Сними активност</translation>
+    </message>
+    <message>
+        <location filename="../admin/activityoverlapsdialog.cpp" line="42"/>
+        <source>Cancel</source>
+        <translation>Одустани</translation>
+    </message>
+</context>
+<context>
     <name>paso::admin::ActivityWizard</name>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="36"/>
+        <location filename="../admin/activitywizard.cpp" line="40"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="37"/>
+        <location filename="../admin/activitywizard.cpp" line="41"/>
         <source>Next</source>
         <translation>Даље</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="38"/>
+        <location filename="../admin/activitywizard.cpp" line="42"/>
         <source>Cancel</source>
         <translation>Одустани</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="39"/>
+        <location filename="../admin/activitywizard.cpp" line="43"/>
         <source>Finish</source>
         <translation>Заврши</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="78"/>
+        <location filename="../admin/activitywizard.cpp" line="82"/>
         <source>There was an error while loading activity from the database.</source>
         <translation>Дошло је до грешке приликом учитавања активности из базе.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="90"/>
+        <location filename="../admin/activitywizard.cpp" line="94"/>
         <source>The requested activity does not exist.</source>
         <translation>Тражена активност не постоји.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="91"/>
+        <location filename="../admin/activitywizard.cpp" line="95"/>
         <source>Maybe someone or system clean up job deleted the activity. Try refreshing the data.</source>
         <translation>Можда је неко или систем сам обрисао активност. Покушајте да освежите податке.</translation>
     </message>
     <message>
-        <location filename="../admin/activitywizard.cpp" line="146"/>
+        <location filename="../admin/activitywizard.cpp" line="151"/>
+        <source>There was an error while checking whether activity overlaps with some other one.</source>
+        <translation>Дошло је до грешке приликом провере да ли се активност преклапа са другим активностима.</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="161"/>
+        <source>Activity has overlaps</source>
+        <translation>Активност има преклапања</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="162"/>
+        <source>The activity is overlaping with other activities. Do you want to see them?</source>
+        <translation>Активност има преклапања са другим активностима. Желите ли да их погледате?</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="167"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="168"/>
+        <source>No</source>
+        <translation>Не</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="193"/>
+        <source>Activity %1 overlaps</source>
+        <translation>Преклапања активности %1</translation>
+    </message>
+    <message>
+        <location filename="../admin/activitywizard.cpp" line="179"/>
         <source>There was an error while saving activity to the database.</source>
         <translation>Дошло је до грешко прилимо снимања активности у базу.</translation>
     </message>

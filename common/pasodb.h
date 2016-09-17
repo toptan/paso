@@ -630,6 +630,15 @@ public:
     bool checkAccess(const QUuid &roomUUID, const QString &rfid,
                      bool teachersOnly, QSqlError &error) const;
 
+    ///
+    /// \brief Checks whether activity overlaps with some other activities.
+    /// \param activity Activity to check.
+    /// \param error The SQL error if any.
+    /// \return \c true if there are overlaps.
+    ///
+    bool hasOverlaps(const data::entity::Activity &activity,
+                     QSqlError &error) const;
+
 private:
     const QString mDbName; //!< The internal database connection name.
 };

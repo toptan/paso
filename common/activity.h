@@ -302,6 +302,16 @@ public:
     static QSqlQuery timeSlotsQuery(const QSqlDatabase &database,
                                     quint64 activityId);
 
+    ///
+    /// \brief Returns query that checks and return all time slot overlaps for
+    /// given activity.
+    /// \param database The database to use.
+    /// \param activity The activity to check.
+    /// \return The query.
+    ///
+    static QSqlQuery hasOverlapsQuery(const QSqlDatabase &database,
+                                      const Activity &activity);
+
 private:
     QString mName;                      //!< The activity name.
     ActivityType mType;                 //!< The activity type.
