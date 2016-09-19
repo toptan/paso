@@ -274,6 +274,20 @@ void PasoServer::handleAccessRequest(QTcpSocket *clientSocket,
     request.fromJsonString(requestString);
     AccessResponse response(request.roomId());
     response.setGranted(false);
+    auto room = mDbManager->getRoom(request.roomId(), error);
+    if (error.type() != QSqlError::NoError) {
+        qCritical() << "Problem loading room data:" << error;
+        writeResponse(clientSocket, response);
+        return;
+    }
+    if (!room) {
+        qWarning() << "Got access query request from unauthorized controller "
+                   << request.roomId().toString() << "from"
+                   << clientSocket->peerAddress().toString();
+        writeResponse(clientSocket, response);
+        return;
+    }
+
     auto teachersOnly = !mControllers.contains(request.roomId());
     response.setReRegister(teachersOnly);
     if (teachersOnly) {
@@ -439,6 +453,5 @@ void PasoServer::purgeLists() {
         qWarning() << "Failed to purge lists. " << error;
     }
 }
-
 }
 }

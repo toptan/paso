@@ -666,7 +666,7 @@
         <translation>Читај картицу</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="136"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="139"/>
         <source>Error</source>
         <translation>Грешка</translation>
     </message>
@@ -694,52 +694,52 @@
         <translation>Особа %1 није пронађена у нужним подацима. Врата ће остати закључана.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="120"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="123"/>
         <source>Registered and listening on port %1</source>
         <translation>Пријављен и слуша на порту %1</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="122"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="125"/>
         <source>Running</source>
         <translation>Ради</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="137"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="140"/>
         <source>Cannot listen to the port %1. Simulator will not be able to listen to communication check messages. Error is: %2</source>
         <translation>Није могуће слушати на порту %1. Симулатор неће моћи да прихвата поруке за проверу комуникације. Грешка је: %2</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="145"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="148"/>
         <source>Registered, but not listening for communication check messages.</source>
         <translation>Пријављен, али не прихвата поруке за проверу комуникације.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="237"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="240"/>
         <source>Got ping request from the server.</source>
         <translation>Пристигла је порука за проверу комуникације.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="244"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="247"/>
         <source>Failed to read server ping request: %1</source>
         <translation>Није било могуће прочитати поруку за проверз комуникације: %1</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="260"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="263"/>
         <source>The server ping request was incomplete. Error was: %1</source>
         <translation>Порука за проверу комуникације није комплетна. Грешка је: %1</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="274"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="277"/>
         <source>The server request is not ping request. Message was: %1</source>
         <translation>Примљена порука није порука за проверу комуникације. Порука је била: %1</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="304"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="307"/>
         <source>Respondend back to server that everything is OK.</source>
         <translation>Послат одговор да је све уреду.</translation>
     </message>
     <message>
-        <location filename="../simulator/simulatormainwindow.cpp" line="307"/>
+        <location filename="../simulator/simulatormainwindow.cpp" line="310"/>
         <source>Responded to the server with non critical fault &apos;%1&apos;</source>
         <translation>Послат одговор са не критичном грешком &apos;%1&apos;</translation>
     </message>

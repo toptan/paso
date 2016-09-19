@@ -55,6 +55,9 @@ void SimulatorMainWindow::useEmergencyData() {
 }
 
 void SimulatorMainWindow::onRegisterButtonClicked() {
+    ui->cardEdit->setEnabled(true);
+    ui->readCardButton->setEnabled(true);
+
     if (mSslServer != nullptr) {
         delete mSslServer;
         mSslServer = nullptr;
